@@ -11,7 +11,6 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "MainComponent.h"
 
-
 //==============================================================================
 class MusicPlayerApplication  : public JUCEApplication
 {
@@ -65,7 +64,12 @@ public:
                                         Colours::lightgrey,
                                         DocumentWindow::allButtons)
         {
-            setContentOwned (new MainContentComponent(), true);
+			setResizable(true, false); 
+			setTitleBarHeight(20);
+			
+            MainContentComponent* mainContentComponent = new MainContentComponent();
+			setContentOwned (mainContentComponent, true);
+			setMenuBar (mainContentComponent);
 
             centreWithSize (getWidth(), getHeight());
             setVisible (true);
@@ -77,6 +81,7 @@ public:
             // ask the app to quit when this happens, but you can change this to do
             // whatever you need.
             JUCEApplication::getInstance()->systemRequestedQuit();
+			
         }
 
         /* Note: Be careful if you override any DocumentWindow methods - the base
