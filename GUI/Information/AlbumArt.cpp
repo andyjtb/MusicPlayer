@@ -32,6 +32,11 @@ void AlbumArt::resized()
 
 void AlbumArt::paint(Graphics& g)
 {	
+	if (fileSelected == true && tagMissing == false) {
+		g.setOpacity (1.0f);
+		g.drawImageWithin (getImage(), 0, 0, getWidth(), getHeight(), getImagePlacement(), false);
+	}
+	
 	if (tagMissing) {
 		g.fillAll (Colours::white);
 		g.setColour (Colours::black);
@@ -40,6 +45,7 @@ void AlbumArt::paint(Graphics& g)
 					0, 0, 175, 175,
 					Justification::centred, true);
 		fileSelected = true;
+		tagMissing = false;
 	}
 }
 
@@ -47,9 +53,7 @@ void AlbumArt::setCover (Image cover)
 {
 	if (cover.isValid()) {
 		fileSelected = true;
-		//setImage (cover);
-		Graphics g(cover);
-		paint(g);
+		setImage (cover);
 	}
 	else {
 		tagMissing = true;
