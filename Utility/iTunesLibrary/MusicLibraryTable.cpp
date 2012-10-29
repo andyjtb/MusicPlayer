@@ -179,32 +179,6 @@ void MusicLibraryTable::paintRowBackground (Graphics& g, int /*rowNumber*/,
 		g.fillAll (Colour::greyLevel (0.2f));
 }
 
-String MusicLibraryTable::secondsToTimeLength (double numSeconds)
-{
-	double decimalTime = numSeconds / 60000.0;
-	
-	int hrs = 0;
-	int mins = (int) decimalTime;
-	int secs = roundToInt ((decimalTime - mins) * 60.0);
-	
-	String timeString;
-	
-	if (mins > 59)
-	{
-		hrs = mins / 60;
-		mins -= hrs * 60;
-		
-		timeString << String (hrs) << ":"
-		<< String (mins).paddedLeft ('0', 2) << ":";
-	}
-	else
-		timeString << String (mins) << ":";
-	
-	timeString << String (secs).paddedLeft ('0', 2);
-	
-	return timeString;
-}
-
 void MusicLibraryTable::paintCell (Graphics& g,
 								   int rowNumber,
 								   int columnId,
@@ -223,7 +197,7 @@ void MusicLibraryTable::paintCell (Graphics& g,
             String text;
             
             if(columnId == MusicColumns::Length)
-                text = secondsToTimeLength (rowElement[MusicColumns::columnNames[columnId]].toString().getIntValue());
+                text = timeHelpers::secondsToTimeLength (rowElement[MusicColumns::columnNames[columnId]].toString().getIntValue());
             else if(columnId == MusicColumns::Added
                     || columnId == MusicColumns::Modified)
                 text = Time (int64 (rowElement[MusicColumns::columnNames[columnId]])).formatted ("%d/%m/%Y - %H:%M");

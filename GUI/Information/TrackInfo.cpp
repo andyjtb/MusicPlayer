@@ -55,21 +55,21 @@ void TrackInfo::resized()
 void TrackInfo::loadTrackInfo(File& audioFile)
 {	
 	
-	TagReader::readTags(audioFile);
+   ValueTree tags(TagReader::readTags(audioFile));
 	
-//   if (id3Check) {
-//	   toggleId3.setToggleState(true,false);
-//	   labelTitle.setText (title,false);
-//	   labelArtist.setText (artist,false);
-//	   labelId3.setText ("Tag Loaded",false);
+   if (tags.hasType("Tags")) {
+	   toggleId3.setToggleState(true,false);
+	   title.setText (tags.getProperty(MusicColumns::columnNames[MusicColumns::Song].toString(), 0),false);
+	   artist.setText (tags.getProperty(MusicColumns::columnNames[MusicColumns::Artist].toString(), 0),false);
+	   id3.setText ("Tag Loaded",false);
 	   
-//   }
-//	else {
-//		toggleId3.setToggleState(false,false);
-//		labelTitle.setText (title,false);
-//		labelArtist.setText (artist,false);
-//		labelId3.setText ("Tag Not Found",false);
-//	}
+   }
+	else {
+		toggleId3.setToggleState(false,false);
+		title.setText ("Failed",false);
+		artist.setText ("Failed",false);
+		id3.setText ("Tag Not Found",false);
+	}
 
 }
 

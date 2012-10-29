@@ -58,7 +58,7 @@ private:
 
 	File testFile;
 	
-	MusicLibraryTable musicTable;
+	//MusicLibraryTable musicTable;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

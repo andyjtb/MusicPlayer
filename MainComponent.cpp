@@ -15,9 +15,9 @@ MainContentComponent::MainContentComponent()
 	addAndMakeVisible(&guiControl);
 	guiControl.setAudioControl(&audioControl);
 
-	ITunesLibrary::getInstance()->setLibraryFile (ITunesLibrary::getDefaultITunesLibraryFile());
-	musicTable.setLibraryToUse (ITunesLibrary::getInstance());
-	addAndMakeVisible(&musicTable);
+	//ITunesLibrary::getInstance()->setLibraryFile (ITunesLibrary::getDefaultITunesLibraryFile());
+	//musicTable.setLibraryToUse (ITunesLibrary::getInstance());
+	//addAndMakeVisible(&musicTable);
     
 
 	setSize (1000, 930);
@@ -29,8 +29,8 @@ MainContentComponent::~MainContentComponent()
 
 void MainContentComponent::resized()
 {
-	guiControl.setBounds(0, 0, 500,400);
-	musicTable.setBounds(0, getHeight()/2, getWidth()/2, getHeight()/2);
+	guiControl.setBounds(0, 0, getWidth(),400);
+	//musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
 
 }
 
@@ -77,10 +77,7 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 				{
 					fileChosen << fc.getResults().getReference(i).getFullPathName() << "\n";
 				}
-				
-				//AlertWindow::showMessageBoxAsync (AlertWindow::InfoIcon,
-				//												  "File Chooser...",
-				//												  "You picked: " + fileChosen);
+
 				audioFile = fc.getResult();
 				audioControl.loadFile(audioFile);
 				guiControl.updateTagDisplay(audioFile);
@@ -113,7 +110,7 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 		}
 		
 		if (menuItemID == testSave) {
-			ITunesLibrary::getInstance()->saveLibrary();
+			//ITunesLibrary::getInstance()->saveLibrary();
 		}
 
     }

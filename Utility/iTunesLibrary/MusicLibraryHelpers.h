@@ -85,7 +85,7 @@ namespace MusicColumns {
     static const Identifier libraryCuePointIdentifier ("CUE");
     static const Identifier libraryLoopIdentifier ("LOOP");
 
-	enum colums {
+	enum columns {
 		Dummy,
 		LibID,
 		ID,
@@ -169,6 +169,34 @@ namespace MusicColumns {
 		300,
 		60
 	};
+}
+
+namespace timeHelpers {
+	static const String secondsToTimeLength (double numSeconds)
+	{
+		double decimalTime = numSeconds / 60000.0;
+		
+		int hrs = 0;
+		int mins = (int) decimalTime;
+		int secs = roundToInt ((decimalTime - mins) * 60.0);
+		
+		String timeString;
+		
+		if (mins > 59)
+		{
+			hrs = mins / 60;
+			mins -= hrs * 60;
+			
+			timeString << String (hrs) << ":"
+			<< String (mins).paddedLeft ('0', 2) << ":";
+		}
+		else
+			timeString << String (mins) << ":";
+		
+		timeString << String (secs).paddedLeft ('0', 2);
+		
+		return timeString;
+	}
 }
 
 #endif  // __DROWAUDIO_MUSICLIBRARYHELPERS_H__

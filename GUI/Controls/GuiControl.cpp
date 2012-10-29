@@ -25,6 +25,8 @@ GuiControl::GuiControl()
 	
 	addAndMakeVisible(&trackInfo);
 	
+	addAndMakeVisible(&albumArt);
+	
 	setSize(500, 400);
 }
 
@@ -40,6 +42,8 @@ void GuiControl::resized()
 	outputMeters.setBounds(0, 250, 250, 80);
 	transport.setBounds(150, 20, 300, 60);
 	trackInfo.setBounds(180, 100, 270, 150);
+	albumArt.setBounds(400,100,175,175);
+	
 }
 
 void GuiControl::timerCallback(int timerId)
@@ -112,4 +116,5 @@ void GuiControl::valueChanged (Value& valueChanged)
 void GuiControl::updateTagDisplay (File audioFile)
 {
 	trackInfo.loadTrackInfo(audioFile);
+	albumArt.setCover(TagReader::getAlbumArt(audioFile));
 }

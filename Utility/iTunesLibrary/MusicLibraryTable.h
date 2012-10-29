@@ -25,6 +25,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "ITunesLibrary.h"
 #include "Comparators.h"
+#include "MusicLibraryHelpers.h"
 
 
 //==============================================================================
@@ -114,8 +115,6 @@ public:
 
     /** @internal */
 	var getDragSourceDescription (const SparseSet<int>& currentlySelectedRows);
-	
-	String secondsToTimeLength (double numSeconds);
 
 	
 private:

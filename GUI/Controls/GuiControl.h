@@ -19,7 +19,8 @@
 #include "VolumeControl.h"
 #include "TransportSlider.h"
 #include "TrackInfo.h"
-
+//#include "ButtonAlbumArt.h"
+#include "AlbumArt.h"
 
 /**
 
@@ -64,6 +65,8 @@ private:
 	OutputMeter outputMeters;
 	TransportSlider transport;
 	TrackInfo trackInfo;
+	//ButtonAlbumArt albumArt;
+	AlbumArt albumArt;
 };
 
 
