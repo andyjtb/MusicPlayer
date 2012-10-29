@@ -50,7 +50,7 @@ void TransportSlider::setTransportRange (double minimum, double maximum, double 
 
 void TransportSlider::setTransportPosition (double position)
 {
-	transport->setValue(position, dontSendNotification);
+	transport->setValue(position, sendNotificationAsync);
 	updateTime(position);
 }
 

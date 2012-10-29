@@ -25,7 +25,10 @@ public:
 
     void paint (Graphics& g);
     void resized();
-
+	
+	void addValueListener (Value::Listener* incomingListener);
+	Value& getSliderValue();
+	
 
     // Binary resources:
     static const char* vol0_png;
@@ -46,8 +49,8 @@ private:
     void buttonClicked (Button* buttonThatWasClicked);
 	
 	
-    Slider* VolumeSlider;
-    ImageButton* VolumeButton;
+    Slider volumeSlider;
+    ImageButton volumeButton;
 	
 	Image cachedImage_vol0_png;
     Image cachedImage_vol25_png;

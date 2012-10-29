@@ -12,24 +12,25 @@
 //==============================================================================
 MainContentComponent::MainContentComponent()
 {
-    setSize (500, 400);
+	addAndMakeVisible(&guiControl);
+	guiControl.setAudioControl(&audioControl);
+
+	ITunesLibrary::getInstance()->setLibraryFile (ITunesLibrary::getDefaultITunesLibraryFile());
+	musicTable.setLibraryToUse (ITunesLibrary::getInstance());
+	addAndMakeVisible(&musicTable);
+    
+
+	setSize (1000, 930);
 }
 
 MainContentComponent::~MainContentComponent()
 {
 }
 
-void MainContentComponent::paint (Graphics& g)
-{
-    g.fillAll (Colour (0xffeeddff));
-
-    g.setFont (Font (16.0f));
-    g.setColour (Colours::black);
-    g.drawText ("Hello World!", getLocalBounds(), Justification::centred, true);
-}
-
 void MainContentComponent::resized()
 {
+	guiControl.setBounds(0, 0, 500,400);
+	musicTable.setBounds(0, getHeight()/2, getWidth()/2, getHeight()/2);
 
 }
 
@@ -45,11 +46,13 @@ PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const St
 {
 	PopupMenu fileMenu;
 	if (topLevelMenuIndex == 0)
+	{
 		fileMenu.addItem(OpenFile, "Open Files", true, false);
 		fileMenu.addItem(OpenDirectory, "Open Directory", true, false);
 		fileMenu.addSeparator();
         fileMenu.addItem(AudioPrefs, "Audio Preferences", true, false);
-
+		fileMenu.addItem(testSave, "Save iTunes Lib Test", true, false);
+	}
 	return fileMenu;
 }
 
@@ -80,7 +83,7 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 				//												  "You picked: " + fileChosen);
 				audioFile = fc.getResult();
 				audioControl.loadFile(audioFile);
-				audioControl.setPlayState(true);
+				guiControl.updateTagDisplay(audioFile);
 			}
 		}
 		
@@ -104,10 +107,13 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 					std::cout << "loading \n";
 					filesFound<<fileFound.getParentDirectory().getFileName()<<"/"<<fileFound.getFileName()<<"\n";
 				}
-				filesInfo << "You picked: " << initialDirectory << "\n" << "Files: " << filesFound;   
+				filesInfo << "You picked: " << initialDirectory << "\n" << "Files: \n" << filesFound;   
 				AlertWindow::showMessageBoxAsync (AlertWindow::InfoIcon, "Directory Chooser...", filesInfo);
 			}		
-			
+		}
+		
+		if (menuItemID == testSave) {
+			ITunesLibrary::getInstance()->saveLibrary();
 		}
 
     }

@@ -27,7 +27,9 @@ AudioControl::AudioControl()
     {
 //		soundTouchSource = new SoundTouchAudioSource(&transport, false);
 //        audioSourcePlayer.setSource (soundTouchSource);
+
 		audioSourcePlayer.setSource(&transport);
+		
         
         // start the IO device pulling its data from our callback..
         audioDeviceManager.addAudioCallback (this);
@@ -38,11 +40,9 @@ AudioControl::AudioControl()
 }
 AudioControl::~AudioControl()
 {
-    audioSourcePlayer.setSource (nullptr);
     
+    audioSourcePlayer.setSource (nullptr);
 	transport.setSource(nullptr);//unload the current file
-    //delete soundTouchSource;
-	delete currentAudioFileSource;
     audioDeviceManager.removeAudioCallback(this);
 
 }
@@ -52,11 +52,12 @@ void AudioControl::loadFile (const File audioFile)
 	//this is called when the user changes the filename in the file chooser box
 	if(audioFile.existsAsFile())
 	{
+		
 		// unload the previous file source and delete it..
 		transport.stop();
 		transport.setSource (nullptr);
-		if(currentAudioFileSource != nullptr)
-			deleteAndZero (currentAudioFileSource);
+		currentAudioFileSource = nullptr;
+
 		
 		// create a new file source from the file..
 		// get a format manager and set it up with the basic types (wav, ogg and aiff).
@@ -72,6 +73,10 @@ void AudioControl::loadFile (const File audioFile)
 			
 			// ..and plug it into our transport source
 			transport.setSource (currentAudioFileSource);
+			
+			String transportLengthAction;
+			transportLengthAction << "transportLength:" << transport.getLengthInSeconds();
+			sendActionMessage(transportLengthAction);
 			
 		}  
 	}
@@ -100,7 +105,7 @@ void AudioControl::setPlayState (bool shouldPlay)
 	}
 	else {
 		transport.stop();
-		transport.setPosition(0);
+		//transport.setPosition(0);
 	}
 	
 }
@@ -110,9 +115,20 @@ bool AudioControl::isPlaying()
 	return transport.isPlaying();
 }
 
-void AudioControl::sliderValueChanged (Slider* sliderChanged)
+void AudioControl::setVolume(double incomingVolume)
 {
-	audioSourcePlayer.setGain(sliderChanged->getValue());
+	audioSourcePlayer.setGain(incomingVolume);
+}
+
+double AudioControl::getTransportPosition()
+{
+	return transport.getCurrentPosition();
+}
+
+void AudioControl::setTransportPosition(double position)
+{
+	transport.setPosition(position);
+	
 }
 
 //void AudioControl::setPlaybackSpeed(const float incomingSpeed)

@@ -7,38 +7,27 @@
  *
  */
 #include "VolumeControl.h"
-#include <stdio.h>
 
-
-VolumeControl::VolumeControl ()
-    : Component ("VolumeControl"),
-      VolumeSlider (0),
-      VolumeButton (0),
-	  cachedImage_vol25_png(0),
-cachedImage_vol50_png(0),
- cachedImage_vol75_png(0),
- cachedImage_volFull_png(0)
-	  
+VolumeControl::VolumeControl ()	  
 {
-    addAndMakeVisible (VolumeSlider = new Slider ("VolumeSlider"));
-    VolumeSlider->setRange (0, 1, 0.01);
-    VolumeSlider->setSliderStyle (Slider::LinearHorizontal);
-    VolumeSlider->setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
-    VolumeSlider->setColour (Slider::thumbColourId, Colour (0xffa1a1a1));
-    VolumeSlider->addListener (this);
-
-    addAndMakeVisible (VolumeButton = new ImageButton ("VolumeButton"));
-    VolumeButton->setButtonText ("VolumeButton");
-    VolumeButton->addListener (this);
-	VolumeButton->setToggleState(false, true);
+    addAndMakeVisible (&volumeSlider);
+    volumeSlider.setRange (0, 1, 0.01);
+    volumeSlider.setSliderStyle (Slider::LinearHorizontal);
+    volumeSlider.setTextBoxStyle (Slider::NoTextBox, false, 80, 20);
+    volumeSlider.setColour (Slider::thumbColourId, Colour (0xffa1a1a1));
+    volumeSlider.addListener (this);
 	
-	VolumeSlider->setValue(1, sendNotification);
+    addAndMakeVisible (&volumeButton);
+    volumeButton.addListener (this);
+	volumeButton.setToggleState(false, true);
+	
+	volumeSlider.setValue(1, sendNotificationAsync);
 	
 	cachedImage_volFull_png = ImageCache::getFromMemory (volFull_png, volFull_pngSize);
-	VolumeButton->setImages (false, true, true,
-                             ImageCache::getFromMemory (volFull_png, volFull_pngSize), 1.0000f, Colour (0x0),
-                             ImageCache::getFromMemory (volFull_png, volFull_pngSize), 1.0000f, Colour (0x0),
-                             Image(), 1.0000f, Colour (0x0));
+	volumeButton.setImages (false, true, true,
+							ImageCache::getFromMemory (volFull_png, volFull_pngSize), 1.0000f, Colour (0x0),
+							ImageCache::getFromMemory (volFull_png, volFull_pngSize), 1.0000f, Colour (0x0),
+							Image(), 1.0000f, Colour (0x0));
 	
 	cachedImage_vol25_png = ImageCache::getFromMemory (vol25_png, vol25_pngSize);
     cachedImage_vol50_png = ImageCache::getFromMemory (vol50_png, vol50_pngSize);
@@ -47,17 +36,13 @@ cachedImage_vol50_png(0),
 	
 	muteVolume = 1;
 	
-    setSize (380, 80);
+    setSize (150, 32);
+	
 
 }
 
 VolumeControl::~VolumeControl()
 {
-
-
-    deleteAndZero (VolumeSlider);
-    deleteAndZero (VolumeButton);
-
 }
 
 //==============================================================================
@@ -68,48 +53,47 @@ void VolumeControl::paint (Graphics& g)
 
 void VolumeControl::resized()
 {
-    VolumeSlider->setBounds (120, 18, 232, 40);
-    VolumeButton->setBounds (0, 0, 115, 80);
-
+	volumeSlider.setBounds (48, 8, 103, 16);
+    volumeButton.setBounds (0, 0, 40, 32);
 }
 
 
 void VolumeControl::sliderValueChanged (Slider* sliderThatWasMoved)
 {
 	String volumeAction;
-	volume = VolumeSlider->getValue();
+	volume = volumeSlider.getValue();
 	volumeAction << "volumeAction =" << volume;
 	sendActionMessage(volumeAction);
-	
+
 	if (volume <= 0) {
-		VolumeButton->setImages (false, true, true,
-								 ImageCache::getFromMemory (vol0_png, vol0_pngSize), 1.0000f, Colour (0x0),
-								 ImageCache::getFromMemory (vol0_png, vol0_pngSize), 1.0000f, Colour (0x0),
-								 Image(), 1.0000f, Colour (0x0));
+		volumeButton.setImages (false, true, true,
+								ImageCache::getFromMemory (vol0_png, vol0_pngSize), 1.0000f, Colour (0x0),
+								ImageCache::getFromMemory (vol0_png, vol0_pngSize), 1.0000f, Colour (0x0),
+								Image(), 1.0000f, Colour (0x0));
 	}
 	else if (volume <= 0.25) {
-		VolumeButton->setImages (false, true, true,
-								 ImageCache::getFromMemory (vol25_png, vol25_pngSize), 1.0000f, Colour (0x0),
-								 ImageCache::getFromMemory (vol25_png, vol25_pngSize), 1.0000f, Colour (0x0),
-								 Image(), 1.0000f, Colour (0x0));
+		volumeButton.setImages (false, true, true,
+								ImageCache::getFromMemory (vol25_png, vol25_pngSize), 1.0000f, Colour (0x0),
+								ImageCache::getFromMemory (vol25_png, vol25_pngSize), 1.0000f, Colour (0x0),
+								Image(), 1.0000f, Colour (0x0));
 	}
 	else if (volume <= 0.50) {
-		VolumeButton->setImages (false, true, true,
-								 ImageCache::getFromMemory (vol50_png, vol50_pngSize), 1.0000f, Colour (0x0),
-								 ImageCache::getFromMemory (vol50_png, vol50_pngSize), 1.0000f, Colour (0x0),
-								 Image(), 1.0000f, Colour (0x0));
+		volumeButton.setImages (false, true, true,
+								ImageCache::getFromMemory (vol50_png, vol50_pngSize), 1.0000f, Colour (0x0),
+								ImageCache::getFromMemory (vol50_png, vol50_pngSize), 1.0000f, Colour (0x0),
+								Image(), 1.0000f, Colour (0x0));
 	}
 	else if (volume <= 0.75) {
-		VolumeButton->setImages (false, true, true,
-								 ImageCache::getFromMemory (vol75_png, vol75_pngSize), 1.0000f, Colour (0x0),
-								 ImageCache::getFromMemory (vol75_png, vol75_pngSize), 1.0000f, Colour (0x0),
-								 Image(), 1.0000f, Colour (0x0));
+		volumeButton.setImages (false, true, true,
+								ImageCache::getFromMemory (vol75_png, vol75_pngSize), 1.0000f, Colour (0x0),
+								ImageCache::getFromMemory (vol75_png, vol75_pngSize), 1.0000f, Colour (0x0),
+								Image(), 1.0000f, Colour (0x0));
 	}
 	else {
-		VolumeButton->setImages (false, true, true,
-								 ImageCache::getFromMemory (volFull_png, volFull_pngSize), 1.0000f, Colour (0x0),
-								 ImageCache::getFromMemory (volFull_png, volFull_pngSize), 1.0000f, Colour (0x0),
-								 Image(), 1.0000f, Colour (0x0));
+		volumeButton.setImages (false, true, true,
+								ImageCache::getFromMemory (volFull_png, volFull_pngSize), 1.0000f, Colour (0x0),
+								ImageCache::getFromMemory (volFull_png, volFull_pngSize), 1.0000f, Colour (0x0),
+								Image(), 1.0000f, Colour (0x0));
 	}
 	
 }
@@ -120,13 +104,23 @@ void VolumeControl::buttonClicked (Button* buttonThatWasClicked)
 	if (volume > 0) {
 		muteVolume = volume;
 		sendActionMessage("Mute");
-		VolumeSlider->setValue(0);
+		volumeSlider.setValue(0, sendNotificationAsync);
 	}
 	if (volume == 0) {
 		sendActionMessage("Unmute");
-		VolumeSlider->setValue(muteVolume);
+		volumeSlider.setValue(muteVolume, sendNotificationAsync);
 	}
 
+}
+
+void VolumeControl::addValueListener (Value::Listener* incomingListener)
+{
+	volumeSlider.getValueObject().addListener(incomingListener);
+}
+
+Value& VolumeControl::getSliderValue()
+{
+	return volumeSlider.getValueObject();
 }
 
 //==============================================================================

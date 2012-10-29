@@ -16,8 +16,7 @@
  Top Level Audio Class
  */
 class AudioControl  :   public AudioIODeviceCallback,
-						public ActionBroadcaster,
-						public SliderListener
+						public ActionBroadcaster
 {
 public:
 	//==============================================================================
@@ -65,8 +64,10 @@ public:
 	float getOutputMeterValue(const char* channel);	
 	
 	void showAudioPreferences(Component* centerComponent);
-	void sliderValueChanged (Slider* sliderChanged);
+	void setVolume(double incomingVolume);
 	
+	double getTransportPosition();
+	void setTransportPosition(double position);
     
 private:
     AudioDeviceManager audioDeviceManager;	// this wraps the actual audio device
@@ -74,10 +75,10 @@ private:
 	
 	AudioTransportSource transport;
 	
+	ScopedPointer<AudioFormatReaderSource> currentAudioFileSource;
+	
 //	SoundTouchAudioSource* soundtouchAudioSource;
 //	SoundTouchProcessor::PlaybackSettings soundTouchSettings;
-
-	AudioFormatReaderSource* currentAudioFileSource;
 	
 	//audio variables
     float audioMeterOutputL;

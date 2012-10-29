@@ -11,7 +11,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AudioControl.h"
-
+#include "GuiControl.h"
+#include "MusicLibraryTable.h"
 
 
 //==============================================================================
@@ -26,8 +27,7 @@ public:
     //==============================================================================
     MainContentComponent();
     ~MainContentComponent();
-
-    void paint (Graphics&);
+	
     void resized();
 
 	//MenuBarEnums/Callbacks========================================================
@@ -43,6 +43,7 @@ public:
 		OpenFile = 1,
 		OpenDirectory = 2,
 		AudioPrefs = 3,
+		testSave = 4,
 		
 		NumFileItems
 	};
@@ -53,8 +54,11 @@ public:
 private:
 	
 	AudioControl audioControl;
-	
+	GuiControl guiControl;
+
 	File testFile;
+	
+	MusicLibraryTable musicTable;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
