@@ -63,7 +63,9 @@ void GuiControl::timerCallback(int timerId)
 void GuiControl::setAudioControl(AudioControl* incomingAudioControl)
 {
     audioControl = incomingAudioControl;
-	audioControl->addActionListener(this);
+	audioControl->addChangeListener(this);
+	
+//	playButton.getButtonValue().addListener(audioControl);
 } 
 
 void GuiControl::buttonClicked (Button* buttonClicked)
@@ -84,19 +86,19 @@ void GuiControl::buttonClicked (Button* buttonClicked)
 
 void GuiControl::actionListenerCallback (const String& message)
 {
-	if (message.startsWith("transportLength")) 
-    {
-        String subString = message.fromFirstOccurrenceOf (":", false, true);
-        double value = subString.getDoubleValue();
-		if (value < 1) {
-			transport.setTransportRange(0, value, 0.01);
-		}
-		else {
-			transport.setTransportRange(0, value, 0.1);
-		}
-		
-    }
-	
+//	if (message.startsWith("transportLength")) 
+//    {
+//        String subString = message.fromFirstOccurrenceOf (":", false, true);
+//        double value = subString.getDoubleValue();
+//		if (value < 1) {
+//			transport.setTransportRange(0, value, 0.01);
+//		}
+//		else {
+//			transport.setTransportRange(0, value, 0.1);
+//		}
+//		
+//    }
+//	
 	if (message.startsWith("transportPosition")) 
     {
         String subString = message.fromFirstOccurrenceOf (":", false, true);
@@ -105,6 +107,21 @@ void GuiControl::actionListenerCallback (const String& message)
 		audioControl->setTransportPosition(value);
     }
 }
+
+void GuiControl::changeListenerCallback (ChangeBroadcaster* changeBroadcaster)
+{
+	double value = audioControl->getTransportLength();
+	
+	if (changeBroadcaster == audioControl) {
+		if (value < 1) {
+			transport.setTransportRange(0, value, 0.01);
+		}
+		else {
+			transport.setTransportRange(0, value, 0.1);
+		}
+	}
+}
+
 
 void GuiControl::valueChanged (Value& valueChanged)
 {

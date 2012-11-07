@@ -14,10 +14,13 @@ MainContentComponent::MainContentComponent()
 {
 	addAndMakeVisible(&guiControl);
 	guiControl.setAudioControl(&audioControl);
+	
 
-	//ITunesLibrary::getInstance()->setLibraryFile (ITunesLibrary::getDefaultITunesLibraryFile());
-	//musicTable.setLibraryToUse (ITunesLibrary::getInstance());
-	//addAndMakeVisible(&musicTable);
+	ITunesLibrary::getInstance()->setLibraryTree (singletonLibraryTree);
+
+	musicTable.setLibraryToUse (ITunesLibrary::getInstance());
+	musicTable.addActionListener(this);
+	addAndMakeVisible(&musicTable);
     
 
 	setSize (1000, 930);
@@ -30,7 +33,7 @@ MainContentComponent::~MainContentComponent()
 void MainContentComponent::resized()
 {
 	guiControl.setBounds(0, 0, getWidth(),400);
-	//musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
+	musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
 
 }
 
@@ -42,6 +45,14 @@ StringArray MainContentComponent::getMenuBarNames()
 	return StringArray (names);
 }
 
+//static void alertBoxResultChosen (int result)
+//{
+//	AlertWindow::showMessageBoxAsync (AlertWindow::InfoIcon,
+//									  "Alert Box",
+//									  "Result code: " + String (result));
+//}
+
+
 PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const String& menuName)
 {
 	PopupMenu fileMenu;
@@ -51,7 +62,7 @@ PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const St
 		fileMenu.addItem(OpenDirectory, "Open Directory", true, false);
 		fileMenu.addSeparator();
         fileMenu.addItem(AudioPrefs, "Audio Preferences", true, false);
-		fileMenu.addItem(testSave, "Save iTunes Lib Test", true, false);
+		fileMenu.addItem(ImportItunes, "Import Itunes Library", true, false);
 	}
 	return fileMenu;
 }
@@ -109,9 +120,29 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 			}		
 		}
 		
-		if (menuItemID == testSave) {
-			//ITunesLibrary::getInstance()->saveLibrary();
+		if (menuItemID == ImportItunes)
+		{
+			if(AlertWindow::showOkCancelBox (AlertWindow::WarningIcon,
+											 "Itunes Import",
+											 "Importing Itunes library will delete current Library",
+											 "Import Itunes Library",
+											 "Keep Current Library",
+											 0))
+			{
+				ITunesLibrary::getInstance()->setLibraryFile (ITunesLibrary::getDefaultITunesLibraryFile());
+			}
 		}
-
+		
     }
+}
+
+
+void MainContentComponent::actionListenerCallback (const String& message)
+{
+	if (message == "LibraryImportFinished") {
+		DBG("library Loaded");
+		ITunesLibrary::getInstance()->saveLibrary(singletonLibraryFile);
+		singletonLibraryTree = ITunesLibrary::getInstance()->getLibraryTree();
+		ITunesLibrary::getInstance()->setLibraryTree(singletonLibraryTree);
+	}
 }

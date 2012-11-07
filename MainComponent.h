@@ -13,6 +13,7 @@
 #include "AudioControl.h"
 #include "GuiControl.h"
 #include "MusicLibraryTable.h"
+#include "Settings.h"
 
 
 //==============================================================================
@@ -21,7 +22,8 @@
     your controls and content.
 */
 class MainContentComponent   : public Component,
-							   public MenuBarModel
+							   public MenuBarModel,
+							   public ActionListener
 {
 public:
     //==============================================================================
@@ -43,13 +45,16 @@ public:
 		OpenFile = 1,
 		OpenDirectory = 2,
 		AudioPrefs = 3,
-		testSave = 4,
+		ImportItunes = 4,
 		
 		NumFileItems
 	};
     StringArray getMenuBarNames();
     PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName);
 	void menuItemSelected (int menuItemID, int topLevelMenuIndex); 
+	
+	void actionListenerCallback(const String& message);
+//	static void alertBoxResultChosen (int result);
 	
 private:
 	
@@ -58,7 +63,7 @@ private:
 
 	File testFile;
 	
-	//MusicLibraryTable musicTable;
+	MusicLibraryTable musicTable;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

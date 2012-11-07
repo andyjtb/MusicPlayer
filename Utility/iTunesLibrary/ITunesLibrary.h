@@ -126,7 +126,7 @@ public:
     /** @internal */
 	void timerCallback();
 	
-	void saveLibrary();
+	void saveLibrary(File& saveDestination);
     
 private:
     //==============================================================================

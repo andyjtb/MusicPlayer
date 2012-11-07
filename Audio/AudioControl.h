@@ -16,7 +16,8 @@
  Top Level Audio Class
  */
 class AudioControl  :   public AudioIODeviceCallback,
-						public ActionBroadcaster
+						public ChangeBroadcaster,
+						public ValueListener
 {
 public:
 	//==============================================================================
@@ -68,6 +69,9 @@ public:
 	
 	double getTransportPosition();
 	void setTransportPosition(double position);
+	double getTransportLength();
+	
+	void valueChanged (Value& valueChanged);
     
 private:
     AudioDeviceManager audioDeviceManager;	// this wraps the actual audio device

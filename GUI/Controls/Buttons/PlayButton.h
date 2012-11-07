@@ -26,6 +26,8 @@ public:
     void buttonStateChanged();
 	void clicked();
 	
+	Value& getButtonValue();
+	
     // Binary resources:
     static const char* pauseDown_png;
     static const int pauseDown_pngSize;

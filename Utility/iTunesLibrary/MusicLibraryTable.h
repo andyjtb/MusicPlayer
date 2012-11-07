@@ -46,7 +46,8 @@
 */
 class MusicLibraryTable	: public Component,
                           public TableListBoxModel,
-						  public ITunesLibrary::Listener
+						  public ITunesLibrary::Listener,
+						  public ActionBroadcaster
 {
 public:
     //==============================================================================

@@ -74,9 +74,7 @@ void AudioControl::loadFile (const File audioFile)
 			// ..and plug it into our transport source
 			transport.setSource (currentAudioFileSource);
 			
-			String transportLengthAction;
-			transportLengthAction << "transportLength:" << transport.getLengthInSeconds();
-			sendActionMessage(transportLengthAction);
+			sendChangeMessage();
 			
 		}  
 	}
@@ -129,6 +127,11 @@ void AudioControl::setTransportPosition(double position)
 {
 	transport.setPosition(position);
 	
+}
+
+double AudioControl::getTransportLength()
+{
+	return transport.getLengthInSeconds();
 }
 
 //void AudioControl::setPlaybackSpeed(const float incomingSpeed)
@@ -233,4 +236,9 @@ void AudioControl::showAudioPreferences(Component* centerComponent)
     audioSettingsComp.setSize (500, 250);
     DialogWindow::showModalDialog ("Audio Settings", &audioSettingsComp, centerComponent, Colours::azure, true);
     
+}
+
+void AudioControl::valueChanged (Value& valueChanged)
+{
+	valueChanged.getValue() ? transport.stop() : transport.start();
 }

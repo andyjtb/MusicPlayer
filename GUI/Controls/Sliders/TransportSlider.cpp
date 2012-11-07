@@ -50,17 +50,14 @@ void TransportSlider::setTransportRange (double minimum, double maximum, double 
 
 void TransportSlider::setTransportPosition (double position)
 {
-	transport->setValue(position, sendNotificationAsync);
+	transport->setValue(position, dontSendNotification);
 	updateTime(position);
 }
 
 void TransportSlider::updateTime(double time)
 {
-	//float time = transport->getValue();
-	
 	int minutes = time/60;
 	int seconds = time - (minutes * 60);
-	//seconds = time%60;
 	int tenths = (time-(floor(time)))*10;
 	
 	String stringTime;
@@ -78,8 +75,9 @@ void TransportSlider::sliderValueChanged (Slider* sliderThatWasMoved)
 {
 	String transportLocation;
 	transportLocation << "transportPosition:" << transport->getValue();
-	setTransportPosition(transport->getValue());
+	updateTime(transport->getValue());
 	sendActionMessage(transportLocation);
+	
 }
 
 

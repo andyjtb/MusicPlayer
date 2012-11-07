@@ -28,6 +28,7 @@
 class GuiControl  : public Component,
 					public ButtonListener,
 					public ActionListener,
+					public ChangeListener,
 					public ValueListener,
 					public MultiTimer
 {
@@ -55,6 +56,8 @@ public:
 	void timerCallback(int timerId);
 	
 	void updateTagDisplay (File audioFile);
+	
+	void changeListenerCallback(ChangeBroadcaster* changeBroadcaster);
 	
 private:
 	//ScopedPointer<AudioControl> audioControl;

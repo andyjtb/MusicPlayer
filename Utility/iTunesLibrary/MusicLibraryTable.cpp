@@ -73,10 +73,11 @@ void MusicLibraryTable::setLibraryToUse (ITunesLibrary* library)
 {
 	currentLibrary = library;
 	
-	DBG("ITunesLibrary to use changed");
+//	DBG("ITunesLibrary to use changed");
 	filteredDataList = dataList = library->getLibraryTree();
 	dataList = library->getLibraryTree();
 	library->addListener(this);
+	libraryChanged(library);
 }
 
 void MusicLibraryTable::setFilterText (String filterString)
@@ -161,6 +162,8 @@ void MusicLibraryTable::libraryFinished (ITunesLibrary* library)
 
 		table.updateContent();
 		table.getHeader().reSortTable();
+		
+		sendActionMessage("LibraryImportFinished");
 	}
 }
 
@@ -305,6 +308,5 @@ var MusicLibraryTable::getDragSourceDescription (const SparseSet< int > &current
     
 	return var::null;
 }
-
 
 

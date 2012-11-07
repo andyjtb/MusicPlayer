@@ -86,10 +86,10 @@ void ITunesLibrary::removeListener (ITunesLibrary::Listener* const listener)
 
 //==============================================================================
 
-void ITunesLibrary::saveLibrary()
+void ITunesLibrary::saveLibrary(File& saveDestination)
 {
-	File location(File::getSpecialLocation(File::userHomeDirectory));
-	location = (location.getFullPathName()+"/test.xml");
-	bool success = writeValueTreeToFile(libraryTree, location, true);
+//	File location(File::getSpecialLocation(File::userHomeDirectory));
+//	location = (location.getFullPathName()+"/test.xml");
+	bool success = writeValueTreeToFile(libraryTree, saveDestination, true);
 	DBG(success);
 }

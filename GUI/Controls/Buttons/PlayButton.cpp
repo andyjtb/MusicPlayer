@@ -92,6 +92,11 @@ void PlayButton::clicked()
 	}
 }
 
+Value& PlayButton::getButtonValue()
+{
+	return getToggleStateValue();
+}
+
 //==============================================================================
 // Binary resources - be careful not to edit any of these sections!
 
