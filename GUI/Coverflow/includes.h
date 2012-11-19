@@ -36,31 +36,31 @@
 template <typename T>
 inline T jabs (T value) { if (value < 0) return -value; else return value; }
 //==============================================================================
-//static void drawTextWithBorder (Graphics &g, 
-//								Font* font,
-//								const String& text,
-//								const Justification& justification,
-//								const Rectangle& bounds, 
-//								const Colour& solidColour, 
-//								const Colour& strokeColour, 
-//								const float strokeSize)
-//{
-//	GlyphArrangement glyphs;
-//	glyphs.addFittedText (*font, 
-//						  text, 
-//						  bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 
-//						  justification, 1, 1.0);
-//	Path path;
-//	glyphs.createPath (path);
-//
-//	g.saveState ();
-//	g.setColour (strokeColour);
-//	g.strokePath (path, PathStrokeType(strokeSize));
-//
-//	g.setColour (solidColour);
-//	g.fillPath (path);
-//	g.restoreState ();
-//}
+static void drawTextWithBorder (Graphics &g, 
+								Font* font,
+								const String& text,
+								const Justification& justification,
+								const Rectangle<int>& bounds,
+								const Colour& solidColour, 
+								const Colour& strokeColour, 
+								const float strokeSize)
+{
+	GlyphArrangement glyphs;
+	glyphs.addFittedText (*font, 
+						  text, 
+						  bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 
+						  justification, 1, 1.0);
+	Path path;
+	glyphs.createPath (path);
+
+	g.saveState ();
+	g.setColour (strokeColour);
+	g.strokePath (path, PathStrokeType(strokeSize));
+
+	g.setColour (solidColour);
+	g.fillPath (path);
+	g.restoreState ();
+}
 //==============================================================================
 #endif //__INCLUDES_H__
 //==============================================================================

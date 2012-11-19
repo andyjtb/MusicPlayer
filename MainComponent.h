@@ -14,6 +14,8 @@
 #include "GuiControl.h"
 #include "MusicLibraryTable.h"
 #include "Settings.h"
+#include "CoverFlowComponent.h"
+#include "XmlHelpers.h"
 
 
 //==============================================================================
@@ -55,6 +57,7 @@ public:
 	
 	void actionListenerCallback(const String& message);
 //	static void alertBoxResultChosen (int result);
+    void checkFirstTime();
 	
 private:
 	
@@ -64,6 +67,8 @@ private:
 	File testFile;
 	
 	MusicLibraryTable musicTable;
+    
+//    CoverFlowComponent coverFlowComponent;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

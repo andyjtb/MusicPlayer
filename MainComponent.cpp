@@ -12,9 +12,12 @@
 //==============================================================================
 MainContentComponent::MainContentComponent()
 {
-	addAndMakeVisible(&guiControl);
+	checkFirstTime();
+    
+    addAndMakeVisible(&guiControl);
 	guiControl.setAudioControl(&audioControl);
 	
+//    addAndMakeVisible(&coverFlowComponent);
 
 	ITunesLibrary::getInstance()->setLibraryTree (singletonLibraryTree);
 
@@ -34,6 +37,7 @@ void MainContentComponent::resized()
 {
 	guiControl.setBounds(0, 0, getWidth(),400);
 	musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
+//    coverFlowComponent.setBounds(0, 0, 100, 100);
 
 }
 
@@ -145,4 +149,19 @@ void MainContentComponent::actionListenerCallback (const String& message)
 		singletonLibraryTree = ITunesLibrary::getInstance()->getLibraryTree();
 		ITunesLibrary::getInstance()->setLibraryTree(singletonLibraryTree);
 	}
+}
+
+void MainContentComponent::checkFirstTime()
+{
+    if(XmlHelpers::checkFirstTime())
+    {
+        if(XmlHelpers::createSettingsFile())
+        {
+            DBG("New settings file Created");  
+        }
+        else
+        {
+            DBG("Something has gone wrong with checkFirstTime as this means createSettings was called but settings already existed");
+        }
+    }
 }

@@ -6,7 +6,7 @@ CoverFlowComponent::CoverFlowComponent ()
 	: background (0), 
 	  firstCall (true)
 {
-	addAndMakeVisible (scrollbar = new ScrollBar());
+	addAndMakeVisible (scrollbar = new ScrollBar (false));
 	//scrollbar->setButtonVisibility (false);
 	scrollbar->addListener (this);
 
@@ -66,22 +66,21 @@ void CoverFlowComponent::paint (Graphics &g)
 	g1.fillAll ();
 #endif
 
-	Rectangle r = context->getBounds ();
+	Rectangle<int> r = context->getBounds ();
 
-	background = new Image (Image::RGB, r.getWidth(), r.getHeight(), false);
-	if (background)
+	background = Image (Image::RGB, r.getWidth(), r.getHeight(), false);
+	if (background.isValid())
 	{
-		Graphics g2 (*background);
+		Graphics g2 (background);
 
-		g2.drawImage (&back,
+		g2.drawImage (back,
 					  0, 0, r.getWidth(), r.getHeight(),
 					  r.getX(), r.getY(), r.getWidth(), r.getHeight(),
 					  false);
 
-		g.drawImageAt (&back, 0, 0, false);
+		g.drawImageAt (back, 0, 0, false);
 
 		context->addBackground (background);
-		deleteAndZero (background);
 	}
 }
 //==============================================================================
@@ -158,7 +157,7 @@ void CoverFlowComponent::delayedUpdate ()
 	/*
 		Foreground
 	*/
-	Rectangle r = context->getBounds ();
+	Rectangle<int> r = context->getBounds ();
 
 	const int width = r.getWidth();
 	const int height = r.getHeight();
@@ -171,43 +170,43 @@ void CoverFlowComponent::delayedUpdate ()
 
 	int top = 24;
 
-	Image *stars = ImageCache::getFromMemory (binary::star80_png, binary::star80_pngSize);
+	Image stars = ImageCache::getFromMemory (binary::star80_png, binary::star80_pngSize);
 
 	CoverFlowContext::CoverFlowItem *item = context->getItem (context->getSelected());
 
 	g1.drawImage (item->img,
-				  (stars->getWidth()*0.2f)/2, top, 
-				   stars->getWidth()*0.8f, stars->getWidth()*0.8f,
+				  (stars.getWidth()*0.2f)/2, top,
+				   stars.getWidth()*0.8f, stars.getWidth()*0.8f,
 				  0, 0, 128, 128, false);
 
-	const int w = stars->getWidth();
-	const int h = stars->getHeight();
+	const int w = stars.getWidth();
+	const int h = stars.getHeight();
 
 	g1.drawImage (stars, 
 				  0, top+(w*0.8f)-(h/4), w, h,
-				  0, 0, w, h), false;
+				  0, 0, w, h, false);
 
 	top = 27;
 
 	font.setHeight (28.0f);
 	drawTextWithBorder (g1, &font,
 						item->title.toUpperCase(),Justification::centredLeft, 
-						Rectangle(w+(h/3), top, width-w, 28.f), 
+						Rectangle<int>(w+(h/3), top, width-w, 28.f),
 						Colours::white, Colours::black, 5.f);
 
 	font.setHeight (22.0f);
 	drawTextWithBorder (g1, &font,
 						item->artist.toUpperCase(), Justification::centredLeft, 
-						Rectangle(w+(h/3), top+28.f-3.f, width, 22.f), 
+						Rectangle<int>(w+(h/3), top+28.f-3.f, width, 22.f),
 						Colours::lightgrey, Colours::black, 4.f);
 
 	font.setHeight (18.f);
 	drawTextWithBorder (g1, &font,
 						String("All Rights Reserved")/*.toUpperCase()*/, Justification::centredLeft, 
-						Rectangle(w+(h/3), top+52.f-6.f, width, 18.f), 
+						Rectangle<int>(w+(h/3), top+52.f-6.f, width, 18.f),
 						Colours::lightgrey.darker(0.25f), Colours::black, 3.f);
 
-	context->addForeground (&foreground);
+	context->addForeground (foreground);
 
 	// flush and repaint the GL Scene
 	context->repaint ();
@@ -227,17 +226,16 @@ void CoverFlowComponent::createTemporaryCoverTextures ()
 		{
 			String image = child->getStringAttribute ("image");
 			String filepath = currentPath + "\\" + directory + "\\" + image;
-			Image* img = Image::loadFrom (File(filepath));
-			if (img)
+			Image img = ImageFileFormat::loadFrom (File(filepath));
+			if (img.isValid())
 			{
-				Graphics g (*img);
+				Graphics g (img);
 				g.setColour (Colours::black.brighter (0.1f));
-				g.drawRect (0.0f, 0.0f, (float)img->getWidth(), (float)img->getHeight(), 1.0f);
+				g.drawRect (0.0f, 0.0f, (float)img.getWidth(), (float)img.getHeight(), 1.0f);
 				context->addItem (child->getStringAttribute ("artist"), 
 								  child->getStringAttribute ("title"), 
-								  img->createCopy());
+								  img.createCopy());
 				context->repaint ();
-				delete img;
 				total++;
 			}
 		}

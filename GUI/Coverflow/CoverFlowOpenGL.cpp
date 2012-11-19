@@ -34,13 +34,13 @@ CoverFlowOpenGL::~CoverFlowOpenGL ()
 {
 	if (_backgroundTexture)
 	{
-		glDeleteTextures (1, _backgroundTexture->getTextureID());
+		glDeleteTextures (1, &_backgroundTexture->ID);
 		delete _backgroundTexture;
 	}
 
 	for (int i = 0; i < _itemsTextures.size(); i++)
 	{
-		glDeleteTextures (1, _itemsTextures[i]->getTextureID());
+		glDeleteTextures (1, &_itemsTextures[i]->ID);
 		_itemsTextures.remove (i, true);
 	}
 }
@@ -265,13 +265,13 @@ void CoverFlowOpenGL::drawForeground ()
 	// Draw the foreground texture
 	if (_foregroundTexture)
 	{
-		glBindTexture (GL_TEXTURE_2D, _foregroundTexture->getTextureID());
+		glBindTexture (GL_TEXTURE_2D, _foregroundTexture->ID);
 		glColor4f (1, 1, 1, 1);
 		glBegin (GL_QUADS);
 			glTexCoord2f (0,0); glVertex2f (0, 0);
-			glTexCoord2f (0,1); glVertex2f (0, _foregroundTexture->getHeight());
-			glTexCoord2f (1,1); glVertex2f (_foregroundTexture->getWidth(), _foregroundTexture->getHeight());
-			glTexCoord2f (1,0); glVertex2f (_foregroundTexture->getWidth(), 0);
+			glTexCoord2f (0,1); glVertex2f (0, _foregroundTexture->ID);
+			glTexCoord2f (1,1); glVertex2f (_foregroundTexture->width, _foregroundTexture->height);
+			glTexCoord2f (1,0); glVertex2f (_foregroundTexture->width, 0);
 		glEnd ();
 	}
 
@@ -288,7 +288,7 @@ void CoverFlowOpenGL::drawBackground ()
 	// Trace le fond d'ecran à partir d'une texture
 	if (_backgroundTexture)
 	{
-		glBindTexture (GL_TEXTURE_2D, _backgroundTexture->getTextureID());
+		glBindTexture (GL_TEXTURE_2D, _backgroundTexture->ID);
 		glColor4f (1, 1, 1, 1);
 		glBegin (GL_QUADS);
 			glTexCoord2f (0,0); glVertex2f (0, 0);
@@ -467,33 +467,33 @@ void CoverFlowOpenGL::drawItems (int index,
 	if (!picking)
 	{
 		// Cover loading
-		if (_itemsTextures[index]->getTextureID() != 0)
+		if (_itemsTextures[index]->ID != 0)
 		{
-            glBindTexture (GL_TEXTURE_2D, _itemsTextures[index]->getTextureID());
-            textureWidth  = float(_itemsTextures[index]->getWidth());
-            textureHeight = float(_itemsTextures[index]->getHeight());
+            glBindTexture (GL_TEXTURE_2D, _itemsTextures[index]->ID);
+            textureWidth  = float(_itemsTextures[index]->width);
+            textureHeight = float(_itemsTextures[index]->height);
 		}
 		else
 		{
 			// Cover not yet loaded
-            glBindTexture (GL_TEXTURE_2D, _itemsTextures[0]->getTextureID());
-            textureWidth  = float(_itemsTextures[0]->getWidth());
-            textureHeight = float(_itemsTextures[0]->getHeight());
+            glBindTexture (GL_TEXTURE_2D, _itemsTextures[0]->ID);
+            textureWidth  = float(_itemsTextures[0]->width);
+            textureHeight = float(_itemsTextures[0]->height);
 		}
 	}
 	else
 	{
 		// Cover loading
-		if (_itemsTextures[index]->getTextureID() != 0) 
+		if (_itemsTextures[index]->ID != 0)
 		{
-			textureWidth  = float(_itemsTextures[index]->getWidth());
-			textureHeight = float(_itemsTextures[index]->getHeight());
+			textureWidth  = float(_itemsTextures[index]->width);
+			textureHeight = float(_itemsTextures[index]->height);
 		} 
 		else 
 		{
 			// Cover not yet loaded
-			textureWidth  = float(_itemsTextures[0]->getWidth());
-			textureHeight = float(_itemsTextures[0]->getHeight());
+			textureWidth  = float(_itemsTextures[0]->width);
+			textureHeight = float(_itemsTextures[0]->height);
 		}
 		// Record the cover ID
 		glLoadName (index);
@@ -617,7 +617,7 @@ void CoverFlowOpenGL::drawItem (float textureWidth,
 	glPopMatrix ();
 }
 //=============================================================================
-GLuint CoverFlowOpenGL::loadTexture (Image& textureImg)
+GLuint CoverFlowOpenGL::loadTexture (Image textureImg)
 {
 	/* To get texture ID */
 	GLuint textureTemp;
@@ -655,7 +655,7 @@ GLuint CoverFlowOpenGL::loadTexture (Image& textureImg)
 	return textureTemp;
 }
 //=============================================================================
-GLuint CoverFlowOpenGL::loadTextureAlpha (Image* textureImg)
+GLuint CoverFlowOpenGL::loadTextureAlpha (Image textureImg)
 {
 	/* To get texture ID */
 	GLuint textureTemp;
@@ -678,7 +678,7 @@ GLuint CoverFlowOpenGL::loadTextureAlpha (Image* textureImg)
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexImage2D  (GL_TEXTURE_2D, 
-				   0, 4, textureImg->getWidth(), textureImg->getHeight(), 
+				   0, 4, textureImg.getWidth(), textureImg.getHeight(),
 				   0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, 
 				   pixels);
 
@@ -696,9 +696,9 @@ void CoverFlowOpenGL::removeTexture (GLuint textureID)
 	int toRemove = -1;
 	for (int i = 0; i < _itemsTextures.size(); i++) 
 	{
-		if (_itemsTextures[i]->getTextureID() == textureID)
+		if (_itemsTextures[i]->ID == textureID)
 		{
-			glDeleteTextures (1, (const GLuint *)_itemsTextures[i]->getTextureID());
+			glDeleteTextures (1, (const GLuint *)_itemsTextures[i]->ID);
 			toRemove = i;
 			break;
 		}

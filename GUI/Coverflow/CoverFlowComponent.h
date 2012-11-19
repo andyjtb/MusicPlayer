@@ -16,7 +16,7 @@ class CoverFlowComponent : public Component,
 {
 	ComboBox *combobox;
 	ScrollBar *scrollbar;
-	Image *background;
+	Image background;
 
 	public:
 		CoverFlowComponent ();

@@ -3,7 +3,6 @@
 //=============================================================================
 CoverFlowContext::CoverFlowContext ()
 :	Thread ("CoverFlow"),
-	OpenGLComponent (),
 	CoverFlowOpenGL (this),
 	_itemsViewMode (0),
 	_leftItemsNumber (5),
@@ -16,6 +15,8 @@ CoverFlowContext::CoverFlowContext ()
 	_ticksSelected (0)
 {
 	setName ("CoverFlow");
+    glContext.setRenderer(this);
+    glContext.attachTo(*this);
 }
 //=============================================================================
 CoverFlowContext::~CoverFlowContext ()
@@ -40,25 +41,26 @@ void CoverFlowContext::setCurrent (const float current)
 	_current = jlimit (0.0f, (float)(_itemsArray.size()-1), current);
 }
 //=============================================================================
-void CoverFlowContext::addBackground (Image* img)
+void CoverFlowContext::addBackground (Image img)
 {
 	const ScopedLock lock (cs);
 	GLuint lastID = 0;
 	if (_backgroundTexture)
 	{
-		lastID = _backgroundTexture->ID;
+		//lastID = _backgroundTexture->getTextureID();
+        lastID = _backgroundTexture->ID;
 		delete _backgroundTexture;
-		_backgroundTexture = new Texture (loadTexture (img), img->getWidth(), img->getHeight(), true);
+		_backgroundTexture = new Texture (loadTexture (img), img.getWidth(), img.getHeight(), true);
 		if (lastID != 0)
 			glDeleteTextures (1, &lastID);
 	}
 	else
 	{
-		_backgroundTexture = new Texture (loadTexture (img), img->getWidth(), img->getHeight(), true);
+		_backgroundTexture = new Texture (loadTexture (img), img.getWidth(), img.getHeight(), true);
 	}
 }
 //=============================================================================
-void CoverFlowContext::addForeground (Image* img)
+void CoverFlowContext::addForeground (Image img)
 {
 	const ScopedLock lock (cs);
 	GLuint lastID = 0;
@@ -66,22 +68,22 @@ void CoverFlowContext::addForeground (Image* img)
 	{
 		lastID = _foregroundTexture->ID;
 		delete _foregroundTexture;
-		_foregroundTexture = new Texture (loadTextureAlpha (img), img->getWidth(), img->getHeight(), true);
+		_foregroundTexture = new Texture (loadTextureAlpha (img), img.getWidth(), img.getHeight(), true);
 		if (lastID != 0)
 			glDeleteTextures (1, &lastID);
 	}
 	else
 	{
-		_foregroundTexture = new Texture (loadTextureAlpha (img), img->getWidth(), img->getHeight(), true);
+		_foregroundTexture = new Texture (loadTextureAlpha (img), img.getWidth(), img.getHeight(), true);
 	}
 }
 //=============================================================================
-void CoverFlowContext::addItem (const String& t, const String& s, Image* i)
+void CoverFlowContext::addItem (const String& t, const String& s, Image i)
 {
 	const ScopedLock lock (cs);
 	_itemsArray.add (new CoverFlowItem (t, s, i));
 	_itemsArray.minimiseStorageOverheads ();
-	_itemsTextures.add (new Texture (loadTexture (i), i->getWidth(), i->getHeight(), true));
+	_itemsTextures.add (new Texture (loadTexture (i), i.getWidth(), i.getHeight(), true));
 	_itemsTextures.minimiseStorageOverheads ();
 }
 //=============================================================================
@@ -94,6 +96,12 @@ void CoverFlowContext::renderOpenGL ()
 {
 	repaintGL ();
 }
+
+void CoverFlowContext::openGLContextClosing()
+{
+    //.. nothing?
+}
+
 //=============================================================================
 void CoverFlowContext::resized ()
 {

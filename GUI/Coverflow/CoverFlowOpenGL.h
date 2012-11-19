@@ -24,19 +24,19 @@
 // =============================================================================
 class CoverFlowContext;
 // =============================================================================
-//struct OpenGLTexture
-//{
-//	GLuint ID;
-//	int width;
-//	int height;
-//	bool isLoaded;
-//
-//	OpenGLTexture (GLuint i, const int w, const int h, const bool l)
-//		: ID (i), width (w), height (h), isLoaded (l)
-//	{}
-//};
+struct OldOpenGLTexture
+{
+	GLuint ID;
+	int width;
+	int height;
+	bool isLoaded;
+
+	OldOpenGLTexture (GLuint i, const int w, const int h, const bool l)
+		: ID (i), width (w), height (h), isLoaded (l)
+	{}
+};
 // =============================================================================
-typedef OpenGLTexture Texture;
+typedef OldOpenGLTexture Texture;
 typedef OwnedArray <Texture> Textures;
 // =============================================================================
 class CoverFlowOpenGL
@@ -50,8 +50,8 @@ class CoverFlowOpenGL
 		void pickingGL ();
 		void repaintGL ();
 		// =====================================================================
-		GLuint loadTexture (Image& textureImg);
-		GLuint loadTextureAlpha (Image* textureImg);
+		GLuint loadTexture (Image textureImg);
+		GLuint loadTextureAlpha (Image textureImg);
 		void removeTexture (GLuint textureID);
 		// =====================================================================
 		void enable2D ();
@@ -75,8 +75,8 @@ class CoverFlowOpenGL
 		// =====================================================================
 	protected:
 		friend class CoverFlowContext;
-		OpenGLTexture*	_backgroundTexture;
-		OpenGLTexture*	_foregroundTexture;
+		Texture*	_backgroundTexture;
+		Texture*	_foregroundTexture;
 		Textures	_itemsTextures;
 		// =====================================================================
 	private:

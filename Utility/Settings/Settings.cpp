@@ -13,18 +13,18 @@ juce_ImplementSingleton_SingleThreaded(Settings)
 
 Settings::Settings() 
 {
-	File settingsXmlFile(File::getSpecialLocation(File::currentApplicationFile).getFullPathName() + "/Contents/Resources/Settings.xml");
-	
+	settingsXmlFile = (File::getSpecialLocation(File::userMusicDirectory).getFullPathName() + "/MusicPlayer/Settings");
+
 	ScopedPointer<XmlElement> settingsXml;
 	
 	settingsXml = XmlDocument::parse (settingsXmlFile);
 	
 	if (settingsXml != nullptr && settingsXml->hasTagName ("SETTINGS"))
-	{
-		XmlElement* library;
+	{        
+        XmlElement* library;
 		library = settingsXml->getChildByName("LIBRARY");
 		if (library != nullptr) {
-			libraryFile  = library->getStringAttribute("LibraryFile");	
+			libraryFile  = library->getStringAttribute("LibraryFile");
 			if (!libraryFile.existsAsFile())
 			{
 				libraryFile.create();
@@ -37,12 +37,18 @@ Settings::Settings()
 		
 	}	
 
-	libraryTree = readValueTreeFromFile(libraryFile);	
+	libraryTree = readValueTreeFromFile(libraryFile);
+    
+    ValueTree lastEntry = libraryTree.getChild(libraryTree.getNumChildren()-1);
+	currentLibId = lastEntry.getProperty(MusicColumns::columnNames[MusicColumns::LibID]);
+    currentValueTreeId = lastEntry.getProperty(MusicColumns::columnNames[MusicColumns::ID]);
+    DBG("Current Lib id = " << currentLibId);
 }
 
 Settings::~Settings()
 {
-	clearSingletonInstance();
+//	saveSingletons();
+    clearSingletonInstance();
 }
 
 File& Settings::getLibraryFile()
@@ -55,4 +61,39 @@ ValueTree& Settings::getLibraryTree()
 	return libraryTree;
 }
 
+int& Settings::getCurrentLibId()
+{
+    return currentLibId;
+}
 
+int& Settings::getCurrentValueTreeId()
+{
+    return currentValueTreeId;
+}
+
+void Settings::saveSingletons()
+{	
+	ScopedPointer<XmlElement> settingsXml;
+	
+	settingsXml = XmlDocument::parse (settingsXmlFile);
+	
+	if (settingsXml != nullptr && settingsXml->hasTagName ("SETTINGS"))
+	{
+		XmlElement* library;
+		library = settingsXml->getChildByName("LIBRARY");
+
+		if (library != nullptr) {
+            ValueTree lastEntry = libraryTree.getChild(libraryTree.getNumChildren()-1);
+            
+			XmlElement* libId = library->getChildByName("LibID");
+            libId->setText(lastEntry.getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
+            
+            XmlElement* valueTreeId = library->getChildByName("ValueId");
+            valueTreeId->setText(lastEntry.getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
+            
+		}
+        
+        settingsXml->writeToFile(settingsXmlFile, String::empty, "UTF-8", 200);
+	}	
+
+}

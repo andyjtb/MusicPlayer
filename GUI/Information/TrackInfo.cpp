@@ -55,9 +55,9 @@ void TrackInfo::resized()
 void TrackInfo::loadTrackInfo(File& audioFile)
 {	
 	
-   ValueTree tags(TagReader::readTags(audioFile));
+   ValueTree tags(TagReader::addToLibrary(audioFile));
 	
-   if (tags.hasType("Tags")) {
+   if (tags.hasType("ITEM")) {
 	   toggleId3.setToggleState(true,false);
 	   title.setText (tags.getProperty(MusicColumns::columnNames[MusicColumns::Song].toString(), 0),false);
 	   artist.setText (tags.getProperty(MusicColumns::columnNames[MusicColumns::Artist].toString(), 0),false);

@@ -27,8 +27,8 @@ class CoverFlowContext : public Singleton <CoverFlowContext>,
 		void setCurrent (const float current);
 		void setCurrentSelected (const int current);
 		// =====================================================================
-		void addBackground (Image* img);
-		void addForeground (Image* img);
+		void addBackground (Image img);
+		void addForeground (Image img);
 		// =====================================================================
 		const int getSelected () { const ScopedLock lock(cs); return _selected; }
 		const float getCurrent () { const ScopedLock lock(cs); return _current; }
@@ -54,6 +54,7 @@ class CoverFlowContext : public Singleton <CoverFlowContext>,
 		/* inherit of OpenGLComponent */
 		void newOpenGLContextCreated ();
 		void renderOpenGL ();
+        void openGLContextClosing();
 		// =====================================================================
 		/* inherit of Thread */
 		void run ();
@@ -73,6 +74,7 @@ class CoverFlowContext : public Singleton <CoverFlowContext>,
 		int		_leftItemsNumber;
 		int		_rightItemsNumber;
 		// =====================================================================
+        OpenGLContext glContext;
 	private:
 		friend class CoverFlowComponent;
 		// =====================================================================
@@ -80,16 +82,14 @@ class CoverFlowContext : public Singleton <CoverFlowContext>,
 		{
 			String	artist;
 			String	title;
-			Image*	img;
+			Image	img;
 
-			CoverFlowItem (const String& t, const String& s, Image* i)
+			CoverFlowItem (const String& t, const String& s, Image i)
 				: artist (t), title (s), img (i)
 			{}
 
 			~CoverFlowItem ()
 			{
-				if (img)
-					delete img;
 			}
 		};
 		// =====================================================================
@@ -99,7 +99,7 @@ class CoverFlowContext : public Singleton <CoverFlowContext>,
 		float			_current;
 		int				_selected;
 		// =====================================================================
-		void addItem (const String& title, const String& subtitle, Image* img);
+		void addItem (const String& title, const String& subtitle, Image img);
 		CoverFlowItem* getItem (const int index) { return _itemsArray[index]; }
 		// =====================================================================
 };
