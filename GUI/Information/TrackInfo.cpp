@@ -70,6 +70,8 @@ void TrackInfo::loadTrackInfo(File& audioFile)
 		artist.setText ("Failed",false);
 		id3.setText ("Tag Not Found",false);
 	}
-
+    //add undomanager
+    singletonLibraryTree.addChild(tags, -1, 0);
+    DBG("Tree has : " << singletonLibraryTree.getNumChildren());
 }
 

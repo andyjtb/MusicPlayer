@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "TagReader.h"
 #include "MusicLibraryHelpers.h"
+#include "Settings.h"
 
 class TrackInfo  : public Component
 {

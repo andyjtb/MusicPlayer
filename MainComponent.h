@@ -12,10 +12,11 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AudioControl.h"
 #include "GuiControl.h"
-#include "MusicLibraryTable.h"
+#include "MusicLibraryTableModel.h"
 #include "Settings.h"
 #include "CoverFlowComponent.h"
 #include "XmlHelpers.h"
+#include "TagReader.h"
 
 
 //==============================================================================

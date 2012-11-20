@@ -39,15 +39,23 @@ Settings::Settings()
 
 	libraryTree = readValueTreeFromFile(libraryFile);
     
-    ValueTree lastEntry = libraryTree.getChild(libraryTree.getNumChildren()-1);
-	currentLibId = lastEntry.getProperty(MusicColumns::columnNames[MusicColumns::LibID]);
-    currentValueTreeId = lastEntry.getProperty(MusicColumns::columnNames[MusicColumns::ID]);
-    DBG("Current Lib id = " << currentLibId);
+    if (libraryTree.hasType(MusicColumns::libraryIdentifier)) {
+        ValueTree lastEntry = libraryTree.getChild(libraryTree.getNumChildren()-1);
+        currentLibId = lastEntry.getProperty(MusicColumns::columnNames[MusicColumns::LibID]);
+        currentValueTreeId = lastEntry.getProperty(MusicColumns::columnNames[MusicColumns::ID]);
+        DBG("Current Lib id = " << currentLibId);
+    }
+    else
+    {
+        libraryTree = ValueTree(MusicColumns::libraryIdentifier);
+        currentLibId = 0;
+        currentValueTreeId = 0;
+    }
 }
 
 Settings::~Settings()
 {
-//	saveSingletons();
+	saveSingletons();
     clearSingletonInstance();
 }
 
@@ -72,28 +80,29 @@ int& Settings::getCurrentValueTreeId()
 }
 
 void Settings::saveSingletons()
-{	
-	ScopedPointer<XmlElement> settingsXml;
-	
-	settingsXml = XmlDocument::parse (settingsXmlFile);
-	
-	if (settingsXml != nullptr && settingsXml->hasTagName ("SETTINGS"))
-	{
-		XmlElement* library;
-		library = settingsXml->getChildByName("LIBRARY");
-
-		if (library != nullptr) {
-            ValueTree lastEntry = libraryTree.getChild(libraryTree.getNumChildren()-1);
-            
-			XmlElement* libId = library->getChildByName("LibID");
-            libId->setText(lastEntry.getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
-            
-            XmlElement* valueTreeId = library->getChildByName("ValueId");
-            valueTreeId->setText(lastEntry.getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
-            
-		}
-        
-        settingsXml->writeToFile(settingsXmlFile, String::empty, "UTF-8", 200);
-	}	
+{
+	writeValueTreeToFile(libraryTree, libraryFile);
+//	ScopedPointer<XmlElement> settingsXml;
+//	
+//	settingsXml = XmlDocument::parse (settingsXmlFile);
+//	
+//	if (settingsXml != nullptr && settingsXml->hasTagName ("SETTINGS"))
+//	{
+//		XmlElement* library;
+//		library = settingsXml->getChildByName("LIBRARY");
+//
+//		if (library != nullptr) {
+//            ValueTree lastEntry = libraryTree.getChild(libraryTree.getNumChildren()-1);
+//            
+//			XmlElement* libId = library->getChildByName("LibID");
+//            libId->setText(lastEntry.getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
+//            
+//            XmlElement* valueTreeId = library->getChildByName("ValueId");
+//            valueTreeId->setText(lastEntry.getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
+//            
+//		}
+//        
+//        settingsXml->writeToFile(settingsXmlFile, String::empty, "UTF-8", 200);
+//	}	
 
 }

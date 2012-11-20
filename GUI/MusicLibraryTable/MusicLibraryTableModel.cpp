@@ -18,7 +18,7 @@
   ==============================================================================
 */
 
-#include "MusicLibraryTable.h"
+#include "MusicLibraryTableModel.h"
 
 MusicLibraryTable::MusicLibraryTable()
 :	font (12.0f),
@@ -72,7 +72,6 @@ MusicLibraryTable::~MusicLibraryTable()
 void MusicLibraryTable::setLibraryToUse (ITunesLibrary* library)
 {
 	currentLibrary = library;
-	
 //	DBG("ITunesLibrary to use changed");
 	filteredDataList = dataList = library->getLibraryTree();
 	dataList = library->getLibraryTree();
@@ -132,6 +131,7 @@ void MusicLibraryTable::libraryChanged (ITunesLibrary* library)
 {
 	if (library == currentLibrary) 
 	{
+        DBG("Library changed");
 		filteredDataList = dataList = currentLibrary->getLibraryTree();
 		filteredNumRows = filteredDataList.getNumChildren();
 

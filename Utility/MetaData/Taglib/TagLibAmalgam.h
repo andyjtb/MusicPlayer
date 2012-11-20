@@ -2716,8 +2716,8 @@ namespace TagLib {
 	/*!
 	 * Returns the length of the file in seconds.
 	 */
-	virtual int length() const = 0;
-
+	virtual int length() const = 0;  
+      
 	/*!
 	 * Returns the most appropriate bit rate for the file in kb/s.  For constant
 	 * bitrate formats this is simply the bitrate of the file.  For variable

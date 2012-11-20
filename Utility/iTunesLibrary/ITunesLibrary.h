@@ -25,6 +25,7 @@
 #include "MusicLibraryHelpers.h"
 #include "ITunesLibraryParser.h"
 #include "Utility.h"
+#include "Settings.h"
 
 
 //==============================================================================
@@ -35,7 +36,8 @@
     For an example of its use see the MusicLibraryTable class.
  */
 class ITunesLibrary : public Timer,
-					  public DeletedAtShutdown
+					  public DeletedAtShutdown,
+                      public ValueTree::Listener
 {
 public:
     //==============================================================================
@@ -125,8 +127,18 @@ public:
     //==============================================================================
     /** @internal */
 	void timerCallback();
-	
+	//NON DROW
 	void saveLibrary(File& saveDestination);
+    
+    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property);
+    
+    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded);
+    
+    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved);
+    
+    void valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved);
+    
+    void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged);
     
 private:
     //==============================================================================

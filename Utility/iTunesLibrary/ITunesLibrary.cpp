@@ -56,6 +56,7 @@ void ITunesLibrary::setLibraryTree (ValueTree& newTreeToUse)
     }
 
     libraryTree = newTreeToUse;
+    libraryTree.addListener(this);
 }
 
 void ITunesLibrary::timerCallback()
@@ -85,7 +86,7 @@ void ITunesLibrary::removeListener (ITunesLibrary::Listener* const listener)
 }
 
 //==============================================================================
-
+//NON DROW FUNCTIONS
 void ITunesLibrary::saveLibrary(File& saveDestination)
 {
 //	File location(File::getSpecialLocation(File::userHomeDirectory));
@@ -93,3 +94,20 @@ void ITunesLibrary::saveLibrary(File& saveDestination)
 	bool success = writeValueTreeToFile(libraryTree, saveDestination, true);
 	DBG(success);
 }
+
+void ITunesLibrary::valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
+{
+    listeners.call (&Listener::libraryUpdated, this);
+}
+void ITunesLibrary::valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded)
+{
+    listeners.call (&Listener::libraryUpdated, this);
+}
+void ITunesLibrary::valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved)
+{
+    listeners.call (&Listener::libraryUpdated, this);
+}
+void ITunesLibrary::valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved)
+{}
+void ITunesLibrary::valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged)
+{}

@@ -116,8 +116,9 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 				while (directoryIterator.next())
 				{
 					File fileFound (directoryIterator.getFile());
-					std::cout << "loading \n";
 					filesFound<<fileFound.getParentDirectory().getFileName()<<"/"<<fileFound.getFileName()<<"\n";
+                    DBG("Loading : " << fileFound.getFileName());
+                    singletonLibraryTree.addChild(TagReader::addToLibrary(fileFound),-1,0);
 				}
 				filesInfo << "You picked: " << initialDirectory << "\n" << "Files: \n" << filesFound;   
 				AlertWindow::showMessageBoxAsync (AlertWindow::InfoIcon, "Directory Chooser...", filesInfo);
@@ -128,8 +129,8 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 		{
 			if(AlertWindow::showOkCancelBox (AlertWindow::WarningIcon,
 											 "Itunes Import",
-											 "Importing Itunes library will delete current Library",
-											 "Import Itunes Library",
+											 "Importing Itunes library will merge current Library",
+											 "Merge Itunes Library",
 											 "Keep Current Library",
 											 0))
 			{
