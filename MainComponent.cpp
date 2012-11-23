@@ -17,14 +17,7 @@ MainContentComponent::MainContentComponent()
     addAndMakeVisible(&guiControl);
 	guiControl.setAudioControl(&audioControl);
 	
-//    addAndMakeVisible(&coverFlowComponent);
-
-	ITunesLibrary::getInstance()->setLibraryTree (singletonLibraryTree);
-
-	musicTable.setLibraryToUse (ITunesLibrary::getInstance());
-	musicTable.addActionListener(this);
-	addAndMakeVisible(&musicTable);
-    
+//    addAndMakeVisible(&coverFlowComponent);    
 
 	setSize (1000, 930);
 }
@@ -35,8 +28,8 @@ MainContentComponent::~MainContentComponent()
 
 void MainContentComponent::resized()
 {
-	guiControl.setBounds(0, 0, getWidth(),400);
-	musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
+	guiControl.setBounds(0, 0, getWidth(),getHeight());
+
 //    coverFlowComponent.setBounds(0, 0, 100, 100);
 
 }
@@ -141,16 +134,6 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
     }
 }
 
-
-void MainContentComponent::actionListenerCallback (const String& message)
-{
-	if (message == "LibraryImportFinished") {
-		DBG("library Loaded");
-		ITunesLibrary::getInstance()->saveLibrary(singletonLibraryFile);
-		singletonLibraryTree = ITunesLibrary::getInstance()->getLibraryTree();
-		ITunesLibrary::getInstance()->setLibraryTree(singletonLibraryTree);
-	}
-}
 
 void MainContentComponent::checkFirstTime()
 {

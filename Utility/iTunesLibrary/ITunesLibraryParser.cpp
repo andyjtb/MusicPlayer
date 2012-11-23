@@ -40,6 +40,7 @@ ITunesLibraryParser::~ITunesLibraryParser()
 
 void ITunesLibraryParser::run()
 {
+    const MessageManagerLock mmLock;
     // parse the iTunes xml first
     iTunesDatabase = XmlDocument::parse (iTunesLibraryFile);
     if (! iTunesDatabase->hasTagName ("plist")

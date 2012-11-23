@@ -17,6 +17,8 @@ CoverFlowContext::CoverFlowContext ()
 	setName ("CoverFlow");
     glContext.setRenderer(this);
     glContext.attachTo(*this);
+    glContext.makeActive();
+    renderOpenGL();
 }
 //=============================================================================
 CoverFlowContext::~CoverFlowContext ()

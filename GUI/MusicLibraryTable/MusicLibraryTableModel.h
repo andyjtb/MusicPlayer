@@ -26,6 +26,7 @@
 #include "ITunesLibrary.h"
 #include "Comparators.h"
 #include "MusicLibraryHelpers.h"
+#include "MusicLibraryTableList.h"
 
 
 //==============================================================================
@@ -122,7 +123,7 @@ private:
     //==============================================================================
     Font font;	
 	ITunesLibrary* currentLibrary;
-    TableListBox table;
+    MusicLibraryTableList table;
     String currentFilterText;
     
     ValueTree dataList;

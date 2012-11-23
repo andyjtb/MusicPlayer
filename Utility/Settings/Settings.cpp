@@ -51,6 +51,8 @@ Settings::Settings()
         currentLibId = 0;
         currentValueTreeId = 0;
     }
+    
+    shouldPlay = false;
 }
 
 Settings::~Settings()
@@ -77,6 +79,16 @@ int& Settings::getCurrentLibId()
 int& Settings::getCurrentValueTreeId()
 {
     return currentValueTreeId;
+}
+
+Value& Settings::getSelectedRow()
+{
+    return selectedRow;
+}
+
+Value& Settings::getShouldPlay()
+{
+    return shouldPlay;
 }
 
 void Settings::saveSingletons()

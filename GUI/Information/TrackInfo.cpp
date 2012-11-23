@@ -52,10 +52,10 @@ void TrackInfo::resized()
 
 }
 
-void TrackInfo::loadTrackInfo(File& audioFile)
+void TrackInfo::loadTrackInfo(int incomingTrack)
 {	
 	
-   ValueTree tags(TagReader::addToLibrary(audioFile));
+    ValueTree tags(singletonLibraryTree.getChild(incomingTrack));
 	
    if (tags.hasType("ITEM")) {
 	   toggleId3.setToggleState(true,false);
@@ -71,7 +71,7 @@ void TrackInfo::loadTrackInfo(File& audioFile)
 		id3.setText ("Tag Not Found",false);
 	}
     //add undomanager
-    singletonLibraryTree.addChild(tags, -1, 0);
-    DBG("Tree has : " << singletonLibraryTree.getNumChildren());
+    //singletonLibraryTree.addChild(tags, -1, 0);
+    //DBG("Tree has : " << singletonLibraryTree.getNumChildren());
 }
 

@@ -12,9 +12,8 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AudioControl.h"
 #include "GuiControl.h"
-#include "MusicLibraryTableModel.h"
 #include "Settings.h"
-#include "CoverFlowComponent.h"
+//#include "CoverFlowComponent.h"
 #include "XmlHelpers.h"
 #include "TagReader.h"
 
@@ -25,8 +24,7 @@
     your controls and content.
 */
 class MainContentComponent   : public Component,
-							   public MenuBarModel,
-							   public ActionListener
+							   public MenuBarModel
 {
 public:
     //==============================================================================
@@ -55,8 +53,7 @@ public:
     StringArray getMenuBarNames();
     PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName);
 	void menuItemSelected (int menuItemID, int topLevelMenuIndex); 
-	
-	void actionListenerCallback(const String& message);
+
 //	static void alertBoxResultChosen (int result);
     void checkFirstTime();
 	
@@ -66,9 +63,8 @@ private:
 	GuiControl guiControl;
 
 	File testFile;
-	
-	MusicLibraryTable musicTable;
-    
+
+// Coverflow files aren't currently included    
 //    CoverFlowComponent coverFlowComponent;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)

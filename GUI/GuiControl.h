@@ -21,6 +21,9 @@
 #include "TrackInfo.h"
 //#include "ButtonAlbumArt.h"
 #include "AlbumArt.h"
+#include "MusicLibraryTableModel.h"
+#include "MusicLibraryHelpers.h"
+#include "Settings.h"
 
 /**
 
@@ -58,6 +61,8 @@ public:
 	void updateTagDisplay (File audioFile);
 	
 	void changeListenerCallback(ChangeBroadcaster* changeBroadcaster);
+    
+    void loadFile();
 	
 private:
 	//ScopedPointer<AudioControl> audioControl;
@@ -70,6 +75,8 @@ private:
 	TrackInfo trackInfo;
 	//ButtonAlbumArt albumArt;
 	AlbumArt albumArt;
+    
+    MusicLibraryTable musicTable;
 };
 
 

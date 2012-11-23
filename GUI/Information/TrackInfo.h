@@ -22,7 +22,7 @@ public:
     ~TrackInfo();
 
     void resized();
-	void loadTrackInfo(File& audioFile);
+	void loadTrackInfo(int incomingTrack);
 
 private:
     Label lTitle;

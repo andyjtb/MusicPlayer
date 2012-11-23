@@ -10,6 +10,8 @@
 #define singletonLibraryTree Settings::getInstance()->getLibraryTree()
 #define singletonCurrentLibId Settings::getInstance()->getCurrentLibId()
 #define singletonCurrentValueTreeId Settings::getInstance()->getCurrentValueTreeId()
+#define tableSelectedRow Settings::getInstance()->getSelectedRow()
+#define tableShouldPlay Settings::getInstance()->getShouldPlay()
 
 
 class Settings : public DeletedAtShutdown
@@ -25,6 +27,8 @@ public:
     
     int& getCurrentLibId();
     int& getCurrentValueTreeId();
+    Value& getSelectedRow();
+    Value& getShouldPlay();
 
     void saveSingletons();
 	
@@ -37,6 +41,8 @@ private:
 	File libraryFile;
 	ValueTree libraryTree;
     int currentLibId, currentValueTreeId;
+    Value selectedRow, shouldPlay;
+
 };
 
 #endif //H_SETTINGS
