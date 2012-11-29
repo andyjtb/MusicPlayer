@@ -309,4 +309,98 @@ var MusicLibraryTable::getDragSourceDescription (const SparseSet< int > &current
 	return var::null;
 }
 
+void MusicLibraryTable::updateLibrary()
+{
+    libraryUpdated(currentLibrary);
+}
+
+void MusicLibraryTable::selectedRowsChanged(int lastRowSelected)
+{
+    tableSelectedRow.setValue(lastRowSelected);
+}
+
+void MusicLibraryTable::returnKeyPressed(int currentSelectedRow)
+{
+    tableShouldPlay.setValue(true);
+    tableSelectedRow.setValue(currentSelectedRow);    
+}
+
+void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
+{	
+    singletonLibraryTree.removeChild(currentSelectedRow, singletonUndoManager);
+    //    DBG("Trans num = " << singletonUndoManager->getNumActionsInCurrentTransaction());
+    DBG("Undo message = " << singletonUndoManager->getUndoDescription());
+    tableUpdateRequired.setValue(true);
+}
+
+void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::MouseEvent &event)
+{	
+    if (event.mods.isPopupMenu()) {
+        PopupMenu rightClick;
+        if (columnId == MusicColumns::Artist || 
+            columnId == MusicColumns::Song || 
+            columnId == MusicColumns::Album || 
+            columnId == MusicColumns::Rating || 
+            columnId == MusicColumns::Genre || 
+            columnId == MusicColumns::Score) {
+            String editMessage("Edit ");
+            editMessage << MusicColumns::columnNames[columnId].toString();
+            rightClick.addItem(1, editMessage);
+            rightClick.addSeparator();
+        }
+        
+		rightClick.addItem(2, "Display Info");
+        rightClick.addItem(3, "Show in Finder");
+        rightClick.addSeparator();
+        rightClick.addItem(4, "Delete Song");
+		
+        int result = rightClick.show();
+        TextEditor textEdit;
+        
+        AlertWindow displayPopup(singletonLibraryTree.getChild(rowNumber).getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString()
+                                 , "", AlertWindow::NoIcon);
+        TrackTabbed trackTabbed(rowNumber); 
+        trackTabbed.setBounds(0,0,375,30);
+        
+        switch (result) {
+            case 1:
+                //FIX ME
+                textEdit.setText(singletonLibraryTree.getChild(rowNumber).getProperty(MusicColumns::columnNames[columnId]).toString());
+                refreshComponentForCell(rowNumber, columnId, true, &textEdit);
+                DBG("Edit selected");
+                break;
+            case 2:
+                DBG("Display selected");                                
+                displayPopup.addCustomComponent(&trackTabbed);
+                
+                displayPopup.addButton("Cancel", 0);
+                displayPopup.addButton("Ok", 1);
+                
+                if (displayPopup.runModalLoop() != 0) {
+                    //
+                }
+                displayPopup.removeCustomComponent(0);
+                break;
+            case 3:
+                File(singletonLibraryTree.getChild(rowNumber).getProperty("Location")).revealToUser();
+                break;
+            case 4:
+                deleteKeyPressed(rowNumber);
+            default:
+                break;
+        }
+    }
+    if (event.mods.isAltDown())
+    {
+        DBG("Edit directly");
+    }
+}	
+
+void MusicLibraryTable::cellDoubleClicked(int rowNumber, int columnId, const juce::MouseEvent &event)
+{
+    tableShouldPlay.setValue(true);
+    tableSelectedRow.setValue(rowNumber);  
+}
+
+
 

@@ -10,8 +10,14 @@
 #define singletonLibraryTree Settings::getInstance()->getLibraryTree()
 #define singletonCurrentLibId Settings::getInstance()->getCurrentLibId()
 #define singletonCurrentValueTreeId Settings::getInstance()->getCurrentValueTreeId()
+#define singletonPlayState Settings::getInstance()->getPlayState()
+#define singletonUndoManager Settings::getInstance()->getUndoManager()
+
 #define tableSelectedRow Settings::getInstance()->getSelectedRow()
 #define tableShouldPlay Settings::getInstance()->getShouldPlay()
+#define tablePlayingRow Settings::getInstance()->getPlayingRow()
+#define tablePlayingTree Settings::getInstance()->getCurrentlyPlaying()
+#define tableUpdateRequired Settings::getInstance()->getUpdateRequired()
 
 
 class Settings : public DeletedAtShutdown
@@ -23,25 +29,32 @@ public:
 
 	File& getLibraryFile();
 	
+    UndoManager* getUndoManager();
+    
 	ValueTree& getLibraryTree();
+    ValueTree& getCurrentlyPlaying();
     
     int& getCurrentLibId();
     int& getCurrentValueTreeId();
+    
     Value& getSelectedRow();
+    Value& getPlayingRow();
     Value& getShouldPlay();
-
+    Value& getPlayState();
+    Value& getUpdateRequired();
+    
+    
     void saveSingletons();
 	
 	juce_DeclareSingleton_SingleThreaded_Minimal (Settings)
 	
 private:
 
-    File settingsXmlFile;
-    
-	File libraryFile;
-	ValueTree libraryTree;
+    File settingsXmlFile, libraryFile;
+	ValueTree libraryTree, currentlyPlaying;
+    ScopedPointer<UndoManager> undoManager;
     int currentLibId, currentValueTreeId;
-    Value selectedRow, shouldPlay;
+    Value selectedRow, shouldPlay, playState, playingRow, updateRequired;
 
 };
 

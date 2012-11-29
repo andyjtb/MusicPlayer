@@ -8,7 +8,7 @@
  */
 
 #include "AudioControl.h"
-#include "dRowAudio_SoundTouchAudioSource.h"
+
 
 
 AudioControl::AudioControl()
@@ -25,7 +25,7 @@ AudioControl::AudioControl()
     }
     else
     {
-//		soundTouchSource = new SoundTouchAudioSource(&transport, false);
+//	soundTouch = new SoundTouchAudioSource(&transport, false);
 //        audioSourcePlayer.setSource (soundTouchSource);
 
 		audioSourcePlayer.setSource(&transport);

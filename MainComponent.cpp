@@ -16,8 +16,6 @@ MainContentComponent::MainContentComponent()
     
     addAndMakeVisible(&guiControl);
 	guiControl.setAudioControl(&audioControl);
-	
-//    addAndMakeVisible(&coverFlowComponent);    
 
 	setSize (1000, 930);
 }
@@ -30,15 +28,13 @@ void MainContentComponent::resized()
 {
 	guiControl.setBounds(0, 0, getWidth(),getHeight());
 
-//    coverFlowComponent.setBounds(0, 0, 100, 100);
-
 }
 
 
 //MenuBarCallbacks==============================================================
 StringArray MainContentComponent::getMenuBarNames()
 {
-	const char* const names[] = { "File", 0 };
+	const char* const names[] = { "File", "Edit", 0 };
 	return StringArray (names);
 }
 
@@ -53,6 +49,7 @@ StringArray MainContentComponent::getMenuBarNames()
 PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const String& menuName)
 {
 	PopupMenu fileMenu;
+    PopupMenu editMenu;
 	if (topLevelMenuIndex == 0)
 	{
 		fileMenu.addItem(OpenFile, "Open Files", true, false);
@@ -60,8 +57,25 @@ PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const St
 		fileMenu.addSeparator();
         fileMenu.addItem(AudioPrefs, "Audio Preferences", true, false);
 		fileMenu.addItem(ImportItunes, "Import Itunes Library", true, false);
+        return fileMenu;
 	}
-	return fileMenu;
+    else
+    {
+        if (singletonUndoManager->canUndo())
+        {
+            String undoMessage("Undo ");
+            undoMessage << singletonUndoManager->getUndoDescription();
+            editMenu.addItem(UndoChange, undoMessage);
+        }
+        else
+        {
+            editMenu.addItem(UndoChange, "Undo", false);
+        }
+
+        
+        return editMenu;
+    }
+	
 }
 
 void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuIndex)
@@ -131,6 +145,20 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 			}
 		}
 		
+    }
+    if (topLevelMenuIndex == EditMenu)
+    {
+        if (menuItemID == UndoChange)
+        {
+            if (singletonUndoManager->undoCurrentTransactionOnly())
+            {
+                tableUpdateRequired.setValue(true);
+            }
+            else
+            {
+                DBG("UNDO WENT WRONG");
+            }
+        }
     }
 }
 

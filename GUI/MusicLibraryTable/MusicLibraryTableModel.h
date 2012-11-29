@@ -26,7 +26,8 @@
 #include "ITunesLibrary.h"
 #include "Comparators.h"
 #include "MusicLibraryHelpers.h"
-#include "MusicLibraryTableList.h"
+#include "Settings.h"
+#include "TrackTabbed.h"
 
 
 //==============================================================================
@@ -117,13 +118,19 @@ public:
 
     /** @internal */
 	var getDragSourceDescription (const SparseSet<int>& currentlySelectedRows);
-
-	
+//NON DROW FUNCTIONS
+	void updateLibrary();
+    void selectedRowsChanged (int lastRowSelected);
+    void returnKeyPressed (int currentSelectedRow);
+    void deleteKeyPressed (int currentSelectedRow);
+    void cellClicked (int rowNumber, int columnId, const MouseEvent &event);
+    void cellDoubleClicked(int rowNumber, int columnId, const MouseEvent &event);
+    
 private:
     //==============================================================================
     Font font;	
 	ITunesLibrary* currentLibrary;
-    MusicLibraryTableList table;
+    TableListBox table;
     String currentFilterText;
     
     ValueTree dataList;

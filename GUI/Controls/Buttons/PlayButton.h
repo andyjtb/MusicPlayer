@@ -11,6 +11,7 @@
 #define H_PLAYBUTTON
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "Settings.h"
 
 class PlayButton  : public Button,
 					public ActionBroadcaster
@@ -25,8 +26,6 @@ public:
     void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown);
     void buttonStateChanged();
 	void clicked();
-	
-	Value& getButtonValue();
 	
     // Binary resources:
     static const char* pauseDown_png;

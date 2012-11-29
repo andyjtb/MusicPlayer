@@ -53,6 +53,8 @@ Settings::Settings()
     }
     
     shouldPlay = false;
+    
+    undoManager = new UndoManager(30,30);
 }
 
 Settings::~Settings()
@@ -71,6 +73,11 @@ ValueTree& Settings::getLibraryTree()
 	return libraryTree;
 }
 
+ValueTree& Settings::getCurrentlyPlaying()
+{
+    return currentlyPlaying;
+}
+
 int& Settings::getCurrentLibId()
 {
     return currentLibId;
@@ -86,9 +93,29 @@ Value& Settings::getSelectedRow()
     return selectedRow;
 }
 
+Value& Settings::getPlayingRow()
+{
+    return playingRow;
+}
+
 Value& Settings::getShouldPlay()
 {
     return shouldPlay;
+}
+
+Value& Settings::getPlayState()
+{
+    return playState;
+}
+
+Value& Settings::getUpdateRequired()
+{
+    return updateRequired;
+}
+
+UndoManager* Settings::getUndoManager()
+{
+    return undoManager;
 }
 
 void Settings::saveSingletons()

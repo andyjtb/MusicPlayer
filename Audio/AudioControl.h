@@ -11,6 +11,8 @@
 #define H_AUDIOCONTROL
 
 #include "../JuceLibraryCode/JuceHeader.h"
+//#include "dRowAudio_SoundTouchAudioSource.h"
+
 
 /**
  Top Level Audio Class
@@ -81,7 +83,7 @@ private:
 	
 	ScopedPointer<AudioFormatReaderSource> currentAudioFileSource;
 	
-//	SoundTouchAudioSource* soundtouchAudioSource;
+//	SoundTouchAudioSource* soundTouch;
 //	SoundTouchProcessor::PlaybackSettings soundTouchSettings;
 	
 	//audio variables

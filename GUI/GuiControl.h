@@ -19,11 +19,11 @@
 #include "VolumeControl.h"
 #include "TransportSlider.h"
 #include "TrackInfo.h"
-//#include "ButtonAlbumArt.h"
 #include "AlbumArt.h"
 #include "MusicLibraryTableModel.h"
 #include "MusicLibraryHelpers.h"
 #include "Settings.h"
+//#include "CoverFlowComponent.h"
 
 /**
 
@@ -65,7 +65,6 @@ public:
     void loadFile();
 	
 private:
-	//ScopedPointer<AudioControl> audioControl;
 	AudioControl* audioControl;
 	
 	PlayButton playButton;
@@ -73,10 +72,11 @@ private:
 	OutputMeter outputMeters;
 	TransportSlider transport;
 	TrackInfo trackInfo;
-	//ButtonAlbumArt albumArt;
 	AlbumArt albumArt;
     
     MusicLibraryTable musicTable;
+    
+//    CoverFlowComponent* coverflow;
 };
 
 

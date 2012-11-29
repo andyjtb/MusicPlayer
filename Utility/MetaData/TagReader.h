@@ -29,8 +29,8 @@ public:
                 ValueTree tags("ITEM");
                 TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8());	
                 
-                if (f != NULL)
-                {
+//                if (f != NULL)
+//                {
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::ID], singletonCurrentValueTreeId++, nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::LibID], singletonCurrentLibId++, nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Artist], f.tag()->artist().toCString(), nullptr);
@@ -73,9 +73,9 @@ public:
                 
                 
                 return tags;
-            }
-                DBG("Tags not present");
-                return ValueTree();
+//            }
+//                DBG("Tags not present");
+//                return ValueTree();
             }
             DBG("FILE DOESNT EXIST");
             return ValueTree();

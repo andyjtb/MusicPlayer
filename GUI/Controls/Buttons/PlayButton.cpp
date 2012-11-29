@@ -10,11 +10,7 @@
 
 
 PlayButton::PlayButton ()
-: Button ("Play"),
-cachedImage_play_png (0),
-cachedImage_playDown_png (0),
-cachedImage_pause_png (0),
-cachedImage_pauseDown_png (0)
+: Button ("Play")
 {
     cachedImage_play_png = ImageCache::getFromMemory (play_png, play_pngSize);
     cachedImage_playDown_png = ImageCache::getFromMemory (playDown_png, playDown_pngSize);
@@ -22,7 +18,9 @@ cachedImage_pauseDown_png (0)
     cachedImage_pauseDown_png = ImageCache::getFromMemory (pauseDown_png, pauseDown_pngSize);
 	
 	setClickingTogglesState(true);
-	
+	//singletonPlayState.setValue(false);
+    getToggleStateValue().referTo(singletonPlayState);
+    
     setSize (143, 143);
 }
 
@@ -82,20 +80,17 @@ void PlayButton::buttonStateChanged()
 
 void PlayButton::clicked()
 {
-	bool toggleState = getToggleState();
-	
-	if (toggleState == true) {
-		sendActionMessage("play");
-	}
-	if (toggleState == false) {
-		sendActionMessage("pause");
-	}
+//    if (singletonPlayState.getValue() == var(false))
+//    {
+//        singletonPlayState.setValue(true);
+//    }
+//    else
+//    {
+//        singletonPlayState.setValue(false);
+//    }
+	DBG("Play State = " << singletonPlayState.toString());
 }
 
-Value& PlayButton::getButtonValue()
-{
-	return getToggleStateValue();
-}
 
 //==============================================================================
 // Binary resources - be careful not to edit any of these sections!

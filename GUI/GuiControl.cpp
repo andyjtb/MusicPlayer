@@ -33,8 +33,11 @@ GuiControl::GuiControl()
 	musicTable.addActionListener(this);
     tableSelectedRow.addListener(this);
     tableShouldPlay.addListener(this);
+    tableUpdateRequired.addListener(this);
 	addAndMakeVisible(&musicTable);
     
+//    coverflow = new CoverFlowComponent();
+//    addAndMakeVisible(coverflow);
 	//setSize(500, 400);
 }
 
@@ -53,6 +56,8 @@ void GuiControl::resized()
 	albumArt.setBounds(400,100,175,175);
 	
     musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
+    
+//    coverflow->setBounds(100,100,100,100);
 }
 
 void GuiControl::timerCallback(int timerId)
@@ -154,6 +159,14 @@ void GuiControl::valueChanged (Value& valueChanged)
     {
         loadFile();
     }
+    
+    if (valueChanged == tableUpdateRequired)
+    {
+        if (tableUpdateRequired.getValue()) {
+            musicTable.updateLibrary();
+            tableUpdateRequired.setValue(false);
+        }
+    }
 }
 
 void GuiControl::loadFile()
@@ -162,6 +175,9 @@ void GuiControl::loadFile()
     if(tableShouldPlay.getValue())
     {
         audioControl->loadFile(selectedFile);
+        tablePlayingRow = tableSelectedRow.getValue();
+        tablePlayingTree = singletonLibraryTree.getChild(tablePlayingRow.getValue());
+        //singletonPlayState.setValue(true);
         buttonClicked(&playButton);
         trackInfo.loadTrackInfo(tableSelectedRow.getValue());
         tableShouldPlay.setValue(false);
