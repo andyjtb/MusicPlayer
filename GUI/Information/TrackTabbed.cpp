@@ -8,12 +8,11 @@
 
 #include "TrackTabbed.h"
 
-TrackTabbed::TrackTabbed (int selectedTrack) : TabbedComponent(TabbedButtonBar::TabsAtBottom),
-                                               trackSummary(selectedTrack)
+TrackTabbed::TrackTabbed (int selectedTrack) : TabbedComponent(TabbedButtonBar::TabsAtBottom)
 {	   
-    //trackSummary = new TrackSummary(selectedTrack);
+    trackSummary.setTrack(selectedTrack);
     addTab("Summary", Colours::white, &trackSummary, true);
-    DBG("Track summary size " << trackSummary.getHeight());
+    
     setSize(trackSummary.getWidth(), trackSummary.getHeight());
 }
 

@@ -15,19 +15,21 @@
 #include "AlbumArt.h"
 #include "TagReader.h"
 #include "Settings.h"
+#include "MusicLibraryHelpers.h"
 
 class TrackSummary  : public Component
 {
 public:
-    TrackSummary (int incomingTree);
+    TrackSummary ();
     ~TrackSummary();
-
+    
     void paint (Graphics& g);
     void resized();
-
-
+    
+    void setTrack(int incomingTrack);
+    
 private:
-
+    
     Label artist;
     AlbumArt albumArt;
     Label album;
@@ -46,7 +48,7 @@ private:
     Label bitRate;
     Label sampleLabel;
     Label sampleRate;
-
+    
 };
 
 

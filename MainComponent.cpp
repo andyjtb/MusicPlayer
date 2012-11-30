@@ -17,7 +17,7 @@ MainContentComponent::MainContentComponent()
     addAndMakeVisible(&guiControl);
 	guiControl.setAudioControl(&audioControl);
 
-	setSize (1000, 930);
+	setSize (1000, 630);
 }
 
 MainContentComponent::~MainContentComponent()
