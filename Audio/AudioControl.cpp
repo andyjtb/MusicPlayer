@@ -12,7 +12,9 @@
 
 
 AudioControl::AudioControl()
-{		
+{	
+	singletonPlayState.addListener(this);
+    
     const String error (audioDeviceManager.initialise (0, /* number of input channels */
 													   2, /* number of output channels */
 													   0, /* no XML settings.. */
@@ -86,27 +88,29 @@ void AudioControl::loadFile (const File audioFile)
 	}	    
 }
 
-void AudioControl::togglePlayState()
-{
-	if (transport.isPlaying()) {
-		transport.stop();
-	}
-	else {
-		transport.start();
-	}
-}
-
-void AudioControl::setPlayState (bool shouldPlay)
-{
-	if (shouldPlay) {
-		transport.start();
-	}
-	else {
-		transport.stop();
-		//transport.setPosition(0);
-	}
-	
-}
+//void AudioControl::togglePlayState()
+//{
+//	if (singletonPlayState.getValue()) {
+//		transport.stop();
+//	}
+//	else {
+//		transport.start();
+//	}
+//}
+//
+//void AudioControl::setPlayState (bool shouldPlay)
+//{
+//	if (shouldPlay) {
+//		transport.start();
+//        singletonPlayState = true;
+//	}
+//	else {
+//		transport.stop();
+//        singletonPlayState = false;
+//		//transport.setPosition(0);
+//	}
+//	
+//}
 
 bool AudioControl::isPlaying()
 {
@@ -240,5 +244,8 @@ void AudioControl::showAudioPreferences(Component* centerComponent)
 
 void AudioControl::valueChanged (Value& valueChanged)
 {
-	valueChanged.getValue() ? transport.stop() : transport.start();
+    if (valueChanged == singletonPlayState)
+    {
+        singletonPlayState.getValue() ? transport.start() : transport.stop();
+    }
 }

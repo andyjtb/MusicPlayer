@@ -24,9 +24,7 @@ public:
 	
     void resized();
     void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown);
-    void buttonStateChanged();
-	void clicked();
-	
+  
     // Binary resources:
     static const char* pauseDown_png;
     static const int pauseDown_pngSize;

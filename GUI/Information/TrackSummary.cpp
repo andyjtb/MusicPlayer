@@ -140,8 +140,9 @@ void TrackSummary::setTrack(int incomingTrack)
     
     ScopedPointer<AudioFormatReader> reader;
     reader = formatManager.createReaderFor (selectedFile);
-    //Bitrate not working
-    String bitRateString (String(reader->bitsPerSample) + " kbps");
+    int bitRateNum = (((reader->sampleRate*reader->bitsPerSample)*reader->numChannels)/8);
+    
+    String bitRateString (String(bitRateNum) + " kbps");
     bitRate.setText(bitRateString, false);
     
     String sampleRateString (String(reader->sampleRate) + " Hz");

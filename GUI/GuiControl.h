@@ -23,17 +23,18 @@
 #include "MusicLibraryTableModel.h"
 #include "MusicLibraryHelpers.h"
 #include "Settings.h"
+#include "SearchBox.h"
 //#include "CoverFlowComponent.h"
 
 /**
 
  */
 class GuiControl  : public Component,
-					public ButtonListener,
 					public ActionListener,
 					public ChangeListener,
 					public ValueListener,
-					public MultiTimer
+					public MultiTimer,
+                    public TextEditor::Listener
 {
 public:
 	//==============================================================================
@@ -50,8 +51,6 @@ public:
 	
 	void setAudioControl (AudioControl* incomingAudioControl);
 	
-	void buttonClicked (Button* buttonClicked);
-	
 	void actionListenerCallback (const String& message);
 	
 	void valueChanged (Value& valueChanged);
@@ -63,6 +62,12 @@ public:
 	void changeListenerCallback(ChangeBroadcaster* changeBroadcaster);
     
     void loadFile();
+    
+    //Text Editor Callbacks
+    void textEditorTextChanged (TextEditor &textEditor);
+    void textEditorReturnKeyPressed (TextEditor &textEditor);
+    void textEditorEscapeKeyPressed (TextEditor &textEditor);
+    void textEditorFocusLost (TextEditor &textEditor);
 	
 private:
 	AudioControl* audioControl;
@@ -75,6 +80,8 @@ private:
 	AlbumArt albumArt;
     
     MusicLibraryTable musicTable;
+    
+    SearchBox searchBox;
     
 //    CoverFlowComponent* coverflow;
 };

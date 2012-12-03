@@ -117,6 +117,39 @@ namespace ValueTreeComparators
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LexicographicWithBackup);
     };
     
+    //==============================================================================
+    /** Compare used for sorting by artist/album first then by track number
+     */
+    class LexicographicWithNumerical
+    {
+    public:
+        LexicographicWithNumerical (const Identifier attributeToSort_, const Identifier backupAttribute_, bool forwards)
+        : attributeToSort (attributeToSort_),
+        backupAttribute (backupAttribute_),
+        direction (forwards ? 1 : -1)
+        {
+        }
+        
+        int compareElements (const ValueTree &first, const ValueTree &second) const
+        {
+            int result = 0;
+            
+            result = first[attributeToSort].toString().compareLexicographically (second[attributeToSort].toString());
+            
+            if (result == 0)
+                result = first[backupAttribute].toString().compareLexicographically (second[backupAttribute].toString());
+            
+            return direction * result;
+        }
+        
+    private:
+        const Identifier attributeToSort;
+        const Identifier backupAttribute;
+        const int direction;
+        
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LexicographicWithBackup);
+    };
+    
 } //ValueTreeComparators
 
 namespace XmlComparators

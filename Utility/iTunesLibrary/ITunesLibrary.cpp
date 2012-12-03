@@ -44,7 +44,14 @@ void ITunesLibrary::setLibraryFile (File newFile)
 //==============================================================================
 File ITunesLibrary::getDefaultITunesLibraryFile()
 {
-    return File::getSpecialLocation (File::userMusicDirectory).getChildFile ("iTunes/iTunes Music Library.xml");
+    File iTunesLibrary(File::getSpecialLocation (File::userMusicDirectory).getChildFile ("iTunes/iTunes Music Library.xml"));
+    //Non drow
+    if (!iTunesLibrary.exists())
+    {
+        iTunesLibrary = libraryNotFound();
+    }
+    
+    return iTunesLibrary;
 }
 
 //==============================================================================
@@ -93,6 +100,40 @@ void ITunesLibrary::saveLibrary(File& saveDestination)
 //	location = (location.getFullPathName()+"/test.xml");
 	bool success = writeValueTreeToFile(libraryTree, saveDestination, true);
 	DBG(success);
+}
+
+File ITunesLibrary::libraryNotFound()
+{
+    File selectedFile;
+    
+    AlertWindow itunesPopup("Locate iTunes Library", "iTunes Library could not be found \n Please find your iTunes Library File: ", AlertWindow::WarningIcon);
+    FilenameComponent libraryName("Library File:", 
+                                  File::getSpecialLocation(File::userMusicDirectory).getChildFile("iTunes"),
+                                  true, false, false, "*.xml", "",
+                                  "");
+    
+    libraryName.setBounds(0,0,375,30);
+    
+    itunesPopup.addCustomComponent(&libraryName);
+    
+    itunesPopup.addButton("Cancel", 0);
+    itunesPopup.addButton("Ok", 1);
+    
+    if (itunesPopup.runModalLoop() != 0) {
+        ScopedPointer<XmlElement> iTunesDatabase(XmlDocument::parse (libraryName.getCurrentFile()));
+        if (! iTunesDatabase->hasTagName ("plist")
+            || iTunesDatabase->getStringAttribute ("version") != "1.0")
+        {
+            AlertWindow invalidWindow("Locate iTunes Library", "Please select a valid iTunes Library File", AlertWindow::WarningIcon);
+            invalidWindow.addButton("Ok", 0);
+            if (invalidWindow.runModalLoop() == 0)
+            {}
+        }
+        selectedFile = libraryName.getCurrentFile();
+    }
+    
+    itunesPopup.removeCustomComponent(0); 
+    return selectedFile;
 }
 
 void ITunesLibrary::valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property)

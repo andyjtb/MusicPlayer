@@ -17,10 +17,11 @@ PlayButton::PlayButton ()
     cachedImage_pause_png = ImageCache::getFromMemory (pause_png, pause_pngSize);
     cachedImage_pauseDown_png = ImageCache::getFromMemory (pauseDown_png, pauseDown_pngSize);
 	
+    //singletonPlayState.addListener(this);
+    singletonPlayState = false;
+    getToggleStateValue().referTo(singletonPlayState);
 	setClickingTogglesState(true);
 	//singletonPlayState.setValue(false);
-    getToggleStateValue().referTo(singletonPlayState);
-    
     setSize (143, 143);
 }
 
@@ -38,7 +39,7 @@ void PlayButton::resized()
 void PlayButton::paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown)
 {
 	
-	if (getToggleState() == true) {
+	if (singletonPlayState.getValue() == var(true)) {
 		if (isButtonDown == true) {
 			g.setColour (Colours::black);
             g.drawImage (cachedImage_pauseDown_png,
@@ -54,7 +55,7 @@ void PlayButton::paintButton (Graphics& g, bool isMouseOverButton, bool isButton
 
 	}
 	
-	if (getToggleState() == false) {
+	if (singletonPlayState.getValue() == var(false)) {
 		if (isButtonDown == true) {
 			g.setColour (Colours::black);
             g.drawImage (cachedImage_playDown_png,
@@ -71,24 +72,6 @@ void PlayButton::paintButton (Graphics& g, bool isMouseOverButton, bool isButton
 
 	}
 	
-}
-
-void PlayButton::buttonStateChanged()
-{
-
-}
-
-void PlayButton::clicked()
-{
-//    if (singletonPlayState.getValue() == var(false))
-//    {
-//        singletonPlayState.setValue(true);
-//    }
-//    else
-//    {
-//        singletonPlayState.setValue(false);
-//    }
-	DBG("Play State = " << singletonPlayState.toString());
 }
 
 

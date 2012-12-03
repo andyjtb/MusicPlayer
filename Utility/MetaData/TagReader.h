@@ -89,7 +89,7 @@ public:
 	static Image getAlbumArt (File& audioFile)
 	{
 		if (audioFile.getFullPathName().endsWith(".mp3")) {
-			
+			//NEW METHOD REQUIRED
 			TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
 			
 			TagLib::ID3v2::FrameList frames = f.ID3v2Tag()->frameList("APIC");

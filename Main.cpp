@@ -68,9 +68,10 @@ public:
 			setTitleBarHeight(20);
 			
             MainContentComponent* mainContentComponent = new MainContentComponent();
+            
 			setContentOwned (mainContentComponent, true);
 			setMenuBar (mainContentComponent);
-
+            
             centreWithSize (getWidth(), getHeight());
             setVisible (true);
         }
@@ -91,8 +92,10 @@ public:
            subclass also calls the superclass's method.
         */
 
+        
     private:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow);
+ 
     };
 
 private:

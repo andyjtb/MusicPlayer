@@ -23,7 +23,8 @@
     your controls and content.
 */
 class MainContentComponent   : public Component,
-							   public MenuBarModel
+							   public MenuBarModel,
+                               public ApplicationCommandTarget
 {
 public:
     //==============================================================================
@@ -37,6 +38,7 @@ public:
 	{
 		FileMenu=0,
         EditMenu=1,
+        ControlMenu,
 		
 		NumMenus
 	};
@@ -51,19 +53,31 @@ public:
 		
 		NumFileItems
 	};
+    
+    enum CommandIDs
+    {
+        undoMenu = 0x2000,
+        spaceBar = 0x3000
+    };
+    
     StringArray getMenuBarNames();
     PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName);
 	void menuItemSelected (int menuItemID, int topLevelMenuIndex); 
 
     void checkFirstTime();
-	
+    
+    ApplicationCommandTarget* getNextCommandTarget();
+    void getAllCommands (Array <CommandID>& commands);
+    void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result);
+    bool perform (const InvocationInfo& info);
+    
 private:
-	
 	AudioControl audioControl;
 	GuiControl guiControl;
 
 	File testFile;
 
+    ApplicationCommandManager commandManager;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

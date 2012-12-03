@@ -12,6 +12,17 @@
 //==============================================================================
 MainContentComponent::MainContentComponent()
 {
+    //Tries to remove a listener which isn't present
+    //MenuBarModel::setMacMainMenu(this);
+    
+    commandManager.registerAllCommandsForTarget (this);
+    commandManager.registerAllCommandsForTarget (JUCEApplication::getInstance());
+    
+    // this lets the command manager use keypresses that arrive in our window to send
+    // out commands
+    addKeyListener (commandManager.getKeyMappings());
+    setApplicationCommandManagerToWatch (&commandManager);
+    
 	checkFirstTime();
     
     addAndMakeVisible(&guiControl);
@@ -34,48 +45,35 @@ void MainContentComponent::resized()
 //MenuBarCallbacks==============================================================
 StringArray MainContentComponent::getMenuBarNames()
 {
-	const char* const names[] = { "File", "Edit", 0 };
+	const char* const names[] = { "File", "Edit", "Controls", 0 };
 	return StringArray (names);
 }
 
-//static void alertBoxResultChosen (int result)
-//{
-//	AlertWindow::showMessageBoxAsync (AlertWindow::InfoIcon,
-//									  "Alert Box",
-//									  "Result code: " + String (result));
-//}
-
-
 PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const String& menuName)
 {
-	PopupMenu fileMenu;
-    PopupMenu editMenu;
+	PopupMenu menu;
+    
 	if (topLevelMenuIndex == 0)
 	{
-		fileMenu.addItem(OpenFile, "Open Files", true, false);
-		fileMenu.addItem(OpenDirectory, "Open Directory", true, false);
-		fileMenu.addSeparator();
-        fileMenu.addItem(AudioPrefs, "Audio Preferences", true, false);
-		fileMenu.addItem(ImportItunes, "Import Itunes Library", true, false);
-        return fileMenu;
+		menu.addItem(OpenFile, "Open Files", true, false);
+		menu.addItem(OpenDirectory, "Open Directory", true, false);
+		menu.addSeparator();
+        menu.addItem(AudioPrefs, "Audio Preferences", true, false);
+		menu.addItem(ImportItunes, "Import Itunes Library", true, false);
+        menu.addSeparator();
+        menu.addCommandItem (&commandManager, StandardApplicationCommandIDs::quit);
+        return menu;
 	}
+    else if (topLevelMenuIndex == 1)
+    {
+        menu.addCommandItem (&commandManager, undoMenu);
+        return menu;
+    }
     else
     {
-        if (singletonUndoManager->canUndo())
-        {
-            String undoMessage("Undo ");
-            undoMessage << singletonUndoManager->getUndoDescription();
-            editMenu.addItem(UndoChange, undoMessage);
-        }
-        else
-        {
-            editMenu.addItem(UndoChange, "Undo", false);
-        }
-
-        
-        return editMenu;
+        menu.addCommandItem(&commandManager, spaceBar);
+        return menu;
     }
-	
 }
 
 void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuIndex)
@@ -141,24 +139,25 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 											 "Keep Current Library",
 											 0))
 			{
-				ITunesLibrary::getInstance()->setLibraryFile (ITunesLibrary::getDefaultITunesLibraryFile());
+                if(ITunesLibrary::getDefaultITunesLibraryFile().exists())
+                {
+                    ITunesLibrary::getInstance()->setLibraryFile (ITunesLibrary::getDefaultITunesLibraryFile());
+                }
+                else
+                {
+                    DBG("Library file not found/selected");
+                }
 			}
 		}
 		
     }
     if (topLevelMenuIndex == EditMenu)
     {
-        if (menuItemID == UndoChange)
-        {
-            if (singletonUndoManager->undoCurrentTransactionOnly())
-            {
-                tableUpdateRequired.setValue(true);
-            }
-            else
-            {
-                DBG("UNDO WENT WRONG");
-            }
-        }
+    }
+    
+    if (topLevelMenuIndex == ControlMenu)
+    {
+        
     }
 }
 
@@ -177,3 +176,78 @@ void MainContentComponent::checkFirstTime()
         }
     }
 }
+
+ApplicationCommandTarget* MainContentComponent::getNextCommandTarget()
+{
+    // this will return the next parent component that is an ApplicationCommandTarget (in this
+    // case, there probably isn't one, but it's best to use this method in your own apps).
+    return findFirstTargetParentComponent();
+}
+
+void MainContentComponent::getAllCommands (Array <CommandID>& commands)
+{
+    // this returns the set of all commands that this target can perform..
+    const CommandID ids[] = {undoMenu, spaceBar};
+    
+    commands.addArray (ids, numElementsInArray (ids));
+}
+
+// This method is used when something needs to find out the details about one of the commands
+// that this object can perform..
+void MainContentComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
+{
+    const String generalCategory ("General");
+    
+    switch (commandID)
+    {
+        case undoMenu:
+            if (singletonUndoManager->canUndo()) {
+                String undoMessage("Undo ");
+                undoMessage << singletonUndoManager->getUndoDescription();
+                
+                result.setInfo (undoMessage, "Undo Last Action", generalCategory, 0);
+                result.addDefaultKeypress ('z', ModifierKeys::commandModifier);
+                break;
+            }
+            else
+            {
+                result.setInfo ("Undo", "Undo Last Action", generalCategory, 0);
+                result.setActive(false);
+                result.addDefaultKeypress ('z', ModifierKeys::commandModifier);
+                break;
+            }
+            
+        case spaceBar:
+        {
+            String playPause;
+            singletonPlayState.getValue() ? playPause = "Pause" : playPause = "Play";
+            result.setInfo(playPause, "Play or Pause", generalCategory, 0);
+            result.addDefaultKeypress(KeyPress::spaceKey, 0);
+            
+        }                
+        default:
+            break;
+    };
+}
+
+// this is the ApplicationCommandTarget method that is used to actually perform one of our commands..
+bool MainContentComponent::perform (const InvocationInfo& info)
+{
+    switch (info.commandID)
+    {
+        case undoMenu:
+            if (singletonUndoManager->undoCurrentTransactionOnly())
+            {
+                tableUpdateRequired.setValue(true);
+            }
+            break;
+        case spaceBar:
+            singletonPlayState.getValue() ? singletonPlayState = false : singletonPlayState = true;
+            break;
+        default:
+            return false;
+    };
+    
+    return true;
+}
+

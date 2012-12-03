@@ -130,6 +130,8 @@ public:
 	//NON DROW
 	void saveLibrary(File& saveDestination);
     
+    static File libraryNotFound();
+    
     void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property);
     
     void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded);

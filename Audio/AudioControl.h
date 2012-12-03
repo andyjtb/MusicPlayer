@@ -11,6 +11,7 @@
 #define H_AUDIOCONTROL
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "Settings.h"
 //#include "dRowAudio_SoundTouchAudioSource.h"
 
 
@@ -41,12 +42,12 @@ public:
     /**
      Sets the play state
      */
-    void setPlayState(bool shouldPlay);
+//    void setPlayState(bool shouldPlay);
     
     /**
      Toggles the current play state
      */
-    void togglePlayState();
+//    void togglePlayState();
     
     bool isPlaying();
 

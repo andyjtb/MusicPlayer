@@ -13,7 +13,7 @@
 GuiControl::GuiControl()
 {	
 	addAndMakeVisible(&playButton);
-	playButton.addListener(this);
+	//playButton.addListener(this);
 	
 	addAndMakeVisible(&volumeControl);
 	volumeControl.addValueListener(this);
@@ -27,6 +27,9 @@ GuiControl::GuiControl()
 	
 	addAndMakeVisible(&albumArt);
 	
+    addAndMakeVisible(&searchBox);
+    searchBox.getSearchTextEditor().addListener(this);
+    
 	ITunesLibrary::getInstance()->setLibraryTree (singletonLibraryTree);
     
 	musicTable.setLibraryToUse (ITunesLibrary::getInstance());
@@ -39,6 +42,7 @@ GuiControl::GuiControl()
 //    coverflow = new CoverFlowComponent();
 //    addAndMakeVisible(coverflow);
 	//setSize(500, 400);
+    singletonPlayState.addListener(this);
 }
 
 GuiControl::~GuiControl()
@@ -54,11 +58,18 @@ void GuiControl::resized()
 	transport.setBounds(150, 20, 300, 60);
 	trackInfo.setBounds(180, 100, 270, 150);
 	albumArt.setBounds(400,100,175,175);
-	
+	searchBox.setBounds(getWidth()-200, 0, 175, 60);
+    
     musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
     
 //    coverflow->setBounds(100,100,100,100);
 }
+
+void GuiControl::setAudioControl(AudioControl* incomingAudioControl)
+{
+    audioControl = incomingAudioControl;
+	audioControl->addChangeListener(this);
+} 
 
 void GuiControl::timerCallback(int timerId)
 {
@@ -74,45 +85,8 @@ void GuiControl::timerCallback(int timerId)
 	}
 }
 
-void GuiControl::setAudioControl(AudioControl* incomingAudioControl)
-{
-    audioControl = incomingAudioControl;
-	audioControl->addChangeListener(this);
-	
-//	playButton.getButtonValue().addListener(audioControl);
-} 
-
-void GuiControl::buttonClicked (Button* buttonClicked)
-{
-	if (buttonClicked == &playButton) {
-		if (audioControl->isPlaying()) {
-			audioControl->setPlayState(false);
-			//stopTimer(0);
-			stopTimer(1);
-		}
-		else {
-			audioControl->setPlayState(true);
-			startTimer(0, 50);
-			startTimer(1, 100);
-		}
-	}
-}
-
 void GuiControl::actionListenerCallback (const String& message)
 {
-//	if (message.startsWith("transportLength")) 
-//    {
-//        String subString = message.fromFirstOccurrenceOf (":", false, true);
-//        double value = subString.getDoubleValue();
-//		if (value < 1) {
-//			transport.setTransportRange(0, value, 0.01);
-//		}
-//		else {
-//			transport.setTransportRange(0, value, 0.1);
-//		}
-//		
-//    }
-//	
     if (message == "LibraryImportFinished") {
 		DBG("library Loaded");
 		ITunesLibrary::getInstance()->saveLibrary(singletonLibraryFile);
@@ -164,9 +138,20 @@ void GuiControl::valueChanged (Value& valueChanged)
     {
         if (tableUpdateRequired.getValue()) {
             musicTable.updateLibrary();
+            //CLEAR TRACK INFO DISPLAY
             tableUpdateRequired.setValue(false);
         }
     }
+    
+    if (valueChanged == singletonPlayState) {
+		if (singletonPlayState.getValue()) {
+            startTimer(0, 50);
+			startTimer(1, 100);
+		}
+		else {
+            stopTimer(1);
+		}
+	}
 }
 
 void GuiControl::loadFile()
@@ -174,11 +159,12 @@ void GuiControl::loadFile()
     File selectedFile (singletonLibraryTree.getChild(tableSelectedRow.getValue()).getProperty(MusicColumns::columnNames[MusicColumns::Location]));
     if(tableShouldPlay.getValue())
     {
+        singletonPlayState = false;
         audioControl->loadFile(selectedFile);
         tablePlayingRow = tableSelectedRow.getValue();
         tablePlayingTree = singletonLibraryTree.getChild(tablePlayingRow.getValue());
-        //singletonPlayState.setValue(true);
-        buttonClicked(&playButton);
+
+        singletonPlayState = true;
         trackInfo.loadTrackInfo(tableSelectedRow.getValue());
         tableShouldPlay.setValue(false);
     }
@@ -191,3 +177,15 @@ void GuiControl::updateTagDisplay (File audioFile)
 //	trackInfo.loadTrackInfo(audioFile);
 	albumArt.setCover(TagReader::getAlbumArt(audioFile));
 }
+
+//Text editor callbacks
+void GuiControl::textEditorTextChanged (TextEditor &textEditor)
+{
+    musicTable.setFilterText(textEditor.getText());
+}
+void GuiControl::textEditorReturnKeyPressed (TextEditor &textEditor)
+{}
+void GuiControl::textEditorEscapeKeyPressed (TextEditor &textEditor)
+{}
+void GuiControl::textEditorFocusLost (TextEditor &textEditor)
+{}
