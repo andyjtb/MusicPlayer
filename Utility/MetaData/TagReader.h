@@ -89,28 +89,26 @@ public:
 	static Image getAlbumArt (File& audioFile)
 	{
 		if (audioFile.getFullPathName().endsWith(".mp3")) {
-			//NEW METHOD REQUIRED
 			TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
 			
 			TagLib::ID3v2::FrameList frames = f.ID3v2Tag()->frameList("APIC");
 			
-			if(frames.isEmpty())
+			if(!frames.isEmpty())
 			{
-				return Image();
+                TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
+                
+                if (frame != nullptr)
+                {
+                    TagLib::ByteVector imageData = frame->picture();
+                    
+                    Image juceCover = ImageFileFormat::loadFrom(imageData.data(), imageData.size());
+                    
+                    return juceCover;
+                }
 			}
 			
-			TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
-			
-			TagLib::ByteVector imageData = frame->picture();
-			
-			Image juceCover = ImageFileFormat::loadFrom(imageData.data(), imageData.size());
-
-			return juceCover;
 		}
-		else
-		  {
-			return Image();
-		}
+        return Image();
 	}
 
  };

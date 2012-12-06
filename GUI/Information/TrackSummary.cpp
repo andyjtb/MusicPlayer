@@ -87,7 +87,7 @@ void TrackSummary::resized()
     album.setBounds (176, 90, 544, 24);
     song.setBounds (176, 30, 544, 24);
     
-    albumArt.setBounds (25, 25, 152, 144);
+    albumArt.setBounds (75, 75, 152, 144);
     
     locationLabel.setBounds (15, 215, 72, 24);
     location.setBounds (20, 230, 500, 50);

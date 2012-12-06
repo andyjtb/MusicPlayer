@@ -11,6 +11,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "TrackSummary.h"
+#include "TrackEdit.h"
+
 
 class TrackTabbed  :	public TabbedComponent
 {
@@ -22,6 +24,7 @@ public:
 private:
     //ScopedPointer<TrackSummary> trackSummary;
     TrackSummary trackSummary;
+    TrackEdit trackEdit;
 };
 
 

@@ -11,7 +11,10 @@
 TrackTabbed::TrackTabbed (int selectedTrack) : TabbedComponent(TabbedButtonBar::TabsAtBottom)
 {	   
     trackSummary.setTrack(selectedTrack);
+    trackEdit.setTrack(selectedTrack);
+    
     addTab("Summary", Colours::white, &trackSummary, true);
+    addTab("Edit Info", Colours::white, &trackEdit, true);
     
     setSize(trackSummary.getWidth(), trackSummary.getHeight());
 }

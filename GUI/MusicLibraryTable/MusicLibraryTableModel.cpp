@@ -397,7 +397,6 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
                 cellDoubleClicked(rowNumber, columnId, event);
                 break;
             case 3:
-                DBG("Display selected");
                 displayPopup.addCustomComponent(&trackTabbed);
                 
                 displayPopup.addButton("Cancel", 0);

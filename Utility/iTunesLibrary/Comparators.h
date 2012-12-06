@@ -147,7 +147,7 @@ namespace ValueTreeComparators
         const Identifier backupAttribute;
         const int direction;
         
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LexicographicWithBackup);
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LexicographicWithNumerical);
     };
     
 } //ValueTreeComparators
