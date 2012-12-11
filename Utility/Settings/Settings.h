@@ -16,7 +16,6 @@
 #define tableSelectedRow Settings::getInstance()->getSelectedRow()
 #define tableShouldPlay Settings::getInstance()->getShouldPlay()
 #define tablePlayingRow Settings::getInstance()->getPlayingRow()
-#define tablePlayingTree Settings::getInstance()->getCurrentlyPlaying()
 #define tableUpdateRequired Settings::getInstance()->getUpdateRequired()
 
 
@@ -31,14 +30,13 @@ public:
 	
     UndoManager* getUndoManager();
     
-	ValueTree& getLibraryTree();
-    ValueTree& getCurrentlyPlaying();
-    
     int& getCurrentLibId();
     int& getCurrentValueTreeId();
     
-    Value& getSelectedRow();
-    Value& getPlayingRow();
+    ValueTree& getLibraryTree();
+    ValueTree& getSelectedRow();
+    ValueTree& getPlayingRow();
+    
     Value& getShouldPlay();
     Value& getPlayState();
     Value& getUpdateRequired();
@@ -51,10 +49,10 @@ public:
 private:
 
     File settingsXmlFile, libraryFile;
-	ValueTree libraryTree, currentlyPlaying;
+	ValueTree libraryTree, selectedRow, playingRow;
     ScopedPointer<UndoManager> undoManager;
     int currentLibId, currentValueTreeId;
-    Value selectedRow, shouldPlay, playState, playingRow, updateRequired;
+    Value shouldPlay, playState, updateRequired;
 
 };
 

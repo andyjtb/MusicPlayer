@@ -52,11 +52,8 @@ void TrackInfo::resized()
 
 }
 
-void TrackInfo::loadTrackInfo(int incomingTrack)
+void TrackInfo::loadTrackInfo(ValueTree tags)
 {	
-	
-    ValueTree tags(singletonLibraryTree.getChild(incomingTrack));
-	
    if (tags.hasType("ITEM")) {
 	   toggleId3.setToggleState(true,false);
 	   title.setText (tags.getProperty(MusicColumns::columnNames[MusicColumns::Song].toString(), 0),false);
@@ -70,8 +67,5 @@ void TrackInfo::loadTrackInfo(int incomingTrack)
 		artist.setText ("Failed",false);
 		id3.setText ("Tag Not Found",false);
 	}
-    //add undomanager
-    //singletonLibraryTree.addChild(tags, -1, 0);
-    //DBG("Tree has : " << singletonLibraryTree.getNumChildren());
 }
 

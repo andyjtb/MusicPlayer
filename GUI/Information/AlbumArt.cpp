@@ -11,10 +11,12 @@
 
 AlbumArt::AlbumArt ()
 {	
-	fileSelected = false;
+	width = height = 175;
+    
+    fileSelected = false;
 	tagMissing = false;
 
-    setSize (175, 175);
+    setSize (width, height);
 	
 }
 
@@ -27,7 +29,7 @@ AlbumArt::~AlbumArt()
 
 void AlbumArt::resized()
 {
-	setBounds (0, 0, 175, 175);
+	setBounds (0, 0, width, height);
 }
 
 void AlbumArt::paint(Graphics& g)
@@ -76,45 +78,52 @@ void AlbumArt::mouseDown(const MouseEvent & e) {
 		
 		if (menuResult==1) 
 		{
-			FileChooser fc ("Choose an album cover to open...",
-							File::getCurrentWorkingDirectory(),
-							"*.jpg;*.jpeg;*.png");
-			
-			ImagePreviewComponent imagePreview;
-			imagePreview.setSize (200, 200);
-			
-			if (fc.browseForFileToOpen(&imagePreview))
-			{				
-				newCover = ImageFileFormat::loadFrom(fc.getResult());
-				setImage(newCover);
-			}
+            fromFile();
 			
 		}
-		//		if (menuResult == 2) {
-		//			int result=0;
-		//			UrlLoad urlLoad;
-		//			AlertWindow urlAlert("Choose an album cover to open...", "You picked: ", AlertWindow::NoIcon);
-		//			
-		//			urlAlert.addCustomComponent(&urlLoad);
-		//			urlAlert.addButton("Cancel", 0);
-		//			urlAlert.addButton("Ok", 1);
-		//			result = urlAlert.runModalLoop();
-		//			urlAlert.removeCustomComponent(0);
-		//			
-		//			if (result == 0) {
-		//				std::cout<< "cancelled";
-		//			}
-		//			if (result==1) {
-		//				std::cout << "Ok";
-		//				newCover = urlLoad.getImage();
-		//				setImages (false, true, true,
-		//						   newCover, 1.0000f, Colour (0x0),
-		//						   newCover, 1.0000f, Colour (0x0),
-		//						   newCover, 1.0000f, Colour (0x0));
-		//				sendActionMessage("albumart");
-		//			}
-		//			
-		//		}
-		//		
+        
+        if (menuResult == 2) {
+            fromUrl();
+        }
+			
 	}
-}	
+}
+
+void AlbumArt::fromFile()
+{
+    FileChooser fc ("Choose an album cover to open...",
+                    File::getCurrentWorkingDirectory(),
+                    "*.jpg;*.jpeg;*.png");
+    
+    ImagePreviewComponent imagePreview;
+    imagePreview.setSize (200, 200);
+    
+    if (fc.browseForFileToOpen(&imagePreview))
+    {				
+        newCover = ImageFileFormat::loadFrom(fc.getResult());
+        setImage(newCover);
+    }
+}
+
+void AlbumArt::fromUrl()
+{
+    int result=0;
+    UrlLoad urlLoad;
+    AlertWindow urlAlert("Choose an album cover to open...", "You picked: ", AlertWindow::NoIcon);
+    
+    urlAlert.addCustomComponent(&urlLoad);
+    urlAlert.addButton("Cancel", 0);
+    urlAlert.addButton("Ok", 1);
+    result = urlAlert.runModalLoop();
+    urlAlert.removeCustomComponent(0);
+    
+    if (result == 0) {
+        std::cout<< "cancelled";
+    }
+    if (result==1) {
+        std::cout << "Ok";
+        newCover = urlLoad.getImage();
+        setImage (newCover);
+        //sendActionMessage("albumart");
+    }
+}

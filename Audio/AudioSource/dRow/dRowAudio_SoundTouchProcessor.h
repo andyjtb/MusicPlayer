@@ -24,6 +24,7 @@
 #if DROWAUDIO_USE_SOUNDTOUCH || DOXYGEN
 
 #include "soundtouch/SoundTouch.h"
+#include "../JuceLibraryCode/JuceHeader.h"
 
 //using namespace soundtouch;
 

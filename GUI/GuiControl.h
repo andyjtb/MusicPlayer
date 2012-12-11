@@ -34,7 +34,8 @@ class GuiControl  : public Component,
 					public ChangeListener,
 					public ValueListener,
 					public MultiTimer,
-                    public TextEditor::Listener
+                    public TextEditor::Listener,
+                    public ValueTree::Listener
 {
 public:
 	//==============================================================================
@@ -69,6 +70,14 @@ public:
     void textEditorEscapeKeyPressed (TextEditor &textEditor);
     void textEditorFocusLost (TextEditor &textEditor);
 	
+    //ValueTree Callbacks
+    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property);
+    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded);
+    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved);
+    void valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved);
+    void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged);
+    void valueTreeRedirected (ValueTree &treeWhichHasBeenChanged);
+    
 private:
 	AudioControl* audioControl;
 	

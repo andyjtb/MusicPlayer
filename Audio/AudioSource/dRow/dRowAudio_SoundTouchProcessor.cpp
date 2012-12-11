@@ -20,6 +20,8 @@
 
 #if DROWAUDIO_USE_SOUNDTOUCH
 
+#include "dRowAudio_SoundTouchProcessor.h"
+
 using namespace soundtouch;
 
 SoundTouchProcessor::SoundTouchProcessor()

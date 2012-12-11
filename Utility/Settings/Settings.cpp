@@ -73,11 +73,6 @@ ValueTree& Settings::getLibraryTree()
 	return libraryTree;
 }
 
-ValueTree& Settings::getCurrentlyPlaying()
-{
-    return currentlyPlaying;
-}
-
 int& Settings::getCurrentLibId()
 {
     return currentLibId;
@@ -88,12 +83,12 @@ int& Settings::getCurrentValueTreeId()
     return currentValueTreeId;
 }
 
-Value& Settings::getSelectedRow()
+ValueTree& Settings::getSelectedRow()
 {
     return selectedRow;
 }
 
-Value& Settings::getPlayingRow()
+ValueTree& Settings::getPlayingRow()
 {
     return playingRow;
 }

@@ -8,13 +8,11 @@
 
 #include "TrackTabbed.h"
 
-TrackTabbed::TrackTabbed (int selectedTrack) : TabbedComponent(TabbedButtonBar::TabsAtBottom)
+TrackTabbed::TrackTabbed () : TabbedComponent(TabbedButtonBar::TabsAtBottom)
 {	   
-    trackSummary.setTrack(selectedTrack);
-    trackEdit.setTrack(selectedTrack);
-    
     addTab("Summary", Colours::white, &trackSummary, true);
     addTab("Edit Info", Colours::white, &trackEdit, true);
+    addTab("Album Art", Colours::white, &trackArt, true);
     
     setSize(trackSummary.getWidth(), trackSummary.getHeight());
 }
@@ -22,4 +20,11 @@ TrackTabbed::TrackTabbed (int selectedTrack) : TabbedComponent(TabbedButtonBar::
 TrackTabbed::~TrackTabbed()
 {
 	
+}
+
+void TrackTabbed::setTrack (ValueTree selectedTrack)
+{
+    trackSummary.setTrack(selectedTrack);
+    trackEdit.setTrack(selectedTrack);
+    trackArt.setTrack(selectedTrack);
 }

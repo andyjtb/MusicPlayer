@@ -20,9 +20,8 @@ SearchBox::SearchBox ()
     search.setReadOnly (false);
     search.setScrollbarsShown (false);
     search.setCaretVisible (true);
-    //Search.setPopupMenuEnabled (true);
-    search.setColour (TextEditor::textColourId, Colour (0xff8b8b8b));
-    search.setText ("Search");
+    search.setSelectAllWhenFocused(true);
+    search.setTextToShowWhenEmpty("Search", Colour (0xff8b8b8b));
 
     setSize (175, 60);
 

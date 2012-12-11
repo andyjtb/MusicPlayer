@@ -11,6 +11,7 @@
 #define ALBUMART
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "UrlLoad.h"
 
 class AlbumArt  :	public ImageComponent
 {
@@ -22,10 +23,16 @@ public:
 	void paint(Graphics& g);
 	
 	void setCover (Image cover);
+    
+    void fromFile();
+    void fromUrl();
+    
+    
 	
 private:
 	void mouseDown(const MouseEvent &e);
 
+    int width, height;
 	bool fileSelected;
 	bool tagMissing; 
 	

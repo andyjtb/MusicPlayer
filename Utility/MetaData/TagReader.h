@@ -111,5 +111,10 @@ public:
         return Image();
 	}
 
+    static int getBitRate (File& audioFile)
+    {
+        TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8());
+        return f.audioProperties()->bitrate();
+    }
  };
 #endif //H_TAGREADER

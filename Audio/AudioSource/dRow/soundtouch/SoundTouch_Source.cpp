@@ -90,18 +90,21 @@
 #include "sse_optimized.cpp"
 #include "TDStretch.cpp"
 
-#if JUCE_64BIT
-    #if JUCE_WIN
-        #include "cpu_detect_x64_win.cpp"
-    #elif JUCE_MAC || JUCE_IOS || JUCE_LINUX
-        #include "cpu_detect_x64_gcc.cpp"
-    #endif
-#elif JUCE_32BIT || JUCE_IOS
-    #if JUCE_WINDOWS
-        #include "cpu_detect_x86_win.cpp"
-    #elif JUCE_MAC || JUCE_IOS || JUCE_LINUX
-        #include "cpu_detect_x86_gcc.cpp"
-    #endif
-#endif
+#include "cpu_detect_x64_gcc.cpp"
+
+
+//#if JUCE_64BIT
+//    #if JUCE_WIN
+//        #include "cpu_detect_x64_win.cpp"
+//    #elif JUCE_MAC || JUCE_IOS || JUCE_LINUX
+//        #include "cpu_detect_x64_gcc.cpp"
+//    #endif
+//#elif JUCE_32BIT || JUCE_IOS
+//    #if JUCE_WINDOWS
+//        #include "cpu_detect_x86_win.cpp"
+//    #elif JUCE_MAC || JUCE_IOS || JUCE_LINUX
+//        #include "cpu_detect_x86_gcc.cpp"
+//    #endif
+//#endif
 
 //==============================================================================

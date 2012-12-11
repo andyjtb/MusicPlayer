@@ -27,7 +27,8 @@
 #include "Comparators.h"
 #include "MusicLibraryHelpers.h"
 #include "Settings.h"
-#include "TrackTabbed.h"
+#include "TrackDialog.h"
+
 
 
 //==============================================================================
@@ -118,8 +119,9 @@ public:
 
     /** @internal */
 	var getDragSourceDescription (const SparseSet<int>& currentlySelectedRows);
-//NON DROW FUNCTIONS
-	void updateLibrary();
+
+    //NON DROW FUNCTIONS
+    void updateLibrary();
     void selectedRowsChanged (int lastRowSelected);
     void returnKeyPressed (int currentSelectedRow);
     void deleteKeyPressed (int currentSelectedRow);
@@ -136,6 +138,8 @@ private:
     ValueTree dataList;
 	ValueTree filteredDataList;
         
+    ScopedPointer<TrackDialog> trackDialog;
+    
     int filteredNumRows;
 	bool finishedLoading;
 	

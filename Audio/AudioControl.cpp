@@ -88,30 +88,6 @@ void AudioControl::loadFile (const File audioFile)
 	}	    
 }
 
-//void AudioControl::togglePlayState()
-//{
-//	if (singletonPlayState.getValue()) {
-//		transport.stop();
-//	}
-//	else {
-//		transport.start();
-//	}
-//}
-//
-//void AudioControl::setPlayState (bool shouldPlay)
-//{
-//	if (shouldPlay) {
-//		transport.start();
-//        singletonPlayState = true;
-//	}
-//	else {
-//		transport.stop();
-//        singletonPlayState = false;
-//		//transport.setPosition(0);
-//	}
-//	
-//}
-
 bool AudioControl::isPlaying()
 {
 	return transport.isPlaying();

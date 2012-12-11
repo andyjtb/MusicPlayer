@@ -26,7 +26,7 @@ public:
     void paint (Graphics& g);
     void resized();
     
-    void setTrack(int incomingTrack);
+    void setTrack(ValueTree incomingTrack);
     
 private:
     

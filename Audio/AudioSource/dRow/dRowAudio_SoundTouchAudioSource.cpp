@@ -20,7 +20,7 @@
 
 #if DROWAUDIO_USE_SOUNDTOUCH
 
-
+#include "dRowAudio_SoundTouchAudioSource.h"
 
 SoundTouchAudioSource::SoundTouchAudioSource (PositionableAudioSource* source_,
                                               bool deleteSourceWhenDeleted,

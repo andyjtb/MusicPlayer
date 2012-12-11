@@ -243,9 +243,13 @@ void MusicLibraryTable::sortOrderChanged (int newSortColumnId, bool isForwards)
 		else
         {
             //			ValueTreeComparators::Lexicographic sorter (MusicColumns::columnNames[newSortColumnId], isForwards);
-			ValueTreeComparators::LexicographicWithBackup sorter (MusicColumns::columnNames[newSortColumnId],
-                                                                  MusicColumns::columnNames[MusicColumns::LibID],
-                                                                  isForwards);
+//			ValueTreeComparators::LexicographicWithBackup sorter (MusicColumns::columnNames[newSortColumnId],
+//                                                                  MusicColumns::columnNames[MusicColumns::LibID],
+//                                                                  isForwards);
+            ValueTreeComparators::LexicographicWithNumerical sorter (MusicColumns::columnNames[newSortColumnId],
+                                                                    MusicColumns::columnNames[MusicColumns::LibID],
+                                                                    isForwards);
+
             
 			filteredDataList.sort (sorter, 0, false);
             //            dataList.sort (sorter, 0, false);
@@ -315,6 +319,7 @@ var MusicLibraryTable::getDragSourceDescription (const SparseSet< int > &current
 //    
 //	return var::null;
 }
+
 //NON DROW
 void MusicLibraryTable::updateLibrary()
 {
@@ -323,13 +328,13 @@ void MusicLibraryTable::updateLibrary()
 
 void MusicLibraryTable::selectedRowsChanged(int lastRowSelected)
 {
-    tableSelectedRow.setValue(lastRowSelected);
+    tableSelectedRow = filteredDataList.getChild(lastRowSelected);
 }
 
 void MusicLibraryTable::returnKeyPressed(int currentSelectedRow)
 {
     tableShouldPlay.setValue(true);
-    tableSelectedRow.setValue(currentSelectedRow);
+    tableSelectedRow = filteredDataList.getChild(currentSelectedRow);
 }
 
 void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
@@ -338,23 +343,27 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
     Array<int> toDelete;
     
     for (int counter = 0; counter < selectedRows.size(); counter++) {
-        toDelete.add(singletonLibraryTree.getChild(selectedRows[counter]).getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
+        toDelete.add(filteredDataList.getChild(selectedRows[counter]).getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
     } 
     
     for (int counter = 0; counter < toDelete.size(); counter++)
     {
         ValueTree valueDelete = singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], toDelete[counter]);  
-        if (tablePlayingTree == valueDelete)
+        if (tablePlayingRow == valueDelete)
         {
             singletonPlayState = false;
         }
         singletonLibraryTree.removeChild(valueDelete, singletonUndoManager);
+        filteredDataList.removeChild(valueDelete, singletonUndoManager);
+        
     }
         //DBG("Trans num = " << singletonUndoManager->getNumActionsInCurrentTransaction());
         //DBG("Undo message = " << singletonUndoManager->getUndoDescription());
-        tableUpdateRequired.setValue(true);
-        table.deselectAllRows();
+    tableUpdateRequired.setValue(true);
+    setFilterText(currentFilterText);
     
+    table.deselectAllRows();
+    table.selectRow(selectedRows[0]);
 }
 
 void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::MouseEvent &event)
@@ -382,9 +391,7 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
         int result = rightClick.show();
         TextEditor textEdit;
         
-        AlertWindow displayPopup(singletonLibraryTree.getChild(rowNumber).getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString(), "", AlertWindow::NoIcon);
-        TrackTabbed trackTabbed(rowNumber);
-        trackTabbed.setBounds(0,0,530,510);
+
         
         switch (result) {
             case 1:
@@ -397,18 +404,14 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
                 cellDoubleClicked(rowNumber, columnId, event);
                 break;
             case 3:
-                displayPopup.addCustomComponent(&trackTabbed);
+            {
+                trackDialog = new TrackDialog(rowNumber, filteredDataList);             
                 
-                displayPopup.addButton("Cancel", 0);
-                displayPopup.addButton("Ok", 1);
-                
-                if (displayPopup.runModalLoop() != 0) {
-                    //Call static save function which contains tag saving as well as valuetree, once valuetree is changed table updates
-                }
-                displayPopup.removeCustomComponent(0);
+                DialogWindow::showDialog(filteredDataList.getChild(rowNumber).getProperty(MusicColumns::columnNames[MusicColumns::Song]), trackDialog, 0, Colours::white, true);
                 break;
+            }
             case 4:
-                File(singletonLibraryTree.getChild(rowNumber).getProperty("Location")).revealToUser();
+                File(filteredDataList.getChild(rowNumber).getProperty("Location")).revealToUser();
                 break;
             case 5:
                 deleteKeyPressed(rowNumber);
@@ -426,5 +429,5 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
 void MusicLibraryTable::cellDoubleClicked(int rowNumber, int columnId, const juce::MouseEvent &event)
 {
     tableShouldPlay.setValue(true);
-    tableSelectedRow.setValue(rowNumber);
+    tableSelectedRow = filteredDataList.getChild(rowNumber);
 }

@@ -9,7 +9,7 @@
 #include "TrackEdit.h"
 
 TrackEdit::TrackEdit()
-{
+{    
     addAndMakeVisible (&songLabel);
     songLabel.setText("Song: ", false);
     
@@ -20,6 +20,7 @@ TrackEdit::TrackEdit()
     song.setScrollbarsShown (false);
     song.setCaretVisible (true);
     song.setPopupMenuEnabled (true);
+    song.addListener(this);
     
     addAndMakeVisible (&artistLabel);
     artistLabel.setText("Artist: ", false);
@@ -31,6 +32,7 @@ TrackEdit::TrackEdit()
     artist.setScrollbarsShown (false);
     artist.setCaretVisible (true);
     artist.setPopupMenuEnabled (true);
+    artist.addListener(this);
     
     addAndMakeVisible (&albumLabel);
     albumLabel.setText("Album: ", false);
@@ -42,6 +44,7 @@ TrackEdit::TrackEdit()
     album.setScrollbarsShown (false);
     album.setCaretVisible (true);
     album.setPopupMenuEnabled (true);
+    album.addListener(this);
     
     addAndMakeVisible (&genreLabel);
     genreLabel.setText("Genre: ", false);
@@ -53,6 +56,7 @@ TrackEdit::TrackEdit()
     genre.setScrollbarsShown (false);
     genre.setCaretVisible (true);
     genre.setPopupMenuEnabled (true);
+    genre.addListener(this);
     
     addAndMakeVisible (&ratingLabel);
     ratingLabel.setText("Rating: ", false);
@@ -61,7 +65,7 @@ TrackEdit::TrackEdit()
     rating.setRange (0, 5, 1);
     rating.setSliderStyle (Slider::IncDecButtons);
     rating.setTextBoxStyle (Slider::TextBoxLeft, false, 30, 20);
-    rating.addListener (this);
+    rating.addListener(this);
     
     addAndMakeVisible (&labelLabel);
     labelLabel.setText("Label: ", false);
@@ -73,6 +77,7 @@ TrackEdit::TrackEdit()
     label.setScrollbarsShown (true);
     label.setCaretVisible (true);
     label.setPopupMenuEnabled (true);
+    label.addListener(this);
     
     addAndMakeVisible (&trackLabel);
     trackLabel.setText("Track Number: ", false);
@@ -85,15 +90,9 @@ TrackEdit::TrackEdit()
     trackNum.setScrollbarsShown (false);
     trackNum.setCaretVisible (true);
     trackNum.setPopupMenuEnabled (false);
+    trackNum.addListener(this);
     
-    addAndMakeVisible (&save);
-    save.setButtonText ("Save");
-    save.addListener (this);
-    
-    
-    //[UserPreSize]
-    //[/UserPreSize]
-    
+
     setSize (530, 510);
     
 }
@@ -125,32 +124,14 @@ void TrackEdit::resized()
     label.setBounds (16, 272, 440, 120);
     trackLabel.setBounds (360, 56, 112, 24);
     trackNum.setBounds (384, 80, 56, 24);
-    save.setBounds (192, 432, 150, 24);
-}
-
-void TrackEdit::sliderValueChanged (Slider* slider)
-{
-    if (slider == &rating)
-    {
-
-    }
-
-}
-
-void TrackEdit::buttonClicked (Button* buttonClicked)
-{
-    if (buttonClicked == &save)
-    {
-        //Call static save function
-    }
-
+    //save.setBounds (192, 432, 150, 24);
 }
 
 
-void TrackEdit::setTrack(int incomingTrack)
+void TrackEdit::setTrack(ValueTree incomingTrack)
 {
-    File selectedFile (singletonLibraryTree.getChild(incomingTrack).getProperty(MusicColumns::columnNames[MusicColumns::Location]));
-    ValueTree songTree (singletonLibraryTree.getChild(incomingTrack));
+    File selectedFile (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
+    songTree = incomingTrack;
     
     artist.setText (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString(), false);
     
@@ -164,3 +145,43 @@ void TrackEdit::setTrack(int incomingTrack)
     
     rating.setValue(songTree.getProperty(MusicColumns::columnNames[MusicColumns::Rating]));
 }
+
+
+void TrackEdit::sliderValueChanged (Slider* sliderChanged)
+{
+    songTree.setProperty(MusicColumns::columnNames[MusicColumns::Rating], rating.getValue(), 0);
+}
+void TrackEdit::textEditorTextChanged (TextEditor* textEditor)
+{
+    DBG("CALLED");
+    if (textEditor == &song) {
+        songTree.setProperty(MusicColumns::columnNames[MusicColumns::Song], song.getText(), 0);
+    }
+    
+    if (textEditor == &artist) {
+        songTree.setProperty(MusicColumns::columnNames[MusicColumns::Artist], artist.getText(), 0);
+    }
+    
+    if (textEditor == &album) {
+        songTree.setProperty(MusicColumns::columnNames[MusicColumns::Album], album.getText(), 0);
+    }
+    
+    if (textEditor == &genre) {
+        songTree.setProperty(MusicColumns::columnNames[MusicColumns::Genre], genre.getText(), 0);
+    }
+    
+    if (textEditor == &label) {
+        songTree.setProperty(MusicColumns::columnNames[MusicColumns::Label], label.getText(), 0);
+    }
+
+    songTree.setProperty(MusicColumns::columnNames[MusicColumns::Modified], Time::getCurrentTime().toMilliseconds(), 0);
+}
+void TrackEdit::textEditorReturnKeyPressed (TextEditor &textEditor)
+{
+    
+}
+void TrackEdit::textEditorEscapeKeyPressed (TextEditor &textEditor)
+{}
+void TrackEdit::textEditorFocusLost (TextEditor &textEditor)
+{}
+

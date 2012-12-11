@@ -41,7 +41,7 @@ GuiControl::GuiControl()
     
 //    coverflow = new CoverFlowComponent();
 //    addAndMakeVisible(coverflow);
-	//setSize(500, 400);
+//    setSize(500, 400);
     singletonPlayState.addListener(this);
 }
 
@@ -124,11 +124,6 @@ void GuiControl::valueChanged (Value& valueChanged)
 		audioControl->setVolume(valueChanged.getValue());
 	}
     
-    if (valueChanged == tableSelectedRow)
-    {
-        loadFile();        
-    }
-    
     if (valueChanged == tableShouldPlay)
     {
         loadFile();
@@ -156,16 +151,15 @@ void GuiControl::valueChanged (Value& valueChanged)
 
 void GuiControl::loadFile()
 {
-    File selectedFile (singletonLibraryTree.getChild(tableSelectedRow.getValue()).getProperty(MusicColumns::columnNames[MusicColumns::Location]));
+    File selectedFile (tableSelectedRow.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
     if(tableShouldPlay.getValue())
     {
         singletonPlayState = false;
         audioControl->loadFile(selectedFile);
-        tablePlayingRow = tableSelectedRow.getValue();
-        tablePlayingTree = singletonLibraryTree.getChild(tablePlayingRow.getValue());
-
+        tablePlayingRow = tableSelectedRow;
+        
         singletonPlayState = true;
-        trackInfo.loadTrackInfo(tableSelectedRow.getValue());
+        trackInfo.loadTrackInfo(tableSelectedRow);
         tableShouldPlay.setValue(false);
     }
     
@@ -174,7 +168,6 @@ void GuiControl::loadFile()
 
 void GuiControl::updateTagDisplay (File audioFile)
 {
-//	trackInfo.loadTrackInfo(audioFile);
 	albumArt.setCover(TagReader::getAlbumArt(audioFile));
 }
 
@@ -189,3 +182,21 @@ void GuiControl::textEditorEscapeKeyPressed (TextEditor &textEditor)
 {}
 void GuiControl::textEditorFocusLost (TextEditor &textEditor)
 {}
+
+//ValueTree Callbacks
+void GuiControl::valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
+{}
+void GuiControl::valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded)
+{}
+void GuiControl::valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved)
+{}
+void GuiControl::valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved)
+{}
+void GuiControl::valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged)
+{}
+void GuiControl::valueTreeRedirected (ValueTree &treeWhichHasBeenChanged)
+{  
+    //Selected Row change listener
+    loadFile();
+}
+

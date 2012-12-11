@@ -24,6 +24,7 @@
 #if DROWAUDIO_USE_SOUNDTOUCH || DOXYGEN
 
 #include "dRowAudio_SoundTouchProcessor.h"
+#include "../JuceLibraryCode/JuceHeader.h"
 
 //==============================================================================
 /** An audio source that can independently change the rate, tempo and pitch of

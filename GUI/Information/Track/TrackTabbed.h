@@ -12,19 +12,22 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "TrackSummary.h"
 #include "TrackEdit.h"
+#include "TrackArt.h"
 
 
-class TrackTabbed  :	public TabbedComponent
+
+class TrackTabbed  : public TabbedComponent
 {
 public:
-    TrackTabbed (int selectedTrack);
+    TrackTabbed ();
     ~TrackTabbed();
-
 	
+    void setTrack (ValueTree selectedTrack);
+    
 private:
-    //ScopedPointer<TrackSummary> trackSummary;
     TrackSummary trackSummary;
-    TrackEdit trackEdit;
+    TrackEdit trackEdit; 
+    TrackArt trackArt;
 };
 
 

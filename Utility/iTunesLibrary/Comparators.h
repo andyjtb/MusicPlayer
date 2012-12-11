@@ -137,7 +137,10 @@ namespace ValueTreeComparators
             result = first[attributeToSort].toString().compareLexicographically (second[attributeToSort].toString());
             
             if (result == 0)
-                result = first[backupAttribute].toString().compareLexicographically (second[backupAttribute].toString());
+                
+                
+                result = (double(first[backupAttribute]) > double(second[backupAttribute])) ? 1 : -1;
+            
             
             return direction * result;
         }
@@ -149,6 +152,8 @@ namespace ValueTreeComparators
         
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LexicographicWithNumerical);
     };
+    
+
     
 } //ValueTreeComparators
 

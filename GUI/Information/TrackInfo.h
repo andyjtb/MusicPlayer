@@ -22,7 +22,7 @@ public:
     ~TrackInfo();
 
     void resized();
-	void loadTrackInfo(int incomingTrack);
+	void loadTrackInfo(ValueTree tags);
 
 private:
     Label lTitle;

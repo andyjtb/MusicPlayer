@@ -8,6 +8,40 @@
 
 #include "MainComponent.h"
 
+class DirectoryLoading : public ThreadWithProgressWindow
+{
+public:
+    DirectoryLoading() : ThreadWithProgressWindow ("Loading...", true, true)
+    {
+    }
+    void run()
+    {
+        const MessageManagerLock mmLock;
+        
+        String filesFound;
+        
+        DirectoryIterator directoryIterator (directory, true, "*.mp3",2);
+        
+        while (directoryIterator.next())
+        {
+            setProgress(-1.0);
+            if (threadShouldExit())
+                break;
+            File fileFound (directoryIterator.getFile());
+            String loadingString("Loading : " + fileFound.getFileName());
+            //setStatusMessage(loadingString);
+            singletonLibraryTree.addChild(TagReader::addToLibrary(fileFound),-1,0);
+            
+        }
+    }
+    
+    void setDirectory (File incomingDirectory)
+    {
+        directory = incomingDirectory;
+    }
+    File directory;
+};
+
 
 //==============================================================================
 MainContentComponent::MainContentComponent()
@@ -45,7 +79,7 @@ void MainContentComponent::resized()
 //MenuBarCallbacks==============================================================
 StringArray MainContentComponent::getMenuBarNames()
 {
-	const char* const names[] = { "File", "Edit", "Controls", 0 };
+	const char* const names[] = {"File", "Edit", "Controls", 0 };
 	return StringArray (names);
 }
 
@@ -109,25 +143,20 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 			FileChooser fc ("Choose a directory to open...",File::getCurrentWorkingDirectory(),"*",true);
 			if (fc.browseForDirectory()) 
 			{
-				String initialDirectory;
-				String filesFound;
-				String filesInfo;
-				
-				
-				initialDirectory = fc.getResult().getFullPathName();
-				
-				DirectoryIterator directoryIterator (initialDirectory, true, "*.mp3",2);
-				
-				while (directoryIterator.next())
-				{
-					File fileFound (directoryIterator.getFile());
-					filesFound<<fileFound.getParentDirectory().getFileName()<<"/"<<fileFound.getFileName()<<"\n";
-                    DBG("Loading : " << fileFound.getFileName());
-                    singletonLibraryTree.addChild(TagReader::addToLibrary(fileFound),-1,0);
-				}
-				filesInfo << "You picked: " << initialDirectory << "\n" << "Files: \n" << filesFound;   
-				AlertWindow::showMessageBoxAsync (AlertWindow::InfoIcon, "Directory Chooser...", filesInfo);
-			}		
+                
+                
+                DirectoryLoading d;
+                d.setDirectory(fc.getResult());
+                
+                if (d.runThread())
+                {
+                    DBG("Complete");
+                }
+                else
+                {
+                    DBG("User quit early");
+                }
+            }
 		}
 		
 		if (menuItemID == ImportItunes)
@@ -250,4 +279,3 @@ bool MainContentComponent::perform (const InvocationInfo& info)
     
     return true;
 }
-

@@ -111,28 +111,27 @@ void TrackSummary::resized()
     sampleRate.setBounds (325, 335, 100, 24);
 }
 
-void TrackSummary::setTrack(int incomingTrack)
+void TrackSummary::setTrack(ValueTree incomingTrack)
 {
-    File selectedFile (singletonLibraryTree.getChild(incomingTrack).getProperty(MusicColumns::columnNames[MusicColumns::Location]));
-    ValueTree songTree (singletonLibraryTree.getChild(incomingTrack));
+    File selectedFile (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
     
-    artist.setText (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString(), false);
+    artist.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString(), false);
     albumArt.setCover(TagReader::getAlbumArt(selectedFile));
     
-    album.setText (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString(), false);
+    album.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString(), false);
     
-    song.setText (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString(), false);
+    song.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString(), false);
     
-    location.setText (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString(), false);
+    location.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString(), false);
     
-    type.setText (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Kind]).toString(), false);
+    type.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Kind]).toString(), false);
     
     size.setText(File::descriptionOfSizeInBytes(selectedFile.getSize()), false);
     
-    String addedString = Time (int64 (songTree[MusicColumns::columnNames[MusicColumns::Added]])).formatted ("%d/%m/%Y - %H:%M");
+    String addedString = Time (int64 (incomingTrack[MusicColumns::columnNames[MusicColumns::Added]])).formatted ("%d/%m/%Y - %H:%M");
     added.setText (addedString, false);
     
-    String modifiedString = Time (int64 (songTree[MusicColumns::columnNames[MusicColumns::Modified]])).formatted ("%d/%m/%Y - %H:%M");
+    String modifiedString = Time (int64 (incomingTrack[MusicColumns::columnNames[MusicColumns::Modified]])).formatted ("%d/%m/%Y - %H:%M");
     modified.setText (modifiedString, false);
     
     AudioFormatManager formatManager;
@@ -140,9 +139,9 @@ void TrackSummary::setTrack(int incomingTrack)
     
     ScopedPointer<AudioFormatReader> reader;
     reader = formatManager.createReaderFor (selectedFile);
-    int bitRateNum = (((reader->sampleRate*reader->bitsPerSample)*reader->numChannels)/8);
+    //int bitRateNum = (((reader->sampleRate*reader->bitsPerSample)*reader->numChannels)/8);
     
-    String bitRateString (String(bitRateNum) + " kbps");
+    String bitRateString (String(TagReader::getBitRate(selectedFile)) + " kbps");
     bitRate.setText(bitRateString, false);
     
     String sampleRateString (String(reader->sampleRate) + " Hz");

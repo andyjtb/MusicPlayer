@@ -12,7 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Settings.h"
-//#include "dRowAudio_SoundTouchAudioSource.h"
+#include "dRowAudio_SoundTouchAudioSource.h"
 
 
 /**
@@ -84,8 +84,8 @@ private:
 	
 	ScopedPointer<AudioFormatReaderSource> currentAudioFileSource;
 	
-//	SoundTouchAudioSource* soundTouch;
-//	SoundTouchProcessor::PlaybackSettings soundTouchSettings;
+	//SoundTouchAudioSource* soundTouch;
+	//SoundTouchProcessor::PlaybackSettings soundTouchSettings;
 	
 	//audio variables
     float audioMeterOutputL;

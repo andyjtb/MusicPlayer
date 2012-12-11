@@ -14,8 +14,8 @@
 #include "MusicLibraryHelpers.h"
 
 class TrackEdit  :	public Component,
-                    public SliderListener,
-                    public ButtonListener
+                    public Slider::Listener,
+                    public TextEditor::Listener
 {
 public:
     TrackEdit ();
@@ -24,10 +24,15 @@ public:
     void resized();
 	void paint(Graphics& g);
 	
-    void setTrack(int incomingTrack);
-	
-    void sliderValueChanged (Slider* slider);
-    void buttonClicked (Button* buttonClicked);
+    void setTrack(ValueTree incomingTrack);
+
+    void sliderValueChanged (Slider* sliderChanged);
+    
+    void textEditorTextChanged (TextEditor* textEditor);    
+    void textEditorReturnKeyPressed (TextEditor &textEditor);
+    void textEditorEscapeKeyPressed (TextEditor &textEditor);
+    void textEditorFocusLost (TextEditor &textEditor);
+    
     
 private:
     Label songLabel;
@@ -45,6 +50,9 @@ private:
     Label trackLabel;
     TextEditor trackNum;
     TextButton save;
+    
+    ValueTree songTree;
+
 };
 
 
