@@ -136,7 +136,7 @@ private:
     String currentFilterText;
     
     ValueTree dataList;
-	ValueTree filteredDataList;
+	//ValueTree filteredDataList;
         
     ScopedPointer<TrackDialog> trackDialog;
     

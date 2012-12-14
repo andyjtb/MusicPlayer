@@ -360,10 +360,10 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
         //DBG("Trans num = " << singletonUndoManager->getNumActionsInCurrentTransaction());
         //DBG("Undo message = " << singletonUndoManager->getUndoDescription());
     tableUpdateRequired.setValue(true);
-    setFilterText(currentFilterText);
     
     table.deselectAllRows();
     table.selectRow(selectedRows[0]);
+    setFilterText(currentFilterText);
 }
 
 void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::MouseEvent &event)
@@ -389,23 +389,28 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
         rightClick.addItem(5, "Delete Song");
 		
         int result = rightClick.show();
-        TextEditor textEdit;
+        
         
 
         
         switch (result) {
             case 1:
+            {
                 //FIX ME
-                textEdit.setText(singletonLibraryTree.getChild(rowNumber).getProperty(MusicColumns::columnNames[columnId]).toString());
-                refreshComponentForCell(rowNumber, columnId, true, &textEdit);
+//                Component* comp = table.getCellComponent(rowNumber, columnId);
+//                DBG(comp->getName())
+//                TextEditor textEdit;
+//                textEdit.setText(singletonLibraryTree.getChild(rowNumber).getProperty(MusicColumns::columnNames[columnId]).toString());
+//                refreshComponentForCell(rowNumber, columnId, true, &textEdit);
                 DBG("Edit selected");
                 break;
+            }
             case 2:
                 cellDoubleClicked(rowNumber, columnId, event);
                 break;
             case 3:
             {
-                trackDialog = new TrackDialog(rowNumber, filteredDataList);             
+                trackDialog = new TrackDialog(rowNumber);             
                 
                 DialogWindow::showDialog(filteredDataList.getChild(rowNumber).getProperty(MusicColumns::columnNames[MusicColumns::Song]), trackDialog, 0, Colours::white, true);
                 break;

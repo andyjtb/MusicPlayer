@@ -93,6 +93,11 @@ ValueTree& Settings::getPlayingRow()
     return playingRow;
 }
 
+ValueTree& Settings::getFilteredList()
+{
+    return filteredDataTree;
+}
+
 Value& Settings::getShouldPlay()
 {
     return shouldPlay;

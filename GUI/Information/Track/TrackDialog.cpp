@@ -8,9 +8,8 @@
 
 #include "TrackDialog.h"
 
-TrackDialog::TrackDialog(int incomingTrack, ValueTree incomingDataList)
+TrackDialog::TrackDialog(int incomingTrack)
 {    
-    filteredDataList = incomingDataList;
     selectedTrack = incomingTrack;
     
     addAndMakeVisible(&ok);
@@ -50,23 +49,29 @@ void TrackDialog::resized()
 
 void TrackDialog::setTrack()
 {
-    trackTabbed.setTrack(filteredDataList.getChild(selectedTrack));
-    DialogWindow* dw = findParentComponentOfClass<DialogWindow>();
-    dw->setName(filteredDataList.getChild(selectedTrack).getProperty(MusicColumns::columnNames[MusicColumns::Song]));
+        trackTabbed.setTrack(filteredDataList.getChild(selectedTrack));
+        DialogWindow* dw = findParentComponentOfClass<DialogWindow>();
+        dw->setName(filteredDataList.getChild(selectedTrack).getProperty(MusicColumns::columnNames[MusicColumns::Song]));
 }
 
 void TrackDialog::buttonClicked(Button *buttonClicked)
-{
+{   
     if (buttonClicked == &next)
     {
-        selectedTrack++;
-        setTrack();
+        if (selectedTrack >= 0 && selectedTrack < filteredDataList.getNumChildren()-1)
+        {
+            selectedTrack++;
+            setTrack();
+        }
     }
     
     if (buttonClicked == &previous)
     {
-        selectedTrack--;
-        setTrack();
+        if (selectedTrack > 0 && selectedTrack <= filteredDataList.getNumChildren()-1)
+        {
+            selectedTrack--;
+            setTrack();
+        }
     }
     
     if (buttonClicked == &ok)

@@ -18,6 +18,8 @@
 #define tablePlayingRow Settings::getInstance()->getPlayingRow()
 #define tableUpdateRequired Settings::getInstance()->getUpdateRequired()
 
+#define filteredDataList Settings::getInstance()->getFilteredList()
+
 
 class Settings : public DeletedAtShutdown
 {
@@ -36,6 +38,7 @@ public:
     ValueTree& getLibraryTree();
     ValueTree& getSelectedRow();
     ValueTree& getPlayingRow();
+    ValueTree& getFilteredList();
     
     Value& getShouldPlay();
     Value& getPlayState();
@@ -49,7 +52,7 @@ public:
 private:
 
     File settingsXmlFile, libraryFile;
-	ValueTree libraryTree, selectedRow, playingRow;
+	ValueTree libraryTree, selectedRow, playingRow, filteredDataTree;
     ScopedPointer<UndoManager> undoManager;
     int currentLibId, currentValueTreeId;
     Value shouldPlay, playState, updateRequired;

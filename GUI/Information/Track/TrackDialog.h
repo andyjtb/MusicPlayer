@@ -18,7 +18,7 @@ class TrackDialog  :	public Component,
                     public ButtonListener
 {
 public:
-    TrackDialog (int incomingTrack, ValueTree incomingDataList);
+    TrackDialog (int incomingTrack);
     ~TrackDialog();
 	
     void paint (Graphics& g);
@@ -34,7 +34,7 @@ private:
     TextButton next; 
     TextButton previous;
     
-    ValueTree filteredDataList;
+    //ValueTree filteredDataList;
     int selectedTrack;
 };
 
