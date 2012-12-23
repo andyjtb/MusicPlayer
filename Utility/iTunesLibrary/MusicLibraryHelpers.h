@@ -104,6 +104,7 @@ namespace MusicColumns {
         Modified,
 		Location,
 		Score,
+        TrackNum,
 		numColumns
 	};
 	
@@ -125,7 +126,8 @@ namespace MusicColumns {
 		"Added",
         "Modified",
 		"Location",
-		"Score"
+		"Score",
+        "TrackNum"
 	};
 	
 	static const UNUSED_NOWARN char *iTunesNames[] = {
@@ -146,7 +148,8 @@ namespace MusicColumns {
 		"Date Added",
         "Date Modified",
 		"Location",
-		"Score"
+		"Score",
+        "TrackNum"
 	};
 	
 	static const int columnWidths[] = {
@@ -167,7 +170,8 @@ namespace MusicColumns {
 		125,
 		125,
 		300,
-		60
+		60,
+        50
 	};
 }
 

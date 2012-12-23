@@ -10,6 +10,7 @@
 
 TrackEdit::TrackEdit()
 {    
+    saveRequired = false;
     addAndMakeVisible (&songLabel);
     songLabel.setText("Song: ", false);
     
@@ -89,10 +90,9 @@ TrackEdit::TrackEdit()
     trackNum.setReadOnly (false);
     trackNum.setScrollbarsShown (false);
     trackNum.setCaretVisible (true);
-    trackNum.setPopupMenuEnabled (false);
+    trackNum.setPopupMenuEnabled (false);    
     trackNum.addListener(this);
     
-
     setSize (530, 510);
     
 }
@@ -130,6 +130,7 @@ void TrackEdit::resized()
 
 void TrackEdit::setTrack(ValueTree incomingTrack)
 {
+    settingInfo = true;
     File selectedFile (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
     songTree = incomingTrack;
     
@@ -144,44 +145,68 @@ void TrackEdit::setTrack(ValueTree incomingTrack)
     label.setText (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Label]).toString(), false);
     
     rating.setValue(songTree.getProperty(MusicColumns::columnNames[MusicColumns::Rating]));
+    
+    trackNum.setText(songTree.getProperty(MusicColumns::columnNames[MusicColumns::TrackNum]));
+    
+    settingInfo = false;
+    saveRequired = false;
+    
+    DBG("Save required = " << saveRequired);
 }
 
-
-void TrackEdit::sliderValueChanged (Slider* sliderChanged)
+void TrackEdit::saveEdits ()
 {
-    songTree.setProperty(MusicColumns::columnNames[MusicColumns::Rating], rating.getValue(), 0);
-}
-void TrackEdit::textEditorTextChanged (TextEditor* textEditor)
-{
-    DBG("CALLED");
-    if (textEditor == &song) {
+    DBG("Save required = " << saveRequired);
+    if (saveRequired)
+    {
+        File selectedFile (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
+        
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::Song], song.getText(), 0);
-    }
-    
-    if (textEditor == &artist) {
+        
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::Artist], artist.getText(), 0);
-    }
-    
-    if (textEditor == &album) {
+        
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::Album], album.getText(), 0);
-    }
-    
-    if (textEditor == &genre) {
+        
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::Genre], genre.getText(), 0);
-    }
-    
-    if (textEditor == &label) {
+        
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::Label], label.getText(), 0);
+        if (rating.getValue() > 0)
+        {
+            songTree.setProperty(MusicColumns::columnNames[MusicColumns::Rating], rating.getValue(), 0);
+        }
+        
+        songTree.setProperty(MusicColumns::columnNames[MusicColumns::Modified], Time::getCurrentTime().toMilliseconds(), 0);
+        selectedFile.setLastModificationTime(Time::getCurrentTime());
+        
+        songTree.setProperty(MusicColumns::columnNames[MusicColumns::TrackNum], trackNum.getText().getIntValue(), 0);
+        
+        TagReader::saveTags(songTree);
+        
+        saveRequired = false;
     }
+}
 
-    songTree.setProperty(MusicColumns::columnNames[MusicColumns::Modified], Time::getCurrentTime().toMilliseconds(), 0);
+//Text editor callbacks
+void TrackEdit::textEditorTextChanged (TextEditor &textEditor)
+{
+    if (!settingInfo)
+    saveRequired = true;
 }
 void TrackEdit::textEditorReturnKeyPressed (TextEditor &textEditor)
-{
-    
-}
+{}
 void TrackEdit::textEditorEscapeKeyPressed (TextEditor &textEditor)
 {}
 void TrackEdit::textEditorFocusLost (TextEditor &textEditor)
 {}
 
+void TrackEdit::sliderValueChanged (Slider* sliderThatWasMoved)
+{
+    if (!settingInfo)
+	saveRequired = true;
+}
+
+void TrackEdit::setSaveRequired (bool incomingRequired)
+{
+    if (!settingInfo)
+    saveRequired = incomingRequired;
+}

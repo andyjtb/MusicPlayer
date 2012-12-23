@@ -43,10 +43,8 @@ public:
 //                    tags.setProperty(MusicColumns::columnNames[MusicColumns::BPM], 0, nullptr);
 //                }
                 
-                tags.setProperty(MusicColumns::columnNames[MusicColumns::Genre], f.tag()->genre().toCString(), nullptr);
-                //		SubGenre,            
+                tags.setProperty(MusicColumns::columnNames[MusicColumns::Genre], f.tag()->genre().toCString(), nullptr);         
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Label], f.tag()->comment().toCString(), nullptr);
-                //		Key,
                 
                 AudioFormatManager formatManager;
                 formatManager.registerBasicFormats();
@@ -62,10 +60,10 @@ public:
                 }
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Kind], "MPEG audio file", nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Added], Time::getCurrentTime().toMilliseconds(), nullptr);
-                tags.setProperty(MusicColumns::columnNames[MusicColumns::Modified], Time::getCurrentTime().toMilliseconds(), nullptr);
+                tags.setProperty(MusicColumns::columnNames[MusicColumns::Modified], audioFile.getLastModificationTime().toMilliseconds(), nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Location], audioFile.getFullPathName(), nullptr);
-                //		Score,
                 
+                tags.setProperty(MusicColumns::columnNames[MusicColumns::TrackNum], int(f.tag()->track()), nullptr);
                 
                 ScopedPointer<XmlElement> treeAsXml (tags.createXml());
                 File testFile("~/tagTest.xml");
@@ -88,7 +86,11 @@ public:
 	
 	static Image getAlbumArt (File& audioFile)
 	{
+
 		if (audioFile.getFullPathName().endsWith(".mp3")) {
+            
+            DBG("Audio File exists = " << audioFile.exists());
+            
 			TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
 			
 			TagLib::ID3v2::FrameList frames = f.ID3v2Tag()->frameList("APIC");
@@ -115,6 +117,12 @@ public:
     {
         TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8());
         return f.audioProperties()->bitrate();
+    }
+    
+    static void saveTags(ValueTree incomingTrack)
+    {
+        //Add saving functions
+        TagLib::MPEG::File f(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString().toUTF8());	
     }
  };
 #endif //H_TAGREADER

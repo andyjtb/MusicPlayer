@@ -12,6 +12,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Settings.h"
 #include "MusicLibraryHelpers.h"
+#include "TagReader.h"
 
 class TrackEdit  :	public Component,
                     public Slider::Listener,
@@ -26,13 +27,15 @@ public:
 	
     void setTrack(ValueTree incomingTrack);
 
-    void sliderValueChanged (Slider* sliderChanged);
+    void saveEdits();
     
-    void textEditorTextChanged (TextEditor* textEditor);    
+    void textEditorTextChanged (TextEditor &textEditor);
     void textEditorReturnKeyPressed (TextEditor &textEditor);
     void textEditorEscapeKeyPressed (TextEditor &textEditor);
     void textEditorFocusLost (TextEditor &textEditor);
+    void sliderValueChanged (Slider* sliderThatWasMoved);
     
+    void setSaveRequired (bool incomingRequired);
     
 private:
     Label songLabel;
@@ -52,6 +55,8 @@ private:
     TextButton save;
     
     ValueTree songTree;
+    
+    bool saveRequired, settingInfo;
 
 };
 

@@ -29,7 +29,7 @@ public:
                 break;
             File fileFound (directoryIterator.getFile());
             String loadingString("Loading : " + fileFound.getFileName());
-            //setStatusMessage(loadingString);
+            setStatusMessage(loadingString);
             singletonLibraryTree.addChild(TagReader::addToLibrary(fileFound),-1,0);
             
         }
@@ -133,6 +133,7 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 				}
 
 				audioFile = fc.getResult();
+                singletonLibraryTree.addChild(TagReader::addToLibrary(audioFile),-1,0);
 				audioControl.loadFile(audioFile);
 				guiControl.updateTagDisplay(audioFile);
 			}
@@ -161,12 +162,17 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 		
 		if (menuItemID == ImportItunes)
 		{
-			if(AlertWindow::showOkCancelBox (AlertWindow::WarningIcon,
-											 "Itunes Import",
-											 "Importing Itunes library will merge current Library",
-											 "Merge Itunes Library",
-											 "Keep Current Library",
-											 0))
+//			if(AlertWindow::showOkCancelBox (AlertWindow::WarningIcon,
+//											 "Itunes Import",
+//											 "Importing Itunes library will merge current Library",
+//											 "Merge Itunes Library",
+//											 "Keep Current Library",
+//											 0))
+			if(NativeMessageBox::showOkCancelBox (AlertWindow::WarningIcon,
+                                                  "Itunes Import",
+                                                  "Importing Itunes library will merge current Library"
+                                                  ))
+
 			{
                 if(ITunesLibrary::getDefaultITunesLibraryFile().exists())
                 {

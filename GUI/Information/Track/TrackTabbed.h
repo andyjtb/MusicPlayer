@@ -24,6 +24,8 @@ public:
 	
     void setTrack (ValueTree selectedTrack);
     
+    void saveEdits();
+    
 private:
     TrackSummary trackSummary;
     TrackEdit trackEdit; 

@@ -249,7 +249,6 @@ void MusicLibraryTable::sortOrderChanged (int newSortColumnId, bool isForwards)
             ValueTreeComparators::LexicographicWithNumerical sorter (MusicColumns::columnNames[newSortColumnId],
                                                                     MusicColumns::columnNames[MusicColumns::LibID],
                                                                     isForwards);
-
             
 			filteredDataList.sort (sorter, 0, false);
             //            dataList.sort (sorter, 0, false);

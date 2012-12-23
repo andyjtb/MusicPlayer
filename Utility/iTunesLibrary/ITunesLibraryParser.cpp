@@ -149,6 +149,12 @@ void ITunesLibraryParser::run()
 						numAdded++;
 					}
 				}
+                
+                if (elementKey == "Track Number")
+                {
+                    String entry = e2->getNextElement()->getAllSubText();
+                    newElement.setProperty (MusicColumns::columnNames[MusicColumns::TrackNum], entry.getIntValue(), nullptr);
+                }
 				
 				for(int i = 2; i < MusicColumns::numColumns; i++)
 				{					

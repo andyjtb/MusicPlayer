@@ -49,6 +49,7 @@ void TrackDialog::resized()
 
 void TrackDialog::setTrack()
 {
+        trackTabbed.saveEdits();
         trackTabbed.setTrack(filteredDataList.getChild(selectedTrack));
         DialogWindow* dw = findParentComponentOfClass<DialogWindow>();
         dw->setName(filteredDataList.getChild(selectedTrack).getProperty(MusicColumns::columnNames[MusicColumns::Song]));
@@ -76,6 +77,7 @@ void TrackDialog::buttonClicked(Button *buttonClicked)
     
     if (buttonClicked == &ok)
     {
+        trackTabbed.saveEdits();
         DialogWindow* dw = findParentComponentOfClass<DialogWindow>();
         dw->closeButtonPressed();
     }

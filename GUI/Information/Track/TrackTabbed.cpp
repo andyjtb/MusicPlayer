@@ -26,5 +26,11 @@ void TrackTabbed::setTrack (ValueTree selectedTrack)
 {
     trackSummary.setTrack(selectedTrack);
     trackEdit.setTrack(selectedTrack);
+    trackEdit.setSaveRequired(false);
     trackArt.setTrack(selectedTrack);
+}
+
+void TrackTabbed::saveEdits()
+{
+    trackEdit.saveEdits();
 }
