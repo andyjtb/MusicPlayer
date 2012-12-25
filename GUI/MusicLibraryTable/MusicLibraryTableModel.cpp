@@ -242,7 +242,6 @@ void MusicLibraryTable::sortOrderChanged (int newSortColumnId, bool isForwards)
 		}
 		else
         {
-            //			ValueTreeComparators::Lexicographic sorter (MusicColumns::columnNames[newSortColumnId], isForwards);
 //			ValueTreeComparators::LexicographicWithBackup sorter (MusicColumns::columnNames[newSortColumnId],
 //                                                                  MusicColumns::columnNames[MusicColumns::LibID],
 //                                                                  isForwards);
@@ -338,6 +337,7 @@ void MusicLibraryTable::returnKeyPressed(int currentSelectedRow)
 
 void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
 {
+    //Add a confirmation screen containing the option to delete file as well
     SparseSet<int> selectedRows = table.getSelectedRows();
     Array<int> toDelete;
     

@@ -89,8 +89,6 @@ public:
 
 		if (audioFile.getFullPathName().endsWith(".mp3")) {
             
-            DBG("Audio File exists = " << audioFile.exists());
-            
 			TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
 			
 			TagLib::ID3v2::FrameList frames = f.ID3v2Tag()->frameList("APIC");

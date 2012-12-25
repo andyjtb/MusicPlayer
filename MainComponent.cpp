@@ -22,14 +22,16 @@ public:
         
         DirectoryIterator directoryIterator (directory, true, "*.mp3",2);
         
+        setProgress(-1.0);
+        
         while (directoryIterator.next())
         {
-            setProgress(-1.0);
+//            setProgress(-1.0);
             if (threadShouldExit())
                 break;
             File fileFound (directoryIterator.getFile());
-            String loadingString("Loading : " + fileFound.getFileName());
-            setStatusMessage(loadingString);
+//            String loadingString("Loading : " + fileFound.getFileName());
+//            setStatusMessage(loadingString);
             singletonLibraryTree.addChild(TagReader::addToLibrary(fileFound),-1,0);
             
         }
@@ -63,6 +65,7 @@ MainContentComponent::MainContentComponent()
 	guiControl.setAudioControl(&audioControl);
 
 	setSize (1000, 630);
+    
 }
 
 MainContentComponent::~MainContentComponent()
@@ -169,8 +172,8 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 //											 "Keep Current Library",
 //											 0))
 			if(NativeMessageBox::showOkCancelBox (AlertWindow::WarningIcon,
-                                                  "Itunes Import",
-                                                  "Importing Itunes library will merge current Library"
+                                                  "iTunes Import",
+                                                  "Importing iTunes library will merge current Library"
                                                   ))
 
 			{

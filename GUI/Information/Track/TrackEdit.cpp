@@ -21,7 +21,7 @@ TrackEdit::TrackEdit()
     song.setScrollbarsShown (false);
     song.setCaretVisible (true);
     song.setPopupMenuEnabled (true);
-    song.addListener(this);
+//    song.addListener(this);
     
     addAndMakeVisible (&artistLabel);
     artistLabel.setText("Artist: ", false);
@@ -33,7 +33,7 @@ TrackEdit::TrackEdit()
     artist.setScrollbarsShown (false);
     artist.setCaretVisible (true);
     artist.setPopupMenuEnabled (true);
-    artist.addListener(this);
+//    artist.addListener(this);
     
     addAndMakeVisible (&albumLabel);
     albumLabel.setText("Album: ", false);
@@ -45,7 +45,7 @@ TrackEdit::TrackEdit()
     album.setScrollbarsShown (false);
     album.setCaretVisible (true);
     album.setPopupMenuEnabled (true);
-    album.addListener(this);
+//    album.addListener(this);
     
     addAndMakeVisible (&genreLabel);
     genreLabel.setText("Genre: ", false);
@@ -57,7 +57,7 @@ TrackEdit::TrackEdit()
     genre.setScrollbarsShown (false);
     genre.setCaretVisible (true);
     genre.setPopupMenuEnabled (true);
-    genre.addListener(this);
+//    genre.addListener(this);
     
     addAndMakeVisible (&ratingLabel);
     ratingLabel.setText("Rating: ", false);
@@ -66,7 +66,7 @@ TrackEdit::TrackEdit()
     rating.setRange (0, 5, 1);
     rating.setSliderStyle (Slider::IncDecButtons);
     rating.setTextBoxStyle (Slider::TextBoxLeft, false, 30, 20);
-    rating.addListener(this);
+//    rating.addListener(this);
     
     addAndMakeVisible (&labelLabel);
     labelLabel.setText("Label: ", false);
@@ -78,7 +78,7 @@ TrackEdit::TrackEdit()
     label.setScrollbarsShown (true);
     label.setCaretVisible (true);
     label.setPopupMenuEnabled (true);
-    label.addListener(this);
+//    label.addListener(this);
     
     addAndMakeVisible (&trackLabel);
     trackLabel.setText("Track Number: ", false);
@@ -91,7 +91,7 @@ TrackEdit::TrackEdit()
     trackNum.setScrollbarsShown (false);
     trackNum.setCaretVisible (true);
     trackNum.setPopupMenuEnabled (false);    
-    trackNum.addListener(this);
+//    trackNum.addListener(this);
     
     setSize (530, 510);
     
@@ -130,7 +130,6 @@ void TrackEdit::resized()
 
 void TrackEdit::setTrack(ValueTree incomingTrack)
 {
-    settingInfo = true;
     File selectedFile (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
     songTree = incomingTrack;
     
@@ -148,15 +147,19 @@ void TrackEdit::setTrack(ValueTree incomingTrack)
     
     trackNum.setText(songTree.getProperty(MusicColumns::columnNames[MusicColumns::TrackNum]));
     
-    settingInfo = false;
     saveRequired = false;
     
-    DBG("Save required = " << saveRequired);
+    song.addListener(this);
+    artist.addListener(this);
+    album.addListener(this);
+    genre.addListener(this);
+    rating.addListener(this);
+    label.addListener(this);
+    trackNum.addListener(this);
 }
 
 void TrackEdit::saveEdits ()
 {
-    DBG("Save required = " << saveRequired);
     if (saveRequired)
     {
         File selectedFile (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
@@ -184,12 +187,18 @@ void TrackEdit::saveEdits ()
         
         saveRequired = false;
     }
+    song.removeListener(this);
+    artist.removeListener(this);
+    album.removeListener(this);
+    genre.removeListener(this);
+    rating.removeListener(this);
+    label.removeListener(this);
+    trackNum.removeListener(this);
 }
 
 //Text editor callbacks
 void TrackEdit::textEditorTextChanged (TextEditor &textEditor)
 {
-    if (!settingInfo)
     saveRequired = true;
 }
 void TrackEdit::textEditorReturnKeyPressed (TextEditor &textEditor)
@@ -201,12 +210,5 @@ void TrackEdit::textEditorFocusLost (TextEditor &textEditor)
 
 void TrackEdit::sliderValueChanged (Slider* sliderThatWasMoved)
 {
-    if (!settingInfo)
 	saveRequired = true;
-}
-
-void TrackEdit::setSaveRequired (bool incomingRequired)
-{
-    if (!settingInfo)
-    saveRequired = incomingRequired;
 }
