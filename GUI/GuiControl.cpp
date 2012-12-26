@@ -133,6 +133,7 @@ void GuiControl::valueChanged (Value& valueChanged)
     {
         if (tableUpdateRequired.getValue()) {
             musicTable.updateLibrary();
+            musicTable.setFilterText(searchBox.getText());
             //CLEAR TRACK INFO DISPLAY
             tableUpdateRequired.setValue(false);
         }

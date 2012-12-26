@@ -88,6 +88,7 @@ void MusicLibraryTable::setLibraryToUse (ITunesLibrary* library)
 
 void MusicLibraryTable::setFilterText (String filterString)
 {
+    if (filterString != String::empty) {
     currentFilterText = filterString;
     if (currentLibrary != nullptr)
         currentLibrary->getParserLock().enter();
@@ -131,6 +132,7 @@ void MusicLibraryTable::setFilterText (String filterString)
     
 	table.getHeader().reSortTable();
 	table.updateContent();
+    }
 }
 
 //==============================================================================
