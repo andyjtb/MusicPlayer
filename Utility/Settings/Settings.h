@@ -20,6 +20,8 @@
 
 #define filteredDataList Settings::getInstance()->getFilteredList()
 
+#define remoteNumConnections Settings::getInstance()->getNumConnections()
+
 
 class Settings : public DeletedAtShutdown
 {
@@ -34,6 +36,7 @@ public:
     
     int& getCurrentLibId();
     int& getCurrentValueTreeId();
+    int& getNumConnections();
     
     ValueTree& getLibraryTree();
     ValueTree& getSelectedRow();
@@ -44,7 +47,6 @@ public:
     Value& getPlayState();
     Value& getUpdateRequired();
     
-    
     void saveSingletons();
 	
 	juce_DeclareSingleton_SingleThreaded_Minimal (Settings)
@@ -54,7 +56,7 @@ private:
     File settingsXmlFile, libraryFile;
 	ValueTree libraryTree, selectedRow, playingRow, filteredDataTree;
     ScopedPointer<UndoManager> undoManager;
-    int currentLibId, currentValueTreeId;
+    int currentLibId, currentValueTreeId, numConnections;
     Value shouldPlay, playState, updateRequired;
 
 };

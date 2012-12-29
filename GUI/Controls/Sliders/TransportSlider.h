@@ -27,15 +27,14 @@ public:
 	void setTransportRange (double minimum, double maximum, double interval);
 	void setTransportPosition (double position);
 	void updateTime(double time);
+    
+    double getMaximum();
 
 private:
 	void sliderValueChanged (Slider* sliderThatWasMoved);
     Slider* transport;
 	Label* timeLabel;
-//	int minutes;
-//	int time;
-//	int seconds;
-//	int tenths;
+
 	
 
 };

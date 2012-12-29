@@ -118,7 +118,7 @@ public:
 	void focusOfChildComponentChanged (FocusChangeType cause); 
 
     /** @internal */
-	var getDragSourceDescription (const SparseSet<int>& currentlySelectedRows);
+	//var getDragSourceDescription (const SparseSet<int>& currentlySelectedRows);
 
     //NON DROW FUNCTIONS
     void updateLibrary();

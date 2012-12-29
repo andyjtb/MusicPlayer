@@ -82,6 +82,18 @@ void GuiControl::timerCallback(int timerId)
 	}
 	if (timerId == 1) {
 		transport.setTransportPosition (audioControl->getTransportPosition());
+
+        if (audioControl->getTransportPosition() >= transport.getMaximum())
+        {
+            int toPlay = filteredDataList.indexOf(tableSelectedRow);
+            toPlay++;
+            ValueTree test(filteredDataList.getChild(toPlay));
+            if (test.isValid()) {
+                tableSelectedRow = test;
+                tableShouldPlay = true;
+            }
+
+        }
 	}
 }
 

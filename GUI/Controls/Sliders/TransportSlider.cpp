@@ -80,5 +80,9 @@ void TransportSlider::sliderValueChanged (Slider* sliderThatWasMoved)
 	
 }
 
+double TransportSlider::getMaximum()
+{
+    return transport->getMaximum();
+}
 
 

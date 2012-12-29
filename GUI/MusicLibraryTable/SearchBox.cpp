@@ -47,3 +47,8 @@ TextEditor& SearchBox::getSearchTextEditor()
     return search;
 }
 
+String SearchBox::getText()
+{
+    return search.getText();
+}
+

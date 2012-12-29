@@ -16,6 +16,8 @@
 #include "XmlHelpers.h"
 #include "TagReader.h"
 
+#include "RemoteControl.h"
+
 
 //==============================================================================
 /*
@@ -75,6 +77,8 @@ private:
 	AudioControl audioControl;
 	GuiControl guiControl;
 
+    RemoteControl remoteControl;
+    
 	File testFile;
 
     ApplicationCommandManager commandManager;

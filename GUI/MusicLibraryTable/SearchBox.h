@@ -23,6 +23,7 @@ public:
     void resized();
 
     TextEditor& getSearchTextEditor();
+    String getText();
 private:
 
     Label searchLabel;

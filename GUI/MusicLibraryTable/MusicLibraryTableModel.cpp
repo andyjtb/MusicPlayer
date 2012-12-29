@@ -294,8 +294,8 @@ void MusicLibraryTable::focusOfChildComponentChanged (FocusChangeType /*cause*/)
 	repaint();
 }
 
-var MusicLibraryTable::getDragSourceDescription (const SparseSet< int > &currentlySelectedRows)
-{
+//var MusicLibraryTable::getDragSourceDescription (const SparseSet< int > &currentlySelectedRows)
+//{
 //	if(! currentlySelectedRows.isEmpty())
 //	{
 //        var itemsArray;
@@ -318,7 +318,7 @@ var MusicLibraryTable::getDragSourceDescription (const SparseSet< int > &current
 //	}
 //    
 //	return var::null;
-}
+//}
 
 //NON DROW
 void MusicLibraryTable::updateLibrary()

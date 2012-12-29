@@ -83,6 +83,11 @@ int& Settings::getCurrentValueTreeId()
     return currentValueTreeId;
 }
 
+int& Settings::getNumConnections()
+{
+    return numConnections;
+}
+
 ValueTree& Settings::getSelectedRow()
 {
     return selectedRow;
