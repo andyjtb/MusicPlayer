@@ -24,6 +24,7 @@
 #include "MusicLibraryHelpers.h"
 #include "Settings.h"
 #include "SearchBox.h"
+#include "FileDropTarget.h"
 //#include "CoverFlowComponent.h"
 
 /**
@@ -91,6 +92,8 @@ private:
     MusicLibraryTable musicTable;
     
     SearchBox searchBox;
+    
+    FileDropTarget fileDrop;
     
 //    CoverFlowComponent* coverflow;
 };

@@ -214,7 +214,7 @@ void AudioControl::showAudioPreferences(Component* centerComponent)
                                                     0, 2, 2, 2,
                                                     true, true, true, true);
     audioSettingsComp.setSize (500, 250);
-    DialogWindow::showModalDialog ("Audio Settings", &audioSettingsComp, centerComponent, Colours::azure, true);
+    DialogWindow::showModalDialog ("Audio Settings", &audioSettingsComp, centerComponent, Colours::lightgrey, true);
     
 }
 

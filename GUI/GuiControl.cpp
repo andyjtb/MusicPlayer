@@ -39,6 +39,8 @@ GuiControl::GuiControl()
     tableUpdateRequired.addListener(this);
 	addAndMakeVisible(&musicTable);
     
+    addAndMakeVisible(&fileDrop);
+    
 //    coverflow = new CoverFlowComponent();
 //    addAndMakeVisible(coverflow);
 //    setSize(500, 400);
@@ -59,6 +61,8 @@ void GuiControl::resized()
 	trackInfo.setBounds(180, 100, 270, 150);
 	albumArt.setBounds(400,100,175,175);
 	searchBox.setBounds(getWidth()-200, 0, 175, 60);
+    
+    fileDrop.setBounds(getWidth()-200, 150, 175, 175);
     
     musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
     
@@ -164,19 +168,22 @@ void GuiControl::valueChanged (Value& valueChanged)
 
 void GuiControl::loadFile()
 {
-    File selectedFile (tableSelectedRow.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
-    if(tableShouldPlay.getValue())
+    if (tableDeleting != true)
     {
-        singletonPlayState = false;
-        audioControl->loadFile(selectedFile);
-        tablePlayingRow = tableSelectedRow;
+        File selectedFile (tableSelectedRow.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
+        if(tableShouldPlay.getValue())
+        {
+            singletonPlayState = false;
+            audioControl->loadFile(selectedFile);
+            tablePlayingRow = tableSelectedRow;
+            
+            singletonPlayState = true;
+            trackInfo.loadTrackInfo(tableSelectedRow);
+            tableShouldPlay.setValue(false);
+        }
         
-        singletonPlayState = true;
-        trackInfo.loadTrackInfo(tableSelectedRow);
-        tableShouldPlay.setValue(false);
+        albumArt.setCover(TagReader::getAlbumArt(selectedFile));
     }
-    
-    albumArt.setCover(TagReader::getAlbumArt(selectedFile));
 }
 
 void GuiControl::updateTagDisplay (File audioFile)

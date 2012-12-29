@@ -86,28 +86,30 @@ public:
 	
 	static Image getAlbumArt (File& audioFile)
 	{
-
-		if (audioFile.getFullPathName().endsWith(".mp3")) {
-            
-			TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
-			
-			TagLib::ID3v2::FrameList frames = f.ID3v2Tag()->frameList("APIC");
-			
-			if(!frames.isEmpty())
-			{
-                TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
+        if (audioFile.exists())
+        {
+            if (audioFile.getFullPathName().endsWith(".mp3")) {
                 
-                if (frame != nullptr)
+                TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
+                
+                TagLib::ID3v2::FrameList frames = f.ID3v2Tag()->frameList("APIC");
+                
+                if(!frames.isEmpty())
                 {
-                    TagLib::ByteVector imageData = frame->picture();
+                    TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
                     
-                    Image juceCover = ImageFileFormat::loadFrom(imageData.data(), imageData.size());
-                    
-                    return juceCover;
+                    if (frame != nullptr)
+                    {
+                        TagLib::ByteVector imageData = frame->picture();
+                        
+                        Image juceCover = ImageFileFormat::loadFrom(imageData.data(), imageData.size());
+                        
+                        return juceCover;
+                    }
                 }
-			}
-			
-		}
+                
+            }
+        }
         return Image();
 	}
 

@@ -17,6 +17,7 @@
 #define tableShouldPlay Settings::getInstance()->getShouldPlay()
 #define tablePlayingRow Settings::getInstance()->getPlayingRow()
 #define tableUpdateRequired Settings::getInstance()->getUpdateRequired()
+#define tableDeleting Settings::getInstance()->getTableDeleting()
 
 #define filteredDataList Settings::getInstance()->getFilteredList()
 
@@ -46,6 +47,7 @@ public:
     Value& getShouldPlay();
     Value& getPlayState();
     Value& getUpdateRequired();
+    Value& getTableDeleting();
     
     void saveSingletons();
 	
@@ -57,7 +59,7 @@ private:
 	ValueTree libraryTree, selectedRow, playingRow, filteredDataTree;
     ScopedPointer<UndoManager> undoManager;
     int currentLibId, currentValueTreeId, numConnections;
-    Value shouldPlay, playState, updateRequired;
+    Value shouldPlay, playState, updateRequired, deletingTable;
 
 };
 

@@ -8,43 +8,6 @@
 
 #include "MainComponent.h"
 
-class DirectoryLoading : public ThreadWithProgressWindow
-{
-public:
-    DirectoryLoading() : ThreadWithProgressWindow ("Loading...", true, true)
-    {
-    }
-    void run()
-    {
-        const MessageManagerLock mmLock;
-        
-        String filesFound;
-        
-        DirectoryIterator directoryIterator (directory, true, "*.mp3",2);
-        
-        setProgress(-1.0);
-        
-        while (directoryIterator.next())
-        {
-//            setProgress(-1.0);
-            if (threadShouldExit())
-                break;
-            File fileFound (directoryIterator.getFile());
-//            String loadingString("Loading : " + fileFound.getFileName());
-//            setStatusMessage(loadingString);
-            singletonLibraryTree.addChild(TagReader::addToLibrary(fileFound),-1,0);
-            
-        }
-    }
-    
-    void setDirectory (File incomingDirectory)
-    {
-        directory = incomingDirectory;
-    }
-    File directory;
-};
-
-
 //==============================================================================
 MainContentComponent::MainContentComponent()
 {
@@ -147,9 +110,7 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 			FileChooser fc ("Choose a directory to open...",File::getCurrentWorkingDirectory(),"*",true);
 			if (fc.browseForDirectory()) 
 			{
-                
-                
-                DirectoryLoading d;
+                DirectoryLoader d;
                 d.setDirectory(fc.getResult());
                 
                 if (d.runThread())

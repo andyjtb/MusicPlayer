@@ -10,9 +10,7 @@
 \f1 \
 
 \f0 \
-ORDERING!!!! - Tracks are listed by the first number then the second so 1 10 2 11 etc\
-How to order by one thing then another, is it possible? (By artist then album then track number)\
-CHECK SORTING - CHANGE FROM STRING TO INT/NUMBER\
+ORDERING!!!! - Artist then album then track num\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\ql\qnatural\pardirnatural
 \cf0 \
 Getting undo message from manager, allowing undo of one thing at a time 
@@ -25,26 +23,19 @@ Getting undo message from manager, allowing undo of one thing at a time
 \f1 \
 \
 New album art method required, doesn't like snow capped romance\
-Can't open file, something it doesn't like in the path name, specifically the file location taken from the itunes library, loads fine if added seperately\
+Can't open file, something it doesn't like in the path name, specifically the file location taken from the itunes library, %7B = \{, find a way to selectively filter html naming\
 \
-Rescaling album art 
-\f0 \
-\
-Undo not showing in filtered - re filter text after undo action - do in custom undo/delete
-\f1 \
+Rescaling album art \
 \
 Audio thread priority, cleanmymac scan killed things\
 \
 \pard\tx560\pardeftab560\ql\qnatural\pardirnatural
 
-\f2\fs22 \cf2 \CocoaLigature0 Add a confirmation screen containing the option to delete file as well\cf0 \
-\pard\pardeftab720\ql\qnatural
-
+\f2\fs22 \cf2 \CocoaLigature0 Add a confirmation screen containing the option to delete file as well
 \f1\fs24 \cf0 \CocoaLigature1 \
-Remote - set tableSelectedRow to incoming track, and tableShouldPlay to true should trigger all the correct callbacks to load it and set the track information\
-\
-Possible Undo Fix - When undo-ing a filtered list it now filters the list every time the tableUpdateRequired value is true\
-Check that the string in the texteditor when nothing is filled in is indeed empty \
+\pard\pardeftab720\ql\qnatural
+\cf0 \
+FileDragDropTarget outline the MusicLibraryTable when somethingIsBeingDraggedOver\
 \
 TO FIX LATER\
 \
@@ -60,13 +51,13 @@ TO FIX LATER\
 TO ADD\
 
 \f0 \
+Intercepts from keyboard, searches for string being entered\
+AudioPlayHead to replace the slider transport system?\
 Saving tag data\
-Buffering audiosource to allow preloading of the next track, gapless playback\
 Add playlists\
 Drag directories to load all files\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
 \cf0 Incorporate tag reading/directory load for types other than .mp3\
-Loading bar for import and import directory\
 Use mac mainbar instead\
 Track info display
 \f1 \

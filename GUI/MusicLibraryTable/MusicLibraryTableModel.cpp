@@ -88,7 +88,6 @@ void MusicLibraryTable::setLibraryToUse (ITunesLibrary* library)
 
 void MusicLibraryTable::setFilterText (String filterString)
 {
-    if (filterString != String::empty) {
     currentFilterText = filterString;
     if (currentLibrary != nullptr)
         currentLibrary->getParserLock().enter();
@@ -132,7 +131,6 @@ void MusicLibraryTable::setFilterText (String filterString)
     
 	table.getHeader().reSortTable();
 	table.updateContent();
-    }
 }
 
 //==============================================================================
@@ -339,6 +337,7 @@ void MusicLibraryTable::returnKeyPressed(int currentSelectedRow)
 
 void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
 {
+    tableDeleting = true;
     //Add a confirmation screen containing the option to delete file as well
     SparseSet<int> selectedRows = table.getSelectedRows();
     Array<int> toDelete;
@@ -365,6 +364,7 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
     table.deselectAllRows();
     table.selectRow(selectedRows[0]);
     setFilterText(currentFilterText);
+    tableDeleting = false;
 }
 
 void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::MouseEvent &event)
@@ -391,9 +391,6 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
 		
         int result = rightClick.show();
         
-        
-
-        
         switch (result) {
             case 1:
             {
@@ -407,7 +404,8 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
                 break;
             }
             case 2:
-                cellDoubleClicked(rowNumber, columnId, event);
+                tableShouldPlay.setValue(true);
+                tableSelectedRow = filteredDataList.getChild(rowNumber);
                 break;
             case 3:
             {
@@ -417,7 +415,7 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
                 break;
             }
             case 4:
-                File(filteredDataList.getChild(rowNumber).getProperty("Location")).revealToUser();
+                File(filteredDataList.getChild(rowNumber).getProperty(MusicColumns::columnNames[MusicColumns::Location])).revealToUser();
                 break;
             case 5:
                 deleteKeyPressed(rowNumber);

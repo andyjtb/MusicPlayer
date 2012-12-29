@@ -118,6 +118,11 @@ Value& Settings::getUpdateRequired()
     return updateRequired;
 }
 
+Value& Settings::getTableDeleting()
+{
+    return deletingTable;
+}
+
 UndoManager* Settings::getUndoManager()
 {
     return undoManager;

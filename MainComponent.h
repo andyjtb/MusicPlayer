@@ -15,6 +15,7 @@
 #include "Settings.h"
 #include "XmlHelpers.h"
 #include "TagReader.h"
+#include "DirectoryLoader.h"
 
 #include "RemoteControl.h"
 
@@ -78,8 +79,6 @@ private:
 	GuiControl guiControl;
 
     RemoteControl remoteControl;
-    
-	File testFile;
 
     ApplicationCommandManager commandManager;
     //==============================================================================
