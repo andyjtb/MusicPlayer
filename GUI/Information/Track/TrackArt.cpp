@@ -10,8 +10,12 @@
 
 TrackArt::TrackArt ()
 {	   
-    addAndMakeVisible (&albumArt);
-    albumArt.setSize(350, 350);
+//    addAndMakeVisible (&albumArt);
+//    albumArt.setSize(350, 350);
+    addAndMakeVisible(&view);
+    view.setViewedComponent(&albumArt, false);
+    view.setScrollBarsShown (true, true);
+    view.setScrollBarThickness(10);
     
     addAndMakeVisible (&sizeLabel);
     sizeLabel.setFont (Font (20.5000f, Font::plain));
@@ -48,7 +52,7 @@ void TrackArt::paint (Graphics& g)
 
 void TrackArt::resized()
 {
-    albumArt.setBounds (96, 0, 350, 350);
+    view.setBounds (96, 0, 350, 350);
     sizeLabel.setBounds (0, 360, 56, 24);
     size.setBounds (32, 392, 150, 24);
     file.setBounds (216, 392, 150, 24);
@@ -73,7 +77,7 @@ void TrackArt::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     if (sliderThatWasMoved == &size)
     {
-        albumArt.setCover(cover.rescaled(size.getValue(), size.getValue(), Graphics::highResamplingQuality));
+        albumArt.changeSize(size.getValue());
     }
 }
 
@@ -85,6 +89,10 @@ void TrackArt::setTrack (ValueTree incomingTrack)
     File selectedFile(selectedTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
     
     cover = TagReader::getAlbumArt(selectedFile);
-    
+    //albumArt.setSize(view.getWidth(), view.getHeight());
     albumArt.setCover(cover);
+    //albumArt.setSize(view.getWidth(), view.getHeight());
+    size.setRange (view.getHeight(), cover.getHeight()+500, 10);
+    size.setValue(size.getMinimum(), sendNotification);
+    
 }

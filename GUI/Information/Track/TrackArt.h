@@ -29,6 +29,7 @@ public:
     void buttonClicked (Button* buttonThatWasClicked);
     void sliderValueChanged (Slider* sliderThatWasMoved);
 private:
+    Viewport view;
     AlbumArt albumArt;
     Label sizeLabel;
     Slider size;

@@ -65,9 +65,9 @@ public:
                 
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::TrackNum], int(f.tag()->track()), nullptr);
                 
-                ScopedPointer<XmlElement> treeAsXml (tags.createXml());
-                File testFile("~/tagTest.xml");
-                treeAsXml->writeToFile (testFile, String::empty, "UTF-8", 200);			
+//                ScopedPointer<XmlElement> treeAsXml (tags.createXml());
+//                File testFile("~/tagTest.xml");
+//                treeAsXml->writeToFile (testFile, String::empty, "UTF-8", 200);			
                 
                 
                 return tags;

@@ -11,12 +11,12 @@
 
 AlbumArt::AlbumArt ()
 {	
-	width = height = 175;
+	//width = height = 175;
     
     fileSelected = false;
 	tagMissing = false;
-
-    setSize (width, height);
+    
+    //setSize (width, height);
 	
 }
 
@@ -29,7 +29,14 @@ AlbumArt::~AlbumArt()
 
 void AlbumArt::resized()
 {
-	setBounds (0, 0, width, height);
+//    if(findParentComponentOfClass<Viewport>())
+//    {
+//        setBounds (0, 0, imageWidth, imageHeight);
+//    }
+//    else
+//    {
+//        setBounds(0,0, 175, 175);
+//    }
 }
 
 void AlbumArt::paint(Graphics& g)
@@ -44,18 +51,34 @@ void AlbumArt::paint(Graphics& g)
 		g.setColour (Colours::black);
 		g.setFont (Font (14.0000f, Font::plain));
 		g.drawText ("NO ALBUM ART PRESENT",
-					0, 0, 175, 175,
+					0, 0, getWidth(), getHeight(),
 					Justification::centred, true);
 		fileSelected = true;
-		tagMissing = false;
+		//tagMissing = false;
 	}
 }
 
 void AlbumArt::setCover (Image cover)
 {
+
+    
 	if (cover.isValid()) {
 		fileSelected = true;
+        tagMissing = false;
+        
+        imageWidth = cover.getWidth();
+        imageHeight = cover.getHeight();
+
 		setImage (cover);
+        
+        if(findParentComponentOfClass<Viewport>())
+        {
+            setSize(getParentWidth(), getParentHeight());
+        }
+        //resized();
+
+        //setSize(getWidth(), getHeight());
+        
 	}
 	else {
 		tagMissing = true;
@@ -85,8 +108,21 @@ void AlbumArt::mouseDown(const MouseEvent & e) {
         if (menuResult == 2) {
             fromUrl();
         }
-			
+        
 	}
+}
+
+void AlbumArt::changeSize(double incomingSize)
+{
+    if (!tagMissing)
+    {
+        imageWidth = imageHeight = incomingSize;
+        setSize(incomingSize, incomingSize);
+        
+        if (incomingSize > imageHeight) {
+            setImage(getImage().rescaled((getParentWidth() + (incomingSize/2)), (getParentHeight() + (incomingSize/2)), Graphics::highResamplingQuality));
+        }
+    }
 }
 
 void AlbumArt::fromFile()

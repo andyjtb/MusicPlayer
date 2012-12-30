@@ -30,7 +30,7 @@ ITunesLibraryParser::ITunesLibraryParser (File& iTunesLibraryFileToUse, ValueTre
       numAdded (0),
       finished (false)
 {
-	startThread (1);
+	startThread (4);
 }
 
 ITunesLibraryParser::~ITunesLibraryParser()

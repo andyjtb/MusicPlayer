@@ -27,16 +27,18 @@ public:
     void fromFile();
     void fromUrl();
     
+    void changeSize (double incomingSize);
     
-	
 private:
 	void mouseDown(const MouseEvent &e);
-
+    
     int width, height;
 	bool fileSelected;
 	bool tagMissing; 
 	
 	Image newCover;
+    
+    int imageWidth, imageHeight;
 };
 
 
