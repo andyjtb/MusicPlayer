@@ -14,7 +14,7 @@
 #include "Settings.h"
 
 class PlayButton  : public Button,
-					public ActionBroadcaster
+                    public ValueTree::Listener
 {
 public:
     //==============================================================================
@@ -25,6 +25,14 @@ public:
     void resized();
     void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown);
   
+    //ValueTree Callbacks
+    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property);
+    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded);
+    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved);
+    void valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved);
+    void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged);
+    void valueTreeRedirected (ValueTree &treeWhichHasBeenChanged);
+    
     // Binary resources:
     static const char* pauseDown_png;
     static const int pauseDown_pngSize;

@@ -183,7 +183,7 @@ void TrackEdit::saveEdits ()
         
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::TrackNum], trackNum.getText().getIntValue(), 0);
         
-        TagReader::saveTags(songTree);
+        //TagReader::saveTags(songTree);
         
         saveRequired = false;
     }

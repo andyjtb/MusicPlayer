@@ -119,10 +119,42 @@ public:
         return f.audioProperties()->bitrate();
     }
     
-    static void saveTags(ValueTree incomingTrack)
+    static void writeTag (int columnId, ValueTree incomingTrack)
     {
-        //Add saving functions
         TagLib::MPEG::File f(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString().toUTF8());	
+        
+        switch (columnId) {
+            case 3:
+                //Artist
+                DBG("Saving Artist Tag = " << incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
+                f.tag()->setArtist(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString().toWideCharPointer());
+                DBG("Tag from file = " << f.tag()->artist().toCString());
+                break;
+            case 4:
+                //Song
+                f.tag()->setTitle(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString().toWideCharPointer());
+                break;
+            case 5:
+                //Album
+                f.tag()->setAlbum(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString().toWideCharPointer());
+                break;
+            case 8:
+                //Genre
+                f.tag()->setGenre(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Genre]).toString().toWideCharPointer());
+                break;
+            case 10:
+                //Label
+                f.tag()->setComment(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Label]).toString().toWideCharPointer());
+                break;
+            case 18:
+                //TrackNum
+                f.tag()->setTrack(int(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::TrackNum])));
+                break;
+            default:
+                break;
+        }
+        
     }
+    
  };
 #endif //H_TAGREADER

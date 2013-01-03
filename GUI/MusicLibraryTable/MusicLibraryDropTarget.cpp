@@ -1,45 +1,49 @@
 //
-//  FileDropTarget.cpp
+//  MusicLibraryDropTarget.cpp
 //  MusicPlayer
 //
 //  Created by Andy on 29/12/2012.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#include "FileDropTarget.h"
+#include "MusicLibraryDropTarget.h"
 
-FileDropTarget::FileDropTarget()
+MusicLibraryDropTarget::MusicLibraryDropTarget()
 {
-    message = "You can also drag-and-drop files here";
+    //message = "You can also drag-and-drop files here";
     somethingIsBeingDraggedOver = false;
     //setInterceptsMouseClicks(false, false);
+    addAndMakeVisible(&musicTable);
 }
 
-FileDropTarget::~FileDropTarget()
+MusicLibraryDropTarget::~MusicLibraryDropTarget()
 {
 
 }
 
-void FileDropTarget::paint(Graphics& g)
-{  
-    g.fillAll (Colours::green.withAlpha (0.2f));
-    
-    // draw a red line around the comp if the user's currently dragging something over it..
+void MusicLibraryDropTarget::resized()
+{
+    musicTable.setBounds(0,0,getWidth(),getHeight());
+}
+
+void MusicLibraryDropTarget::paint(Graphics& g)
+{    
+
+}
+
+void MusicLibraryDropTarget::paintOverChildren(Graphics& g)
+{
+    // draw a red line around the comp if the user's currently dragging something over it..  
     if (somethingIsBeingDraggedOver)
     {
         g.setColour (Colours::red);
         g.drawRect (0, 0, getWidth(), getHeight(), 3);
-    }
-    
-    g.setColour (Colours::black);
-    g.setFont (14.0f);
-    g.drawFittedText (message, getLocalBounds().reduced (10, 0), Justification::centred, 4);
-    
+    }  
 }
 
 
 //FileDragDrop Callbacks
-bool FileDropTarget::isInterestedInFileDrag (const StringArray &files)
+bool MusicLibraryDropTarget::isInterestedInFileDrag (const StringArray &files)
 {
     File test(files[0]);
     if (test.isDirectory())
@@ -53,23 +57,21 @@ bool FileDropTarget::isInterestedInFileDrag (const StringArray &files)
     return false;
 }
 
-void FileDropTarget::fileDragEnter (const StringArray &files, int x, int y)
+void MusicLibraryDropTarget::fileDragEnter (const StringArray &files, int x, int y)
 {
-    somethingIsBeingDraggedOver = true;
-    repaint();
-
     if (isInterestedInFileDrag(files)) {
-        DBG("Is Interested");
+        somethingIsBeingDraggedOver = true;
+        repaint();
     }
 
 }
 
-void FileDropTarget::fileDragExit (const StringArray &files)
+void MusicLibraryDropTarget::fileDragExit (const StringArray &files)
 {
     somethingIsBeingDraggedOver = false;
     repaint();
 }
-void FileDropTarget::filesDropped (const StringArray &files, int x, int y)
+void MusicLibraryDropTarget::filesDropped (const StringArray &files, int x, int y)
 {
     //The good shit
     for (int counter = 0; counter < files.size(); counter++)
@@ -99,4 +101,9 @@ void FileDropTarget::filesDropped (const StringArray &files, int x, int y)
     
     somethingIsBeingDraggedOver = false;
     repaint();
+}
+
+MusicLibraryTable* MusicLibraryDropTarget::getMusicTable()
+{
+    return &musicTable;
 }

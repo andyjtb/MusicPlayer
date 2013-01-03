@@ -19,8 +19,9 @@ PlayButton::PlayButton ()
 	
     //singletonPlayState.addListener(this);
     singletonPlayState = false;
+    tablePlayingRow.addListener(this);
     getToggleStateValue().referTo(singletonPlayState);
-	setClickingTogglesState(true);
+	setClickingTogglesState(false);
 	//singletonPlayState.setValue(false);
     setSize (143, 143);
 }
@@ -72,6 +73,30 @@ void PlayButton::paintButton (Graphics& g, bool isMouseOverButton, bool isButton
 
 	}
 	
+}
+
+//ValueTree Callbacks
+void PlayButton::valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
+{}
+void PlayButton::valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded)
+{}
+void PlayButton::valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved)
+{}
+void PlayButton::valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved)
+{}
+void PlayButton::valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged)
+{}
+void PlayButton::valueTreeRedirected (ValueTree &treeWhichHasBeenChanged)
+{  
+    //Selected Row change listener
+    if (tablePlayingRow.isValid())
+    {
+        setClickingTogglesState(true);
+    }
+    else
+    {
+        setClickingTogglesState(false);
+    }
 }
 
 

@@ -1,25 +1,28 @@
 //
-//  FileDropTarget.h
+//  MusicLibraryDropTarget.h
 //  MusicPlayer
 //
 //  Created by Andy on 29/12/2012.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef FILEDROPTARGET 
-#define FILEDROPTARGET 
+#ifndef MUSICLIBRARYDROPTARGET 
+#define MUSICLIBRARYDROPTARGET 
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "DirectoryLoader.h"
+#include "MusicLibraryTableModel.h"
 
-class FileDropTarget  :  public Component,
+class MusicLibraryDropTarget  :  public Component,
                             public FileDragAndDropTarget
 {
 public:
-    FileDropTarget ();
-    ~FileDropTarget();
+    MusicLibraryDropTarget ();
+    ~MusicLibraryDropTarget();
     
+    void resized();
     void paint (Graphics& g);
+    void paintOverChildren(Graphics& g);
     
     //FileDragDrop Callbacks
     bool isInterestedInFileDrag (const StringArray &files);
@@ -27,9 +30,13 @@ public:
     void fileDragExit (const StringArray &files);
     void filesDropped (const StringArray &files, int x, int y);
 	
+    MusicLibraryTable* getMusicTable();
+    
 private:
     String message;
     bool somethingIsBeingDraggedOver;
+    
+    MusicLibraryTable musicTable;
     
 };
 

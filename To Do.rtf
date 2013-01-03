@@ -15,13 +15,8 @@ ORDERING!!!! - Artist then album then track num\
 \cf0 \
 Getting undo message from manager, allowing undo of one thing at a time 
 \f1 \
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
-
-\f0 \cf0 \
 \pard\pardeftab720\ql\qnatural
-\cf0 Right click edit table component not working
-\f1 \
-\
+\cf0 \
 New album art method required, doesn't like snow capped romance\
 Can't open file, something it doesn't like in the path name, specifically the file location taken from the itunes library, %7B = \{, \
 URL class, removeEscapeChars will do it pefectly\
@@ -34,11 +29,16 @@ Audio thread priority, cleanmymac scan killed things\
 \f1\fs24 \cf0 \CocoaLigature1 \
 \pard\pardeftab720\ql\qnatural
 \cf0 \
-FileDragDropTarget outline the MusicLibraryTable when somethingIsBeingDraggedOver\
-\
 Display/edit info when multiple items are selected\
 \
 Remote, when connection made check library last modified, check against last modified in settings to see whether library needs to be resent, then save library, loaddatafromfile on file library, send memory block to phone, use fileoutputstream on the phone to create a file from the data\
+\
+Play button, when selectedrow is valid allowing clicking to begin playing the song\
+\
+Volume changes with new track\
+\
+Deleted song should be unloaded if it was currently playing\
+Deleting removes most recently added file instead of selected, assuming the filteredlist needs to be refiltered to order tracks properly, didn't work\
 \
 TO FIX LATER\
 \
@@ -58,7 +58,6 @@ Intercepts from keyboard, searches for string being entered\
 AudioPlayHead to replace the slider transport system?\
 Saving tag data - Album art especially\
 Add playlists\
-Drag directories to load all files\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
 \cf0 Incorporate tag reading/directory load for types other than .mp3\
 Use mac mainbar instead\

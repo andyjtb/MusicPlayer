@@ -337,6 +337,9 @@ void MusicLibraryTable::returnKeyPressed(int currentSelectedRow)
 
 void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
 {
+    //Re-sorts and filters the table to reposition newly added tracks
+    setFilterText(currentFilterText);
+    
     tableDeleting = true;
     //Add a confirmation screen containing the option to delete file as well
     SparseSet<int> selectedRows = table.getSelectedRows();
@@ -354,7 +357,6 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
             singletonPlayState = false;
         }
         singletonLibraryTree.removeChild(valueDelete, singletonUndoManager);
-        filteredDataList.removeChild(valueDelete, singletonUndoManager);
         
     }
         //DBG("Trans num = " << singletonUndoManager->getNumActionsInCurrentTransaction());
@@ -363,7 +365,7 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
     
     table.deselectAllRows();
     table.selectRow(selectedRows[0]);
-    setFilterText(currentFilterText);
+
     tableDeleting = false;
 }
 
@@ -395,12 +397,7 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
             case 1:
             {
                 //FIX ME
-//                Component* comp = table.getCellComponent(rowNumber, columnId);
-//                DBG(comp->getName())
-//                TextEditor textEdit;
-//                textEdit.setText(singletonLibraryTree.getChild(rowNumber).getProperty(MusicColumns::columnNames[columnId]).toString());
-//                refreshComponentForCell(rowNumber, columnId, true, &textEdit);
-                DBG("Edit selected");
+                editDirectly(rowNumber, columnId);
                 break;
             }
             case 2:
@@ -426,7 +423,7 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
     }
     if (event.mods.isAltDown())
     {
-        DBG("Edit directly");
+        editDirectly(rowNumber, columnId);
     }
 }
 
@@ -434,4 +431,27 @@ void MusicLibraryTable::cellDoubleClicked(int rowNumber, int columnId, const juc
 {
     tableShouldPlay.setValue(true);
     tableSelectedRow = filteredDataList.getChild(rowNumber);
+}
+
+void MusicLibraryTable::editDirectly (int rowNumber, int columnId)
+{
+    ValueTree currentlyEditing = filteredDataList.getChild(rowNumber);
+    String popupTitle = ("Edit " + MusicColumns::columnNames[columnId].toString()+"...");
+    String info = ("Editing: \n" + currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString() + " by " + currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
+    AlertWindow editPopup(popupTitle, info, AlertWindow::NoIcon);
+    TextEditor editText;
+    
+    editText.setBounds(getWidth()/2, getHeight()/2, 300, 25);
+    editText.setText(currentlyEditing.getProperty(MusicColumns::columnNames[columnId]));
+    
+    editPopup.addCustomComponent(&editText);
+    
+    editPopup.addButton("Cancel", 0);
+    editPopup.addButton("Ok", 1);
+    
+    if (editPopup.runModalLoop() != 0) {
+        currentlyEditing.setProperty(MusicColumns::columnNames[columnId], editText.getText(), singletonUndoManager);
+        TagReader::writeTag(columnId, currentlyEditing);
+    }
+    editPopup.removeCustomComponent(0);
 }

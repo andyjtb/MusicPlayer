@@ -31,15 +31,15 @@ GuiControl::GuiControl()
     searchBox.getSearchTextEditor().addListener(this);
     
 	ITunesLibrary::getInstance()->setLibraryTree (singletonLibraryTree);
-    
-	musicTable.setLibraryToUse (ITunesLibrary::getInstance());
-	musicTable.addActionListener(this);
+    musicTable = musicLibraryDropTarget.getMusicTable();
+	musicTable->setLibraryToUse (ITunesLibrary::getInstance());
+	musicTable->addActionListener(this);
     tableSelectedRow.addListener(this);
     tableShouldPlay.addListener(this);
     tableUpdateRequired.addListener(this);
-	addAndMakeVisible(&musicTable);
+	//addAndMakeVisible(&musicTable);
     
-    addAndMakeVisible(&fileDrop);
+    addAndMakeVisible(&musicLibraryDropTarget);
     
 //    coverflow = new CoverFlowComponent();
 //    addAndMakeVisible(coverflow);
@@ -61,10 +61,9 @@ void GuiControl::resized()
 	trackInfo.setBounds(180, 100, 270, 150);
 	albumArt.setBounds(400,100,175,175);
 	searchBox.setBounds(getWidth()-200, 0, 175, 60);
-    
-    fileDrop.setBounds(getWidth()-200, 150, 175, 175);
-    
-    musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
+
+    musicLibraryDropTarget.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
+    //musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
     
 //    coverflow->setBounds(100,100,100,100);
 }
@@ -85,10 +84,13 @@ void GuiControl::timerCallback(int timerId)
 		outputMeters.setOutputMeterValueR(localOutputMeterR);
 	}
 	if (timerId == 1) {
+        
 		transport.setTransportPosition (audioControl->getTransportPosition());
 
         if (audioControl->getTransportPosition() >= transport.getMaximum())
         {
+            stopTimer(0);
+            stopTimer(1);
             int toPlay = filteredDataList.indexOf(tableSelectedRow);
             toPlay++;
             ValueTree test(filteredDataList.getChild(toPlay));
@@ -96,7 +98,10 @@ void GuiControl::timerCallback(int timerId)
                 tableSelectedRow = test;
                 tableShouldPlay = true;
             }
-
+            else
+            {
+                singletonPlayState = false;
+            }
         }
 	}
 }
@@ -148,8 +153,8 @@ void GuiControl::valueChanged (Value& valueChanged)
     if (valueChanged == tableUpdateRequired)
     {
         if (tableUpdateRequired.getValue()) {
-            musicTable.updateLibrary();
-            musicTable.setFilterText(searchBox.getText());
+            musicTable->updateLibrary();
+            musicTable->setFilterText(searchBox.getText());
             //CLEAR TRACK INFO DISPLAY
             tableUpdateRequired.setValue(false);
         }
@@ -175,8 +180,9 @@ void GuiControl::loadFile()
         {
             singletonPlayState = false;
             audioControl->loadFile(selectedFile);
+            DBG("Volume should be = " << volumeControl.getVolume());
             tablePlayingRow = tableSelectedRow;
-            
+            audioControl->setVolume(volumeControl.getVolume());
             singletonPlayState = true;
             trackInfo.loadTrackInfo(tableSelectedRow);
             tableShouldPlay.setValue(false);
@@ -194,7 +200,7 @@ void GuiControl::updateTagDisplay (File audioFile)
 //Text editor callbacks
 void GuiControl::textEditorTextChanged (TextEditor &textEditor)
 {
-    musicTable.setFilterText(textEditor.getText());
+    musicTable->setFilterText(textEditor.getText());
 }
 void GuiControl::textEditorReturnKeyPressed (TextEditor &textEditor)
 {}

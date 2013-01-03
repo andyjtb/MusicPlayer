@@ -29,6 +29,7 @@ public:
 	void addValueListener (Value::Listener* incomingListener);
 	Value& getSliderValue();
 	
+    double getVolume();
 
     // Binary resources:
     static const char* vol0_png;

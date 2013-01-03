@@ -62,8 +62,6 @@ void VolumeControl::sliderValueChanged (Slider* sliderThatWasMoved)
 {
 	String volumeAction;
 	volume = volumeSlider.getValue();
-	volumeAction << "volumeAction =" << volume;
-	sendActionMessage(volumeAction);
 
 	if (volume <= 0) {
 		volumeButton.setImages (false, true, true,
@@ -121,6 +119,11 @@ void VolumeControl::addValueListener (Value::Listener* incomingListener)
 Value& VolumeControl::getSliderValue()
 {
 	return volumeSlider.getValueObject();
+}
+
+double VolumeControl::getVolume()
+{
+    return volumeSlider.getValue();
 }
 
 //==============================================================================

@@ -127,6 +127,7 @@ public:
     void deleteKeyPressed (int currentSelectedRow);
     void cellClicked (int rowNumber, int columnId, const MouseEvent &event);
     void cellDoubleClicked(int rowNumber, int columnId, const MouseEvent &event);
+    void editDirectly (int rowNumber, int columnId);
     
 private:
     //==============================================================================
@@ -136,7 +137,6 @@ private:
     String currentFilterText;
     
     ValueTree dataList;
-	//ValueTree filteredDataList;
         
     ScopedPointer<TrackDialog> trackDialog;
     
