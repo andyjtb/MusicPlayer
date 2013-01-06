@@ -22,10 +22,6 @@ void RemoteInterprocessConnection::connectionMade()
 {
     DBG("Connection #" + String (connectionNumber) + " - connection started");
     DBG("Connected to = " << getConnectedHostName());
-    
-    String chickens ("cheese");
-    MemoryBlock messageData (chickens.toUTF8(), (size_t) chickens.getNumBytesAsUTF8());
-    sendMessage(messageData);
 }
 
 void RemoteInterprocessConnection::connectionLost()
@@ -71,6 +67,10 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
         }
         
     }
+    if (stringMessage.startsWith("Position: "))
+    {
+        
+    }
 }
 
 void RemoteInterprocessConnection::sendString (String incomingString)
@@ -84,8 +84,8 @@ void RemoteInterprocessConnection::sendPlayingData()
     sendString("Artist: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
     sendString("Song: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString());
     sendString("AlbumTitle: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString());
-    //sendString("TracksTotal: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
-    //sendString("TrackNum: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
+    sendString("TracksTotal: " + filteredDataList.getNumChildren());
+    sendString("TrackNum: " + filteredDataList.indexOf(tablePlayingRow));
     sendString("PlayState: " + singletonPlayState.getValue().toString());            
     
     sendAlbumArt();
@@ -93,7 +93,7 @@ void RemoteInterprocessConnection::sendPlayingData()
 
 void RemoteInterprocessConnection::sendAlbumArt()
 {
-    sendString("AlbumArt" + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
+    sendString("AlbumArt");
     //Send album art memory block
 }
 void RemoteInterprocessConnection::sendLength(int length)
@@ -116,7 +116,8 @@ void RemoteInterprocessConnection::sendVolume (float volume)
 }
 void RemoteInterprocessConnection::sendPlayState()
 {
-    for (int counter = 0; counter < remoteConnections.size(); counter++)
-    {}
-        //remoteConnections[counter].sendString("PlayState: " + singletonPlayState);
+//    for (int counter = 0; counter < remoteConnections.size(); counter++)
+//    {}
+//        remoteConnections[counter].
+        sendString("PlayState: " + singletonPlayState.getValue().toString() );
 }

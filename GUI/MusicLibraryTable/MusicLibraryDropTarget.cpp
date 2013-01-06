@@ -99,6 +99,7 @@ void MusicLibraryDropTarget::filesDropped (const StringArray &files, int x, int 
         }
     }
     
+    tableUpdateRequired = true;
     somethingIsBeingDraggedOver = false;
     repaint();
 }
