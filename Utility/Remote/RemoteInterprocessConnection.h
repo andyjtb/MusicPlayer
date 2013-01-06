@@ -10,9 +10,10 @@
 #define REMOTEINTERPROCESSCONNECTION 
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "RemoteControl.h"
 #include "Settings.h"
 #include "MusicLibraryHelpers.h"
+
+//class Settings;
 
 class RemoteInterprocessConnection  : public InterprocessConnection
 {

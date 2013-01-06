@@ -86,7 +86,7 @@ void RemoteInterprocessConnection::sendPlayingData()
     sendString("AlbumTitle: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString());
     //sendString("TracksTotal: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
     //sendString("TrackNum: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
-    sendString("PlayState: " + singletonPlayState);            
+    sendString("PlayState: " + singletonPlayState.getValue().toString());            
     
     sendAlbumArt();
 }
@@ -94,24 +94,29 @@ void RemoteInterprocessConnection::sendPlayingData()
 void RemoteInterprocessConnection::sendAlbumArt()
 {
     sendString("AlbumArt" + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
+    //Send album art memory block
 }
 void RemoteInterprocessConnection::sendLength(int length)
 {
     for (int counter = 0; counter < remoteConnections.size(); counter++)
-        remoteConnections[counter].sendString("Length: " + length);
+    {}
+        //remoteConnections[counter].sendString("Length: " + length);
 }
 void RemoteInterprocessConnection::sendPosition (int position)
 {
     for (int counter = 0; counter < remoteConnections.size(); counter++)
-        remoteConnections[counter].sendString("Position: " + position);
+    {}
+        //remoteConnections[counter].sendString("Position: " + position);
 }
 void RemoteInterprocessConnection::sendVolume (float volume)
 {
     for (int counter = 0; counter < remoteConnections.size(); counter++)
-    remoteConnections[counter].sendString("Volume: " + String(volume));
+    {}
+    //remoteConnections[counter].sendString("Volume: " + String(volume));
 }
 void RemoteInterprocessConnection::sendPlayState()
 {
     for (int counter = 0; counter < remoteConnections.size(); counter++)
-        remoteConnections[counter].sendString("PlayState: " + singletonPlayState);
+    {}
+        //remoteConnections[counter].sendString("PlayState: " + singletonPlayState);
 }

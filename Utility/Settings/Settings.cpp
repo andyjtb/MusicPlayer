@@ -83,7 +83,7 @@ int& Settings::getCurrentValueTreeId()
     return currentValueTreeId;
 }
 
-OwnedArray <RemoteInterprocessConnection, CriticalSection>& Settings::getConnections()
+OwnedArray <RemoteInterprocessConnection*, CriticalSection>& Settings::getConnections()
 {
     return connections;
 }

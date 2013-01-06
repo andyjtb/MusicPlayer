@@ -19,12 +19,12 @@ RemoteControl::~RemoteControl()
     remoteConnections.clear();
 }
 
-InterprocessConnection* RemoteControl::createConnectionObject()
+RemoteInterprocessConnection* RemoteControl::createConnectionObject()
 {
     DBG("Creating connection");
-    InterprocessConnection* newConnection = new RemoteInterprocessConnection ();
+    RemoteInterprocessConnection* newConnection = new RemoteInterprocessConnection ();
     
-    remoteConnections.add (newConnection);
+    //remoteConnections.add (newConnection);
     return newConnection;
 }
 

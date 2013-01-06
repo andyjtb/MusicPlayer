@@ -20,7 +20,7 @@ public:
         ~RemoteControl();
  
 private:
-    InterprocessConnection* createConnectionObject();
+    RemoteInterprocessConnection* createConnectionObject();
     
     //OwnedArray <InterprocessConnection, CriticalSection> activeConnections;
 

@@ -4,8 +4,10 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Utility.h"
 #include "MusicLibraryHelpers.h"
-#include "RemoteInterprocessConnection.h"
 
+//Forward Declaration
+//#include "RemoteInterprocessConnection.h"
+class RemoteInterprocessConnection;
 
 #define singletonLibraryFile Settings::getInstance()->getLibraryFile()
 #define singletonLibraryTree Settings::getInstance()->getLibraryTree()
@@ -24,7 +26,6 @@
 
 #define remoteConnections Settings::getInstance()->getConnections()
 
-
 class Settings : public DeletedAtShutdown
 {
 public:
@@ -38,7 +39,7 @@ public:
     
     int& getCurrentLibId();
     int& getCurrentValueTreeId();
-    OwnedArray <RemoteInterprocessConnection, CriticalSection>& getConnections();
+    OwnedArray <RemoteInterprocessConnection*, CriticalSection>& getConnections();
     
     ValueTree& getLibraryTree();
     ValueTree& getSelectedRow();
@@ -61,7 +62,7 @@ private:
     ScopedPointer<UndoManager> undoManager;
     int currentLibId, currentValueTreeId;
     Value shouldPlay, playState, updateRequired, deletingTable;
-    OwnedArray <RemoteInterprocessConnection, CriticalSection> connections;
+    OwnedArray <RemoteInterprocessConnection*, CriticalSection> connections;
 
 };
 
