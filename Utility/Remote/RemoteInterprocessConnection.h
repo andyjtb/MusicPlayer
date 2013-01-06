@@ -23,9 +23,17 @@ public:
     void connectionMade();
     void connectionLost();
     void messageReceived (const MemoryBlock& message);
+    void sendString(String incomingString);
     
-private:
+    void sendPlayingData();
+    void sendAlbumArt();
+    void sendLength (int length);
+    void sendPosition (int position);
+    void sendVolume (float volume);
+    void sendPlayState();
 
+private:
+    int connectionNumber;
 };
 
 

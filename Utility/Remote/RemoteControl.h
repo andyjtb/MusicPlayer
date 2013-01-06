@@ -22,7 +22,7 @@ public:
 private:
     InterprocessConnection* createConnectionObject();
     
-    OwnedArray <InterprocessConnection, CriticalSection> activeConnections;
+    //OwnedArray <InterprocessConnection, CriticalSection> activeConnections;
 
 };
 

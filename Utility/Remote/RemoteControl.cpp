@@ -10,14 +10,13 @@
 
 RemoteControl::RemoteControl ()
 {    
-    remoteNumConnections = 0;
     beginWaitingForSocket(8888);
 }
 
 RemoteControl::~RemoteControl()
 {
     stop();
-    activeConnections.clear();
+    remoteConnections.clear();
 }
 
 InterprocessConnection* RemoteControl::createConnectionObject()
@@ -25,7 +24,7 @@ InterprocessConnection* RemoteControl::createConnectionObject()
     DBG("Creating connection");
     InterprocessConnection* newConnection = new RemoteInterprocessConnection ();
     
-    activeConnections.add (newConnection);
+    remoteConnections.add (newConnection);
     return newConnection;
 }
 

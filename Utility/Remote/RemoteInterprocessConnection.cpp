@@ -10,7 +10,7 @@
 
 RemoteInterprocessConnection::RemoteInterprocessConnection () : InterprocessConnection(true)
 {
-    remoteNumConnections++;
+    connectionNumber = remoteConnections.size();
 }
 
 RemoteInterprocessConnection::~RemoteInterprocessConnection()
@@ -20,7 +20,7 @@ RemoteInterprocessConnection::~RemoteInterprocessConnection()
 
 void RemoteInterprocessConnection::connectionMade()
 {
-    DBG("Connection #" + String (remoteNumConnections) + " - connection started");
+    DBG("Connection #" + String (connectionNumber) + " - connection started");
     DBG("Connected to = " << getConnectedHostName());
     
     String chickens ("cheese");
@@ -30,14 +30,19 @@ void RemoteInterprocessConnection::connectionMade()
 
 void RemoteInterprocessConnection::connectionLost()
 {
-    DBG("Connection #" + String (remoteNumConnections) + " - connection lost");
-    remoteNumConnections--;
+    DBG("Connection #" + String (connectionNumber) + " - connection lost");
+    remoteConnections.remove(connectionNumber);
 }
 
 void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
 {
     String stringMessage = message.toString();
-    DBG("Connection #" + String (remoteNumConnections) + " - message received: " + stringMessage);
+    DBG("Connection #" + String (connectionNumber) + " - message received: " + stringMessage);
+    
+    if (stringMessage.startsWith("ConnectionMade"))
+        {
+            sendPlayingData();
+        }
     
     if (stringMessage.startsWith("Play"))
         {
@@ -66,4 +71,47 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
         }
         
     }
+}
+
+void RemoteInterprocessConnection::sendString (String incomingString)
+{
+    MemoryBlock messageData (incomingString.toUTF8(), (size_t) incomingString.getNumBytesAsUTF8());
+    sendMessage(messageData);
+}
+
+void RemoteInterprocessConnection::sendPlayingData()
+{
+    sendString("Artist: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
+    sendString("Song: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString());
+    sendString("AlbumTitle: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString());
+    //sendString("TracksTotal: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
+    //sendString("TrackNum: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
+    sendString("PlayState: " + singletonPlayState);            
+    
+    sendAlbumArt();
+}
+
+void RemoteInterprocessConnection::sendAlbumArt()
+{
+    sendString("AlbumArt" + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
+}
+void RemoteInterprocessConnection::sendLength(int length)
+{
+    for (int counter = 0; counter < remoteConnections.size(); counter++)
+        remoteConnections[counter].sendString("Length: " + length);
+}
+void RemoteInterprocessConnection::sendPosition (int position)
+{
+    for (int counter = 0; counter < remoteConnections.size(); counter++)
+        remoteConnections[counter].sendString("Position: " + position);
+}
+void RemoteInterprocessConnection::sendVolume (float volume)
+{
+    for (int counter = 0; counter < remoteConnections.size(); counter++)
+    remoteConnections[counter].sendString("Volume: " + String(volume));
+}
+void RemoteInterprocessConnection::sendPlayState()
+{
+    for (int counter = 0; counter < remoteConnections.size(); counter++)
+        remoteConnections[counter].sendString("PlayState: " + singletonPlayState);
 }

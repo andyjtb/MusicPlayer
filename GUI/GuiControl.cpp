@@ -121,6 +121,7 @@ void GuiControl::actionListenerCallback (const String& message)
         double value = subString.getDoubleValue();
 		
 		audioControl->setTransportPosition(value);
+        remoteConnections[0]->sendPosition(value);
     }
 }
 
@@ -143,6 +144,7 @@ void GuiControl::valueChanged (Value& valueChanged)
 {
 	if (valueChanged == volumeControl.getSliderValue()) {
 		audioControl->setVolume(valueChanged.getValue());
+        remoteConnections[0]->sendVolume(valueChanged.getValue());
 	}
     
     if (valueChanged == tableShouldPlay)
@@ -161,6 +163,7 @@ void GuiControl::valueChanged (Value& valueChanged)
     }
     
     if (valueChanged == singletonPlayState) {
+        remoteConnections[0]->sendPlayState();
 		if (singletonPlayState.getValue()) {
             startTimer(0, 50);
 			startTimer(1, 100);
@@ -186,6 +189,9 @@ void GuiControl::loadFile()
             singletonPlayState = true;
             trackInfo.loadTrackInfo(tableSelectedRow);
             tableShouldPlay.setValue(false);
+            
+            remoteConnections[0]->sendPlayingData();
+            remoteConnections[0]->sendLength(audioControl->getTransportLength());
         }
         
         albumArt.setCover(TagReader::getAlbumArt(selectedFile));

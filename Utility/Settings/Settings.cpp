@@ -83,9 +83,9 @@ int& Settings::getCurrentValueTreeId()
     return currentValueTreeId;
 }
 
-int& Settings::getNumConnections()
+OwnedArray <RemoteInterprocessConnection, CriticalSection>& Settings::getConnections()
 {
-    return numConnections;
+    return connections;
 }
 
 ValueTree& Settings::getSelectedRow()
