@@ -126,6 +126,11 @@ double VolumeControl::getVolume()
     return volumeSlider.getValue();
 }
 
+void VolumeControl::setVolume(double incomingVolume)
+{
+    volumeSlider.setValue(incomingVolume);
+}
+
 //==============================================================================
 // Binary resources - be careful not to edit any of these sections!
 

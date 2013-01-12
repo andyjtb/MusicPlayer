@@ -65,6 +65,11 @@ public:
     
     void loadFile();
     
+    //Remote 
+    void setVolume(double incomingVolume);
+    
+    void setPosition(double incomingPosition);
+    
     //Text Editor Callbacks
     void textEditorTextChanged (TextEditor &textEditor);
     void textEditorReturnKeyPressed (TextEditor &textEditor);

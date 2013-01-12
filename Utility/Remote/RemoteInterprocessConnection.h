@@ -12,8 +12,8 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Settings.h"
 #include "MusicLibraryHelpers.h"
-
-//class Settings;
+#include "GuiControl.h"
+#include "AudioControl.h"
 
 class RemoteInterprocessConnection  : public InterprocessConnection
 {
@@ -26,15 +26,20 @@ public:
     void messageReceived (const MemoryBlock& message);
     void sendString(String incomingString);
     
+    void setControls(GuiControl* gui, AudioControl* audio);
+    
     void sendPlayingData();
     void sendAlbumArt();
-    void sendLength (int length);
+    void sendLength (double length);
     void sendPosition (int position);
     void sendVolume (float volume);
     void sendPlayState();
 
 private:
     int connectionNumber;
+    
+    OptionalScopedPointer<GuiControl> guiControl;
+    OptionalScopedPointer<AudioControl> audioControl;
 };
 
 

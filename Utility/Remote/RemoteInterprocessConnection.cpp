@@ -69,7 +69,11 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
     }
     if (stringMessage.startsWith("Position: "))
     {
-        
+        guiControl->setPosition(stringMessage.fromFirstOccurrenceOf("Position: ", false, true).getFloatValue());
+    }
+    if (stringMessage.startsWith("Volume: "))
+    {
+        guiControl->setVolume(stringMessage.fromFirstOccurrenceOf("Volume: ", false, true).getDoubleValue());
     }
 }
 
@@ -79,13 +83,20 @@ void RemoteInterprocessConnection::sendString (String incomingString)
     sendMessage(messageData);
 }
 
+void RemoteInterprocessConnection::setControls(GuiControl *gui, AudioControl *audio)
+{
+    guiControl.set(gui, false);
+    audioControl.set(audio, false);
+}
+
 void RemoteInterprocessConnection::sendPlayingData()
 {
     sendString("Artist: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
     sendString("Song: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString());
     sendString("AlbumTitle: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString());
-    sendString("TracksTotal: " + filteredDataList.getNumChildren());
-    sendString("TrackNum: " + filteredDataList.indexOf(tablePlayingRow));
+    sendString("TracksTotal: " + String(filteredDataList.getNumChildren()));
+    sendString("TrackNum: " + String(filteredDataList.indexOf(tablePlayingRow)));
+    sendLength(audioControl->getTransportLength());
     sendString("PlayState: " + singletonPlayState.getValue().toString());            
     
     sendAlbumArt();
@@ -96,7 +107,7 @@ void RemoteInterprocessConnection::sendAlbumArt()
     sendString("AlbumArt");
     //Send album art memory block
 }
-void RemoteInterprocessConnection::sendLength(int length)
+void RemoteInterprocessConnection::sendLength(double length)
 {
     for (int counter = 0; counter < remoteConnections.size(); counter++)
     {}

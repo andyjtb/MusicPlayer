@@ -13,6 +13,7 @@ MainContentComponent::MainContentComponent()
 {
     //Tries to remove a listener which isn't present
     //MenuBarModel::setMacMainMenu(this);
+    remoteControl.setControls(&guiControl, &audioControl);
     
     commandManager.registerAllCommandsForTarget (this);
     commandManager.registerAllCommandsForTarget (JUCEApplication::getInstance());

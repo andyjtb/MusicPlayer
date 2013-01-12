@@ -12,6 +12,8 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "RemoteInterprocessConnection.h"
 #include "Settings.h"
+#include "GuiControl.h"
+#include "AudioControl.h"
 
 class RemoteControl :  public InterprocessConnectionServer
 {
@@ -19,8 +21,13 @@ public:
         RemoteControl();
         ~RemoteControl();
  
+    void setControls (GuiControl* gui, AudioControl* audio);
+    
 private:
     RemoteInterprocessConnection* createConnectionObject();
+    
+    OptionalScopedPointer<GuiControl> guiControl;
+    OptionalScopedPointer<AudioControl> audioControl;
     
     //OwnedArray <InterprocessConnection, CriticalSection> activeConnections;
 

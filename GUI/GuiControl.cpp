@@ -203,6 +203,19 @@ void GuiControl::updateTagDisplay (File audioFile)
 	albumArt.setCover(TagReader::getAlbumArt(audioFile));
 }
 
+//Remote
+void GuiControl::setPosition (double incomingPosition)
+{
+    audioControl->setTransportPosition(incomingPosition);
+    transport.setTransportPosition(incomingPosition);
+}
+
+void GuiControl::setVolume (double incomingVolume)
+{
+    audioControl->setVolume(incomingVolume);
+    volumeControl.setVolume(incomingVolume);
+}
+
 //Text editor callbacks
 void GuiControl::textEditorTextChanged (TextEditor &textEditor)
 {

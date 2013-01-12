@@ -23,9 +23,14 @@ RemoteInterprocessConnection* RemoteControl::createConnectionObject()
 {
     DBG("Creating connection");
     RemoteInterprocessConnection* newConnection = new RemoteInterprocessConnection ();
+    newConnection->setControls(guiControl, audioControl);
     
     //remoteConnections.add (newConnection);
     return newConnection;
 }
 
-
+void RemoteControl::setControls (GuiControl* gui, AudioControl* audio)
+{
+    guiControl.set(gui, false);
+    audioControl.set(audio, false);
+}

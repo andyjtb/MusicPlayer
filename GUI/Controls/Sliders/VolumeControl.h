@@ -30,7 +30,9 @@ public:
 	Value& getSliderValue();
 	
     double getVolume();
-
+    
+    void setVolume(double incomingVolume);
+    
     // Binary resources:
     static const char* vol0_png;
     static const int vol0_pngSize;
