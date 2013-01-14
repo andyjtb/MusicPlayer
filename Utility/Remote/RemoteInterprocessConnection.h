@@ -31,8 +31,8 @@ public:
     void sendPlayingData();
     void sendAlbumArt();
     void sendLength (double length);
-    void sendPosition (int position);
-    void sendVolume (float volume);
+    void sendPosition (double position);
+    void sendVolume (double volume);
     void sendPlayState();
 
 private:

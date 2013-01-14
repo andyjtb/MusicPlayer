@@ -69,7 +69,7 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
     }
     if (stringMessage.startsWith("Position: "))
     {
-        guiControl->setPosition(stringMessage.fromFirstOccurrenceOf("Position: ", false, true).getFloatValue());
+        guiControl->setPosition(stringMessage.fromFirstOccurrenceOf("Position: ", false, true).getDoubleValue());
     }
     if (stringMessage.startsWith("Volume: "))
     {
@@ -91,6 +91,7 @@ void RemoteInterprocessConnection::setControls(GuiControl *gui, AudioControl *au
 
 void RemoteInterprocessConnection::sendPlayingData()
 {
+    
     sendString("Artist: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
     sendString("Song: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString());
     sendString("AlbumTitle: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString());
@@ -100,6 +101,8 @@ void RemoteInterprocessConnection::sendPlayingData()
     sendString("PlayState: " + singletonPlayState.getValue().toString());            
     
     sendAlbumArt();
+    
+    sendString("NewTrack");
 }
 
 void RemoteInterprocessConnection::sendAlbumArt()
@@ -110,25 +113,28 @@ void RemoteInterprocessConnection::sendAlbumArt()
 void RemoteInterprocessConnection::sendLength(double length)
 {
     for (int counter = 0; counter < remoteConnections.size(); counter++)
-    {}
-        //remoteConnections[counter].sendString("Length: " + length);
+    {
+        remoteConnections[counter]->sendString("Length: " + String(length));
+    }
 }
-void RemoteInterprocessConnection::sendPosition (int position)
+void RemoteInterprocessConnection::sendPosition (double position)
 {
     for (int counter = 0; counter < remoteConnections.size(); counter++)
-    {}
-        //remoteConnections[counter].sendString("Position: " + position);
+    {
+        remoteConnections[counter]->sendString("Position: " + String(position));
+    }
 }
-void RemoteInterprocessConnection::sendVolume (float volume)
+void RemoteInterprocessConnection::sendVolume (double volume)
 {
     for (int counter = 0; counter < remoteConnections.size(); counter++)
-    {}
-    //remoteConnections[counter].sendString("Volume: " + String(volume));
+    {
+        remoteConnections[counter]->sendString("Volume: " + String(volume));
+    }
 }
 void RemoteInterprocessConnection::sendPlayState()
 {
-//    for (int counter = 0; counter < remoteConnections.size(); counter++)
-//    {}
-//        remoteConnections[counter].
-        sendString("PlayState: " + singletonPlayState.getValue().toString() );
+    for (int counter = 0; counter < remoteConnections.size(); counter++)
+    {
+        remoteConnections[counter]->sendString("PlayState: " + singletonPlayState.getValue().toString());
+    }
 }

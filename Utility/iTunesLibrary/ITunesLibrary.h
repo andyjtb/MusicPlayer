@@ -85,7 +85,7 @@ public:
         E.g. on Mac this will be something like:
         "/Users/username/Music/iTunes/iTunes Music Library.xml"
      */
-	static File getDefaultITunesLibraryFile();
+	static const File getDefaultITunesLibraryFile();
     
 	//==============================================================================
     /** A class for receiving callbacks from an ITunesLibrary.

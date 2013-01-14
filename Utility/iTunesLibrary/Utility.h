@@ -54,7 +54,8 @@ inline static String stripFileProtocolForLocal (String pathToStrip)
 #else
 		String temp (pathToStrip.substring (pathToStrip.indexOf (7, "/")));
 #endif   
-		return temp.replace ("%20", " ").replace ("%5B", "[").replace ("%5D", "]").replace ("%23", "#");
+		//return temp.replace ("%20", " ").replace ("%5B", "[").replace ("%5D", "]").replace ("%23", "#");
+        return URL::removeEscapeChars(temp);
 	}
 	
 	return String::empty;

@@ -17,10 +17,6 @@ Getting undo message from manager, allowing undo of one thing at a time
 \f1 \
 \pard\pardeftab720\ql\qnatural
 \cf0 \
-New album art method required, doesn't like snow capped romance\
-Can't open file, something it doesn't like in the path name, specifically the file location taken from the itunes library, %7B = \{, \
-URL class, removeEscapeChars will do it pefectly\
-\
 Audio thread priority, cleanmymac scan killed things\
 \
 \pard\tx560\pardeftab560\ql\qnatural\pardirnatural
@@ -38,7 +34,7 @@ Play button, when selectedrow is valid allowing clicking to begin playing the so
 Volume changes with new track\
 \
 Deleted song should be unloaded if it was currently playing\
-Deleting removes most recently added file instead of selected, assuming the filteredlist needs to be refiltered to order tracks properly, didn't work\
+In delete function set tableShouldPlay to true would load the selected row into the audioControl but would also trigger play since that function has singletonPlayState in it\
 \
 TO FIX LATER\
 \
@@ -52,8 +48,9 @@ TO FIX LATER\
 \pard\pardeftab720\ql\qnatural
 \cf0 \
 TO ADD\
+\pard\pardeftab720\ql\qnatural
 
-\f0 \
+\f0 \cf0 \
 Intercepts from keyboard, searches for string being entered\
 AudioPlayHead to replace the slider transport system?\
 Saving tag data - Album art especially\

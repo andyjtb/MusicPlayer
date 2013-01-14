@@ -18,9 +18,9 @@
 class RemoteControl :  public InterprocessConnectionServer
 {
 public:
-        RemoteControl();
-        ~RemoteControl();
- 
+    RemoteControl();
+    ~RemoteControl();
+    
     void setControls (GuiControl* gui, AudioControl* audio);
     
 private:
@@ -29,8 +29,6 @@ private:
     OptionalScopedPointer<GuiControl> guiControl;
     OptionalScopedPointer<AudioControl> audioControl;
     
-    //OwnedArray <InterprocessConnection, CriticalSection> activeConnections;
-
 };
 
 #endif //REMOTECONTROL

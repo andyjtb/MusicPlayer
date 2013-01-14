@@ -27,6 +27,8 @@
 #include "MusicLibraryDropTarget.h"
 //#include "CoverFlowComponent.h"
 
+class RemoteInterprocessConnection;
+
 /**
 
  */

@@ -39,7 +39,7 @@ public:
     
     int& getCurrentLibId();
     int& getCurrentValueTreeId();
-    OwnedArray <RemoteInterprocessConnection*, CriticalSection>& getConnections();
+    OwnedArray <RemoteInterprocessConnection, CriticalSection>& getConnections();
     
     ValueTree& getLibraryTree();
     ValueTree& getSelectedRow();
@@ -62,7 +62,7 @@ private:
     ScopedPointer<UndoManager> undoManager;
     int currentLibId, currentValueTreeId;
     Value shouldPlay, playState, updateRequired, deletingTable;
-    OwnedArray <RemoteInterprocessConnection*, CriticalSection> connections;
+    OwnedArray <RemoteInterprocessConnection, CriticalSection> connections;
 
 };
 

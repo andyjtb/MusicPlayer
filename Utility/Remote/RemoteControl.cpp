@@ -25,7 +25,7 @@ RemoteInterprocessConnection* RemoteControl::createConnectionObject()
     RemoteInterprocessConnection* newConnection = new RemoteInterprocessConnection ();
     newConnection->setControls(guiControl, audioControl);
     
-    //remoteConnections.add (newConnection);
+    remoteConnections.add (newConnection);
     return newConnection;
 }
 

@@ -42,7 +42,7 @@ void ITunesLibrary::setLibraryFile (File newFile)
 }
 
 //==============================================================================
-File ITunesLibrary::getDefaultITunesLibraryFile()
+const File ITunesLibrary::getDefaultITunesLibraryFile()
 {
     File iTunesLibrary(File::getSpecialLocation (File::userMusicDirectory).getChildFile ("iTunes/iTunes Music Library.xml"));
     //Non drow
@@ -99,7 +99,7 @@ void ITunesLibrary::saveLibrary(File& saveDestination)
 //	File location(File::getSpecialLocation(File::userHomeDirectory));
 //	location = (location.getFullPathName()+"/test.xml");
 	bool success = writeValueTreeToFile(libraryTree, saveDestination, true);
-	DBG(success);
+	DBG("Did Library save = " << success);
 }
 
 File ITunesLibrary::libraryNotFound()

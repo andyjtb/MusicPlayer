@@ -338,10 +338,11 @@ void MusicLibraryTable::returnKeyPressed(int currentSelectedRow)
 void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
 {
     //Re-sorts and filters the table to reposition newly added tracks
-    setFilterText(currentFilterText);
+    //setFilterText(currentFilterText);
     
     tableDeleting = true;
     //Add a confirmation screen containing the option to delete file as well
+    
     SparseSet<int> selectedRows = table.getSelectedRows();
     Array<int> toDelete;
     
@@ -361,11 +362,15 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
     }
         //DBG("Trans num = " << singletonUndoManager->getNumActionsInCurrentTransaction());
         //DBG("Undo message = " << singletonUndoManager->getUndoDescription());
-    tableUpdateRequired.setValue(true);
+    tableUpdateRequired = true;
     
     table.deselectAllRows();
     table.selectRow(selectedRows[0]);
-
+    
+    //Find better way to load up a new track without it playing
+    tableShouldPlay = true;
+    //
+    
     tableDeleting = false;
 }
 

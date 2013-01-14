@@ -31,8 +31,8 @@ public:
                 
 //                if (f != NULL)
 //                {
-                tags.setProperty(MusicColumns::columnNames[MusicColumns::ID], singletonCurrentValueTreeId++, nullptr);
-                tags.setProperty(MusicColumns::columnNames[MusicColumns::LibID], singletonCurrentLibId++, nullptr);
+                tags.setProperty(MusicColumns::columnNames[MusicColumns::ID], ++singletonCurrentValueTreeId, nullptr);
+                tags.setProperty(MusicColumns::columnNames[MusicColumns::LibID], ++singletonCurrentLibId, nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Artist], f.tag()->artist().toCString(), nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Song], f.tag()->title().toCString(), nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Album], f.tag()->album().toCString(), nullptr);
@@ -44,7 +44,7 @@ public:
 //                }
                 
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Genre], f.tag()->genre().toCString(), nullptr);         
-                tags.setProperty(MusicColumns::columnNames[MusicColumns::Label], f.tag()->comment().toCString(), nullptr);
+                tags.setProperty(MusicColumns::columnNames[MusicColumns::Label], String (CharPointer_UTF8(f.tag()->comment().toCString())), nullptr);
                 
                 AudioFormatManager formatManager;
                 formatManager.registerBasicFormats();
