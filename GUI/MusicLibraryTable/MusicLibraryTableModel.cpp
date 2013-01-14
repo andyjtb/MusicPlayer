@@ -363,15 +363,16 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
         //DBG("Trans num = " << singletonUndoManager->getNumActionsInCurrentTransaction());
         //DBG("Undo message = " << singletonUndoManager->getUndoDescription());
     tableUpdateRequired = true;
+    tableDeleting = false;
     
     table.deselectAllRows();
     table.selectRow(selectedRows[0]);
     
     //Find better way to load up a new track without it playing
-    tableShouldPlay = true;
+    //tableShouldPlay = true;
     //
     
-    tableDeleting = false;
+
 }
 
 void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::MouseEvent &event)

@@ -130,9 +130,10 @@ void GuiControl::actionListenerCallback (const String& message)
 
 void GuiControl::changeListenerCallback (ChangeBroadcaster* changeBroadcaster)
 {
-	double value = audioControl->getTransportLength();
-	
+    //New song loaded change message
 	if (changeBroadcaster == audioControl) {
+        double value = audioControl->getTransportLength();
+        audioControl->setVolume(volumeControl.getVolume());
         if(remoteConnections.getFirst() != nullptr)
         {
             remoteConnections.getFirst()->sendPlayingData();
@@ -174,10 +175,12 @@ void GuiControl::valueChanged (Value& valueChanged)
     }
     
     if (valueChanged == singletonPlayState) {
+
         if(remoteConnections.getFirst() != nullptr)
         {
             remoteConnections.getFirst()->sendPlayState();
         }
+        
 		if (singletonPlayState.getValue()) {
             startTimer(0, 50);
 			startTimer(1, 100);
@@ -197,9 +200,7 @@ void GuiControl::loadFile()
         {
             singletonPlayState = false;
             audioControl->loadFile(selectedFile);
-            DBG("Volume should be = " << volumeControl.getVolume());
             tablePlayingRow = tableSelectedRow;
-            audioControl->setVolume(volumeControl.getVolume());
             singletonPlayState = true;
             trackInfo.loadTrackInfo(tableSelectedRow);
             tableShouldPlay.setValue(false);
