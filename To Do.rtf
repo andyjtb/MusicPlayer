@@ -17,29 +17,28 @@ Getting undo message from manager, allowing undo of one thing at a time
 \f1 \
 \pard\pardeftab720\ql\qnatural
 \cf0 \
-Audio thread priority, cleanmymac scan killed things\
-\
 \pard\tx560\pardeftab560\ql\qnatural\pardirnatural
 
 \f2\fs22 \cf2 \CocoaLigature0 Add a confirmation screen containing the option to delete file as well
 \f1\fs24 \cf0 \CocoaLigature1 \
-\pard\pardeftab720\ql\qnatural
-\cf0 \
-Display/edit info when multiple items are selected\
 \
-Remote, when connection made check library last modified, check against last modified in settings to see whether library needs to be resent, then save library, loaddatafromfile on file library, send memory block to phone, use fileoutputstream on the phone to create a file from the data\
+\pard\pardeftab720\ql\qnatural
+\cf0 Remote, when connection made check library last modified, check against last modified in settings to see whether library needs to be resent, then save library, loaddatafromfile on file library, send memory block to phone, use fileoutputstream on the phone to create a file from the data\
 \
 Deleted song should be unloaded if it was currently playing\
 In delete function set tableShouldPlay to true would load the selected row into the audioControl but would also trigger play since that function has singletonPlayState in it\
+\
+Re think libido stuff, if songs are deleted then the libid doesn't go down, maybe just use singletonLibraryTree.getNumChildren()\
+\
+Audio slow down - Soundtouch puts processor usage up to 23%\
+Processor heavy stuff kills its, opening dialogues causes glitches\
+Standard playing = 14% probably the remote connection position send stuff\
 \
 TO FIX LATER\
 \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
 
 \f0 \cf0 Coverflow guessed at some changes, didn't work
-\f1 \
-
-\f0 Soundtouch audio source needs work
 \f1 \
 \pard\pardeftab720\ql\qnatural
 \cf0 \

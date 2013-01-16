@@ -52,7 +52,7 @@ finishedLoading (true)
     }
     
 	// we could now change some initial settings..
-	table.getHeader().setSortColumnId (MusicColumns::Artist, true); // sort forwards by the ID column
+	table.getHeader().setSortColumnId (MusicColumns::Artist, true); // sort forwards by the Artist column
     
 	table.getHeader().setColumnVisible (MusicColumns::LibID, false);
 	table.getHeader().setColumnVisible (MusicColumns::ID, false);
@@ -86,35 +86,27 @@ void MusicLibraryTable::setLibraryToUse (ITunesLibrary* library)
 	libraryChanged(library);
 }
 
-void MusicLibraryTable::setFilterText (String filterString)
+void MusicLibraryTable::setFilterText (const String& filterString)
 {
     currentFilterText = filterString;
     if (currentLibrary != nullptr)
         currentLibrary->getParserLock().enter();
     
-    //    filteredArray.clear();
-    
 	if (filterString == String::empty)
 	{
 		filteredDataList = dataList;
 		filteredNumRows = filteredDataList.getNumChildren();
-        
-        //        for (int e = 0; e < dataList.getNumChildren(); e++)
-        //        {
-        //            filteredArray.add (dataList.getChild (e));
-        //        }
 	}
 	else
 	{
 		filteredDataList = ValueTree (dataList.getType());
 		
-		for (int e = 0; e < dataList.getNumChildren(); e++)
+		for (int e = 0; e < dataList.getNumChildren(); ++e)
 		{
 			for (int i = 0; i < dataList.getChild (e).getNumProperties(); i++)
 			{
 				if (dataList.getChild (e)[MusicColumns::columnNames[i]].toString().containsIgnoreCase (filterString))
 				{
-                    //                    filteredArray.add (dataList.getChild (e));
 					filteredDataList.addChild (dataList.getChild(e).createCopy(), -1, 0);
 					
 					break;
@@ -143,9 +135,9 @@ void MusicLibraryTable::libraryChanged (ITunesLibrary* library)
 		filteredNumRows = filteredDataList.getNumChildren();
         
 		finishedLoading = false;
-		
-		table.updateContent();
-        table.getHeader().reSortTable();
+        
+        filteredDataList = dataList = currentLibrary->getLibraryTree();
+        updateTableFilteredAndSorted();
     }
 }
 
@@ -153,10 +145,7 @@ void MusicLibraryTable::libraryUpdated (ITunesLibrary* library)
 {
 	if (library == currentLibrary)
 	{
-		filteredNumRows = filteredDataList.getNumChildren();
-        
-		table.updateContent();
-        table.getHeader().reSortTable();
+        updateTableFilteredAndSorted();
 	}
 }
 
@@ -164,11 +153,7 @@ void MusicLibraryTable::libraryFinished (ITunesLibrary* library)
 {
 	if (library == currentLibrary)
 	{
-		filteredNumRows = filteredDataList.getNumChildren();
-		finishedLoading = true;
-        
-		table.updateContent();
-		table.getHeader().reSortTable();
+        updateTableFilteredAndSorted();
 		
 		sendActionMessage("LibraryImportFinished");
 	}
@@ -318,6 +303,14 @@ void MusicLibraryTable::focusOfChildComponentChanged (FocusChangeType /*cause*/)
 //	return var::null;
 //}
 
+//==============================================================================
+void MusicLibraryTable::updateTableFilteredAndSorted()
+{
+    // make sure we still apply our filter
+    // this will also re-sort and update the table
+    setFilterText (currentFilterText);
+}
+
 //NON DROW
 void MusicLibraryTable::updateLibrary()
 {
@@ -352,13 +345,15 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
     
     for (int counter = 0; counter < toDelete.size(); counter++)
     {
-        ValueTree valueDelete = singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], toDelete[counter]);  
+        ValueTree valueDelete = singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], toDelete[counter]);
+
+        
         if (tablePlayingRow == valueDelete)
         {
             singletonPlayState = false;
         }
         singletonLibraryTree.removeChild(valueDelete, singletonUndoManager);
-        
+
     }
         //DBG("Trans num = " << singletonUndoManager->getNumActionsInCurrentTransaction());
         //DBG("Undo message = " << singletonUndoManager->getUndoDescription());
@@ -402,19 +397,48 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
         switch (result) {
             case 1:
             {
-                //FIX ME
                 editDirectly(rowNumber, columnId);
                 break;
             }
             case 2:
+            {
                 tableShouldPlay.setValue(true);
                 tableSelectedRow = filteredDataList.getChild(rowNumber);
                 break;
+            }
             case 3:
             {
-                trackDialog = new TrackDialog(rowNumber);             
+                SparseSet<int> selectedRows = table.getSelectedRows();
                 
-                DialogWindow::showDialog(filteredDataList.getChild(rowNumber).getProperty(MusicColumns::columnNames[MusicColumns::Song]), trackDialog, 0, Colours::white, true);
+                if (selectedRows.size() == 1)
+                {
+                    trackDialog = new TrackDialog(rowNumber);             
+                    
+                    DialogWindow::showDialog(filteredDataList.getChild(rowNumber).getProperty(MusicColumns::columnNames[MusicColumns::Song]), trackDialog, 0, Colours::white, true);
+                }
+                else
+                {
+                    SparseSet<int> selectedRows = table.getSelectedRows();
+                    Array<int> editingIds;
+                    
+                    for (int counter = 0; counter < selectedRows.size(); counter++) {
+                        editingIds.add(filteredDataList.getChild(selectedRows[counter]).getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
+                    } 
+                    
+                    AlertWindow editPopup("Editing Multiple Tracks", "", AlertWindow::NoIcon);
+                    ScopedPointer<TrackMulti> trackMulti;
+                    trackMulti = new TrackMulti(editingIds);
+                    
+                    editPopup.addCustomComponent(trackMulti);
+                    
+                    editPopup.addButton("Cancel", 0);
+                    editPopup.addButton("Ok", 1);
+                    
+                    if (editPopup.runModalLoop() != 0) {
+                        trackMulti->saveEdits();
+                    }
+                    editPopup.removeCustomComponent(0);
+                }
                 break;
             }
             case 4:

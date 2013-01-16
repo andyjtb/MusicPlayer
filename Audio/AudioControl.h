@@ -51,9 +51,9 @@ public:
     
     bool isPlaying();
 
-//	void setPitch (const float incomingPitch);
-//	
-//	void setPlaybackSpeed(const float incomingSpeed);
+	void setPitch (const float incomingPitch);
+	
+	void setPlaybackSpeed(const float incomingSpeed);
 	
     //AudioCallbacks================================================================
 	
@@ -84,8 +84,8 @@ private:
 	
 	ScopedPointer<AudioFormatReaderSource> currentAudioFileSource;
 	
-	//SoundTouchAudioSource* soundTouch;
-	//SoundTouchProcessor::PlaybackSettings soundTouchSettings;
+	ScopedPointer<SoundTouchAudioSource> soundTouch;
+	SoundTouchProcessor::PlaybackSettings soundTouchSettings;
 	
 	//audio variables
     float audioMeterOutputL;

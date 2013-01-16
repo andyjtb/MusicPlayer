@@ -1,32 +1,28 @@
 /*
-  ==============================================================================
-  
-  This file is part of the dRowAudio JUCE module
-  Copyright 2004-12 by dRowAudio.
-  
-  ------------------------------------------------------------------------------
+ ==============================================================================
  
-  dRowAudio can be redistributed and/or modified under the terms of the GNU General
-  Public License (Version 2), as published by the Free Software Foundation.
-  A copy of the license is included in the module distribution, or can be found
-  online at www.gnu.org/licenses.
-  
-  dRowAudio is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-  A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-  
-  ==============================================================================
-*/
-
-#if DROWAUDIO_USE_SOUNDTOUCH
+ This file is part of the dRowAudio JUCE module
+ Copyright 2004-12 by dRowAudio.
+ 
+ ------------------------------------------------------------------------------
+ 
+ dRowAudio can be redistributed and/or modified under the terms of the GNU General
+ Public License (Version 2), as published by the Free Software Foundation.
+ A copy of the license is included in the module distribution, or can be found
+ online at www.gnu.org/licenses.
+ 
+ dRowAudio is distributed in the hope that it will be useful, but WITHOUT ANY
+ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ 
+ ==============================================================================
+ */
 
 #include "dRowAudio_SoundTouchProcessor.h"
 
-using namespace soundtouch;
-
 SoundTouchProcessor::SoundTouchProcessor()
-    : interleavedInputBufferSize (512),
-      interleavedOutputBufferSize (512)
+: interleavedInputBufferSize (512),
+interleavedOutputBufferSize (512)
 {
     setPlaybackSettings (settings);
     
@@ -82,7 +78,7 @@ void SoundTouchProcessor::readSamples (float** destinationChannelData, int numCh
     
     {
         ScopedLock sl (lock);
-    
+        
         do
         {
             int maxNumSamples = numSamples - numSamplesDone;
@@ -117,17 +113,3 @@ void SoundTouchProcessor::setPlaybackSettings (PlaybackSettings newSettings)
     soundTouch.setTempo (settings.tempo);
     soundTouch.setPitch (settings.pitch);    
 }
-
-
-void SoundTouchProcessor::setSoundTouchSetting (int settingId, int settingValue)
-{
-    soundTouch.setSetting (settingId, settingValue);
-}
-
-int SoundTouchProcessor::getSoundTouchSetting (int settingId)
-{
-    return soundTouch.getSetting (settingId);
-}
-
-
-#endif

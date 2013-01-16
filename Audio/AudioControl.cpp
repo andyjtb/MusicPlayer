@@ -27,12 +27,10 @@ AudioControl::AudioControl()
     }
     else
     {
-//	soundTouch = new SoundTouchAudioSource(&transport, false);
-//        audioSourcePlayer.setSource (soundTouchSource);
-
+//        soundTouch = new SoundTouchAudioSource(&transport, false);
+//        audioSourcePlayer.setSource (soundTouch);
 		audioSourcePlayer.setSource(&transport);
-		
-        
+    
         // start the IO device pulling its data from our callback..
         audioDeviceManager.addAudioCallback (this);
     }
@@ -114,23 +112,23 @@ double AudioControl::getTransportLength()
 	return transport.getLengthInSeconds();
 }
 
-//void AudioControl::setPlaybackSpeed(const float incomingSpeed)
-//{	
-//    if (incomingSpeed >= 0.f && incomingSpeed <= 10.f) 
-//    {
-//		soundTouchSettings.tempo = incomingSpeed;
-//        soundtouchAudioSource->setPlaybackSettings(soundTouchSettings);
-//    }
-//}
-//
-//void AudioControl::setPitch(const float incomingPitch)
-//{
-//	if (incomingPitch >= 0.f && incomingPitch <= 10.f) 
-//    {
-//		soundTouchSettings.pitch = incomingPitch;
-//        soundtouchAudioSource->setPlaybackSettings(soundTouchSettings);
-//    }
-//}
+void AudioControl::setPlaybackSpeed(const float incomingSpeed)
+{	
+    if (incomingSpeed >= 0.f && incomingSpeed <= 10.f) 
+    {
+		soundTouchSettings.tempo = incomingSpeed;
+        soundTouch->setPlaybackSettings(soundTouchSettings);
+    }
+}
+
+void AudioControl::setPitch(const float incomingPitch)
+{
+	if (incomingPitch >= 0.f && incomingPitch <= 10.f) 
+    {
+		soundTouchSettings.pitch = incomingPitch;
+        soundTouch->setPlaybackSettings(soundTouchSettings);
+    }
+}
 
 
 //AudioCallbacks================================================================

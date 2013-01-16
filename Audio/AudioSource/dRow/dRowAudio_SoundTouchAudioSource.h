@@ -1,45 +1,44 @@
 /*
-  ==============================================================================
-  
-  This file is part of the dRowAudio JUCE module
-  Copyright 2004-12 by dRowAudio.
-  
-  ------------------------------------------------------------------------------
+ ==============================================================================
  
-  dRowAudio can be redistributed and/or modified under the terms of the GNU General
-  Public License (Version 2), as published by the Free Software Foundation.
-  A copy of the license is included in the module distribution, or can be found
-  online at www.gnu.org/licenses.
-  
-  dRowAudio is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-  A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-  
-  ==============================================================================
-*/
+ This file is part of the dRowAudio JUCE module
+ Copyright 2004-12 by dRowAudio.
+ 
+ ------------------------------------------------------------------------------
+ 
+ dRowAudio can be redistributed and/or modified under the terms of the GNU General
+ Public License (Version 2), as published by the Free Software Foundation.
+ A copy of the license is included in the module distribution, or can be found
+ online at www.gnu.org/licenses.
+ 
+ dRowAudio is distributed in the hope that it will be useful, but WITHOUT ANY
+ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ 
+ ==============================================================================
+ */
 
 #ifndef __DROWAUDIO_SOUNDTOUCHAUDIOSOURCE_H__
 #define __DROWAUDIO_SOUNDTOUCHAUDIOSOURCE_H__
 
-#if DROWAUDIO_USE_SOUNDTOUCH || DOXYGEN
+#include "../JuceLibraryCode/JuceHeader.h"
 
 #include "dRowAudio_SoundTouchProcessor.h"
-#include "../JuceLibraryCode/JuceHeader.h"
 
 //==============================================================================
 /** An audio source that can independently change the rate, tempo and pitch of
-    an audio source. This uses the SoundTouch library to perform the processing.
+ an audio source. This uses the SoundTouch library to perform the processing.
  */
 class SoundTouchAudioSource :   public PositionableAudioSource
 {
 public:
     //==============================================================================
     /** Creates a SoundTouchAudio source.
-        The numberOfSamplesToBuffer parameter is how many samples the source will
-        buffer internally. Due to the way SoundTouch processes samples any changes
-        of playback settings will only come into effect some time after this number
-        of samples has been process. For fine control try reducing this but beware
-        the extra function calls will use more CPU.
+     The numberOfSamplesToBuffer parameter is how many samples the source will
+     buffer internally. Due to the way SoundTouch processes samples any changes
+     of playback settings will only come into effect some time after this number
+     of samples has been process. For fine control try reducing this but beware
+     the extra function calls will use more CPU.
      */
     SoundTouchAudioSource (PositionableAudioSource* source,
                            bool deleteSourceWhenDeleted = false,
@@ -109,5 +108,4 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoundTouchAudioSource);
 };
 
-#endif
 #endif // __DROWAUDIO_SOUNDTOUCHAUDIOSOURCE_H__

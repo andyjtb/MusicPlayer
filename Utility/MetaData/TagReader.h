@@ -31,6 +31,7 @@ public:
                 
 //                if (f != NULL)
 //                {
+                
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::ID], ++singletonCurrentValueTreeId, nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::LibID], ++singletonCurrentLibId, nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Artist], f.tag()->artist().toCString(), nullptr);

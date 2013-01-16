@@ -1,24 +1,22 @@
 /*
-  ==============================================================================
-  
-  This file is part of the dRowAudio JUCE module
-  Copyright 2004-12 by dRowAudio.
-  
-  ------------------------------------------------------------------------------
+ ==============================================================================
  
-  dRowAudio can be redistributed and/or modified under the terms of the GNU General
-  Public License (Version 2), as published by the Free Software Foundation.
-  A copy of the license is included in the module distribution, or can be found
-  online at www.gnu.org/licenses.
-  
-  dRowAudio is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-  A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-  
-  ==============================================================================
-*/
-
-#if DROWAUDIO_USE_SOUNDTOUCH
+ This file is part of the dRowAudio JUCE module
+ Copyright 2004-12 by dRowAudio.
+ 
+ ------------------------------------------------------------------------------
+ 
+ dRowAudio can be redistributed and/or modified under the terms of the GNU General
+ Public License (Version 2), as published by the Free Software Foundation.
+ A copy of the license is included in the module distribution, or can be found
+ online at www.gnu.org/licenses.
+ 
+ dRowAudio is distributed in the hope that it will be useful, but WITHOUT ANY
+ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ 
+ ==============================================================================
+ */
 
 #include "dRowAudio_SoundTouchAudioSource.h"
 
@@ -26,15 +24,15 @@ SoundTouchAudioSource::SoundTouchAudioSource (PositionableAudioSource* source_,
                                               bool deleteSourceWhenDeleted,
                                               int numberOfSamplesToBuffer_,
                                               int numberOfChannels_)
-    : source (source_, deleteSourceWhenDeleted),
-      numberOfSamplesToBuffer (jmax (1024, numberOfSamplesToBuffer_)),
-      numberOfChannels (numberOfChannels_),
-      buffer (numberOfChannels_, 0),
-      nextReadPos (0),
-      isPrepared (false)
+: source (source_, deleteSourceWhenDeleted),
+numberOfSamplesToBuffer (jmax (1024, numberOfSamplesToBuffer_)),
+numberOfChannels (numberOfChannels_),
+buffer (numberOfChannels_, 0),
+nextReadPos (0),
+isPrepared (false)
 {
     jassert (source_ != nullptr);
-
+    
     soundTouchProcessor.clear();
 }
 
@@ -78,10 +76,10 @@ void SoundTouchAudioSource::getNextAudioBlock (const AudioSourceChannelInfo& inf
 {
     while (soundTouchProcessor.getNumReady() < info.numSamples)
         readNextBufferChunk();
-
+    
     soundTouchProcessor.readSamples (info.buffer->getArrayOfChannels(), info.buffer->getNumChannels(),
                                      info.numSamples, info.startSample);
-
+    
     effectiveNextPlayPos += (int64) (info.numSamples * soundTouchProcessor.getEffectivePlaybackRatio());
 }
 
@@ -89,23 +87,23 @@ void SoundTouchAudioSource::getNextAudioBlock (const AudioSourceChannelInfo& inf
 void SoundTouchAudioSource::setNextReadPosition (int64 newPosition)
 {
     const ScopedLock sl (bufferStartPosLock);
-
+    
     nextReadPos = effectiveNextPlayPos = newPosition;
-
+    
     soundTouchProcessor.clear();
 }
 
 int64 SoundTouchAudioSource::getNextReadPosition() const
 {
     return source->isLooping() ? effectiveNextPlayPos % source->getTotalLength()
-                               : effectiveNextPlayPos;
+    : effectiveNextPlayPos;
 }
 
 //==============================================================================
 void SoundTouchAudioSource::readNextBufferChunk()
 {
     const ScopedLock sl (bufferStartPosLock);
-
+    
     if (source->getNextReadPosition() != nextReadPos)
         source->setNextReadPosition (nextReadPos);
     
@@ -116,10 +114,7 @@ void SoundTouchAudioSource::readNextBufferChunk()
     
     source->getNextAudioBlock (info);
     nextReadPos += info.numSamples;
-
+    
     soundTouchProcessor.writeSamples (buffer.getArrayOfChannels(), buffer.getNumChannels(), info.numSamples);
 }
 
-
-
-#endif

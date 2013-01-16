@@ -52,7 +52,6 @@ private:
     TextEditor label;
     Label trackLabel;
     TextEditor trackNum;
-    TextButton save;
     
     ValueTree songTree;
     

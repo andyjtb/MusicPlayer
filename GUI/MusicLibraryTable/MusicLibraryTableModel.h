@@ -21,13 +21,14 @@
 #ifndef __DROWAUDIO_MUSICLIBRARYTABLE_H__
 #define __DROWAUDIO_MUSICLIBRARYTABLE_H__
 
-//#include "../audio/dRowAudio_AudioUtility.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "ITunesLibrary.h"
 #include "Comparators.h"
 #include "MusicLibraryHelpers.h"
 #include "Settings.h"
 #include "TrackDialog.h"
+#include "TrackMulti.h"
+
 
 
 
@@ -72,7 +73,7 @@ public:
 
     /** Filters the table to only rows containing the given text.
      */
-	void setFilterText (String filterText);
+	void setFilterText (const String& filterText);
     
 	/**	Returns the table list box component.
      */
@@ -137,14 +138,14 @@ private:
     String currentFilterText;
     
     ValueTree dataList;
-        
+    
     ScopedPointer<TrackDialog> trackDialog;
     
     int filteredNumRows;
 	bool finishedLoading;
 	
-    void updateFilteredSortOrder();
-
+    void updateTableFilteredAndSorted();
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MusicLibraryTable);
 };
