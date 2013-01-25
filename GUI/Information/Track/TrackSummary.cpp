@@ -116,7 +116,7 @@ void TrackSummary::setTrack(ValueTree incomingTrack)
     File selectedFile (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
     
     artist.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString(), false);
-    albumArt.setCover(TagReader::getAlbumArt(selectedFile));
+    albumArt.setCover(selectedFile);
     
     album.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString(), false);
     

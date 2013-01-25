@@ -13,6 +13,7 @@
 #include "Settings.h"
 #include "MusicLibraryHelpers.h"
 #include "TagReader.h"
+#include "AlbumArt.h"
 
 class TrackMulti  :	public Component
 {
@@ -39,10 +40,14 @@ private:
     Label labelLabel;
     TextEditor label;
     
+    Label artLabel;
+    AlbumArt art;
+    
     Array<int> libraryIds;
     
     bool saveRequired, settingInfo;
 
+    Image newArt;
 };
 
 

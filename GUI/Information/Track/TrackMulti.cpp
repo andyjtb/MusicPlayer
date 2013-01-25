@@ -69,9 +69,14 @@ TrackMulti::TrackMulti(Array<int> incomingIds)
     label.setPopupMenuEnabled (true);
 //    label.addListener(this);
     
+    addAndMakeVisible(&artLabel);
+    artLabel.setText("Album Art: ", false);
+    
+    addAndMakeVisible(&art);
+    
     setInfo();
     
-    setSize (450, 390);
+    setSize (470, 400);
     
 }
 
@@ -98,76 +103,140 @@ void TrackMulti::resized()
     rating.setBounds (128, 168, 96, 24);
     labelLabel.setBounds (0, 200, 48, 24);
     label.setBounds (16, 224, 440, 120);
+    artLabel.setBounds(334, 0, 84, 24);
+    art.setBounds(340, 24, 125, 125);
 }
 
 
 void TrackMulti::setInfo()
 {
+    
+    
     ValueTree firstTrack = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], libraryIds[0]);
+    
     String artistString = firstTrack.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString();
+    String albumString = firstTrack.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString();
+    String genreString = firstTrack.getProperty(MusicColumns::columnNames[MusicColumns::Genre]).toString();
+    String labelString = firstTrack.getProperty(MusicColumns::columnNames[MusicColumns::Label]).toString();
+    int ratingNum = firstTrack.getProperty(MusicColumns::columnNames[MusicColumns::Rating]);
 
-    int matching = 0;
+    File selectedFile (firstTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
+    Image albumArt = TagReader::getAlbumArt(selectedFile);
+    
+    bool artistMatch, albumMatch, genreMatch, labelMatch, ratingMatch, artMatch;
+    artistMatch = albumMatch = genreMatch = labelMatch = ratingMatch = artMatch = true;
     
     for (int counter = 0; counter < libraryIds.size(); counter++) {
         
         ValueTree currentTrack = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], libraryIds[counter]);
         
-        String currentString = currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString();
+        String currentArtist = currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString();
+        String currentAlbum = currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString();
+        String currentGenre = currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Genre]).toString();
+        String currentLabel = currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Label]).toString();
+        int currentRating = currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Rating]);
         
-        if (artistString == currentString)
+        File currentFile (currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
+        Image currentArt = TagReader::getAlbumArt(currentFile);
+        
+        if (artistString != currentArtist)
         {
-            ++matching;
+            artistMatch = false;
         }
-        DBG("Counter = " << counter);
+        if (albumString != currentAlbum)
+        {
+            albumMatch = false;
+        }
+        if (genreString != currentGenre)
+        {
+            genreMatch = false;
+        }
+        if (labelString != currentLabel)
+        {
+            labelMatch = false;
+        }
+        if (ratingNum != currentRating)
+        {
+            ratingMatch = false;
+        }
+        
+        if (albumArt != currentArt)
+        {
+            DBG("ART DOESNT MATCH");
+            artMatch = false;
+        }
     }
     
-    if (matching == libraryIds.size())
+    if (artistMatch)
     {
         artist.setText(artistString);
     }
-//    File selectedFile (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
-//    songTree = incomingTrack;
-//    
-//    artist.setText (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString(), false);
-//    
-//    album.setText (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString(), false);
-//    
-//    genre.setText (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Genre]).toString(), false);
-//    
-//    label.setText (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Label]).toString(), false);
-//    
-//    rating.setValue(songTree.getProperty(MusicColumns::columnNames[MusicColumns::Rating]));
+    if (albumMatch)
+    {
+        album.setText(albumString);
+    }
+    if (genreMatch)
+    {
+        genre.setText(genreString);
+    }
+    if (labelMatch)
+    {
+        label.setText(labelString);
+    }
+    if (ratingMatch)
+    {
+        rating.setValue(ratingNum);
+    }
+    
+    if (artMatch)
+    {
+        art.setCover(selectedFile);
+    }
+    else
+    {
+        Image doesntMatch (Image::RGB, 1,1,true);
+        art.setCover(doesntMatch);                   
+    }
 }
 
 void TrackMulti::saveEdits ()
 {
+    newArt = art.getCover();
+    
     for (int counter = 0; counter < libraryIds.size(); counter++) {
         ValueTree currentTrack = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], libraryIds[counter]);
         
         if (artist.getText() != String::empty)
         {
-            currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Artist], artist.getText(), 0);
+            currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Artist], artist.getText(), singletonUndoManager);
             TagReader::writeTag(MusicColumns::Artist, currentTrack);
         }
         if (album.getText() != String::empty)
         {
-            currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Album], album.getText(), 0);
+            currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Album], album.getText(), singletonUndoManager);
             TagReader::writeTag(MusicColumns::Album, currentTrack);
         }
         if (genre.getText() != String::empty)
         {
-            currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Genre], genre.getText(), 0);
+            currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Genre], genre.getText(), singletonUndoManager);
             TagReader::writeTag(MusicColumns::Genre, currentTrack);
         }
         if (label.getText() != String::empty)
         {
-            currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Label], label.getText(), 0);
+            currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Label], label.getText(), singletonUndoManager);
             TagReader::writeTag(MusicColumns::Label, currentTrack);
         }
         if (rating.getValue() > 0)
         {
-            currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Rating], rating.getValue(), 0);
+            currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Rating], rating.getValue(), singletonUndoManager);
             TagReader::writeTag(MusicColumns::Rating, currentTrack);
+        }
+        
+        if (newArt.isValid() && newArt.getWidth() >= 2)
+        {
+            File currentFile (currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
+            //save album art
+            //TagReader::saveAlbumArt (currentFile, newArt);
         }
         
         currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Modified], Time::getCurrentTime().toMilliseconds(), 0);

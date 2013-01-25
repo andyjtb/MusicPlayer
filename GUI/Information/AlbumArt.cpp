@@ -11,12 +11,8 @@
 
 AlbumArt::AlbumArt ()
 {	
-	//width = height = 175;
-    
     fileSelected = false;
 	tagMissing = false;
-    
-    //setSize (width, height);
 	
 }
 
@@ -29,14 +25,6 @@ AlbumArt::~AlbumArt()
 
 void AlbumArt::resized()
 {
-//    if(findParentComponentOfClass<Viewport>())
-//    {
-//        setBounds (0, 0, imageWidth, imageHeight);
-//    }
-//    else
-//    {
-//        setBounds(0,0, 175, 175);
-//    }
 }
 
 void AlbumArt::paint(Graphics& g)
@@ -56,60 +44,115 @@ void AlbumArt::paint(Graphics& g)
 		fileSelected = true;
 		//tagMissing = false;
 	}
+    
+    if (tagMissing && multiTrack)
+    {
+        g.fillAll (Colours::white);
+		g.setColour (Colours::black);
+		g.setFont (Font (14.0000f, Font::plain));
+		g.drawText ("DOESN'T MATCH",
+					0, 0, getWidth(), getHeight(),
+					Justification::centred, true);
+		fileSelected = true;
+    }
 }
 
-void AlbumArt::setCover (Image cover)
+void AlbumArt::setCover (File& incomingAudioFile)
 {
-
+    audioFile = incomingAudioFile;
     
-	if (cover.isValid()) {
+    Image cover = TagReader::getAlbumArt(audioFile);
+    
+	if (cover.isValid() && cover.getWidth() >= 2) {
 		fileSelected = true;
         tagMissing = false;
         
         imageWidth = cover.getWidth();
         imageHeight = cover.getHeight();
-
-		setImage (cover);
         
         if(findParentComponentOfClass<Viewport>())
         {
             setSize(getParentWidth(), getParentHeight());
         }
-        //resized();
-
-        //setSize(getWidth(), getHeight());
-        
+        currentCover = cover;
+        setImage (cover);
 	}
 	else {
 		tagMissing = true;
+        if (cover.getWidth() == 1)
+        {
+            multiTrack = true;
+        }
 		repaint();
 	}
 	
 	
 }
 
-void AlbumArt::mouseDown(const MouseEvent & e) {
+void AlbumArt::setCover (Image cover)
+{
+	if (cover.isValid() && cover.getWidth() >= 2) {
+		fileSelected = true;
+        tagMissing = false;
+        
+        imageWidth = cover.getWidth();
+        imageHeight = cover.getHeight();
+        
+        if(findParentComponentOfClass<Viewport>())
+        {
+            setSize(getParentWidth(), getParentHeight());
+        }
+        currentCover = cover;
+        setImage (cover);
+	}
+	else {
+		tagMissing = true;
+        if (cover.getWidth() == 1)
+        {
+            multiTrack = true;
+        }
+		repaint();
+	}
+	
+	
+}
+
+Image AlbumArt::getCover()
+{
+    return currentCover;
+}
+
+void AlbumArt::mouseDown(const MouseEvent &e) {
 	
 	ModifierKeys modifier = ModifierKeys::getCurrentModifiersRealtime();
 	if (modifier.isPopupMenu() && fileSelected == true) 
 	{
-		PopupMenu popupMenu;
-		popupMenu.addItem(1,"Add from File",true);
-		popupMenu.addItem(2,"Add from URL",true);
-		
-		int menuResult = popupMenu.show();
-		
-		if (menuResult==1) 
-		{
-            fromFile();
-			
-		}
-        
-        if (menuResult == 2) {
-            fromUrl();
-        }
-        
+        createPopup();
 	}
+}
+
+void AlbumArt::mouseDoubleClick(const MouseEvent &e)
+{
+    createPopup();
+}
+
+void AlbumArt::createPopup()
+{
+    PopupMenu popupMenu;
+    popupMenu.addItem(1,"Add from File",true);
+    popupMenu.addItem(2,"Add from URL",true);
+    
+    int menuResult = popupMenu.show();
+    
+    if (menuResult==1) 
+    {
+        fromFile();
+        
+    }
+    
+    if (menuResult == 2) {
+        fromUrl();
+    }
 }
 
 void AlbumArt::changeSize(double incomingSize)
@@ -136,30 +179,24 @@ void AlbumArt::fromFile()
     
     if (fc.browseForFileToOpen(&imagePreview))
     {				
-        newCover = ImageFileFormat::loadFrom(fc.getResult());
-        setImage(newCover);
+        currentCover = ImageFileFormat::loadFrom(fc.getResult());
+        setCover(currentCover);
     }
 }
 
 void AlbumArt::fromUrl()
 {
-    int result=0;
     UrlLoad urlLoad;
     AlertWindow urlAlert("Choose an album cover to open...", "You picked: ", AlertWindow::NoIcon);
     
     urlAlert.addCustomComponent(&urlLoad);
     urlAlert.addButton("Cancel", 0);
     urlAlert.addButton("Ok", 1);
-    result = urlAlert.runModalLoop();
-    urlAlert.removeCustomComponent(0);
     
-    if (result == 0) {
-        std::cout<< "cancelled";
+    if (urlAlert.runModalLoop() != 0) {
+        currentCover = urlLoad.getImage();
+        setCover(currentCover);
     }
-    if (result==1) {
-        std::cout << "Ok";
-        newCover = urlLoad.getImage();
-        setImage (newCover);
-        //sendActionMessage("albumart");
-    }
+    
+    urlAlert.removeCustomComponent(0);
 }

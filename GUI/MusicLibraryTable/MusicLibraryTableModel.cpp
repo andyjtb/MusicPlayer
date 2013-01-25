@@ -442,13 +442,19 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
                 break;
             }
             case 4:
+            {
                 File(filteredDataList.getChild(rowNumber).getProperty(MusicColumns::columnNames[MusicColumns::Location])).revealToUser();
                 break;
+            }
             case 5:
+            {
                 deleteKeyPressed(rowNumber);
                 break;
+            }
             default:
+            {
                 break;
+            }
         }
     }
     if (event.mods.isAltDown())

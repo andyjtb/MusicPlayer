@@ -90,7 +90,7 @@ void TrackArt::setTrack (ValueTree incomingTrack)
     
     cover = TagReader::getAlbumArt(selectedFile);
     //albumArt.setSize(view.getWidth(), view.getHeight());
-    albumArt.setCover(cover);
+    albumArt.setCover(selectedFile);
     //albumArt.setSize(view.getWidth(), view.getHeight());
     size.setRange (view.getHeight(), cover.getHeight()+500, 10);
     size.setValue(size.getMinimum(), sendNotification);

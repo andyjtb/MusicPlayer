@@ -206,13 +206,13 @@ void GuiControl::loadFile()
             tableShouldPlay.setValue(false);
         }
         
-        albumArt.setCover(TagReader::getAlbumArt(selectedFile));
+        albumArt.setCover(selectedFile);
     }
 }
 
 void GuiControl::updateTagDisplay (File audioFile)
 {
-	albumArt.setCover(TagReader::getAlbumArt(audioFile));
+	albumArt.setCover(audioFile);
 }
 
 //Remote

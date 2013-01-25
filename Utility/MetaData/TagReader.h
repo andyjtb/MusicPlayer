@@ -114,6 +114,33 @@ public:
         return Image();
 	}
 
+    static void saveAlbumArt (File& audioFile, Image& newCover)
+    {
+        if (audioFile.exists())
+        {
+            if (audioFile.getFullPathName().endsWith(".mp3")) {
+                
+                TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
+                
+                TagLib::ID3v2::FrameList frames = f.ID3v2Tag()->frameList("APIC");
+                
+//                if(!frames.isEmpty())
+//                {
+//                    TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
+//                    
+//                    if (frame != nullptr)
+//                    {
+//                        TagLib::ByteVector imageData = frame->picture();
+//                        
+//                        Image juceCover = ImageFileFormat::loadFrom(imageData.data(), imageData.size());
+//                        
+//                    }
+//                }
+                
+            }
+        }
+    }
+    
     static int getBitRate (File& audioFile)
     {
         TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8());
@@ -127,7 +154,6 @@ public:
         switch (columnId) {
             case 3:
                 //Artist
-                DBG("Saving Artist Tag = " << incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
                 f.tag()->setArtist(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString().toWideCharPointer());
                 DBG("Tag from file = " << f.tag()->artist().toCString());
                 break;

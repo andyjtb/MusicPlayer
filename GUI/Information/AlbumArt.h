@@ -12,6 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "UrlLoad.h"
+#include "TagReader.h"
 
 class AlbumArt  :	public ImageComponent
 {
@@ -22,7 +23,10 @@ public:
     void resized();
 	void paint(Graphics& g);
 	
-	void setCover (Image cover);
+	void setCover (File& incomingAudioFile);
+    void setCover (Image cover);
+    
+    Image getCover();
     
     void fromFile();
     void fromUrl();
@@ -31,12 +35,15 @@ public:
     
 private:
 	void mouseDown(const MouseEvent &e);
+    void mouseDoubleClick (const MouseEvent &e);
+    void createPopup();
     
     int width, height;
-	bool fileSelected;
-	bool tagMissing; 
-	
-	Image newCover;
+	bool fileSelected, tagMissing, multiTrack;
+    
+    //Used to avoid copying around of rescaled image
+	Image currentCover;
+    File audioFile;
     
     int imageWidth, imageHeight;
 };
