@@ -15,6 +15,8 @@
 #include "MusicLibraryHelpers.h"
 #include "Settings.h"
 
+#include <cstdio>
+
 class TagReader
 {	
 public:
@@ -121,22 +123,41 @@ public:
             if (audioFile.getFullPathName().endsWith(".mp3")) {
                 
                 TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
-                
-                TagLib::ID3v2::FrameList frames = f.ID3v2Tag()->frameList("APIC");
-                
-//                if(!frames.isEmpty())
-//                {
-//                    TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
-//                    
-//                    if (frame != nullptr)
-//                    {
-//                        TagLib::ByteVector imageData = frame->picture();
-//                        
-//                        Image juceCover = ImageFileFormat::loadFrom(imageData.data(), imageData.size());
-//                        
-//                    }
-//                }
-                
+
+                if(f.ID3v2Tag())
+                {
+                    TagLib::ID3v2::FrameList frames = f.ID3v2Tag()->frameList("APIC");
+                    
+                    if(!frames.isEmpty())
+                    {
+                        TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
+                        
+                        if (frame != nullptr)
+                        {
+//                            DBG("Save Album Art");
+//                            FILE * fout;
+//                            fout = fopen("/testPicture.jpg", "wb");
+//                            fwrite(frame->picture().data(), frame->picture().size(), 1, fout);
+//                            fclose(fout);
+                            //Works, saves album art from tag to file
+                            Image::BitmapData bm (newCover, Image::BitmapData::readOnly);
+                            TagLib::ByteVector byteVector;
+                            byteVector.setData(reinterpret_cast<char*>(bm.data));
+                            
+                            DBG("Size = " << String(byteVector.size()));
+                            
+                            FILE * fout;
+                            fout = fopen("/testPicture.jpg", "wb+");
+                            fwrite(byteVector.data(), byteVector.size(), 1, fout);
+                            fclose(fout);
+                            
+                        }
+                    }
+                }
+                    else
+                    {
+                        DBG("No APIC");
+                    }
             }
         }
     }
@@ -155,7 +176,6 @@ public:
             case 3:
                 //Artist
                 f.tag()->setArtist(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString().toWideCharPointer());
-                DBG("Tag from file = " << f.tag()->artist().toCString());
                 break;
             case 4:
                 //Song
@@ -180,6 +200,7 @@ public:
             default:
                 break;
         }
+        f.save();
         
     }
     

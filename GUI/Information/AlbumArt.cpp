@@ -181,6 +181,7 @@ void AlbumArt::fromFile()
     {				
         currentCover = ImageFileFormat::loadFrom(fc.getResult());
         setCover(currentCover);
+        TagReader::saveAlbumArt(audioFile, currentCover);
     }
 }
 
@@ -196,6 +197,7 @@ void AlbumArt::fromUrl()
     if (urlAlert.runModalLoop() != 0) {
         currentCover = urlLoad.getImage();
         setCover(currentCover);
+        TagReader::saveAlbumArt(audioFile, currentCover);
     }
     
     urlAlert.removeCustomComponent(0);

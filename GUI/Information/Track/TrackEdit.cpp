@@ -165,25 +165,30 @@ void TrackEdit::saveEdits ()
         File selectedFile (songTree.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
         
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::Song], song.getText(), 0);
+        TagReader::writeTag(MusicColumns::Song, songTree);
         
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::Artist], artist.getText(), 0);
+        TagReader::writeTag(MusicColumns::Artist, songTree);
         
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::Album], album.getText(), 0);
+        TagReader::writeTag(MusicColumns::Album, songTree);
         
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::Genre], genre.getText(), 0);
+        TagReader::writeTag(MusicColumns::Genre, songTree);
         
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::Label], label.getText(), 0);
+        TagReader::writeTag(MusicColumns::Label, songTree);
         if (rating.getValue() > 0)
         {
             songTree.setProperty(MusicColumns::columnNames[MusicColumns::Rating], rating.getValue(), 0);
+            TagReader::writeTag(MusicColumns::Rating, songTree);
         }
         
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::Modified], Time::getCurrentTime().toMilliseconds(), 0);
         selectedFile.setLastModificationTime(Time::getCurrentTime());
         
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::TrackNum], trackNum.getText().getIntValue(), 0);
-        
-        //TagReader::saveTags(songTree);
+        TagReader::writeTag(MusicColumns::TrackNum, songTree);
         
         saveRequired = false;
     }

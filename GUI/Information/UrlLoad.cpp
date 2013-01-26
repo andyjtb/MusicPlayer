@@ -10,30 +10,21 @@
 #include "UrlLoad.h"
 
 UrlLoad::UrlLoad ()
-    : tUrl (0),
-      urlLoad (0),
-      preview (0)
 {
-    addAndMakeVisible (tUrl = new TextEditor (String::empty));
-    tUrl->setMultiLine (false);
-    tUrl->setReturnKeyStartsNewLine (false);
-    tUrl->setReadOnly (false);
-    tUrl->setScrollbarsShown (true);
-    tUrl->setCaretVisible (true);
-    tUrl->setPopupMenuEnabled (true);
-    tUrl->setText (String::empty);
+    addAndMakeVisible (&urlEdit);
+    urlEdit.setMultiLine (false);
+    urlEdit.setReturnKeyStartsNewLine (false);
+    urlEdit.setReadOnly (false);
+    urlEdit.setScrollbarsShown (true);
+    urlEdit.setCaretVisible (true);
+    urlEdit.setPopupMenuEnabled (true);
+    urlEdit.setText (String::empty);
 
-    addAndMakeVisible (urlLoad = new TextButton (String::empty));
-    urlLoad->setButtonText ("Load");
-    urlLoad->addListener (this);
+    addAndMakeVisible (&urlLoad);
+    urlLoad.setButtonText ("Load");
+    urlLoad.addListener (this);
 
-    addAndMakeVisible (preview = new ImageButton (String::empty));
-    preview->setButtonText ("new button");
-
-    preview->setImages (false, true, true,
-                            Image(), 1.0000f, Colour (0x0),
-                            Image(), 1.0000f, Colour (0x0),
-                            Image(), 1.0000f, Colour (0x0));
+    addAndMakeVisible (&preview);
 
 
     setSize (400, 400);
@@ -42,11 +33,6 @@ UrlLoad::UrlLoad ()
 
 UrlLoad::~UrlLoad()
 {
-
-    deleteAndZero (tUrl);
-    deleteAndZero (urlLoad);
-    deleteAndZero (preview);
-
 }
 
 //==============================================================================
@@ -58,19 +44,19 @@ void UrlLoad::paint (Graphics& g)
 
 void UrlLoad::resized()
 {
-    tUrl->setBounds (0, 0, 400, 30);
-    urlLoad->setBounds (152, 32, 100, 24);
-    preview->setBounds (40, 72, 336, 280);
+    urlEdit.setBounds (0, 0, 400, 30);
+    urlLoad.setBounds (152, 32, 100, 24);
+    preview.setBounds (40, 72, 336, 280);
 }
 
 void UrlLoad::buttonClicked (Button* buttonThatWasClicked)
 {
 
-    if (buttonThatWasClicked == urlLoad)
+    if (buttonThatWasClicked == &urlLoad)
     {
-        URL imageURL = tUrl->getText();
+        URL imageURL = urlEdit.getText();
 		
-		if (imageURL.isProbablyAWebsiteURL(tUrl->getText())) {
+		if (imageURL.isProbablyAWebsiteURL(urlEdit.getText())) {
 			bool jpeg;
 			bool png;
 			
@@ -92,10 +78,7 @@ void UrlLoad::buttonClicked (Button* buttonThatWasClicked)
 			
 				downloadedImage = ImageFileFormat::loadFrom(imageData.getData(), imageData.getSize());
 				
-				preview->setImages (false, true, true,
-									downloadedImage, 1.0000f, Colour (0x0),
-									downloadedImage, 1.0000f, Colour (0x0),
-									downloadedImage, 1.0000f, Colour (0x0));
+				preview.setImage(downloadedImage);
 			}
 			
 		}

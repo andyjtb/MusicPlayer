@@ -28,9 +28,9 @@ public:
 
 private:
 
-    TextEditor* tUrl;
-    TextButton* urlLoad;
-    ImageButton* preview;
+    TextEditor urlEdit;
+    TextButton urlLoad;
+    ImageComponent preview;
 	Image downloadedImage;
 
 };
