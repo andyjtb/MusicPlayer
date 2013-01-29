@@ -24,10 +24,9 @@ public:
     void resized();
     void buttonClicked (Button* buttonThatWasClicked);
 	Image& getImage();
-	
+	bool jpeg, png;
 
 private:
-
     TextEditor urlEdit;
     TextButton urlLoad;
     ImageComponent preview;

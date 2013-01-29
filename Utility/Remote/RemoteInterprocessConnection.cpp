@@ -49,12 +49,23 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
             }
             
         }
+    if (stringMessage.startsWith("Pause"))
+    {
+        if(singletonPlayState.getValue())
+        {
+            singletonPlayState = false;
+        }
+    }
+    
     if (stringMessage.startsWith("Next")) {
         if (tableSelectedRow.isValid()) {
             int toPlay = filteredDataList.indexOf(tableSelectedRow);
             toPlay++;
-            tableSelectedRow = filteredDataList.getChild(toPlay);
-            tableShouldPlay = true;
+            if (toPlay <= filteredDataList.getNumChildren())
+            {
+                tableSelectedRow = filteredDataList.getChild(toPlay);
+                tableShouldPlay = true;
+            }
         }
         
     }
@@ -62,8 +73,11 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
         if (tableSelectedRow.isValid()) {
             int toPlay = filteredDataList.indexOf(tableSelectedRow);
             toPlay--;
-            tableSelectedRow = filteredDataList.getChild(toPlay);
-            tableShouldPlay = true;
+            if (toPlay > 1)
+            {
+                tableSelectedRow = filteredDataList.getChild(toPlay);
+                tableShouldPlay = true;
+            }
         }
         
     }
@@ -96,7 +110,7 @@ void RemoteInterprocessConnection::sendPlayingData()
     sendString("Song: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString());
     sendString("AlbumTitle: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString());
     sendString("TracksTotal: " + String(filteredDataList.getNumChildren()));
-    sendString("TrackNum: " + String(filteredDataList.indexOf(tablePlayingRow)));
+    sendString("TrackNum: " + String(filteredDataList.indexOf(tablePlayingRow)+1));
     sendLength(audioControl->getTransportLength());
     sendString("PlayState: " + singletonPlayState.getValue().toString());            
     
@@ -107,8 +121,13 @@ void RemoteInterprocessConnection::sendPlayingData()
 
 void RemoteInterprocessConnection::sendAlbumArt()
 {
-    sendString("AlbumArt");
     //Send album art memory block
+    
+    File audioFile = tablePlayingRow.getProperty("Location").toString();
+    
+    String type = TagReader::fileImageToMemoryBlock(audioFile, artMemoryBlock);
+    sendString("AlbumArt: " + type);
+    sendMessage(artMemoryBlock);
 }
 void RemoteInterprocessConnection::sendLength(double length)
 {

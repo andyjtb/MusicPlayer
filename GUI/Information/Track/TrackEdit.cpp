@@ -183,6 +183,11 @@ void TrackEdit::saveEdits ()
             songTree.setProperty(MusicColumns::columnNames[MusicColumns::Rating], rating.getValue(), 0);
             TagReader::writeTag(MusicColumns::Rating, songTree);
         }
+        else
+        {
+            songTree.setProperty(MusicColumns::columnNames[MusicColumns::Rating], var::null, 0);
+            TagReader::writeTag(MusicColumns::Rating, songTree);
+        }
         
         songTree.setProperty(MusicColumns::columnNames[MusicColumns::Modified], Time::getCurrentTime().toMilliseconds(), 0);
         selectedFile.setLastModificationTime(Time::getCurrentTime());

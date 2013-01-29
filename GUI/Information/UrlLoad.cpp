@@ -26,6 +26,7 @@ UrlLoad::UrlLoad ()
 
     addAndMakeVisible (&preview);
 
+    jpeg = png = false;
 
     setSize (400, 400);
 
@@ -57,12 +58,12 @@ void UrlLoad::buttonClicked (Button* buttonThatWasClicked)
         URL imageURL = urlEdit.getText();
 		
 		if (imageURL.isProbablyAWebsiteURL(urlEdit.getText())) {
-			bool jpeg;
-			bool png;
-			
-			if (imageURL.toString(false).endsWith("jpeg") || imageURL.toString(false).endsWith("jpg"))
-			{ jpeg = true;}
-			if (imageURL.toString(false).endsWith("png")) {
+            
+            String extension = imageURL.toString(false).fromLastOccurrenceOf(".", true, true);
+            
+			if (extension.compareIgnoreCase(".jpeg") || extension.compareIgnoreCase(".jpg"))
+			 jpeg = true;
+			if (extension.compareIgnoreCase(".png")) {
 				png = true;
 			}
 			

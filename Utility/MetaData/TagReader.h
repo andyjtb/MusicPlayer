@@ -110,13 +110,12 @@ public:
                         return juceCover;
                     }
                 }
-                
             }
         }
         return Image();
 	}
 
-    static void saveAlbumArt (File& audioFile, Image& newCover)
+    static void saveAlbumArt (File& audioFile, Image& newCover, String imageType)
     {
         if (audioFile.exists())
         {
@@ -134,30 +133,102 @@ public:
                         
                         if (frame != nullptr)
                         {
-//                            DBG("Save Album Art");
-//                            FILE * fout;
-//                            fout = fopen("/testPicture.jpg", "wb");
-//                            fwrite(frame->picture().data(), frame->picture().size(), 1, fout);
-//                            fclose(fout);
-                            //Works, saves album art from tag to file
-                            Image::BitmapData bm (newCover, Image::BitmapData::readOnly);
                             TagLib::ByteVector byteVector;
-                            byteVector.setData(reinterpret_cast<char*>(bm.data));
                             
-                            DBG("Size = " << String(byteVector.size()));
+                            readJuceImageToByteVector(newCover, imageType, byteVector);
                             
-                            FILE * fout;
-                            fout = fopen("/testPicture.jpg", "wb+");
-                            fwrite(byteVector.data(), byteVector.size(), 1, fout);
-                            fclose(fout);
+                            if (imageType == "JPEG")
+                                frame->setMimeType("image/jpeg");
+                            else
+                                frame->setMimeType("image/png");
+                            
+                            frame->setPicture(byteVector);
+                            
+                            f.save();
                             
                         }
                     }
-                }
                     else
                     {
-                        DBG("No APIC");
+                        TagLib::ByteVector byteVector;
+                        
+                        readJuceImageToByteVector(newCover, imageType, byteVector);
+                        
+                        TagLib::ID3v2::AttachedPictureFrame* frame = new TagLib::ID3v2::AttachedPictureFrame;
+                        f.ID3v2Tag()->addFrame(frame);
+                        
+                        //frame->setType(TagLib::ID3v2::AttachedPictureFrame::FrontCover);
+                        
+                        if (imageType == "JPEG")
+                            frame->setMimeType("image/jpeg");
+                        else
+                            frame->setMimeType("image/png");
+                        
+                        frame->setPicture(byteVector);
+                        
+                        
+                        f.save();
                     }
+                    
+                }
+                  
+            }
+        }
+    }
+    
+    static void readJuceImageToByteVector (Image& newCover, String imageType, TagLib::ByteVector& fillVector)
+    {
+        MemoryOutputStream newCoverData;
+        
+        if (imageType == "JPEG")
+        {
+            JPEGImageFormat image;
+            image.writeImageToStream(newCover, newCoverData);
+        }
+        else
+        {
+            PNGImageFormat image;
+            image.writeImageToStream(newCover, newCoverData);
+        }
+        
+        fillVector.setData(static_cast<const char*>(newCoverData.getData()), newCoverData.getDataSize());                           
+    }
+    
+    static String fileImageToMemoryBlock (File& audioFile, MemoryBlock& fillBlock)
+    {
+        //Returns image type
+        String type(String::empty);
+        Image currentCover = getAlbumArt(audioFile);
+        
+        if (currentCover.isValid())
+        {
+            TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
+            TagLib::ID3v2::FrameList frames = f.ID3v2Tag()->frameList("APIC");
+            TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
+            
+            if (frame != nullptr)
+            {
+                String type = frame->mimeType().toCString();
+                DBG("Type = " << type);
+                
+                MemoryOutputStream outputStream;
+                
+                if (type == "image/jpeg")
+                {
+                    JPEGImageFormat image;
+                    image.writeImageToStream(currentCover, outputStream);
+                    type = "jpeg";
+                }
+                else
+                {
+                    JPEGImageFormat image;
+                    image.writeImageToStream(currentCover, outputStream);
+                    type = "png";
+                }
+
+                fillBlock.replaceWith(outputStream.getData(), outputStream.getDataSize());
+                
+                return type;
             }
         }
     }

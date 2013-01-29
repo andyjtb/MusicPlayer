@@ -415,7 +415,7 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
                     trackDialog = new TrackDialog(rowNumber);             
                     
                     DialogWindow::showDialog(filteredDataList.getChild(rowNumber).getProperty(MusicColumns::columnNames[MusicColumns::Song]), trackDialog, 0, Colours::white, true);
-                }
+                    }
                 else
                 {
                     SparseSet<int> selectedRows = table.getSelectedRows();

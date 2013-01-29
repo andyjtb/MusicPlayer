@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "UrlLoad.h"
 #include "TagReader.h"
+#include "Settings.h"
 
 class AlbumArt  :	public ImageComponent
 {

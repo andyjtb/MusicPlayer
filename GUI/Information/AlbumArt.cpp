@@ -42,7 +42,7 @@ void AlbumArt::paint(Graphics& g)
 					0, 0, getWidth(), getHeight(),
 					Justification::centred, true);
 		fileSelected = true;
-		//tagMissing = false;
+		tagMissing = false;
 	}
     
     if (tagMissing && multiTrack)
@@ -54,6 +54,8 @@ void AlbumArt::paint(Graphics& g)
 					0, 0, getWidth(), getHeight(),
 					Justification::centred, true);
 		fileSelected = true;
+        tagMissing = false;
+        multiTrack = false;
     }
 }
 
@@ -181,7 +183,15 @@ void AlbumArt::fromFile()
     {				
         currentCover = ImageFileFormat::loadFrom(fc.getResult());
         setCover(currentCover);
-        TagReader::saveAlbumArt(audioFile, currentCover);
+
+        String extension = fc.getResult().getFileExtension();
+        
+        if (extension.compareIgnoreCase(".jpeg") || extension.compareIgnoreCase(".jpg"))
+            TagReader::saveAlbumArt(audioFile, currentCover, "JPEG");
+        else
+            TagReader::saveAlbumArt(audioFile, currentCover, "PNG");
+        
+        artUpdateRequired = true;
     }
 }
 
@@ -197,7 +207,13 @@ void AlbumArt::fromUrl()
     if (urlAlert.runModalLoop() != 0) {
         currentCover = urlLoad.getImage();
         setCover(currentCover);
-        TagReader::saveAlbumArt(audioFile, currentCover);
+        
+        if (urlLoad.jpeg)
+            TagReader::saveAlbumArt(audioFile, currentCover, "JPEG");
+        else
+           TagReader::saveAlbumArt(audioFile, currentCover, "PNG"); 
+        
+        artUpdateRequired = true;
     }
     
     urlAlert.removeCustomComponent(0);

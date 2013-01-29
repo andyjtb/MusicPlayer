@@ -40,6 +40,8 @@ private:
     
     OptionalScopedPointer<GuiControl> guiControl;
     OptionalScopedPointer<AudioControl> audioControl;
+
+    MemoryBlock artMemoryBlock;
 };
 
 

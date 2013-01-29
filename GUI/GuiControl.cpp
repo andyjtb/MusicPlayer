@@ -45,6 +45,7 @@ GuiControl::GuiControl()
 //    addAndMakeVisible(coverflow);
 //    setSize(500, 400);
     singletonPlayState.addListener(this);
+    artUpdateRequired.addListener(this);
 }
 
 GuiControl::~GuiControl()
@@ -189,6 +190,16 @@ void GuiControl::valueChanged (Value& valueChanged)
             stopTimer(1);
 		}
 	}
+    
+    if (valueChanged == artUpdateRequired)
+    {
+        if(artUpdateRequired.getValue())
+        {
+            File audioFile = tableSelectedRow.getProperty("Location").toString();
+            albumArt.setCover(TagReader::getAlbumArt(audioFile));
+            artUpdateRequired = false;
+        }
+    }
 }
 
 void GuiControl::loadFile()

@@ -123,6 +123,11 @@ Value& Settings::getTableDeleting()
     return deletingTable;
 }
 
+Value& Settings::getAlbumArtUpdate()
+{
+    return artUpdate;
+}
+
 UndoManager* Settings::getUndoManager()
 {
     return undoManager;

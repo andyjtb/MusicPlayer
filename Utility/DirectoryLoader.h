@@ -16,7 +16,7 @@
 class DirectoryLoader : public ThreadWithProgressWindow
 {
 public:
-    DirectoryLoader() : ThreadWithProgressWindow ("Loading...", true, true)
+    DirectoryLoader() : ThreadWithProgressWindow ("Loading...", false, true)
     {
     }
     void run()
@@ -27,7 +27,7 @@ public:
         
         DirectoryIterator directoryIterator (directory, true, "*.mp3",2);
         
-        setProgress(-1.0);
+        //setProgress(-1.0);
         
         while (directoryIterator.next())
         {
