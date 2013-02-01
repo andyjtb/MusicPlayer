@@ -18,6 +18,7 @@ class RemoteInterprocessConnection;
 
 #define tableSelectedRow Settings::getInstance()->getSelectedRow()
 #define tableShouldPlay Settings::getInstance()->getShouldPlay()
+#define tableLoadSelected Settings::getInstance()->getLoadSelected()
 #define tablePlayingRow Settings::getInstance()->getPlayingRow()
 #define tableUpdateRequired Settings::getInstance()->getUpdateRequired()
 #define tableDeleting Settings::getInstance()->getTableDeleting()
@@ -52,6 +53,7 @@ public:
     Value& getUpdateRequired();
     Value& getTableDeleting();
     Value& getAlbumArtUpdate();
+    Value& getLoadSelected();
     
     void saveSingletons();
 	
@@ -63,7 +65,7 @@ private:
 	ValueTree libraryTree, selectedRow, playingRow, filteredDataTree;
     ScopedPointer<UndoManager> undoManager;
     int currentLibId, currentValueTreeId;
-    Value shouldPlay, playState, updateRequired, deletingTable, artUpdate;
+    Value shouldPlay, loadSelected, playState, updateRequired, deletingTable, artUpdate;
     OwnedArray <RemoteInterprocessConnection, CriticalSection> connections;
 
 };

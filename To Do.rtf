@@ -23,7 +23,7 @@ Getting undo message from manager, allowing undo of one thing at a time
 \f1\fs24 \cf0 \CocoaLigature1 \
 \
 \pard\pardeftab720\ql\qnatural
-\cf0 Remote, when connection made check library last modified, check against last modified in settings to see whether library needs to be resent, then save library, loaddatafromfile on file library, send memory block to phone, use fileoutputstream on the phone to create a file from the data\
+\cf0 Remote, when connection made check library last modified, check against last modified in settings to see whether library needs to be resent, then save library, loaddatafromfile on file library, send memory block to phone, use nsdata on the phone to create an xml file from the data\
 \
 Deleted song should be unloaded if it was currently playing\
 In delete function set tableShouldPlay to true would load the selected row into the audioControl but would also trigger play since that function has singletonPlayState in it\
@@ -34,11 +34,7 @@ Audio slow down - Soundtouch puts processor usage up to 23%\
 Processor heavy stuff kills its, opening dialogues causes glitches\
 Standard playing = 14% probably the remote connection position send stuff\
 \
-Image compare - multi track album art doesn't work. \
 Multi saves each field regardless of change, consider ways to neaten this\
-\
-Occasionally artist isn't sent to iphone, seems to be fixed, but worth checking\
-\
 \
 \
 TO FIX LATER\
@@ -58,7 +54,7 @@ AudioPlayHead to replace the slider transport system?\
 Add playlists\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
 \cf0 Incorporate tag reading/directory load for types other than .mp3\
-Use mac mainbar instead\
+Use mac mainbar instead, maaaybe\
 Track info display\
 \pard\pardeftab720\ql\qnatural
 

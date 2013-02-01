@@ -209,7 +209,6 @@ public:
             if (frame != nullptr)
             {
                 String type = frame->mimeType().toCString();
-                DBG("Type = " << type);
                 
                 MemoryOutputStream outputStream;
                 
@@ -231,6 +230,22 @@ public:
                 return type;
             }
         }
+        return type;
+    }
+    
+    static bool compareAlbumArt (File& firstTrack, File& secondTrack)
+    {
+        MemoryBlock firstBlock, secondBlock;
+        
+        fileImageToMemoryBlock(firstTrack, firstBlock);
+        fileImageToMemoryBlock(secondTrack, secondBlock);
+        
+        if (firstBlock == secondBlock)
+        {
+            return true;
+        }
+        else
+            return false;
     }
     
     static int getBitRate (File& audioFile)

@@ -94,7 +94,9 @@ private:
 	OutputMeter outputMeters;
 	TransportSlider transport;
 	TrackInfo trackInfo;
+    
 	AlbumArt albumArt;
+    
     
     MusicLibraryTable* musicTable;
     

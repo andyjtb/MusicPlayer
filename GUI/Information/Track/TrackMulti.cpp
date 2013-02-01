@@ -121,7 +121,6 @@ void TrackMulti::setInfo()
     int ratingNum = firstTrack.getProperty(MusicColumns::columnNames[MusicColumns::Rating]);
 
     File selectedFile (firstTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
-    Image albumArt = TagReader::getAlbumArt(selectedFile);
     
     bool artistMatch, albumMatch, genreMatch, labelMatch, ratingMatch, artMatch;
     artistMatch = albumMatch = genreMatch = labelMatch = ratingMatch = artMatch = true;
@@ -137,7 +136,6 @@ void TrackMulti::setInfo()
         int currentRating = currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Rating]);
         
         File currentFile (currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
-        Image currentArt = TagReader::getAlbumArt(currentFile);
         
         if (artistString != currentArtist)
         {
@@ -160,7 +158,7 @@ void TrackMulti::setInfo()
             ratingMatch = false;
         }
         
-        if (albumArt != currentArt)
+        if (!TagReader::compareAlbumArt(selectedFile, currentFile))
         {
             DBG("ART DOESNT MATCH");
             artMatch = false;
@@ -194,7 +192,7 @@ void TrackMulti::setInfo()
     }
     else
     {
-        Image doesntMatch (Image::RGB, 1,1,true);
+        Image doesntMatch (Image::RGB, 2,2,true);
         art.setCover(doesntMatch);                   
     }
 }
@@ -232,11 +230,12 @@ void TrackMulti::saveEdits ()
             TagReader::writeTag(MusicColumns::Rating, currentTrack);
         }
         
-        if (newArt.isValid() && newArt.getWidth() >= 2)
+        if (newArt.isValid() && newArt.getWidth() >= 3)
         {
             File currentFile (currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
             //save album art
-            //TagReader::saveAlbumArt (currentFile, newArt);
+            TagReader::saveAlbumArt (currentFile, newArt, art.extension);
+            artUpdateRequired = true;
         }
         
         currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Modified], Time::getCurrentTime().toMilliseconds(), 0);

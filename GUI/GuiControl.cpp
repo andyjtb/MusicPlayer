@@ -36,6 +36,7 @@ GuiControl::GuiControl()
 	musicTable->addActionListener(this);
     tableSelectedRow.addListener(this);
     tableShouldPlay.addListener(this);
+    tableLoadSelected.addListener(this);
     tableUpdateRequired.addListener(this);
 	//addAndMakeVisible(&musicTable);
     
@@ -165,6 +166,11 @@ void GuiControl::valueChanged (Value& valueChanged)
         loadFile();
     }
     
+    if (valueChanged == tableLoadSelected)
+    {
+        loadFile();
+    }
+    
     if (valueChanged == tableUpdateRequired)
     {
         if (tableUpdateRequired.getValue()) {
@@ -181,6 +187,8 @@ void GuiControl::valueChanged (Value& valueChanged)
         {
             remoteConnections.getFirst()->sendPlayState();
         }
+        
+        setVolume(volumeControl.getVolume());
         
 		if (singletonPlayState.getValue()) {
             startTimer(0, 50);
@@ -201,7 +209,6 @@ void GuiControl::valueChanged (Value& valueChanged)
         }
     }
 }
-
 void GuiControl::loadFile()
 {
     if (tableDeleting != true)
@@ -215,6 +222,15 @@ void GuiControl::loadFile()
             singletonPlayState = true;
             trackInfo.loadTrackInfo(tableSelectedRow);
             tableShouldPlay.setValue(false);
+        }
+        if (tableLoadSelected.getValue())
+        {
+            singletonPlayState = false;
+            audioControl->loadFile(selectedFile);
+            setPosition(0);
+            tablePlayingRow = tableSelectedRow;
+            trackInfo.loadTrackInfo(tableSelectedRow);
+            tableLoadSelected = false;
         }
         
         albumArt.setCover(selectedFile);
@@ -243,6 +259,8 @@ void GuiControl::setVolume (double incomingVolume)
 void GuiControl::textEditorTextChanged (TextEditor &textEditor)
 {
     musicTable->setFilterText(textEditor.getText());
+    remoteConnections.getFirst()->sendTrackNums();
+    
 }
 void GuiControl::textEditorReturnKeyPressed (TextEditor &textEditor)
 {}

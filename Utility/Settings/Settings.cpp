@@ -108,6 +108,11 @@ Value& Settings::getShouldPlay()
     return shouldPlay;
 }
 
+Value& Settings::getLoadSelected()
+{
+    return loadSelected;
+}
+
 Value& Settings::getPlayState()
 {
     return playState;

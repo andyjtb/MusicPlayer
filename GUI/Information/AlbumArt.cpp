@@ -34,7 +34,7 @@ void AlbumArt::paint(Graphics& g)
 		g.drawImageWithin (getImage(), 0, 0, getWidth(), getHeight(), getImagePlacement(), false);
 	}
 	
-	if (tagMissing) {
+	if (tagMissing && !multiTrack) {
 		g.fillAll (Colours::white);
 		g.setColour (Colours::black);
 		g.setFont (Font (14.0000f, Font::plain));
@@ -43,6 +43,7 @@ void AlbumArt::paint(Graphics& g)
 					Justification::centred, true);
 		fileSelected = true;
 		tagMissing = false;
+        multiTrack = false;
 	}
     
     if (tagMissing && multiTrack)
@@ -65,7 +66,7 @@ void AlbumArt::setCover (File& incomingAudioFile)
     
     Image cover = TagReader::getAlbumArt(audioFile);
     
-	if (cover.isValid() && cover.getWidth() >= 2) {
+	if (cover.isValid() && cover.getWidth() > 2) {
 		fileSelected = true;
         tagMissing = false;
         
@@ -81,7 +82,7 @@ void AlbumArt::setCover (File& incomingAudioFile)
 	}
 	else {
 		tagMissing = true;
-        if (cover.getWidth() == 1)
+        if (cover.getWidth() == 2)
         {
             multiTrack = true;
         }
@@ -93,7 +94,7 @@ void AlbumArt::setCover (File& incomingAudioFile)
 
 void AlbumArt::setCover (Image cover)
 {
-	if (cover.isValid() && cover.getWidth() >= 2) {
+	if (cover.isValid() && cover.getWidth() > 2) {
 		fileSelected = true;
         tagMissing = false;
         
@@ -109,7 +110,7 @@ void AlbumArt::setCover (Image cover)
 	}
 	else {
 		tagMissing = true;
-        if (cover.getWidth() == 1)
+        if (cover.getWidth() == 2)
         {
             multiTrack = true;
         }
@@ -183,14 +184,15 @@ void AlbumArt::fromFile()
     {				
         currentCover = ImageFileFormat::loadFrom(fc.getResult());
         setCover(currentCover);
+        
+        if (!multiTrack) {
+            extension = fc.getResult().getFileExtension();
+            if (extension.compareIgnoreCase(".jpeg") || extension.compareIgnoreCase(".jpg"))
+                TagReader::saveAlbumArt(audioFile, currentCover, "JPEG");
+            else
+                TagReader::saveAlbumArt(audioFile, currentCover, "PNG");
+        }
 
-        String extension = fc.getResult().getFileExtension();
-        
-        if (extension.compareIgnoreCase(".jpeg") || extension.compareIgnoreCase(".jpg"))
-            TagReader::saveAlbumArt(audioFile, currentCover, "JPEG");
-        else
-            TagReader::saveAlbumArt(audioFile, currentCover, "PNG");
-        
         artUpdateRequired = true;
     }
 }
@@ -207,11 +209,13 @@ void AlbumArt::fromUrl()
     if (urlAlert.runModalLoop() != 0) {
         currentCover = urlLoad.getImage();
         setCover(currentCover);
-        
-        if (urlLoad.jpeg)
-            TagReader::saveAlbumArt(audioFile, currentCover, "JPEG");
-        else
-           TagReader::saveAlbumArt(audioFile, currentCover, "PNG"); 
+        if (!multiTrack) {
+            if (urlLoad.jpeg)
+                TagReader::saveAlbumArt(audioFile, currentCover, "JPEG");
+            else
+                TagReader::saveAlbumArt(audioFile, currentCover, "PNG"); 
+            
+        }
         
         artUpdateRequired = true;
     }

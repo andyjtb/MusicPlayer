@@ -34,6 +34,8 @@ public:
     
     void changeSize (double incomingSize);
     
+    String extension;
+    
 private:
 	void mouseDown(const MouseEvent &e);
     void mouseDoubleClick (const MouseEvent &e);

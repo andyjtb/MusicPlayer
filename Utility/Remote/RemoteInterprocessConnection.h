@@ -30,6 +30,7 @@ public:
     
     void sendPlayingData();
     void sendAlbumArt();
+    void sendTrackNums();
     void sendLength (double length);
     void sendPosition (double position);
     void sendVolume (double volume);
@@ -37,11 +38,12 @@ public:
 
 private:
     int connectionNumber;
+    String lastAlbum;
     
     OptionalScopedPointer<GuiControl> guiControl;
     OptionalScopedPointer<AudioControl> audioControl;
 
-    MemoryBlock artMemoryBlock;
+    //MemoryBlock artMemoryBlock;
 };
 
 
