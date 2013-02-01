@@ -52,7 +52,7 @@ void AudioControl::loadFile (const File audioFile)
 	//this is called when the user changes the filename in the file chooser box
 	if(audioFile.existsAsFile())
 	{
-		
+		//DBG("Loc = " << audioFile.getFullPathName());
 		// unload the previous file source and delete it..
 		transport.stop();
 		transport.setSource (nullptr);

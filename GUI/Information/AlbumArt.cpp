@@ -8,6 +8,7 @@
  */
 
 #include "AlbumArt.h"
+#include "GuiControl.h"
 
 AlbumArt::AlbumArt ()
 {	
@@ -64,25 +65,65 @@ void AlbumArt::setCover (File& incomingAudioFile)
 {
     audioFile = incomingAudioFile;
     
-    Image cover = TagReader::getAlbumArt(audioFile);
+    ImageWithType cover = TagReader::getAlbumArt(audioFile);
     
-	if (cover.isValid() && cover.getWidth() > 2) {
+	if (cover.image.isValid() && cover.image.getWidth() > 2) {
 		fileSelected = true;
         tagMissing = false;
         
-        imageWidth = cover.getWidth();
-        imageHeight = cover.getHeight();
+        imageWidth = cover.image.getWidth();
+        imageHeight = cover.image.getHeight();
         
         if(findParentComponentOfClass<Viewport>())
         {
             setSize(getParentWidth(), getParentHeight());
         }
-        currentCover = cover;
-        setImage (cover);
+        currentCover = cover.image;
+        extension = cover.type;
+        setImage (cover.image);
 	}
 	else {
 		tagMissing = true;
-        if (cover.getWidth() == 2)
+        if (cover.image.getWidth() == 2)
+        {
+            multiTrack = true;
+        }
+		repaint();
+	}
+	
+	
+}
+
+void AlbumArt::setCover (ImageWithType cover)
+{
+	if (cover.image.isValid() && cover.image.getWidth() > 2) {
+		fileSelected = true;
+        tagMissing = false;
+        
+        imageWidth = cover.image.getWidth();
+        imageHeight = cover.image.getHeight();
+        
+        if(findParentComponentOfClass<Viewport>())
+        {
+            setSize(getParentWidth(), getParentHeight());
+        }
+        
+        if (audioFile.existsAsFile())
+        {
+            currentCover = cover.image;
+            extension = cover.type;
+            
+            setImage (cover.image);
+            
+            //If parent is the guicontrol display then it saves when the image is set, otherwise save is called from another function when ok is pressed.
+            GuiControl* gc = findParentComponentOfClass<GuiControl>();
+            if (gc != nullptr)
+            TagReader::saveAlbumArt(audioFile, currentCover, extension);
+        }
+	}
+	else {
+		tagMissing = true;
+        if (cover.image.getWidth() == 2)
         {
             multiTrack = true;
         }
@@ -105,8 +146,18 @@ void AlbumArt::setCover (Image cover)
         {
             setSize(getParentWidth(), getParentHeight());
         }
-        currentCover = cover;
-        setImage (cover);
+        
+        if (audioFile.existsAsFile())
+        {
+            currentCover = cover;
+            
+            setImage (cover);
+            
+            //If parent is the guicontrol display then it saves when the image is set, otherwise save is called from another function when ok is pressed.
+            GuiControl* gc = findParentComponentOfClass<GuiControl>();
+            if (gc != nullptr)
+            TagReader::saveAlbumArt(audioFile, cover, extension);
+        }
 	}
 	else {
 		tagMissing = true;
@@ -119,6 +170,7 @@ void AlbumArt::setCover (Image cover)
 	
 	
 }
+
 
 Image AlbumArt::getCover()
 {
@@ -142,19 +194,33 @@ void AlbumArt::mouseDoubleClick(const MouseEvent &e)
 void AlbumArt::createPopup()
 {
     PopupMenu popupMenu;
-    popupMenu.addItem(1,"Add from File",true);
-    popupMenu.addItem(2,"Add from URL",true);
+    popupMenu.addItem(1, "Copy");
+    if (artClipboard.type != "")
+    {
+        popupMenu.addItem(2, "Paste");
+    }
+    popupMenu.addSeparator();
+    popupMenu.addItem(3,"Add from File",true);
+    popupMenu.addItem(4,"Add from URL",true);
     
     int menuResult = popupMenu.show();
     
-    if (menuResult==1) 
-    {
-        fromFile();
-        
-    }
-    
-    if (menuResult == 2) {
-        fromUrl();
+    switch (menuResult) {
+        case 1:
+        {
+            artClipboard.image = currentCover;
+            artClipboard.type = extension;
+            break;
+        }
+        case 2:
+            setCover(artClipboard);
+            break;
+        case 3:
+            fromFile();
+            break;
+        case 4:
+            fromUrl();
+            break;
     }
 }
 

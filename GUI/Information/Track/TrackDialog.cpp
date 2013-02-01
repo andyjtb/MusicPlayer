@@ -49,10 +49,17 @@ void TrackDialog::resized()
 
 void TrackDialog::setTrack()
 {
-        trackTabbed.saveEdits();
+    trackTabbed.saveEdits();
+    
+    ValueTree currentlyEditing = filteredDataList.getChild(selectedTrack);
+    File test = currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString();
+    
+    if (test.exists())
+    {
         trackTabbed.setTrack(filteredDataList.getChild(selectedTrack));
         DialogWindow* dw = findParentComponentOfClass<DialogWindow>();
         dw->setName(filteredDataList.getChild(selectedTrack).getProperty(MusicColumns::columnNames[MusicColumns::Song]));
+    }
 }
 
 void TrackDialog::buttonClicked(Button *buttonClicked)

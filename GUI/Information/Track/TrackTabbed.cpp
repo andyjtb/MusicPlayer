@@ -33,4 +33,5 @@ void TrackTabbed::setTrack (ValueTree selectedTrack)
 void TrackTabbed::saveEdits()
 {
     trackEdit.saveEdits();
+    trackArt.saveArt();
 }

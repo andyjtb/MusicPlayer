@@ -25,6 +25,7 @@ public:
 	void paint(Graphics& g);
 	
 	void setCover (File& incomingAudioFile);
+    void setCover (ImageWithType cover);
     void setCover (Image cover);
     
     Image getCover();

@@ -87,7 +87,7 @@ public:
 
 	}
 	
-	static Image getAlbumArt (File& audioFile)
+	static ImageWithType getAlbumArt (File& audioFile)
 	{
         if (audioFile.exists())
         {
@@ -105,14 +105,16 @@ public:
                     {
                         TagLib::ByteVector imageData = frame->picture();
                         
-                        Image juceCover = ImageFileFormat::loadFrom(imageData.data(), imageData.size());
+                        ImageWithType juceCover;
+                        juceCover.image = ImageFileFormat::loadFrom(imageData.data(), imageData.size());
+                        juceCover.type = String(frame->mimeType().toCString()).fromFirstOccurrenceOf("/", false, true);
                         
                         return juceCover;
                     }
                 }
             }
         }
-        return Image();
+        return ImageWithType();
 	}
 
     static void saveAlbumArt (File& audioFile, Image& newCover, String imageType)
@@ -198,9 +200,9 @@ public:
     {
         //Returns image type
         String type(String::empty);
-        Image currentCover = getAlbumArt(audioFile);
+        ImageWithType currentCover = getAlbumArt(audioFile);
         
-        if (currentCover.isValid())
+        if (currentCover.image.isValid())
         {
             TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
             TagLib::ID3v2::FrameList frames = f.ID3v2Tag()->frameList("APIC");
@@ -208,20 +210,19 @@ public:
             
             if (frame != nullptr)
             {
-                String type = frame->mimeType().toCString();
-                
                 MemoryOutputStream outputStream;
+                type = currentCover.type;
                 
                 if (type == "image/jpeg")
                 {
                     JPEGImageFormat image;
-                    image.writeImageToStream(currentCover, outputStream);
+                    image.writeImageToStream(currentCover.image, outputStream);
                     type = "jpeg";
                 }
                 else
                 {
                     JPEGImageFormat image;
-                    image.writeImageToStream(currentCover, outputStream);
+                    image.writeImageToStream(currentCover.image, outputStream);
                     type = "png";
                 }
 

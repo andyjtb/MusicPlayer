@@ -133,6 +133,11 @@ Value& Settings::getAlbumArtUpdate()
     return artUpdate;
 }
 
+ImageWithType& Settings::getArtClipboard()
+{
+    return albumArtClipboard;
+}
+
 UndoManager* Settings::getUndoManager()
 {
     return undoManager;

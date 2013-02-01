@@ -86,13 +86,22 @@ void TrackArt::setTrack (ValueTree incomingTrack)
 {
     selectedTrack = incomingTrack;
     
-    File selectedFile(selectedTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
+    selectedFile = selectedTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]);
     
     cover = TagReader::getAlbumArt(selectedFile);
     //albumArt.setSize(view.getWidth(), view.getHeight());
     albumArt.setCover(selectedFile);
     //albumArt.setSize(view.getWidth(), view.getHeight());
-    size.setRange (view.getHeight(), cover.getHeight()+500, 10);
+    size.setRange (view.getHeight(), cover.image.getHeight()+500, 10);
     size.setValue(size.getMinimum(), sendNotification);
     
+}
+
+void TrackArt::saveArt()
+{
+    cover.image = albumArt.getCover();
+    cover.type = albumArt.extension;
+    
+    TagReader::saveAlbumArt(selectedFile, cover.image, cover.type);
+    artUpdateRequired = true;
 }

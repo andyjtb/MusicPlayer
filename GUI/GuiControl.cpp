@@ -204,7 +204,8 @@ void GuiControl::valueChanged (Value& valueChanged)
         if(artUpdateRequired.getValue())
         {
             File audioFile = tableSelectedRow.getProperty("Location").toString();
-            albumArt.setCover(TagReader::getAlbumArt(audioFile));
+            ImageWithType currentCover = TagReader::getAlbumArt(audioFile);
+            albumArt.setCover(currentCover);
             artUpdateRequired = false;
         }
     }
@@ -259,6 +260,7 @@ void GuiControl::setVolume (double incomingVolume)
 void GuiControl::textEditorTextChanged (TextEditor &textEditor)
 {
     musicTable->setFilterText(textEditor.getText());
+    if (remoteConnections.getFirst() != nullptr)
     remoteConnections.getFirst()->sendTrackNums();
     
 }

@@ -412,17 +412,29 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
                 
                 if (selectedRows.size() == 1)
                 {
-                    trackDialog = new TrackDialog(rowNumber);             
+                    ValueTree currentlyEditing = filteredDataList.getChild(rowNumber);
+                    File test = currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString();
                     
-                    DialogWindow::showDialog(filteredDataList.getChild(rowNumber).getProperty(MusicColumns::columnNames[MusicColumns::Song]), trackDialog, 0, Colours::white, true);
+                    if (test.exists())
+                    {
+                        trackDialog = new TrackDialog(rowNumber);             
+                    
+                        DialogWindow::showDialog(filteredDataList.getChild(rowNumber).getProperty(MusicColumns::columnNames[MusicColumns::Song]), trackDialog, 0, Colours::white, true);
                     }
+                }
                 else
                 {
                     SparseSet<int> selectedRows = table.getSelectedRows();
                     Array<int> editingIds;
                     
                     for (int counter = 0; counter < selectedRows.size(); counter++) {
-                        editingIds.add(filteredDataList.getChild(selectedRows[counter]).getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
+                        ValueTree currentlyEditing = filteredDataList.getChild(selectedRows[counter]);
+                        File test = currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString();
+                        
+                        if (test.exists())
+                        {
+                            editingIds.add(currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
+                        }
                     } 
                     
                     AlertWindow editPopup("Editing Multiple Tracks", "", AlertWindow::NoIcon);
@@ -465,29 +477,34 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
 
 void MusicLibraryTable::cellDoubleClicked(int rowNumber, int columnId, const juce::MouseEvent &event)
 {
-    tableShouldPlay.setValue(true);
+    tableShouldPlay = true;
     tableSelectedRow = filteredDataList.getChild(rowNumber);
 }
 
 void MusicLibraryTable::editDirectly (int rowNumber, int columnId)
 {
     ValueTree currentlyEditing = filteredDataList.getChild(rowNumber);
-    String popupTitle = ("Edit " + MusicColumns::columnNames[columnId].toString()+"...");
-    String info = ("Editing: \n" + currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString() + " by " + currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
-    AlertWindow editPopup(popupTitle, info, AlertWindow::NoIcon);
-    TextEditor editText;
+    File test = currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString();
     
-    editText.setBounds(getWidth()/2, getHeight()/2, 300, 25);
-    editText.setText(currentlyEditing.getProperty(MusicColumns::columnNames[columnId]));
-    
-    editPopup.addCustomComponent(&editText);
-    
-    editPopup.addButton("Cancel", 0);
-    editPopup.addButton("Ok", 1);
-    
-    if (editPopup.runModalLoop() != 0) {
-        currentlyEditing.setProperty(MusicColumns::columnNames[columnId], editText.getText(), singletonUndoManager);
-        TagReader::writeTag(columnId, currentlyEditing);
+    if (test.exists())
+    {
+        String popupTitle = ("Edit " + MusicColumns::columnNames[columnId].toString()+"...");
+        String info = ("Editing: \n" + currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString() + " by " + currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
+        AlertWindow editPopup(popupTitle, info, AlertWindow::NoIcon);
+        TextEditor editText;
+        
+        editText.setBounds(getWidth()/2, getHeight()/2, 300, 25);
+        editText.setText(currentlyEditing.getProperty(MusicColumns::columnNames[columnId]));
+        
+        editPopup.addCustomComponent(&editText);
+        
+        editPopup.addButton("Cancel", 0);
+        editPopup.addButton("Ok", 1);
+        
+        if (editPopup.runModalLoop() != 0) {
+            currentlyEditing.setProperty(MusicColumns::columnNames[columnId], editText.getText(), singletonUndoManager);
+            TagReader::writeTag(columnId, currentlyEditing);
+        }
+        editPopup.removeCustomComponent(0);
     }
-    editPopup.removeCustomComponent(0);
 }

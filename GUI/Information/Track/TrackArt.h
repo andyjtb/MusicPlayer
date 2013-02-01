@@ -12,6 +12,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "TagReader.h"
 #include "AlbumArt.h"
+#include "Settings.h"
 
 class TrackArt  :	public Component,
                     public ButtonListener,
@@ -28,6 +29,9 @@ public:
 
     void buttonClicked (Button* buttonThatWasClicked);
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    
+    void saveArt();
+    
 private:
     Viewport view;
     AlbumArt albumArt;
@@ -36,9 +40,11 @@ private:
     TextButton file;
     TextButton url;
 
+    File selectedFile;
+    
     ValueTree selectedTrack;
     
-    Image cover;
+    ImageWithType cover;
 };
 
 

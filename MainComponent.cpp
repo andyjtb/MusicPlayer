@@ -87,22 +87,21 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
         }
         if (menuItemID == OpenFile)
 		{
-			File audioFile;
-			
-			FileChooser fc ("Choose a file to open...",File::getCurrentWorkingDirectory(),"*",true);
+			FileChooser fc ("Choose files to open...",File::getCurrentWorkingDirectory(),"*",true);
 			
 			if (fc.browseForMultipleFilesToOpen())
 			{
-				String fileChosen;
-				for (int i = 0; i < fc.getResults().size(); ++i)
+                Array<File> selectedFiles = fc.getResults();
+                File audioFile;
+                
+				for (int i = 0; i < selectedFiles.size(); ++i)
 				{
-					fileChosen << fc.getResults().getReference(i).getFullPathName() << "\n";
+                    audioFile = selectedFiles[i];
+                    singletonLibraryTree.addChild(TagReader::addToLibrary(audioFile),-1,0);
 				}
-
-				audioFile = fc.getResult();
-                singletonLibraryTree.addChild(TagReader::addToLibrary(audioFile),-1,0);
-				audioControl.loadFile(audioFile);
-				guiControl.updateTagDisplay(audioFile);
+                
+//				audioControl.loadFile(audioFile);
+//				guiControl.updateTagDisplay(audioFile);
 			}
 		}
 		

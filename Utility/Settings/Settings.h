@@ -9,6 +9,11 @@
 //#include "RemoteInterprocessConnection.h"
 class RemoteInterprocessConnection;
 
+struct ImageWithType {
+    Image image;
+    String type;
+};
+
 #define singletonLibraryFile Settings::getInstance()->getLibraryFile()
 #define singletonLibraryTree Settings::getInstance()->getLibraryTree()
 #define singletonCurrentLibId Settings::getInstance()->getCurrentLibId()
@@ -23,6 +28,7 @@ class RemoteInterprocessConnection;
 #define tableUpdateRequired Settings::getInstance()->getUpdateRequired()
 #define tableDeleting Settings::getInstance()->getTableDeleting()
 
+#define artClipboard Settings::getInstance()->getArtClipboard()
 #define artUpdateRequired Settings::getInstance()->getAlbumArtUpdate()
 #define filteredDataList Settings::getInstance()->getFilteredList()
 
@@ -55,6 +61,8 @@ public:
     Value& getAlbumArtUpdate();
     Value& getLoadSelected();
     
+    ImageWithType& getArtClipboard();
+    
     void saveSingletons();
 	
 	juce_DeclareSingleton_SingleThreaded_Minimal (Settings)
@@ -67,6 +75,7 @@ private:
     int currentLibId, currentValueTreeId;
     Value shouldPlay, loadSelected, playState, updateRequired, deletingTable, artUpdate;
     OwnedArray <RemoteInterprocessConnection, CriticalSection> connections;
+    ImageWithType albumArtClipboard;
 
 };
 
