@@ -363,11 +363,8 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
     table.deselectAllRows();
     table.selectRow(selectedRows[0]);
     
-    //Find better way to load up a new track without it playing
-    //tableShouldPlay = true;
-    //
-    
-
+    tableSelectedRow = filteredDataList.getChild(selectedRows[0]);
+    tableLoadSelected = true;
 }
 
 void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::MouseEvent &event)

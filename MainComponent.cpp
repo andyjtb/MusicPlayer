@@ -62,6 +62,7 @@ PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const St
         menu.addItem(AudioPrefs, "Audio Preferences", true, false);
 		menu.addItem(ImportItunes, "Import Itunes Library", true, false);
         menu.addSeparator();
+        menu.addItem(15, "TEST XML");
         menu.addCommandItem (&commandManager, StandardApplicationCommandIDs::quit);
         return menu;
 	}
@@ -148,6 +149,16 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
                 }
 			}
 		}
+        
+        if (menuItemID == 15)
+        {
+                File itunes (File::getSpecialLocation (File::userMusicDirectory).getChildFile ("iTunes/iTunes Music Library.xml"));
+                
+                ScopedPointer<XmlElement> library;
+                library = XmlDocument::parse(itunes);
+                library = library->getFirstChildElement()->getChildByName ("dict");
+
+        }
 		
     }
     if (topLevelMenuIndex == EditMenu)

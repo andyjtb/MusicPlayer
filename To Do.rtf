@@ -1,7 +1,7 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf360
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 TimesNewRomanPSMT;\f2\fnil\fcharset0 Menlo-Regular;
 }
-{\colortbl;\red255\green255\blue255;\red0\green116\blue0;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
 \paperw11900\paperh16840\margl1440\margr1440\vieww17560\viewh13520\viewkind0
 \deftab720
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
@@ -25,9 +25,6 @@ Getting undo message from manager, allowing undo of one thing at a time
 \pard\pardeftab720\ql\qnatural
 \cf0 Remote, when connection made check library last modified, check against last modified in settings to see whether library needs to be resent, then save library, loaddatafromfile on file library, send memory block to phone, use nsdata on the phone to create an xml file from the data\
 \
-Deleted song should be unloaded if it was currently playing\
-In delete function set tableShouldPlay to true would load the selected row into the audioControl but would also trigger play since that function has singletonPlayState in it\
-\
 Re think libido stuff, if songs are deleted then the libid doesn't go down, maybe just use singletonLibraryTree.getNumChildren()\
 \
 Audio slow down - Soundtouch puts processor usage up to 23%\
@@ -36,8 +33,7 @@ Standard playing = 14% probably the remote connection position send stuff\
 \
 Multi saves each field regardless of change, consider ways to neaten this\
 \
-Look and feel - Make new class, inherit from look and feel, change the bits I'd like to change, in main window, LookAndFeel::setDefaultLookAndFeel pointer to look and feel object\
-\
+Play button, when first song is selected allow clicking to begin playing the song\
 \
 TO FIX LATER\
 \
@@ -57,8 +53,8 @@ Add playlists\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
 \cf0 Incorporate tag reading/directory load for types other than .mp3\
 Use mac mainbar instead, maaaybe\
-Track info display\
+Track info display - See visual resources file\
 \pard\pardeftab720\ql\qnatural
 
-\f1 \cf0 Play button, when first song is selected allow clicking to begin playing the song\
+\f1 \cf0 \
 }

@@ -12,6 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <math.h>
+#include "MusicLibraryHelpers.h"
 
 class TransportSlider  : public Component,
                          public ActionBroadcaster,
@@ -32,8 +33,9 @@ public:
 
 private:
 	void sliderValueChanged (Slider* sliderThatWasMoved);
-    Slider* transport;
-	Label* timeLabel;
+    Slider transport;
+	Label timeLabel;
+    Label lengthLabel;
 
 	
 
