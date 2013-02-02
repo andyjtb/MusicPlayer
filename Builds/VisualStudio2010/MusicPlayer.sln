@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{A9D00386-566F-D682-8856-64E66FA2A186}") = "MusicPlayer", "MusicPlayer.vcxproj", "{8F126C47-A6D7-BC4C-D9BB-4F16A037204A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F126C47-A6D7-BC4C-D9BB-4F16A037204A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8F126C47-A6D7-BC4C-D9BB-4F16A037204A}.Debug|Win32.Build.0 = Debug|Win32
+		{8F126C47-A6D7-BC4C-D9BB-4F16A037204A}.Release|Win32.ActiveCfg = Release|Win32
+		{8F126C47-A6D7-BC4C-D9BB-4F16A037204A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
