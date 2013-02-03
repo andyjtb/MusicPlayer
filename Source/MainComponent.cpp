@@ -152,11 +152,28 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
         
         if (menuItemID == 15)
         {
-                File itunes (File::getSpecialLocation (File::userMusicDirectory).getChildFile ("iTunes/iTunes Music Library.xml"));
-                
+            FileChooser fc ("Choose files to open...",File::getSpecialLocation (File::userDesktopDirectory),"*",true);
+			
+			if (fc.browseForFileToOpen())
+			{
+                File itunes = fc.getResult();
+            
                 ScopedPointer<XmlElement> library;
                 library = XmlDocument::parse(itunes);
-                library = library->getFirstChildElement()->getChildByName ("dict");
+                
+                XmlElement* firstEntry;
+                XmlElement* entry;
+                firstEntry = library->getFirstChildElement();
+                
+                //entry = firstEntry;
+                entry = XmlHelpers::findXmlElementWithAttributeWithValue(library, "key", "Playlists");
+                
+                if(entry != nullptr)
+                {
+                    DBG ("Tag = " << entry->getTagName());
+                    DBG ("Info = " << entry->getAllSubText());
+                }
+            }
 
         }
 		

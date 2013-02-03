@@ -41,7 +41,9 @@ public:
     /** Creates a parser with a given valid library file and a ValueTree with which
      to put the parsed data.
      */
-	ITunesLibraryParser (const File& iTunesLibraryFileToUse, const ValueTree& elementToFill,
+	ITunesLibraryParser (const File& iTunesLibraryFileToUse, 
+                         const ValueTree& elementToFill,
+                         const ValueTree& playlistsToFill,
                          const CriticalSection& lockToUse);
 	
     /** Destructor.
@@ -64,12 +66,12 @@ private:
     const CriticalSection& lock;
 	
     const File iTunesLibraryFile;
-	ValueTree treeToFill, partialTree;
+	ValueTree treeToFill, partialTree, playlistsTree;
 	ScopedPointer<XmlElement> iTunesDatabase;
 	XmlElement *iTunesLibraryTracks, *currentElement;
     
     int numAdded;
-	bool finished;
+	bool finished, playlistsFinished;
     
     //==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ITunesLibraryParser);

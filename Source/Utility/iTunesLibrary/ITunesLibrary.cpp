@@ -36,7 +36,7 @@ void ITunesLibrary::setLibraryFile (File newFile)
 	if (newFile.existsAsFile()) 
 	{
 		listeners.call (&Listener::libraryChanged, this);
-		parser = new ITunesLibraryParser (newFile, libraryTree, parserLock);
+		parser = new ITunesLibraryParser (newFile, libraryTree, playlistsTree, parserLock);
 		startTimer(500);
 	}	
 }
@@ -64,6 +64,17 @@ void ITunesLibrary::setLibraryTree (ValueTree& newTreeToUse)
 
     libraryTree = newTreeToUse;
     libraryTree.addListener(this);
+}
+
+void ITunesLibrary::setPlaylistsTree (ValueTree& newPlaylistTreeToUse)
+{
+    if (! newPlaylistTreeToUse.isValid())
+    {
+        newPlaylistTreeToUse = ValueTree (MusicColumns::playlistsIdentifier);
+    }
+    
+    playlistsTree = newPlaylistTreeToUse;
+    playlistsTree.addListener(this);
 }
 
 void ITunesLibrary::timerCallback()
@@ -94,12 +105,14 @@ void ITunesLibrary::removeListener (ITunesLibrary::Listener* const listener)
 
 //==============================================================================
 //NON DROW FUNCTIONS
-void ITunesLibrary::saveLibrary(File& saveDestination)
+void ITunesLibrary::saveLibrary()
 {
 //	File location(File::getSpecialLocation(File::userHomeDirectory));
 //	location = (location.getFullPathName()+"/test.xml");
-	bool success = writeValueTreeToFile(libraryTree, saveDestination, true);
+	bool success = writeValueTreeToFile(libraryTree, singletonLibraryFile, true);
+    bool playlistSuccess = writeValueTreeToFile(playlistsTree, singletonPlaylistsFile);
 	DBG("Did Library save = " << success);
+    DBG("Did Playlists save = " << playlistSuccess);
 }
 
 File ITunesLibrary::libraryNotFound()

@@ -34,10 +34,22 @@ Settings::Settings()
 		else {
 			DBG("LibraryFile tag doesnt match");
 		}
+        
+        XmlElement* playlist;
+        playlist = settingsXml->getChildByName("PLAYLIST");
+        if (playlist!= nullptr) {
+            playlistFile = playlist->getStringAttribute("PlaylistFile");
+            if (!playlistFile.existsAsFile())
+            {
+                playlistFile.create();
+                DBG("Playlist file not found");
+            }
+        }
 		
 	}	
 
 	libraryTree = readValueTreeFromFile(libraryFile);
+    playlistTree = readValueTreeFromFile(playlistFile);
     
     if (libraryTree.hasType(MusicColumns::libraryIdentifier)) {
         ValueTree lastEntry = libraryTree.getChild(libraryTree.getNumChildren()-1);
@@ -68,9 +80,19 @@ File& Settings::getLibraryFile()
 	return libraryFile;
 }
 
+File& Settings::getPlaylistsFile()
+{
+    return playlistFile;
+}
+
 ValueTree& Settings::getLibraryTree()
 {
 	return libraryTree;
+}
+
+ValueTree& Settings::getPlaylistsTree()
+{
+    return playlistTree;
 }
 
 int& Settings::getCurrentLibId()
@@ -146,6 +168,7 @@ UndoManager* Settings::getUndoManager()
 void Settings::saveSingletons()
 {
 	writeValueTreeToFile(libraryTree, libraryFile);
+    writeValueTreeToFile(playlistTree, playlistFile);
 //	ScopedPointer<XmlElement> settingsXml;
 //	
 //	settingsXml = XmlDocument::parse (settingsXmlFile);

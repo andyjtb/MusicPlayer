@@ -21,12 +21,14 @@
 #include "ITunesLibraryParser.h"
 #include "MusicLibraryHelpers.h"
 
-ITunesLibraryParser::ITunesLibraryParser (const File& iTunesLibraryFileToUse, const ValueTree& elementToFill,
+ITunesLibraryParser::ITunesLibraryParser (const File& iTunesLibraryFileToUse, 
+                                          const ValueTree& elementToFill,
+                                          const ValueTree& playslistsToFill,
                                           const CriticalSection& lockToUse)
 : Thread ("iTunesLibraryParser"),
 lock (lockToUse),
 iTunesLibraryFile (iTunesLibraryFileToUse),
-treeToFill (elementToFill),
+treeToFill (elementToFill), playlistsTree(playslistsToFill), 
 numAdded (0),
 finished (false)
 {
@@ -78,140 +80,157 @@ void ITunesLibraryParser::run()
     
 	while (! threadShouldExit())
 	{
-        int currentItemId = -1;
-        ValueTree newElement;
-        
-        bool alreadyExists = false;
-        bool needToModify = false;
-        bool isAudioFile = false;
-        
-        while (currentElement != nullptr)
+        //NON DROW
+        while (!finished)
         {
-            if (currentElement->getTagName() == "key")
+            int currentItemId = -1;
+            ValueTree newElement;
+            
+            bool alreadyExists = false;
+            bool needToModify = false;
+            bool isAudioFile = false;
+            
+            while (currentElement != nullptr)
             {
-                currentItemId = currentElement->getAllSubText().getIntValue();  // e.g. <key>13452</key>
-                alreadyExists = existingIds.contains (currentItemId);
-                
-                if (alreadyExists)
+                if (currentElement->getTagName() == "key")
                 {
-                    // first get the relevant tree item
-                    lock.enter();
-                    const int index = existingIds.indexOf (currentItemId);
-                    ValueTree existingElement (existingItems.getUnchecked (index));
-                    lock.exit();
+                    currentItemId = currentElement->getAllSubText().getIntValue();  // e.g. <key>13452</key>
+                    alreadyExists = existingIds.contains (currentItemId);
                     
-                    // and then check the modification dates
-                    XmlElement* trackDetails = currentElement->getNextElement(); // move on to the <dict>
-                    
-                    forEachXmlChildElement (*trackDetails, e)
+                    if (alreadyExists)
                     {
-                        if (e->getAllSubText() == MusicColumns::iTunesNames[MusicColumns::Modified])
+                        // first get the relevant tree item
+                        lock.enter();
+                        const int index = existingIds.indexOf (currentItemId);
+                        ValueTree existingElement (existingItems.getUnchecked (index));
+                        lock.exit();
+                        
+                        // and then check the modification dates
+                        XmlElement* trackDetails = currentElement->getNextElement(); // move on to the <dict>
+                        
+                        forEachXmlChildElement (*trackDetails, e)
                         {
-                            const int64 newModifiedTime = parseITunesDateString (e->getNextElement()->getAllSubText()).toMilliseconds();
-                            const int64 currentModifiedTime = int64 (existingElement.getProperty (MusicColumns::columnNames[MusicColumns::Modified]));
-                            
-                            if (newModifiedTime > currentModifiedTime)
+                            if (e->getAllSubText() == MusicColumns::iTunesNames[MusicColumns::Modified])
                             {
-                                const ScopedLock sl (lock);
-                                treeToFill.removeChild (existingElement, nullptr);
-                                needToModify = true;
+                                const int64 newModifiedTime = parseITunesDateString (e->getNextElement()->getAllSubText()).toMilliseconds();
+                                const int64 currentModifiedTime = int64 (existingElement.getProperty (MusicColumns::columnNames[MusicColumns::Modified]));
+                                
+                                if (newModifiedTime > currentModifiedTime)
+                                {
+                                    const ScopedLock sl (lock);
+                                    treeToFill.removeChild (existingElement, nullptr);
+                                    needToModify = true;
+                                }
+                                
+                                break;
                             }
-                            
+                        }
+                    }
+                    
+                    newElement = ValueTree (MusicColumns::libraryItemIdentifier);
+                    newElement.setProperty (MusicColumns::columnNames[MusicColumns::ID], currentItemId, nullptr);
+                }
+                
+                currentElement = currentElement->getNextElement(); // move on to the <dict>
+                
+                if (! alreadyExists || needToModify)
+                    break;
+            }
+            
+            // check to see if we have reached the end
+            if (currentElement == nullptr)
+            {
+                finished = true;
+                //NON DROW
+                //signalThreadShouldExit();
+                break;
+            }            
+            
+            if (currentElement->getTagName() == "dict")
+            {
+                // cycle through items of each track
+                forEachXmlChildElement (*currentElement, e2)
+                {	
+                    const String elementKey (e2->getAllSubText());
+                    //const String elementValue (e2->getNextElement()->getAllSubText());
+                    
+                    if (elementKey == "Kind")
+                    {
+                        if (e2->getNextElement()->getAllSubText().contains ("audio file"))
+                        {
+                            isAudioFile = true;
+                            newElement.setProperty (MusicColumns::columnNames[MusicColumns::LibID], numAdded, nullptr);
+                            numAdded++;
+                        }
+                    }
+                    else if (elementKey == "Track Type")
+                    {
+                        // this is a file in iCloud, not a local, readable one
+                        if (e2->getNextElement()->getAllSubText().contains ("Remote"))
+                        {
+                            isAudioFile = false;
                             break;
+                        }
+                    }
+                    //NON DROW
+                    if (elementKey == "Track Number")
+                    {
+                        String entry = e2->getNextElement()->getAllSubText();
+                        newElement.setProperty (MusicColumns::columnNames[MusicColumns::TrackNum], entry.getIntValue(), nullptr);
+                    }
+                    
+                    // and check the entry against each column
+                    for(int i = 2; i < MusicColumns::numColumns; i++)
+                    {					
+                        if (elementKey == MusicColumns::iTunesNames[i])
+                        {
+                            const String elementValue = e2->getNextElement()->getAllSubText();
+                            
+                            if (i == MusicColumns::Length
+                                || i == MusicColumns::BPM
+                                || i == MusicColumns::LibID)
+                            {
+                                newElement.setProperty (MusicColumns::columnNames[i], elementValue.getIntValue(), nullptr);
+                            }
+                            else if (i == MusicColumns::Added
+                                     || i == MusicColumns::Modified)
+                            {            
+                                const int64 timeInMilliseconds (parseITunesDateString (elementValue).toMilliseconds());
+                                newElement.setProperty (MusicColumns::columnNames[i], timeInMilliseconds, nullptr);
+                            }
+                            else
+                            {
+                                String textEntry (elementValue);
+                                
+                                if (i == MusicColumns::Location)
+                                    textEntry = stripFileProtocolForLocal (elementValue);
+                                
+                                newElement.setProperty (MusicColumns::columnNames[i], textEntry, nullptr);
+                            }
                         }
                     }
                 }
                 
-                newElement = ValueTree (MusicColumns::libraryItemIdentifier);
-                newElement.setProperty (MusicColumns::columnNames[MusicColumns::ID], currentItemId, nullptr);
-            }
-            
-            currentElement = currentElement->getNextElement(); // move on to the <dict>
-            
-            if (! alreadyExists || needToModify)
-                break;
-        }
-        
-        // check to see if we have reached the end
-        if (currentElement == nullptr)
-		{
-			finished = true;
-			signalThreadShouldExit();
-            break;
-        }            
-        
-		if (currentElement->getTagName() == "dict")
-		{
-            // cycle through items of each track
-			forEachXmlChildElement (*currentElement, e2)
-			{	
-                const String elementKey (e2->getAllSubText());
-                //const String elementValue (e2->getNextElement()->getAllSubText());
-                
-				if (elementKey == "Kind")
+                if (isAudioFile == true)
                 {
-					if (e2->getNextElement()->getAllSubText().contains ("audio file"))
-					{
-                        isAudioFile = true;
-						newElement.setProperty (MusicColumns::columnNames[MusicColumns::LibID], numAdded, nullptr);
-						numAdded++;
-					}
-				}
-				else if (elementKey == "Track Type")
-                {
-                    // this is a file in iCloud, not a local, readable one
-					if (e2->getNextElement()->getAllSubText().contains ("Remote"))
-					{
-                        isAudioFile = false;
-                        break;
-					}
-				}
-				
-                if (elementKey == "Track Number")
-                {
-                    String entry = e2->getNextElement()->getAllSubText();
-                    newElement.setProperty (MusicColumns::columnNames[MusicColumns::TrackNum], entry.getIntValue(), nullptr);
+                    const ScopedLock sl (lock);
+                    treeToFill.addChild (newElement, -1, nullptr);
                 }
                 
-                // and check the entry against each column
-				for(int i = 2; i < MusicColumns::numColumns; i++)
-				{					
-					if (elementKey == MusicColumns::iTunesNames[i])
-					{
-                        const String elementValue = e2->getNextElement()->getAllSubText();
-						
-						if (i == MusicColumns::Length
-							|| i == MusicColumns::BPM
-							|| i == MusicColumns::LibID)
-						{
-							newElement.setProperty (MusicColumns::columnNames[i], elementValue.getIntValue(), nullptr);
-						}
-                        else if (i == MusicColumns::Added
-                                 || i == MusicColumns::Modified)
-                        {            
-                            const int64 timeInMilliseconds (parseITunesDateString (elementValue).toMilliseconds());
-                            newElement.setProperty (MusicColumns::columnNames[i], timeInMilliseconds, nullptr);
-                        }
-						else
-						{
-                            String textEntry (elementValue);
-                            
-							if (i == MusicColumns::Location)
-								textEntry = stripFileProtocolForLocal (elementValue);
-                            
-							newElement.setProperty (MusicColumns::columnNames[i], textEntry, nullptr);
-						}
-					}
-				}
-			}
-            
-			if (isAudioFile == true)
+                currentElement = currentElement->getNextElement(); // move to next track
+            }
+		}
+        //NON DROW
+        if (finished)
+        {
+            //Move onto playlists
+            playlistsFinished = true;
+            if (finished && playlistsFinished)
             {
-				const ScopedLock sl (lock);
-				treeToFill.addChild (newElement, -1, nullptr);
-			}
-            
-            currentElement = currentElement->getNextElement(); // move to next track
-		}		
+                signalThreadShouldExit();
+                break;
+            }
+        }
+        
 	}
 }

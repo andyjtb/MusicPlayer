@@ -16,6 +16,8 @@ struct ImageWithType {
 
 #define singletonLibraryFile Settings::getInstance()->getLibraryFile()
 #define singletonLibraryTree Settings::getInstance()->getLibraryTree()
+#define singletonPlaylistsFile Settings::getInstance()->getPlaylistsFile()
+#define singletonPlaylistsTree Settings::getInstance()->getPlaylistsTree()
 #define singletonCurrentLibId Settings::getInstance()->getCurrentLibId()
 #define singletonCurrentValueTreeId Settings::getInstance()->getCurrentValueTreeId()
 #define singletonPlayState Settings::getInstance()->getPlayState()
@@ -42,6 +44,7 @@ public:
 	~Settings();
 
 	File& getLibraryFile();
+    File& getPlaylistsFile();
 	
     UndoManager* getUndoManager();
     
@@ -50,6 +53,7 @@ public:
     OwnedArray <RemoteInterprocessConnection, CriticalSection>& getConnections();
     
     ValueTree& getLibraryTree();
+    ValueTree& getPlaylistsTree();
     ValueTree& getSelectedRow();
     ValueTree& getPlayingRow();
     ValueTree& getFilteredList();
@@ -69,8 +73,8 @@ public:
 	
 private:
 
-    File settingsXmlFile, libraryFile;
-	ValueTree libraryTree, selectedRow, playingRow, filteredDataTree;
+    File settingsXmlFile, libraryFile, playlistFile;
+	ValueTree libraryTree, playlistTree, selectedRow, playingRow, filteredDataTree;
     ScopedPointer<UndoManager> undoManager;
     int currentLibId, currentValueTreeId;
     Value shouldPlay, loadSelected, playState, updateRequired, deletingTable, artUpdate;

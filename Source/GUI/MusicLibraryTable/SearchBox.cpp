@@ -25,7 +25,7 @@ SearchBox::SearchBox ()
     search.setLookAndFeel(&searchBoxLookAndFeel);
     
     setSize (175, 60);
-//feet
+
 }
 
 SearchBox::~SearchBox()

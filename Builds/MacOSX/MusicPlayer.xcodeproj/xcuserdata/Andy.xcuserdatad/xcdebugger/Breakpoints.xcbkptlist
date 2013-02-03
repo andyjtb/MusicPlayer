@@ -17,5 +17,19 @@
          landmarkName = "getAlbumArt (File&amp; audioFile)"
          landmarkType = "5">
       </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "0"
+         filePath = "/Users/Andy/Desktop/University/Musicplayer/Source/GUI/LibraryTreeView/LibraryTreeView.h"
+         timestampString = "381539955.334641"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "51"
+         endingLineNumber = "51"
+         landmarkName = "paintItem (Graphics&amp; g, int width, int height)"
+         landmarkType = "5">
+      </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

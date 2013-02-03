@@ -130,6 +130,8 @@ public:
     void cellDoubleClicked(int rowNumber, int columnId, const MouseEvent &event);
     void editDirectly (int rowNumber, int columnId);
     
+    void changeDisplay (String& type);
+    
 private:
     //==============================================================================
     Font font;	
@@ -141,8 +143,8 @@ private:
     
     ScopedPointer<TrackDialog> trackDialog;
     
-    int filteredNumRows;
-	bool finishedLoading;
+    int filteredNumRows, currentPlaylist;
+	bool finishedLoading, displayCurrentPlaylist;
 	
     void updateTableFilteredAndSorted();
     

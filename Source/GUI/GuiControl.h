@@ -25,6 +25,7 @@
 #include "Settings.h"
 #include "SearchBox.h"
 #include "MusicLibraryDropTarget.h"
+#include "LibraryTreeView.h"
 //#include "CoverFlowComponent.h"
 
 class RemoteInterprocessConnection;
@@ -97,13 +98,13 @@ private:
     
 	AlbumArt albumArt;
     
-    
     MusicLibraryTable* musicTable;
     
     SearchBox searchBox;
     
     MusicLibraryDropTarget musicLibraryDropTarget;
     
+    ScopedPointer<LibraryTreeView> libraryTreeView;
 //    CoverFlowComponent* coverflow;
 };
 

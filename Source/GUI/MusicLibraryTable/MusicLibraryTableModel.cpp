@@ -27,6 +27,8 @@ dataList (MusicColumns::libraryIdentifier),
 filteredNumRows (dataList.getNumChildren()),
 finishedLoading (true)
 {
+    displayCurrentPlaylist = false;
+    
 	// Create our table component and add it to this component..
 	addAndMakeVisible (&table);
     table.setModel (this);
@@ -131,12 +133,15 @@ void MusicLibraryTable::libraryChanged (ITunesLibrary* library)
 	if (library == currentLibrary)
 	{
         DBG("Library changed");
-		filteredDataList = dataList = currentLibrary->getLibraryTree();
+        //NON DROW
+//        if(displayCurrentPlaylist)
+            //filteredDataList = dataList = currentLibrary->getPlaylistsTree()->getChild(currentPlaylist);
+//        else
+            filteredDataList = dataList = currentLibrary->getLibraryTree();
+        
 		filteredNumRows = filteredDataList.getNumChildren();
         
 		finishedLoading = false;
-        
-        filteredDataList = dataList = currentLibrary->getLibraryTree();
         updateTableFilteredAndSorted();
     }
 }
@@ -362,9 +367,11 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
     
     table.deselectAllRows();
     table.selectRow(selectedRows[0]);
-    
-    tableSelectedRow = filteredDataList.getChild(selectedRows[0]);
-    tableLoadSelected = true;
+    if(filteredDataList.getNumChildren() > 0)
+    {
+        tableSelectedRow = filteredDataList.getChild(selectedRows[0]);
+        tableLoadSelected = true;
+    }
 }
 
 void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::MouseEvent &event)
@@ -504,4 +511,19 @@ void MusicLibraryTable::editDirectly (int rowNumber, int columnId)
         }
         editPopup.removeCustomComponent(0);
     }
+}
+
+void MusicLibraryTable::changeDisplay(String& type)
+{
+//    if (type == "Playlists")
+//    {
+//        displayCurrentPlaylist = true;
+//        libraryChanged(currentLibrary);
+//    }
+//    else if (type == "Library")
+//    {
+//        displayCurrentPlaylist = false;
+//        libraryChanged(currentLibrary);
+//    }
+//    
 }

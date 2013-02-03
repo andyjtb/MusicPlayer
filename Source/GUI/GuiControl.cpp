@@ -31,6 +31,7 @@ GuiControl::GuiControl()
     searchBox.getSearchTextEditor().addListener(this);
     
 	ITunesLibrary::getInstance()->setLibraryTree (singletonLibraryTree);
+    ITunesLibrary::getInstance()->setPlaylistsTree(singletonPlaylistsTree);
     musicTable = musicLibraryDropTarget.getMusicTable();
 	musicTable->setLibraryToUse (ITunesLibrary::getInstance());
 	musicTable->addActionListener(this);
@@ -41,6 +42,9 @@ GuiControl::GuiControl()
 	//addAndMakeVisible(&musicTable);
     
     addAndMakeVisible(&musicLibraryDropTarget);
+    
+    libraryTreeView = new LibraryTreeView(ITunesLibrary::getInstance());
+    addAndMakeVisible(libraryTreeView);
     
 //    coverflow = new CoverFlowComponent();
 //    addAndMakeVisible(coverflow);
@@ -66,6 +70,8 @@ void GuiControl::resized()
 
     musicLibraryDropTarget.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
     //musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
+    
+    libraryTreeView->setBounds((getWidth()/2)+50,100,100,100);
     
 //    coverflow->setBounds(100,100,100,100);
 }
@@ -116,7 +122,7 @@ void GuiControl::actionListenerCallback (const String& message)
 {
     if (message == "LibraryImportFinished") {
 		DBG("library Loaded");
-		ITunesLibrary::getInstance()->saveLibrary(singletonLibraryFile);
+		ITunesLibrary::getInstance()->saveLibrary();
 		singletonLibraryTree = ITunesLibrary::getInstance()->getLibraryTree();
 		ITunesLibrary::getInstance()->setLibraryTree(singletonLibraryTree);
 	}

@@ -49,6 +49,7 @@
 		A16DFA0116BD901300DD45E6 /* dRowAudio_SoundTouchAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A16DF9FD16BD901300DD45E6 /* dRowAudio_SoundTouchAudioSource.cpp */; };
 		A16DFA0216BD901300DD45E6 /* dRowAudio_SoundTouchProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A16DF9FF16BD901300DD45E6 /* dRowAudio_SoundTouchProcessor.cpp */; };
 		A16DFA3116BD907100DD45E6 /* SoundTouch_Source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A16DFA1816BD901F00DD45E6 /* SoundTouch_Source.cpp */; };
+		A1A9495516BDC72300C040FA /* LibraryTreeView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1A9495416BDC72300C040FA /* LibraryTreeView.cpp */; };
 		A1BB0B7A16A63EF3005DC71A /* TrackMulti.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1BB0B7816A63EF1005DC71A /* TrackMulti.cpp */; };
 		A1E4E193163AD6BB009E3941 /* GuiControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1E4E192163AD6BB009E3941 /* GuiControl.cpp */; };
 		A1E82168163C550000308912 /* TrackInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1E82166163C550000308912 /* TrackInfo.cpp */; };
@@ -676,6 +677,8 @@
 		A16DFA1E16BD901F00DD45E6 /* TDStretch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDStretch.h; sourceTree = "<group>"; };
 		A1A13BF9DA7E05C76D9C45DD /* juce_AudioPluginFormatManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_AudioPluginFormatManager.h; path = ../../JuceLibraryCode/modules/juce_audio_processors/format/juce_AudioPluginFormatManager.h; sourceTree = SOURCE_ROOT; };
 		A1A192860DBA887C124BF8F2 /* juce_MidiKeyboardState.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_MidiKeyboardState.cpp; path = ../../JuceLibraryCode/modules/juce_audio_basics/midi/juce_MidiKeyboardState.cpp; sourceTree = SOURCE_ROOT; };
+		A1A9495416BDC72300C040FA /* LibraryTreeView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LibraryTreeView.cpp; sourceTree = "<group>"; };
+		A1A9495616BDC72C00C040FA /* LibraryTreeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryTreeView.h; sourceTree = "<group>"; };
 		A1BB0B7816A63EF1005DC71A /* TrackMulti.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TrackMulti.cpp; path = Track/TrackMulti.cpp; sourceTree = "<group>"; };
 		A1BB0B7916A63EF2005DC71A /* TrackMulti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TrackMulti.h; path = Track/TrackMulti.h; sourceTree = "<group>"; };
 		A1C162432F64703B58A97968 /* juce_ValueTree.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ValueTree.cpp; path = ../../JuceLibraryCode/modules/juce_data_structures/values/juce_ValueTree.cpp; sourceTree = SOURCE_ROOT; };
@@ -2186,6 +2189,7 @@
 		A13AB1311639972A004E4FE4 /* GUI */ = {
 			isa = PBXGroup;
 			children = (
+				A1A9495316BDC70400C040FA /* LibraryTreeView */,
 				A105A92B165BD14E003664AB /* Music Library Table */,
 				A1EBBF091649A95900D086F3 /* Coverflow */,
 				A1E4E192163AD6BB009E3941 /* GuiControl.cpp */,
@@ -2284,6 +2288,15 @@
 				A13E9EA4163EDABF005DF341 /* TagLibAmalgam.h */,
 			);
 			path = Taglib;
+			sourceTree = "<group>";
+		};
+		A1A9495316BDC70400C040FA /* LibraryTreeView */ = {
+			isa = PBXGroup;
+			children = (
+				A1A9495416BDC72300C040FA /* LibraryTreeView.cpp */,
+				A1A9495616BDC72C00C040FA /* LibraryTreeView.h */,
+			);
+			path = LibraryTreeView;
 			sourceTree = "<group>";
 		};
 		A1E82165163C550000308912 /* Information */ = {
@@ -3114,6 +3127,7 @@
 				A16DFA0116BD901300DD45E6 /* dRowAudio_SoundTouchAudioSource.cpp in Sources */,
 				A16DFA0216BD901300DD45E6 /* dRowAudio_SoundTouchProcessor.cpp in Sources */,
 				A16DFA3116BD907100DD45E6 /* SoundTouch_Source.cpp in Sources */,
+				A1A9495516BDC72300C040FA /* LibraryTreeView.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

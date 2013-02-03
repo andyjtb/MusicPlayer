@@ -18,14 +18,14 @@ public:
     SearchBoxLookAndFeel(){}
     //~SearchBoxLookAndFeel(); 
     
-    void fillTextEditorBackground (Graphics& g, int width, int height, TextEditor& textEditor)
-    {
-        if (textEditor.isEnabled())
-        {
-            g.setColour (Colours::green);
-            g.drawRect (0, 0, width, height);
-        }
-    }
+//    void fillTextEditorBackground (Graphics& g, int width, int height, TextEditor& textEditor)
+//    {
+//        if (textEditor.isEnabled())
+//        {
+//            g.setColour (Colours::green);
+//            g.drawRect (0, 0, width, height);
+//        }
+//    }
 };
 
 class SearchBox  : public Component
