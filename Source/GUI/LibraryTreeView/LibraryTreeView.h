@@ -10,7 +10,7 @@
 #define LIBRARYTREEVIEW  
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "ITunesLibrary.h"
+#include "Settings.h"
 
 //==============================================================================
 class LibraryTreeViewItem  : public TreeViewItem
@@ -87,14 +87,14 @@ private:
 class LibraryTreeView : public Component
 {
 public:
-    LibraryTreeView(ITunesLibrary* incomingLibrary);
+    LibraryTreeView();
     ~LibraryTreeView();
     
 //    void paint (Graphics& g);
     void resized();
     
 private:
-    ITunesLibrary* iTunesLibrary;
+    
     ScopedPointer<TreeViewItem> rootItem;
     ScopedPointer<XmlElement> libraryXml;
     ValueTree playlistsValueTree;

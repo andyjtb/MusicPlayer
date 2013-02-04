@@ -42,7 +42,7 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
     
     if (stringMessage.startsWith("PlayTrack"))
         {
-            ValueTree test (singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::Song], stringMessage.fromFirstOccurrenceOf("Play ", false, true)));
+            ValueTree test (singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::Song], stringMessage.fromFirstOccurrenceOf("PlayTrack ", false, true)));
             if (test.isValid()) {
                 tableSelectedRow = test;
                 tableShouldPlay = true;

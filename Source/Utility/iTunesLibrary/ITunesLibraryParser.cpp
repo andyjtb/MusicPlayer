@@ -224,7 +224,55 @@ void ITunesLibraryParser::run()
         if (finished)
         {
             //Move onto playlists
+            XmlElement* allPlaylists;
+            allPlaylists = (XmlHelpers::findXmlElementContainingSubText(iTunesDatabase->getFirstChildElement(), "Playlist"))->getNextElement();
+            
+            XmlElement* e; 
+            forEachXmlChildElement(*allPlaylists, e)
+            {
+                DBG("Tag = " << e->getTagName());
+                XmlElement* playlist;
+                ValueTree singlePlaylist(MusicColumns::libraryItemIdentifier);
+                forEachXmlChildElement(*e, playlist)
+                {
+                    String elementKey = playlist->getAllSubText();
+                    
+                    if (elementKey == "Name")
+                    {
+                        DBG("Playlist = " << playlist->getNextElement()->getAllSubText());
+                        singlePlaylist.setProperty(MusicColumns::playlistName, playlist->getNextElement()->getAllSubText(), 0);
+                    }    
+                    if (elementKey == "Playlist ID")
+                    {
+                        DBG("ID = " << playlist->getNextElement()->getAllSubText());
+                        singlePlaylist.setProperty(MusicColumns::playlistID, playlist->getNextElement()->getAllSubText(), 0);
+                    }
+                    
+                    if (elementKey == "Playlist Items")
+                    {
+                        XmlElement* playlistItems;
+                        int trackIDCounter = 0;
+                        forEachXmlChildElement(*playlist->getNextElement()->getFirstChildElement(), playlistItems)
+                        {
+                            String playlistKey = playlistItems->getAllSubText();
+                            if (playlistKey == "Track ID") {
+                                Identifier trackId = ("TrackID"+String(trackIDCounter));
+                                singlePlaylist.setProperty(trackId, playlistItems->getNextElement()->getAllSubText(), 0);
+                                DBG("Track Number = " << playlistItems->getNextElement()->getAllSubText());
+                                trackIDCounter++;
+                            }
+                        }
+                    }
+                    
+                    playlistsTree.addChild(singlePlaylist, -1, 0);
+                }
+            }
+                File test = File(File::getSpecialLocation(File::userDesktopDirectory).getChildFile("Test.xml"));
+            
+            writeValueTreeToFile(playlistsTree, test);
+            
             playlistsFinished = true;
+            
             if (finished && playlistsFinished)
             {
                 signalThreadShouldExit();

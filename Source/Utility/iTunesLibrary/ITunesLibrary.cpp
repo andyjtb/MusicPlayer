@@ -44,11 +44,16 @@ void ITunesLibrary::setLibraryFile (File newFile)
 //==============================================================================
 const File ITunesLibrary::getDefaultITunesLibraryFile()
 {
-    File iTunesLibrary(File::getSpecialLocation (File::userMusicDirectory).getChildFile ("iTunes/iTunes Music Library.xml"));
+    File iTunesLibrary(File::getSpecialLocation (File::userMusicDirectory).getChildFile ("iTunes/iTunes Library.xml"));
     //Non drow
-    if (!iTunesLibrary.exists())
+    if (!iTunesLibrary.existsAsFile())
     {
-        iTunesLibrary = libraryNotFound();
+        iTunesLibrary = (File::getSpecialLocation (File::userMusicDirectory).getChildFile ("iTunes/iTunes Music Library.xml"));
+        
+        if (!iTunesLibrary.existsAsFile())
+            {
+                iTunesLibrary = libraryNotFound();
+            }
     }
     
     return iTunesLibrary;

@@ -81,11 +81,14 @@ namespace LoopAndCueHelpers
 namespace MusicColumns {
     
     static const Identifier libraryIdentifier ("MUSICLIBRARY");
-    static const Identifier playlistsIdentifier ("PLAYLISTS");
     static const Identifier libraryItemIdentifier ("ITEM");
     static const Identifier libraryCuePointIdentifier ("CUE");
     static const Identifier libraryLoopIdentifier ("LOOP");
-
+    
+    static const Identifier playlistsIdentifier ("PLAYLISTS");
+    static const Identifier playlistName ("Name");
+    static const Identifier playlistID ("PlaylistID");
+    
 	enum columns {
 		Dummy,
 		LibID,

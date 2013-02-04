@@ -8,10 +8,8 @@
 
 #include "LibraryTreeView.h"
 
-LibraryTreeView::LibraryTreeView(ITunesLibrary* incomingLibrary)
+LibraryTreeView::LibraryTreeView()
 {
-    iTunesLibrary = incomingLibrary;
-    
     treeView.setDefaultOpenness(true);
     treeView.setMultiSelectEnabled(false);
     treeView.setOpenCloseButtonsVisible(true);
@@ -24,7 +22,7 @@ LibraryTreeView::LibraryTreeView(ITunesLibrary* incomingLibrary)
     XmlElement* playlistsXml = new XmlElement("Playlists");
     libraryXml->addChildElement(playlistsXml);
     
-    playlistsValueTree = iTunesLibrary->getPlaylistsTree();
+    playlistsValueTree = singletonPlaylistsTree;
     if (playlistsValueTree.isValid()) {
         for (int i = 0; i < playlistsValueTree.getNumChildren(); i++)
         {

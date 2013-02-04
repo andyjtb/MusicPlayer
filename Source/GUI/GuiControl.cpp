@@ -43,7 +43,7 @@ GuiControl::GuiControl()
     
     addAndMakeVisible(&musicLibraryDropTarget);
     
-    libraryTreeView = new LibraryTreeView(ITunesLibrary::getInstance());
+    libraryTreeView = new LibraryTreeView();
     addAndMakeVisible(libraryTreeView);
     
 //    coverflow = new CoverFlowComponent();
