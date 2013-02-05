@@ -68,7 +68,9 @@ public:
 	float getOutputMeterValue(const char* channel);	
 	
 	void showAudioPreferences(Component* centerComponent);
+    
 	void setVolume(double incomingVolume);
+    double getVolume();
 	
 	double getTransportPosition();
 	void setTransportPosition(double position);

@@ -123,15 +123,12 @@ void RemoteInterprocessConnection::sendPlayingData()
         sendString("TracksTotal: " + String(filteredDataList.getNumChildren()));
         sendString("TrackNum: " + String(filteredDataList.indexOf(tablePlayingRow)+1));
         sendLength(audioControl->getTransportLength());
-        
-        String currentAlbum = tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString();
-        
-//        if (currentAlbum != lastAlbum)
-//        {
-//            lastAlbum = currentAlbum;
-            sendString("AlbumTitle: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString());
-            sendAlbumArt();
-//        }
+        sendVolume(audioControl->getVolume());
+//        String currentAlbum = tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString();
+    
+        sendString("AlbumTitle: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString());
+        sendAlbumArt();
+    
         sendString("NewTrack");
         sendString("PlayState: " + singletonPlayState.getValue().toString());  
 }

@@ -96,6 +96,11 @@ void AudioControl::setVolume(double incomingVolume)
 	audioSourcePlayer.setGain(incomingVolume);
 }
 
+double AudioControl::getVolume()
+{
+    return audioSourcePlayer.getGain();
+}
+
 double AudioControl::getTransportPosition()
 {
 	return transport.getCurrentPosition();
