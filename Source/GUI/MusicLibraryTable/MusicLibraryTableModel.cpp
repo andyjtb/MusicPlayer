@@ -52,7 +52,6 @@ finishedLoading (true)
                                      800,
                                      TableHeaderComponent::defaultFlags);
     }
-    
 	// we could now change some initial settings..
 	table.getHeader().setSortColumnId (MusicColumns::Artist, true); // sort forwards by the Artist column
     
@@ -158,9 +157,8 @@ void MusicLibraryTable::libraryFinished (ITunesLibrary* library)
 {
 	if (library == currentLibrary)
 	{
-        updateTableFilteredAndSorted();
-		
 		sendActionMessage("LibraryImportFinished");
+        updateTableFilteredAndSorted();
 	}
 }
 

@@ -20,6 +20,7 @@ struct ImageWithType {
 #define singletonPlaylistsTree Settings::getInstance()->getPlaylistsTree()
 #define singletonCurrentLibId Settings::getInstance()->getCurrentLibId()
 #define singletonCurrentValueTreeId Settings::getInstance()->getCurrentValueTreeId()
+#define singletonCurrentPlaylistId Settings::getInstance()->getCurrentPlaylistId()
 #define singletonPlayState Settings::getInstance()->getPlayState()
 #define singletonUndoManager Settings::getInstance()->getUndoManager()
 
@@ -50,6 +51,7 @@ public:
     
     int& getCurrentLibId();
     int& getCurrentValueTreeId();
+    int& getCurrentPlaylistId();
     OwnedArray <RemoteInterprocessConnection, CriticalSection>& getConnections();
     
     ValueTree& getLibraryTree();
@@ -76,7 +78,7 @@ private:
     File settingsXmlFile, libraryFile, playlistFile;
 	ValueTree libraryTree, playlistTree, selectedRow, playingRow, filteredDataTree;
     ScopedPointer<UndoManager> undoManager;
-    int currentLibId, currentValueTreeId;
+    int currentLibId, currentValueTreeId, currentPlaylistId;
     Value shouldPlay, loadSelected, playState, updateRequired, deletingTable, artUpdate;
     OwnedArray <RemoteInterprocessConnection, CriticalSection> connections;
     ImageWithType albumArtClipboard;

@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "0"
          filePath = "/Users/Andy/Desktop/University/MusicPlayer/Source/Utility/MetaData/TagReader.h"
-         timestampString = "381453896.751251"
+         timestampString = "381859928.135451"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "109"
-         endingLineNumber = "109"
+         startingLineNumber = "111"
+         endingLineNumber = "111"
          landmarkName = "getAlbumArt (File&amp; audioFile)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -29,6 +29,20 @@
          startingLineNumber = "51"
          endingLineNumber = "51"
          landmarkName = "paintItem (Graphics&amp; g, int width, int height)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "0"
+         filePath = "/Users/Andy/Desktop/University/Musicplayer/Source/GUI/GuiControl.cpp"
+         timestampString = "381862108.09927"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "142"
+         endingLineNumber = "142"
+         landmarkName = "GuiControl::actionListenerCallback (const String&amp; message)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

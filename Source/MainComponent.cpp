@@ -173,6 +173,9 @@ void MainContentComponent::checkFirstTime()
         {
             DBG("Something has gone wrong with checkFirstTime as this means createSettings was called but settings already existed");
         }
+        
+        singletonPlaylistsFile = File(File::getSpecialLocation(File::userMusicDirectory).getFullPathName() + "/MusicPlayer/MusicPlayerPlaylists.xml");
+        singletonLibraryFile = File(File::getSpecialLocation(File::userMusicDirectory).getFullPathName() + "/MusicPlayer/MusicPlayerLibrary.xml");
     }
 }
 

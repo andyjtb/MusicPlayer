@@ -20,9 +20,12 @@
 #include "TransportSlider.h"
 #include "TrackInfo.h"
 #include "AlbumArt.h"
+
 #include "MusicLibraryTableModel.h"
 #include "MusicLibraryHelpers.h"
 #include "Settings.h"
+#include "Comparators.h"
+
 #include "SearchBox.h"
 #include "MusicLibraryDropTarget.h"
 #include "LibraryTreeView.h"

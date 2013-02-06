@@ -180,6 +180,7 @@ namespace XmlHelpers
             ValueTree settingsValue ("SETTINGS");
             ValueTree libraryValue("LIBRARY");
 			libraryValue.setProperty("LibraryFile", File(File::getSpecialLocation(File::userMusicDirectory).getFullPathName()+ "/MusicPlayer/MusicPlayerLibrary.xml").getFullPathName() ,0);
+            
             libraryValue.setProperty("ValueID", "0", 0);
             libraryValue.setProperty("LibID", "0", 0);
             settingsValue.addChild(libraryValue, -1, 0);
@@ -187,10 +188,16 @@ namespace XmlHelpers
             ValueTree playlistValue ("PLAYLIST");
             playlistValue.setProperty("PlaylistFile", File(File::getSpecialLocation(File::userMusicDirectory).getFullPathName()+ "/MusicPlayer/MusicPlayerPlaylists.xml").getFullPathName() ,0);
             settingsValue.addChild(playlistValue, -1, 0);
-            
+      
             ScopedPointer<XmlElement> settingsCreateXml;
             settingsCreateXml = settingsValue.createXml();
             settingsCreateXml->writeToFile(settingsFile, String::empty);
+            
+            File library(File::getSpecialLocation (File::userMusicDirectory).getChildFile ("MusicPlayer/MusicPlayerPlaylists.xml"));
+            File playlist(File::getSpecialLocation (File::userMusicDirectory).getChildFile ("MusicPlayer/MusicPlayerLibrary.xml"));
+            
+            //library.create();
+            //playlist.create();
             
             settingsFile.create();
             return true;

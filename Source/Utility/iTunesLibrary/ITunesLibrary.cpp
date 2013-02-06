@@ -114,6 +114,9 @@ void ITunesLibrary::saveLibrary()
 {
 //	File location(File::getSpecialLocation(File::userHomeDirectory));
 //	location = (location.getFullPathName()+"/test.xml");
+    singletonLibraryFile.create();
+    singletonPlaylistsFile.create();
+    
 	bool success = writeValueTreeToFile(libraryTree, singletonLibraryFile, true);
     bool playlistSuccess = writeValueTreeToFile(playlistsTree, singletonPlaylistsFile);
 	DBG("Did Library save = " << success);

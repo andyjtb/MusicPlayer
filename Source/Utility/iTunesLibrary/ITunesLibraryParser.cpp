@@ -223,6 +223,15 @@ void ITunesLibraryParser::run()
         //NON DROW
         if (finished)
         {
+             File playlistFile(File::getSpecialLocation (File::userMusicDirectory).getChildFile ("MusicPlayer/MusicPlayerPlaylists.xml"));
+            
+            Array<int> existingIds;
+            
+            for (int i = 0; i < playlistsTree.getNumChildren(); i++)
+            {
+                existingIds.add(playlistsTree.getChild(i).getProperty(MusicColumns::playlistID));
+            }
+            
             //Move onto playlists
             XmlElement* allPlaylists;
             allPlaylists = (XmlHelpers::findXmlElementContainingSubText(iTunesDatabase->getFirstChildElement(), "Playlist"))->getNextElement();
@@ -232,7 +241,8 @@ void ITunesLibraryParser::run()
             {
                 DBG("Tag = " << e->getTagName());
                 XmlElement* playlist;
-                ValueTree singlePlaylist(MusicColumns::libraryItemIdentifier);
+                ValueTree singlePlaylist("ITEM");
+                
                 forEachXmlChildElement(*e, playlist)
                 {
                     String elementKey = playlist->getAllSubText();
@@ -240,31 +250,51 @@ void ITunesLibraryParser::run()
                     if (elementKey == "Name")
                     {
                         DBG("Playlist = " << playlist->getNextElement()->getAllSubText());
-                        singlePlaylist.setProperty(MusicColumns::playlistName, playlist->getNextElement()->getAllSubText(), 0);
+                        singlePlaylist.setProperty("Name", playlist->getNextElement()->getAllSubText(), 0);
                     }    
                     if (elementKey == "Playlist ID")
                     {
-                        DBG("ID = " << playlist->getNextElement()->getAllSubText());
-                        singlePlaylist.setProperty(MusicColumns::playlistID, playlist->getNextElement()->getAllSubText(), 0);
+                        //If id already exists then it doesnt add it
+                        int currentId = playlist->getNextElement()->getAllSubText().getIntValue();
+                        if (!existingIds.contains(currentId))
+                        {
+                            DBG("ID = " << playlist->getNextElement()->getAllSubText());
+                            singlePlaylist.setProperty("PlaylistID", playlist->getNextElement()->getAllSubText(), 0);
+                        }
+                        else
+                            break;
+                    }
+                    
+                    if (elementKey == "Distinguished Kind" || elementKey == "Smart Info")
+                    {
+                        //DBG("Default itunes playlist found");
+                        //Makes sure it doesn't parse default itunes libraries
+                        //Remove break to parse them again
+                        break;
                     }
                     
                     if (elementKey == "Playlist Items")
                     {
                         XmlElement* playlistItems;
-                        int trackIDCounter = 0;
-                        forEachXmlChildElement(*playlist->getNextElement()->getFirstChildElement(), playlistItems)
+                        int trackIDCounter = 1;
+                        forEachXmlChildElement(*playlist->getNextElement(), playlistItems)
                         {
-                            String playlistKey = playlistItems->getAllSubText();
+                            String playlistKey = playlistItems->getChildElementAllSubText("key", "0");
+                            
+                            //DBG("Playlist key = " << playlistKey);
                             if (playlistKey == "Track ID") {
-                                Identifier trackId = ("TrackID"+String(trackIDCounter));
-                                singlePlaylist.setProperty(trackId, playlistItems->getNextElement()->getAllSubText(), 0);
-                                DBG("Track Number = " << playlistItems->getNextElement()->getAllSubText());
+                                singlePlaylist.setProperty("Size", trackIDCounter, 0);
+                                String trackId = ("TrackID"+String(trackIDCounter));
+                                singlePlaylist.setProperty(trackId, playlistItems->getChildElementAllSubText("integer", "0"), 0);
+                                //DBG("Track Number = " << playlistItems->getChildElementAllSubText("integer", "0"));
                                 trackIDCounter++;
                             }
                         }
+                        singlePlaylist.setProperty("Modified", Time::getCurrentTime().toMilliseconds(), 0);
+                        playlistsTree.addChild(singlePlaylist, -1, 0);
                     }
                     
-                    playlistsTree.addChild(singlePlaylist, -1, 0);
+                    //playlistsTree.addChild(singlePlaylist, -1, 0);
                 }
             }
                 File test = File(File::getSpecialLocation(File::userDesktopDirectory).getChildFile("Test.xml"));

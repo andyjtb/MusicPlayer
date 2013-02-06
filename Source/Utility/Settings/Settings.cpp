@@ -64,6 +64,17 @@ Settings::Settings()
         currentValueTreeId = 0;
     }
     
+    if (playlistTree.hasType(MusicColumns::playlistsIdentifier))
+    {
+        ValueTree lastEntry = playlistTree.getChild(playlistTree.getNumChildren()-1);
+        currentPlaylistId = lastEntry.getProperty(MusicColumns::playlistsIdentifier);
+    }
+    else
+    {
+        playlistTree = ValueTree(MusicColumns::playlistsIdentifier);
+        currentPlaylistId = 0;
+    }
+    
     shouldPlay = false;
     
     undoManager = new UndoManager(30,30);
@@ -103,6 +114,11 @@ int& Settings::getCurrentLibId()
 int& Settings::getCurrentValueTreeId()
 {
     return currentValueTreeId;
+}
+
+int& Settings::getCurrentPlaylistId()
+{
+    return currentPlaylistId;
 }
 
 OwnedArray <RemoteInterprocessConnection, CriticalSection>& Settings::getConnections()

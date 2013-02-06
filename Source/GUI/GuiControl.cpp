@@ -122,9 +122,28 @@ void GuiControl::actionListenerCallback (const String& message)
 {
     if (message == "LibraryImportFinished") {
 		DBG("library Loaded");
+        
+        //Sort trees to make sure the final lib id is the highest
+        
+        ValueTreeComparators::Numerical librarySorter (MusicColumns::columnNames[MusicColumns::LibID], true);
+        singletonLibraryTree.sort (librarySorter, 0, false);
+        
+        ValueTreeComparators::Numerical playlistSorter (MusicColumns::playlistID, true);
+        singletonPlaylistsTree.sort (playlistSorter, 0, false);
+        
+        singletonCurrentLibId = singletonLibraryTree.getChild(singletonLibraryTree.getNumChildren()-1).getProperty(MusicColumns::columnNames[MusicColumns::LibID]);
+        
+        singletonCurrentValueTreeId = singletonLibraryTree.getChild(singletonLibraryTree.getNumChildren()-1).getProperty(MusicColumns::columnNames[MusicColumns::ID]);
+        
+        singletonCurrentPlaylistId = singletonPlaylistsTree.getChild(singletonPlaylistsTree.getNumChildren()-1).getProperty(MusicColumns::playlistID);
+        
+        DBG("Library file = " << singletonLibraryFile.getFullPathName());
+        
 		ITunesLibrary::getInstance()->saveLibrary();
 		singletonLibraryTree = ITunesLibrary::getInstance()->getLibraryTree();
 		ITunesLibrary::getInstance()->setLibraryTree(singletonLibraryTree);
+        
+        musicTable->setFilterText(String::empty);
 	}
     
 	if (message.startsWith("transportPosition")) 
