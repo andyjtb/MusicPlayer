@@ -23,31 +23,11 @@
   ==============================================================================
 */
 
-#if JUCE_WINDOWS || DOXYGEN
+HighResolutionTimer::HighResolutionTimer()                    { pimpl = new Pimpl (*this); }
+HighResolutionTimer::~HighResolutionTimer()                   { stopTimer(); }
 
-//==============================================================================
-/**
-    Audio format which uses the Windows Media codecs (Windows only).
-*/
-class WindowsMediaAudioFormat  : public AudioFormat
-{
-public:
-    //==============================================================================
-    WindowsMediaAudioFormat();
-    ~WindowsMediaAudioFormat();
+void HighResolutionTimer::startTimer (int periodMs)           { pimpl->start (jmax (1, periodMs)); }
+void HighResolutionTimer::stopTimer()                         { pimpl->stop(); }
 
-    //==============================================================================
-    Array<int> getPossibleSampleRates();
-    Array<int> getPossibleBitDepths();
-    bool canDoStereo();
-    bool canDoMono();
-
-    //==============================================================================
-    AudioFormatReader* createReaderFor (InputStream*, bool deleteStreamIfOpeningFails);
-
-    AudioFormatWriter* createWriterFor (OutputStream*, double sampleRateToUse,
-                                        unsigned int numberOfChannels, int bitsPerSample,
-                                        const StringPairArray& metadataValues, int qualityOptionIndex);
-};
-
-#endif
+bool HighResolutionTimer::isTimerRunning() const noexcept     { return pimpl->periodMs != 0; }
+int HighResolutionTimer::getTimerInterval() const noexcept    { return pimpl->periodMs; }

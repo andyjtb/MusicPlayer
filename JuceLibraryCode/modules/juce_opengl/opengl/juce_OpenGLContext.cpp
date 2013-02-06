@@ -37,7 +37,7 @@ public:
          #else
           shadersAvailable (false),
          #endif
-          needsUpdate (true)
+          needsUpdate (1)
     {
         nativeContext = new NativeContext (component, pixFormat, contextToShare);
 
@@ -90,7 +90,7 @@ public:
 
     void triggerRepaint()
     {
-        needsUpdate = true;
+        needsUpdate = 1;
 
        #if JUCE_ANDROID
         if (nativeContext != nullptr)
@@ -143,7 +143,9 @@ public:
     {
         ScopedPointer<MessageManagerLock> mmLock;
 
-        if (context.renderComponents && needsUpdate)
+        const bool isUpdating = needsUpdate.compareAndSetBool (0, 1);
+
+        if (context.renderComponents && isUpdating)
         {
             mmLock = new MessageManagerLock (this);  // need to acquire this before locking the context.
             if (! mmLock->lockWasGained())
@@ -156,19 +158,18 @@ public:
         NativeContext::Locker locker (*nativeContext);
 
         JUCE_CHECK_OPENGL_ERROR
-        glViewport (0, 0, viewportArea.getWidth(), viewportArea.getHeight());
 
         if (context.renderer != nullptr)
         {
+            glViewport (0, 0, viewportArea.getWidth(), viewportArea.getHeight());
             context.renderer->renderOpenGL();
             clearGLError();
         }
 
         if (context.renderComponents)
         {
-            if (needsUpdate)
+            if (isUpdating)
             {
-                needsUpdate = false;
                 paintComponent();
                 mmLock = nullptr;
             }
@@ -322,6 +323,7 @@ public:
         if (context.renderer != nullptr)
             context.renderer->openGLContextClosing();
 
+        cachedImageFrameBuffer.release();
         nativeContext->shutdownOnRenderThread();
 
         associatedObjectNames.clear();
@@ -357,8 +359,8 @@ public:
     ReferenceCountedArray<ReferenceCountedObject> associatedObjects;
 
     WaitableEvent canPaintNowFlag, finishedPaintingFlag;
-    bool volatile shadersAvailable;
-    bool volatile needsUpdate;
+    bool shadersAvailable;
+    Atomic<int> needsUpdate;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CachedImage)
 };
@@ -569,16 +571,14 @@ Component* OpenGLContext::getTargetComponent() const noexcept
 OpenGLContext* OpenGLContext::getCurrentContext()
 {
    #if JUCE_ANDROID
-    NativeContext* const nc = NativeContext::getActiveContext();
-    if (nc == nullptr)
-        return nullptr;
-
-    CachedImage* currentContext = CachedImage::get (nc->component);
+    if (NativeContext* const nc = NativeContext::getActiveContext())
+        if (CachedImage* currentContext = CachedImage::get (nc->component))
    #else
-    CachedImage* currentContext = dynamic_cast <CachedImage*> (Thread::getCurrentThread());
+        if (CachedImage* currentContext = dynamic_cast <CachedImage*> (Thread::getCurrentThread()))
    #endif
+            return &currentContext->context;
 
-    return currentContext != nullptr ? &currentContext->context : nullptr;
+    return nullptr;
 }
 
 bool OpenGLContext::makeActive() const noexcept     { return nativeContext != nullptr && nativeContext->makeActive(); }
@@ -619,8 +619,10 @@ void* OpenGLContext::getRawContext() const noexcept
 
 OpenGLContext::CachedImage* OpenGLContext::getCachedImage() const noexcept
 {
-    Component* const comp = getTargetComponent();
-    return comp != nullptr ? CachedImage::get (*comp) : nullptr;
+    if (Component* const comp = getTargetComponent())
+        return CachedImage::get (*comp);
+
+    return nullptr;
 }
 
 bool OpenGLContext::areShadersAvailable() const

@@ -457,11 +457,7 @@ public:
             const GLfloat m[] = { t.mat00, t.mat01, t.mat02, t.mat10, t.mat11, t.mat12 };
             matrix.set (m, 6);
 
-            const float halfPixelX = 0.5f / imageWidth;
-            const float halfPixelY = 0.5f / imageHeight;
-            imageLimits.set (halfPixelX, halfPixelY,
-                             fullWidthProportion - halfPixelX,
-                             fullHeightProportion - halfPixelY);
+            imageLimits.set (fullWidthProportion, fullHeightProportion);
         }
 
         void setMatrix (const AffineTransform& trans, const OpenGLTextureFromImage& im,
@@ -477,11 +473,11 @@ public:
     };
 
     #define JUCE_DECLARE_IMAGE_UNIFORMS "uniform sampler2D imageTexture;" \
-                                        "uniform " JUCE_MEDIUMP " vec4 imageLimits;" \
+                                        "uniform " JUCE_MEDIUMP " vec2 imageLimits;" \
                                         JUCE_DECLARE_MATRIX_UNIFORM JUCE_DECLARE_VARYING_COLOUR JUCE_DECLARE_VARYING_PIXELPOS
     #define JUCE_GET_IMAGE_PIXEL        "swizzleRGBOrder (texture2D (imageTexture, vec2 (texturePos.x, 1.0 - texturePos.y)))"
-    #define JUCE_CLAMP_TEXTURE_COORD    JUCE_HIGHP " vec2 texturePos = clamp (" JUCE_MATRIX_TIMES_FRAGCOORD ", imageLimits.xy, imageLimits.zw);"
-    #define JUCE_MOD_TEXTURE_COORD      JUCE_HIGHP " vec2 texturePos = clamp (mod (" JUCE_MATRIX_TIMES_FRAGCOORD ", imageLimits.zw + imageLimits.xy), imageLimits.xy, imageLimits.zw);"
+    #define JUCE_CLAMP_TEXTURE_COORD    JUCE_HIGHP " vec2 texturePos = clamp (" JUCE_MATRIX_TIMES_FRAGCOORD ", vec2 (0, 0), imageLimits);"
+    #define JUCE_MOD_TEXTURE_COORD      JUCE_HIGHP " vec2 texturePos = mod (" JUCE_MATRIX_TIMES_FRAGCOORD ", imageLimits);"
 
     struct ImageProgram  : public ShaderBase
     {
@@ -570,10 +566,10 @@ public:
                           "{"
                             JUCE_HIGHP " vec2 texturePos = " JUCE_MATRIX_TIMES_FRAGCOORD ";"
                             JUCE_HIGHP " float roundingError = 0.00001;"
-                            "if (texturePos.x >= imageLimits.x - roundingError"
-                                 "&& texturePos.y >= imageLimits.y - roundingError"
-                                 "&& texturePos.x <= imageLimits.z + roundingError"
-                                 "&& texturePos.y <= imageLimits.w + roundingError)"
+                            "if (texturePos.x >= -roundingError"
+                                 "&& texturePos.y >= -roundingError"
+                                 "&& texturePos.x <= imageLimits.x + roundingError"
+                                 "&& texturePos.y <= imageLimits.y + roundingError)"
                              "gl_FragColor = frontColour * " JUCE_GET_IMAGE_PIXEL ".a;"
                             "else "
                              "gl_FragColor = vec4 (0, 0, 0, 0);"
@@ -738,17 +734,12 @@ struct StateHelpers
     struct ActiveTextures
     {
         ActiveTextures (const OpenGLContext& c) noexcept
-            : texturesEnabled (0), currentActiveTexture (0), context (c)
+            : texturesEnabled (0), currentActiveTexture (-1), context (c)
         {}
 
         void clear() noexcept
         {
             zeromem (currentTextureID, sizeof (currentTextureID));
-        }
-
-        void clearCurrent() noexcept
-        {
-            currentTextureID [currentActiveTexture] = 0;
         }
 
         template <class QuadQueueType>
@@ -830,6 +821,8 @@ struct StateHelpers
 
         void bindTexture (const GLuint textureID) noexcept
         {
+            jassert (currentActiveTexture >= 0);
+
             if (currentTextureID [currentActiveTexture] != textureID)
             {
                 currentTextureID [currentActiveTexture] = textureID;
@@ -877,12 +870,6 @@ struct StateHelpers
             }
 
             return textures.removeAndReturn (0);
-        }
-
-        void releaseTexture (ActiveTextures& activeTextures, OpenGLTexture* texture)
-        {
-            activeTextures.clearCurrent();
-            textures.add (texture);
         }
 
         void resetGradient() noexcept
@@ -1787,6 +1774,7 @@ private:
             else
             {
                 jassert (fill.isTiledImage());
+                state.shaderQuadQueue.flush();
                 image = new OpenGLTextureFromImage (fill.image);
                 state.setShaderForTiledImageFill (*image, fill.transform, 0, nullptr, clampTiledImages);
             }

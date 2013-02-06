@@ -11,8 +11,8 @@
 
 */
 
-#ifndef __JUCE_APPCONFIG_BWTHMZ__
-#define __JUCE_APPCONFIG_BWTHMZ__
+#ifndef __JUCE_APPCONFIG_V5ATPE__
+#define __JUCE_APPCONFIG_V5ATPE__
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
@@ -178,4 +178,4 @@
 #endif
 
 
-#endif  // __JUCE_APPCONFIG_BWTHMZ__
+#endif  // __JUCE_APPCONFIG_V5ATPE__

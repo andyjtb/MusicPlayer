@@ -428,55 +428,44 @@ namespace NumberToStringConverters
 
     static char* doubleToString (char* buffer, const int numChars, double n, int numDecPlaces, size_t& len) noexcept
     {
-        if (numDecPlaces > 0)
+        if (numDecPlaces > 0 && numDecPlaces < 7 && n > -1.0e20 && n < 1.0e20)
         {
-            if (numDecPlaces < 7 && n > -1.0e20 && n < 1.0e20)
+            char* const end = buffer + numChars;
+            char* t = end;
+            int64 v = (int64) (pow (10.0, numDecPlaces) * std::abs (n) + 0.5);
+            *--t = (char) 0;
+
+            while (numDecPlaces >= 0 || v > 0)
             {
-                char* const end = buffer + numChars;
-                char* t = end;
-                int64 v = (int64) (pow (10.0, numDecPlaces) * std::abs (n) + 0.5);
-                *--t = (char) 0;
+                if (numDecPlaces == 0)
+                    *--t = '.';
 
-                while (numDecPlaces >= 0 || v > 0)
-                {
-                    if (numDecPlaces == 0)
-                        *--t = '.';
+                *--t = (char) ('0' + (v % 10));
 
-                    *--t = (char) ('0' + (v % 10));
-
-                    v /= 10;
-                    --numDecPlaces;
-                }
-
-                if (n < 0)
-                    *--t = '-';
-
-                len = (size_t) (end - t - 1);
-                return t;
+                v /= 10;
+                --numDecPlaces;
             }
-            else
-            {
-                // Use a locale-free sprintf where possible (not available on linux AFAICT)
-               #if JUCE_MSVC
-                len = (size_t) _sprintf_l (buffer, "%.*f", _create_locale (LC_NUMERIC, "C"), numDecPlaces, n);
-               #elif JUCE_MAC || JUCE_IOS
-                len = (size_t)  sprintf_l (buffer, nullptr, "%.*f", numDecPlaces, n);
-               #else
-                len = (size_t)  sprintf (buffer, "%.*f", numDecPlaces, n);
-               #endif
-            }
+
+            if (n < 0)
+                *--t = '-';
+
+            len = (size_t) (end - t - 1);
+            return t;
         }
-        else
-        {
-            // Use a locale-free sprintf where possible (not available on linux AFAICT)
-           #if JUCE_MSVC
-            len = (size_t) _sprintf_l (buffer, "%.9g", _create_locale (LC_NUMERIC, "C"), n);
-           #elif JUCE_MAC || JUCE_IOS
-            len = (size_t)  sprintf_l (buffer, nullptr, "%.9g", n);
-           #else
-            len = (size_t)  sprintf (buffer, "%.9g", n);
-           #endif
-        }
+
+       // Use a locale-free sprintf where possible (not available on linux AFAICT)
+       #if JUCE_MSVC
+        static _locale_t cLocale = _create_locale (LC_NUMERIC, "C");
+
+        len = (size_t) (numDecPlaces > 0 ? _sprintf_l (buffer, "%.*f", cLocale, numDecPlaces, n)
+                                         : _sprintf_l (buffer, "%.9g", cLocale, n));
+       #elif JUCE_MAC || JUCE_IOS
+        len = (size_t) (numDecPlaces > 0 ? sprintf_l (buffer, nullptr, "%.*f", numDecPlaces, n)
+                                         : sprintf_l (buffer, nullptr, "%.9g", n));
+       #else
+        len = (size_t) (numDecPlaces > 0 ? sprintf (buffer, "%.*f", numDecPlaces, n)
+                                         : sprintf (buffer, "%.9g", n));
+       #endif
 
         return buffer;
     }
@@ -1567,7 +1556,8 @@ String String::trim() const
 
         if (trimmedEnd <= start)
             return empty;
-        else if (text < start || trimmedEnd < end)
+
+        if (text < start || trimmedEnd < end)
             return String (start, trimmedEnd);
     }
 
@@ -1921,15 +1911,13 @@ String String::createStringFromData (const void* const data_, const int size)
     const uint8* const data = static_cast <const uint8*> (data_);
 
     if (size <= 0 || data == nullptr)
-    {
         return empty;
-    }
-    else if (size == 1)
-    {
+
+    if (size == 1)
         return charToString ((juce_wchar) data[0]);
-    }
-    else if ((data[0] == (uint8) CharPointer_UTF16::byteOrderMarkBE1 && data[1] == (uint8) CharPointer_UTF16::byteOrderMarkBE2)
-          || (data[0] == (uint8) CharPointer_UTF16::byteOrderMarkLE1 && data[1] == (uint8) CharPointer_UTF16::byteOrderMarkLE2))
+
+    if ((data[0] == (uint8) CharPointer_UTF16::byteOrderMarkBE1 && data[1] == (uint8) CharPointer_UTF16::byteOrderMarkBE2)
+         || (data[0] == (uint8) CharPointer_UTF16::byteOrderMarkLE1 && data[1] == (uint8) CharPointer_UTF16::byteOrderMarkLE2))
     {
         const bool bigEndian = (data[0] == (uint8) CharPointer_UTF16::byteOrderMarkBE1);
         const int numChars = size / 2 - 1;
@@ -1952,20 +1940,18 @@ String String::createStringFromData (const void* const data_, const int size)
         builder.write (0);
         return builder.result;
     }
-    else
-    {
-        const uint8* start = data;
-        const uint8* end = data + size;
 
-        if (size >= 3
-              && data[0] == (uint8) CharPointer_UTF8::byteOrderMark1
-              && data[1] == (uint8) CharPointer_UTF8::byteOrderMark2
-              && data[2] == (uint8) CharPointer_UTF8::byteOrderMark3)
-            start += 3;
+    const uint8* start = data;
+    const uint8* end = data + size;
 
-        return String (CharPointer_UTF8 ((const char*) start),
-                       CharPointer_UTF8 ((const char*) end));
-    }
+    if (size >= 3
+          && data[0] == (uint8) CharPointer_UTF8::byteOrderMark1
+          && data[1] == (uint8) CharPointer_UTF8::byteOrderMark2
+          && data[2] == (uint8) CharPointer_UTF8::byteOrderMark3)
+        start += 3;
+
+    return String (CharPointer_UTF8 ((const char*) start),
+                   CharPointer_UTF8 ((const char*) end));
 }
 
 //==============================================================================
@@ -2070,10 +2056,9 @@ String String::fromUTF8 (const char* const buffer, int bufferSizeBytes)
 {
     if (buffer != nullptr)
     {
-        if (bufferSizeBytes < 0)
-            return String (CharPointer_UTF8 (buffer));
-        else if (bufferSizeBytes > 0)
-            return String (CharPointer_UTF8 (buffer), CharPointer_UTF8 (buffer + bufferSizeBytes));
+        if (bufferSizeBytes < 0) return String (CharPointer_UTF8 (buffer));
+        if (bufferSizeBytes > 0) return String (CharPointer_UTF8 (buffer),
+                                                CharPointer_UTF8 (buffer + bufferSizeBytes));
     }
 
     return String::empty;
