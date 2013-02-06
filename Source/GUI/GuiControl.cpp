@@ -195,6 +195,10 @@ void GuiControl::valueChanged (Value& valueChanged)
         }
         
         setVolume(volumeControl.getVolume());
+        if(remoteConnections.getFirst() != nullptr)
+        {
+            remoteConnections.getFirst()->sendVolume(volumeControl.getVolume());
+        }
         
 		if (singletonPlayState.getValue()) {
             startTimer(0, 50);
