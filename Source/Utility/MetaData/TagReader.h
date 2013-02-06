@@ -201,8 +201,11 @@ public:
     static String fileImageToMemoryBlock (File& audioFile, MemoryBlock& fillBlock)
     {
         //Returns image type
-        String type(String::empty);
+        String type = "none";
         ImageWithType currentCover = getAlbumArt(audioFile);
+        
+        //Makes sure memory block is sent to trigger receiving art bool to change
+        fillBlock.setSize(10, true);
         
         if (currentCover.image.isValid())
         {

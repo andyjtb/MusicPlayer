@@ -120,8 +120,9 @@ void RemoteInterprocessConnection::sendPlayingData()
 {
         sendString("Song: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString());
         sendString("Artist: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
-        sendString("TracksTotal: " + String(filteredDataList.getNumChildren()));
-        sendString("TrackNum: " + String(filteredDataList.indexOf(tablePlayingRow)+1));
+//        sendString("TracksTotal: " + String(filteredDataList.getNumChildren()));
+//        sendString("TrackNum: " + String(filteredDataList.indexOf(tablePlayingRow)+1));
+        sendTrackNums();
         sendLength(audioControl->getTransportLength());
         sendVolume(audioControl->getVolume());
 //        String currentAlbum = tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString();
@@ -146,9 +147,13 @@ void RemoteInterprocessConnection::sendAlbumArt()
 
 void RemoteInterprocessConnection::sendTrackNums()
 {
-    sendString("TracksTotal: " + String(filteredDataList.getNumChildren()));
-    sendString("TrackNum: " + String(filteredDataList.indexOf(tablePlayingRow)+1));
-    
+    //int currentLibId = tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::LibID]);
+    ValueTree searchTree = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
+
+    if (searchTree.isValid()) {
+        sendString("TracksTotal: " + String(filteredDataList.getNumChildren()));
+        sendString("TrackNum: " + String(filteredDataList.indexOf(searchTree)+1));
+    }   
 }
 
 void RemoteInterprocessConnection::sendLength(double length)
