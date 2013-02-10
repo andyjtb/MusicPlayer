@@ -130,7 +130,8 @@ public:
     void cellDoubleClicked(int rowNumber, int columnId, const MouseEvent &event);
     void editDirectly (int rowNumber, int columnId);
     
-    void changeDisplay (String& type);
+    void setPlaylistTree (ValueTree& playlist);
+    void changeDisplay (bool displayPlaylists);
     
 private:
     //==============================================================================
@@ -139,12 +140,12 @@ private:
     TableListBox table;
     String currentFilterText;
     
-    ValueTree dataList;
+    ValueTree dataList, playlistTree;
     
     ScopedPointer<TrackDialog> trackDialog;
     
     int filteredNumRows, currentPlaylist;
-	bool finishedLoading, displayCurrentPlaylist;
+	bool finishedLoading, displayPlaylist;
 	
     void updateTableFilteredAndSorted();
     

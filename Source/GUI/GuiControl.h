@@ -28,7 +28,9 @@
 
 #include "SearchBox.h"
 #include "MusicLibraryDropTarget.h"
+
 #include "LibraryTreeView.h"
+#include "treetestheader.h"
 //#include "CoverFlowComponent.h"
 
 class RemoteInterprocessConnection;
@@ -42,7 +44,8 @@ class GuiControl  : public Component,
 					public ValueListener,
 					public MultiTimer,
                     public TextEditor::Listener,
-                    public ValueTree::Listener
+                    public ValueTree::Listener,
+                    public ComboBox::Listener
 {
 public:
 	//==============================================================================
@@ -90,6 +93,9 @@ public:
     void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged);
     void valueTreeRedirected (ValueTree &treeWhichHasBeenChanged);
     
+    void comboBoxChanged (ComboBox *comboBoxThatHasChanged);
+    
+    void loadPlaylist (ValueTree& playlistValueTree);
 private:
 	AudioControl* audioControl;
 	
@@ -106,8 +112,10 @@ private:
     SearchBox searchBox;
     
     MusicLibraryDropTarget musicLibraryDropTarget;
-    
-    ScopedPointer<LibraryTreeView> libraryTreeView;
+  
+    ComboBox playlistBox;
+//    ScopedPointer<Component> treeViewDemo;
+//    LibraryTreeView libraryTreeView;
 //    CoverFlowComponent* coverflow;
 };
 

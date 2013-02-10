@@ -43,8 +43,17 @@ GuiControl::GuiControl()
     
     addAndMakeVisible(&musicLibraryDropTarget);
     
-    libraryTreeView = new LibraryTreeView();
-    addAndMakeVisible(libraryTreeView);
+//    addAndMakeVisible(&libraryTreeView);
+//    treeViewDemo = createTreeViewDemo();
+//    addAndMakeVisible(treeViewDemo);
+    addAndMakeVisible(&playlistBox);
+    for (int i = 0; i < singletonPlaylistsTree.getNumChildren(); i++)
+    {
+        playlistBox.addItem(singletonPlaylistsTree.getChild(i).getProperty("Name"), (i+1));
+    }
+    playlistBox.addListener(this);
+    playlistBox.setSelectedId(1);
+    
     
 //    coverflow = new CoverFlowComponent();
 //    addAndMakeVisible(coverflow);
@@ -71,8 +80,10 @@ void GuiControl::resized()
     musicLibraryDropTarget.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
     //musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
     
-    libraryTreeView->setBounds((getWidth()/2)+50,100,100,100);
     
+    playlistBox.setBounds(600, 50, 200, 25);
+    //libraryTreeView.setBounds((getWidth()/2)+50,100,100,100);
+    //treeViewDemo->setBounds((getWidth()/2)+100,50,400,200);
 //    coverflow->setBounds(100,100,100,100);
 }
 
@@ -317,3 +328,35 @@ void GuiControl::valueTreeRedirected (ValueTree &treeWhichHasBeenChanged)
     loadFile();
 }
 
+void GuiControl::comboBoxChanged (ComboBox *comboBoxThatHasChanged)
+{
+    if (comboBoxThatHasChanged == &playlistBox)
+    {
+        if (playlistBox.getSelectedId() == 1)
+        {
+            musicTable->changeDisplay(false);
+        }
+        else
+        {
+            ValueTree selectedPlaylist = singletonPlaylistsTree.getChild(playlistBox.getSelectedId()-1);
+            
+            DBG("Selected " << selectedPlaylist.getProperty("Name").toString());
+            
+            loadPlaylist(selectedPlaylist);
+        }
+    }
+}
+
+void GuiControl::loadPlaylist (ValueTree& playlistValueTree)
+{
+    ValueTree toLoad (MusicColumns::libraryIdentifier);
+
+    for (int i = 1; i <= int(playlistValueTree.getProperty("Size")); i++)
+    {
+        int loadID = int(playlistValueTree.getProperty("TrackID" + String(i)));
+        ValueTree toAdd = singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], loadID).createCopy();
+        toLoad.addChild(toAdd, -1, 0);
+    }
+    musicTable->setPlaylistTree (toLoad);
+    musicTable->changeDisplay(true);
+}

@@ -27,7 +27,7 @@ dataList (MusicColumns::libraryIdentifier),
 filteredNumRows (dataList.getNumChildren()),
 finishedLoading (true)
 {
-    displayCurrentPlaylist = false;
+    displayPlaylist = false;
     
 	// Create our table component and add it to this component..
 	addAndMakeVisible (&table);
@@ -133,9 +133,9 @@ void MusicLibraryTable::libraryChanged (ITunesLibrary* library)
 	{
         DBG("Library changed");
         //NON DROW
-//        if(displayCurrentPlaylist)
-            //filteredDataList = dataList = currentLibrary->getPlaylistsTree()->getChild(currentPlaylist);
-//        else
+        if(displayPlaylist)
+            filteredDataList = dataList = playlistTree;
+        else
             filteredDataList = dataList = currentLibrary->getLibraryTree();
         
 		filteredNumRows = filteredDataList.getNumChildren();
@@ -511,17 +511,13 @@ void MusicLibraryTable::editDirectly (int rowNumber, int columnId)
     }
 }
 
-void MusicLibraryTable::changeDisplay(String& type)
+void MusicLibraryTable::setPlaylistTree (ValueTree& playlist)
 {
-//    if (type == "Playlists")
-//    {
-//        displayCurrentPlaylist = true;
-//        libraryChanged(currentLibrary);
-//    }
-//    else if (type == "Library")
-//    {
-//        displayCurrentPlaylist = false;
-//        libraryChanged(currentLibrary);
-//    }
-//    
+    playlistTree = playlist;
+}
+
+void MusicLibraryTable::changeDisplay(bool displayPlaylists)
+{
+    displayPlaylist = displayPlaylists;
+    libraryChanged (currentLibrary);
 }

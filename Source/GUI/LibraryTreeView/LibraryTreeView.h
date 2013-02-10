@@ -84,7 +84,7 @@ private:
 };
 
 
-class LibraryTreeView : public Component
+class LibraryTreeView : public TreeView
 {
 public:
     LibraryTreeView();
