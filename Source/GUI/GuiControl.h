@@ -30,7 +30,6 @@
 #include "MusicLibraryDropTarget.h"
 
 #include "LibraryTreeView.h"
-#include "treetestheader.h"
 //#include "CoverFlowComponent.h"
 
 class RemoteInterprocessConnection;
@@ -114,8 +113,7 @@ private:
     MusicLibraryDropTarget musicLibraryDropTarget;
   
     ComboBox playlistBox;
-//    ScopedPointer<Component> treeViewDemo;
-//    LibraryTreeView libraryTreeView;
+    LibraryTreeView libraryView;
 //    CoverFlowComponent* coverflow;
 };
 

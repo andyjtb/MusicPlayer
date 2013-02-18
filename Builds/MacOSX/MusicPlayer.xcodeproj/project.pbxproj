@@ -31,6 +31,8 @@
 		A12D4B271670ECB3005AAFAD /* TrackEdit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12D4B201670ECB3005AAFAD /* TrackEdit.cpp */; };
 		A12D4B281670ECB3005AAFAD /* TrackSummary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12D4B221670ECB3005AAFAD /* TrackSummary.cpp */; };
 		A12D4B291670ECB3005AAFAD /* TrackTabbed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12D4B241670ECB3005AAFAD /* TrackTabbed.cpp */; };
+		A139CCEA16D195D400135DD4 /* LibraryTreeView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A139CCE516D195D400135DD4 /* LibraryTreeView.cpp */; };
+		A139CCEB16D195D400135DD4 /* LibraryTreeViewBinaryData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A139CCE716D195D400135DD4 /* LibraryTreeViewBinaryData.cpp */; };
 		A13AB25A1639B437004E4FE4 /* BackwardsButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13AB24A1639B437004E4FE4 /* BackwardsButton.cpp */; };
 		A13AB25B1639B437004E4FE4 /* ForwardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13AB24C1639B437004E4FE4 /* ForwardButton.cpp */; };
 		A13AB25C1639B437004E4FE4 /* PlayButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13AB24E1639B437004E4FE4 /* PlayButton.cpp */; };
@@ -49,11 +51,9 @@
 		A16DFA0116BD901300DD45E6 /* dRowAudio_SoundTouchAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A16DF9FD16BD901300DD45E6 /* dRowAudio_SoundTouchAudioSource.cpp */; };
 		A16DFA0216BD901300DD45E6 /* dRowAudio_SoundTouchProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A16DF9FF16BD901300DD45E6 /* dRowAudio_SoundTouchProcessor.cpp */; };
 		A16DFA3116BD907100DD45E6 /* SoundTouch_Source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A16DFA1816BD901F00DD45E6 /* SoundTouch_Source.cpp */; };
-		A1A9495516BDC72300C040FA /* LibraryTreeView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1A9495416BDC72300C040FA /* LibraryTreeView.cpp */; };
 		A1BB0B7A16A63EF3005DC71A /* TrackMulti.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1BB0B7816A63EF1005DC71A /* TrackMulti.cpp */; };
 		A1E4E193163AD6BB009E3941 /* GuiControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1E4E192163AD6BB009E3941 /* GuiControl.cpp */; };
 		A1E82168163C550000308912 /* TrackInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1E82166163C550000308912 /* TrackInfo.cpp */; };
-		A1E9803316C80DDC00B455F8 /* TreeViewDemo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1E9803216C80DDC00B455F8 /* TreeViewDemo.cpp */; };
 		A1EAB82C168DFD880056B0D0 /* RemoteControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1EAB82B168DFD880056B0D0 /* RemoteControl.cpp */; };
 		A1EAB833168E094E0056B0D0 /* RemoteInterprocessConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1EAB832168E094E0056B0D0 /* RemoteInterprocessConnection.cpp */; };
 		A1EBC0711649D80100D086F3 /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1EBC06F1649D80100D086F3 /* Settings.cpp */; };
@@ -606,6 +606,10 @@
 		A12D4B241670ECB3005AAFAD /* TrackTabbed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TrackTabbed.cpp; path = Track/TrackTabbed.cpp; sourceTree = "<group>"; };
 		A12D4B251670ECB3005AAFAD /* TrackTabbed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TrackTabbed.h; path = Track/TrackTabbed.h; sourceTree = "<group>"; };
 		A12F374B168F880900D0EC17 /* DirectoryLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryLoader.h; sourceTree = "<group>"; };
+		A139CCE516D195D400135DD4 /* LibraryTreeView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LibraryTreeView.cpp; path = "../Library TreeView/LibraryTreeView.cpp"; sourceTree = "<group>"; };
+		A139CCE616D195D400135DD4 /* LibraryTreeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LibraryTreeView.h; path = "../Library TreeView/LibraryTreeView.h"; sourceTree = "<group>"; };
+		A139CCE716D195D400135DD4 /* LibraryTreeViewBinaryData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LibraryTreeViewBinaryData.cpp; path = "../Library TreeView/LibraryTreeViewBinaryData.cpp"; sourceTree = "<group>"; };
+		A139CCE816D195D400135DD4 /* LibraryTreeViewBinaryData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LibraryTreeViewBinaryData.h; path = "../Library TreeView/LibraryTreeViewBinaryData.h"; sourceTree = "<group>"; };
 		A13AB24A1639B437004E4FE4 /* BackwardsButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BackwardsButton.cpp; sourceTree = "<group>"; };
 		A13AB24B1639B437004E4FE4 /* BackwardsButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackwardsButton.h; sourceTree = "<group>"; };
 		A13AB24C1639B437004E4FE4 /* ForwardButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ForwardButton.cpp; sourceTree = "<group>"; };
@@ -678,8 +682,6 @@
 		A16DFA1E16BD901F00DD45E6 /* TDStretch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDStretch.h; sourceTree = "<group>"; };
 		A1A13BF9DA7E05C76D9C45DD /* juce_AudioPluginFormatManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_AudioPluginFormatManager.h; path = ../../JuceLibraryCode/modules/juce_audio_processors/format/juce_AudioPluginFormatManager.h; sourceTree = SOURCE_ROOT; };
 		A1A192860DBA887C124BF8F2 /* juce_MidiKeyboardState.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_MidiKeyboardState.cpp; path = ../../JuceLibraryCode/modules/juce_audio_basics/midi/juce_MidiKeyboardState.cpp; sourceTree = SOURCE_ROOT; };
-		A1A9495416BDC72300C040FA /* LibraryTreeView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LibraryTreeView.cpp; sourceTree = "<group>"; };
-		A1A9495616BDC72C00C040FA /* LibraryTreeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryTreeView.h; sourceTree = "<group>"; };
 		A1BB0B7816A63EF1005DC71A /* TrackMulti.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TrackMulti.cpp; path = Track/TrackMulti.cpp; sourceTree = "<group>"; };
 		A1BB0B7916A63EF2005DC71A /* TrackMulti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TrackMulti.h; path = Track/TrackMulti.h; sourceTree = "<group>"; };
 		A1C162432F64703B58A97968 /* juce_ValueTree.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ValueTree.cpp; path = ../../JuceLibraryCode/modules/juce_data_structures/values/juce_ValueTree.cpp; sourceTree = SOURCE_ROOT; };
@@ -688,8 +690,6 @@
 		A1E4E192163AD6BB009E3941 /* GuiControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuiControl.cpp; sourceTree = "<group>"; };
 		A1E82166163C550000308912 /* TrackInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackInfo.cpp; sourceTree = "<group>"; };
 		A1E82167163C550000308912 /* TrackInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackInfo.h; sourceTree = "<group>"; };
-		A1E9803216C80DDC00B455F8 /* TreeViewDemo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TreeViewDemo.cpp; sourceTree = "<group>"; };
-		A1E9803816C8102D00B455F8 /* treetestheader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = treetestheader.h; sourceTree = "<group>"; };
 		A1EAB82B168DFD880056B0D0 /* RemoteControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RemoteControl.cpp; sourceTree = "<group>"; };
 		A1EAB82E168DFDAC0056B0D0 /* RemoteControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteControl.h; sourceTree = "<group>"; };
 		A1EAB832168E094E0056B0D0 /* RemoteInterprocessConnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RemoteInterprocessConnection.cpp; sourceTree = "<group>"; };
@@ -2296,12 +2296,13 @@
 		A1A9495316BDC70400C040FA /* LibraryTreeView */ = {
 			isa = PBXGroup;
 			children = (
-				A1A9495416BDC72300C040FA /* LibraryTreeView.cpp */,
-				A1A9495616BDC72C00C040FA /* LibraryTreeView.h */,
-				A1E9803216C80DDC00B455F8 /* TreeViewDemo.cpp */,
-				A1E9803816C8102D00B455F8 /* treetestheader.h */,
+				A139CCE516D195D400135DD4 /* LibraryTreeView.cpp */,
+				A139CCE616D195D400135DD4 /* LibraryTreeView.h */,
+				A139CCE716D195D400135DD4 /* LibraryTreeViewBinaryData.cpp */,
+				A139CCE816D195D400135DD4 /* LibraryTreeViewBinaryData.h */,
 			);
-			path = LibraryTreeView;
+			name = LibraryTreeView;
+			path = "Library TreeView";
 			sourceTree = "<group>";
 		};
 		A1E82165163C550000308912 /* Information */ = {
@@ -3132,8 +3133,8 @@
 				A16DFA0116BD901300DD45E6 /* dRowAudio_SoundTouchAudioSource.cpp in Sources */,
 				A16DFA0216BD901300DD45E6 /* dRowAudio_SoundTouchProcessor.cpp in Sources */,
 				A16DFA3116BD907100DD45E6 /* SoundTouch_Source.cpp in Sources */,
-				A1A9495516BDC72300C040FA /* LibraryTreeView.cpp in Sources */,
-				A1E9803316C80DDC00B455F8 /* TreeViewDemo.cpp in Sources */,
+				A139CCEA16D195D400135DD4 /* LibraryTreeView.cpp in Sources */,
+				A139CCEB16D195D400135DD4 /* LibraryTreeViewBinaryData.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

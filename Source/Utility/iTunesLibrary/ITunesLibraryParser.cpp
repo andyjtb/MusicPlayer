@@ -239,7 +239,7 @@ void ITunesLibraryParser::run()
             XmlElement* e; 
             forEachXmlChildElement(*allPlaylists, e)
             {
-                DBG("Tag = " << e->getTagName());
+                //DBG("Tag = " << e->getTagName());
                 XmlElement* playlist;
                 ValueTree singlePlaylist("ITEM");
                 
@@ -249,7 +249,7 @@ void ITunesLibraryParser::run()
                     
                     if (elementKey == "Name")
                     {
-                        DBG("Playlist = " << playlist->getNextElement()->getAllSubText());
+                        //DBG("Playlist = " << playlist->getNextElement()->getAllSubText());
                         singlePlaylist.setProperty("Name", playlist->getNextElement()->getAllSubText(), 0);
                     }    
                     if (elementKey == "Playlist ID")
@@ -258,7 +258,7 @@ void ITunesLibraryParser::run()
                         int currentId = playlist->getNextElement()->getAllSubText().getIntValue();
                         if (!existingIds.contains(currentId))
                         {
-                            DBG("ID = " << playlist->getNextElement()->getAllSubText());
+                            //DBG("ID = " << playlist->getNextElement()->getAllSubText());
                             singlePlaylist.setProperty("PlaylistID", playlist->getNextElement()->getAllSubText(), 0);
                         }
                         else

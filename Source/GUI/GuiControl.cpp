@@ -47,14 +47,16 @@ GuiControl::GuiControl()
 //    treeViewDemo = createTreeViewDemo();
 //    addAndMakeVisible(treeViewDemo);
     addAndMakeVisible(&playlistBox);
-    for (int i = 0; i < singletonPlaylistsTree.getNumChildren(); i++)
+    playlistBox.addItem("Library" , 1);
+    for (int i = 1; i < singletonPlaylistsTree.getNumChildren(); i++)
     {
         playlistBox.addItem(singletonPlaylistsTree.getChild(i).getProperty("Name"), (i+1));
     }
     playlistBox.addListener(this);
     playlistBox.setSelectedId(1);
     
-    
+    addAndMakeVisible(&libraryView);
+    libraryView.getSelectedPlaylistValue().addListener(this);
 //    coverflow = new CoverFlowComponent();
 //    addAndMakeVisible(coverflow);
 //    setSize(500, 400);
@@ -82,6 +84,7 @@ void GuiControl::resized()
     
     
     playlistBox.setBounds(600, 50, 200, 25);
+    libraryView.setBounds(600, 100, 200, 100);
     //libraryTreeView.setBounds((getWidth()/2)+50,100,100,100);
     //treeViewDemo->setBounds((getWidth()/2)+100,50,400,200);
 //    coverflow->setBounds(100,100,100,100);
@@ -149,6 +152,7 @@ void GuiControl::actionListenerCallback (const String& message)
         singletonCurrentPlaylistId = singletonPlaylistsTree.getChild(singletonPlaylistsTree.getNumChildren()-1).getProperty(MusicColumns::playlistID);
         
         DBG("Library file = " << singletonLibraryFile.getFullPathName());
+        DBG("Playlist file = " << singletonPlaylistsFile.getFullPathName());
         
 		ITunesLibrary::getInstance()->saveLibrary();
 		singletonLibraryTree = ITunesLibrary::getInstance()->getLibraryTree();
@@ -249,6 +253,20 @@ void GuiControl::valueChanged (Value& valueChanged)
             artUpdateRequired = false;
         }
     }
+    
+//    if (valueChanged == libraryView.getSelectedPlaylistValue())
+//    {
+//        if (valueChanged.toString() == "Library")
+//        {
+//            musicTable->changeDisplay(false);
+//        }
+//        else
+//        {
+//            ValueTree selectedPlaylist = singletonPlaylistsTree.getChildWithProperty("Name", valueChanged.toString());
+//            
+//            loadPlaylist(selectedPlaylist);
+//        }
+//    }
 }
 void GuiControl::loadFile()
 {
