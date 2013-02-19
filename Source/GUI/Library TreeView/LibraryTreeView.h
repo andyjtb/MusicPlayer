@@ -12,9 +12,11 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Settings.h"
 #include "LibraryTreeViewBinaryData.h"
+#include "Utility.h"
 
 //==============================================================================
-class LibraryViewItem  : public TreeViewItem
+class LibraryViewItem  : public TreeViewItem,
+                         public ActionBroadcaster
 {
 public:
     LibraryViewItem (String incomingPlaylistTitle)
@@ -49,12 +51,14 @@ public:
     void itemSelectionChanged(bool isNowSelected)
     {
         if (isNowSelected)
-        DBG(playlistTitle << " clicked");
+        {
+            sendActionMessage("Playlist Changed: " + playlistTitle);
+        }
     }
     
     int getItemWidth() const
     {
-        return 100;
+        return 150;
     }
     
     int getItemHeight() const
@@ -108,40 +112,46 @@ public:
     
     void itemOpennessChanged (bool isNowOpen)
     {
-        if (isNowOpen)
-        {
-            // if we've not already done so, we'll now add the tree's sub-items. You could
-            // also choose to delete the existing ones and refresh them if that's more suitable
-            // in your app.
-//            if (getNumSubItems() == 0)
-//            {
-//                // create and add sub-items to this node of the tree, corresponding to
-//                // each sub-element in the XML..
-//                
-//                forEachXmlChildElement (xml, child)
-//                {
-//                    jassert (child != 0);
-//                    addSubItem (new TreeViewDemoItem (*child));
-//                }
-//            }
-        }
-        else
-        {
-            // in this case, we'll leave any sub-items in the tree when the node gets closed,
-            // though you could choose to delete them if that's more appropriate for
-            // your application.
-        }
     }
     
-//    TreeViewComponent* createItemComponent()
-//    {
-//        //return new TreeViewComponent(this, isLibrary);
-//    }
-//    
-//    var getDragSourceDescription()
-//    {
-//        return "TreeView Items";
-//    }
+    bool isInterestedInDragSource (const DragAndDropTarget::SourceDetails& dragSourceDetails)
+    {
+        if (playlistTitle != "Library") 
+        {
+            if (dragSourceDetails.description.getArray() != nullptr) 
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    void itemDropped (const DragAndDropTarget::SourceDetails& dragSourceDetails, int insertIndex)
+    {
+        Array<var>* incomingArray = dragSourceDetails.description.getArray();
+        
+        if (incomingArray != nullptr) {
+            ValueTree currentPlaylist = singletonPlaylistsTree.getChildWithProperty("Name", playlistTitle);
+            
+            if(currentPlaylist.isValid())
+            {
+                int size = currentPlaylist.getProperty("Size");
+                                
+                for (int i = 0; i < incomingArray->size(); i++)
+                {
+                    String trackId("TrackID");
+                    size++;
+                    trackId << size;
+
+                    var libID = incomingArray->getReference(i);
+                    DBG(trackId << " " <<libID.toString());
+                    currentPlaylist.setProperty(trackId, libID, 0);
+                }
+                
+                currentPlaylist.setProperty("Size", size, 0);
+            }
+        }
+    }
     
 private:
     String playlistTitle;
@@ -152,7 +162,11 @@ private:
     //LibraryTreeView* parent;
 };
 
-class LibraryTreeView : public Component
+class LibraryTreeView : public Component,
+                        public ActionListener,
+                        public ChangeBroadcaster,
+                        //public ValueTree::Listener,
+                        public Button::Listener
 {
 public:
     LibraryTreeView();
@@ -162,13 +176,25 @@ public:
     void resized();
     
     void setSelected (String incomingPlaylist);
-    Value getSelectedPlaylistValue();
+    String getSelectedPlaylist();
+    
+    void actionListenerCallback (const String& message);
+    
+    void buttonClicked (Button* button);
+    
+//    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property);
+//    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded);
+//    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved);
+//    void valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved);
+//    void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged);
     
 private:
     TreeView treeView;
     ScopedPointer<LibraryViewItem> rootItem;
     
-    Value selectedPlaylist;
+    String selectedPlaylist;
+    
+    TextButton plusButton, minusButton;
 };
 
 #endif

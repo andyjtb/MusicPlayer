@@ -119,7 +119,7 @@ public:
 	void focusOfChildComponentChanged (FocusChangeType cause); 
 
     /** @internal */
-	//var getDragSourceDescription (const SparseSet<int>& currentlySelectedRows);
+	var getDragSourceDescription (const SparseSet<int>& currentlySelectedRows);
 
     //NON DROW FUNCTIONS
     void updateLibrary();
@@ -132,6 +132,7 @@ public:
     
     void setPlaylistTree (ValueTree& playlist);
     void changeDisplay (bool displayPlaylists);
+    void setSortColumn (int columnNumber);
     
 private:
     //==============================================================================

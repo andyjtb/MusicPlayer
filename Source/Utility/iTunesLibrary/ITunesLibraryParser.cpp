@@ -250,7 +250,11 @@ void ITunesLibraryParser::run()
                     if (elementKey == "Name")
                     {
                         //DBG("Playlist = " << playlist->getNextElement()->getAllSubText());
-                        singlePlaylist.setProperty("Name", playlist->getNextElement()->getAllSubText(), 0);
+                        String name = playlist->getNextElement()->getAllSubText();
+                        if (name == "Library")
+                            break;
+                        else
+                            singlePlaylist.setProperty("Name", playlist->getNextElement()->getAllSubText(), 0);
                     }    
                     if (elementKey == "Playlist ID")
                     {

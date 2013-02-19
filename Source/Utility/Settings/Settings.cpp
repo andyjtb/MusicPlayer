@@ -72,6 +72,12 @@ Settings::Settings()
     else
     {
         playlistTree = ValueTree(MusicColumns::playlistsIdentifier);
+        ValueTree library("ITEM");
+        library.setProperty("Name", "Library", 0);
+        library.setProperty("PlaylistID", 1, 0);
+        library.setProperty("Size", 0, 0);
+        
+        playlistTree.addChild(library, -1, 0);
         currentPlaylistId = 0;
     }
     

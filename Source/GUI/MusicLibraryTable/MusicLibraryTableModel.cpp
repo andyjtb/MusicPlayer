@@ -134,7 +134,9 @@ void MusicLibraryTable::libraryChanged (ITunesLibrary* library)
         DBG("Library changed");
         //NON DROW
         if(displayPlaylist)
-            filteredDataList = dataList = playlistTree;
+        {
+            filteredDataList = dataList = playlistTree.getChildWithName("TrackInfo");
+        }
         else
             filteredDataList = dataList = currentLibrary->getLibraryTree();
         
@@ -226,7 +228,6 @@ void MusicLibraryTable::sortOrderChanged (int newSortColumnId, bool isForwards)
 		{
 			ValueTreeComparators::Numerical sorter (MusicColumns::columnNames[newSortColumnId], isForwards);
 			filteredDataList.sort (sorter, 0, false);
-            //            dataList.sort (sorter, 0, false);
 		}
 		else
         {
@@ -238,10 +239,8 @@ void MusicLibraryTable::sortOrderChanged (int newSortColumnId, bool isForwards)
                                                                     isForwards);
             
 			filteredDataList.sort (sorter, 0, false);
-            //            dataList.sort (sorter, 0, false);
 		}
-        
-        //        updateFilteredSortOrder();
+
 		table.updateContent();
 	}
 }
@@ -280,31 +279,24 @@ void MusicLibraryTable::focusOfChildComponentChanged (FocusChangeType /*cause*/)
 	repaint();
 }
 
-//var MusicLibraryTable::getDragSourceDescription (const SparseSet< int > &currentlySelectedRows)
-//{
-//	if(! currentlySelectedRows.isEmpty())
-//	{
-//        var itemsArray;
-//        
-//        for (int i = 0; i < currentlySelectedRows.size(); ++i)
-//        {
-//            {
-//                ScopedLock sl (currentLibrary->getParserLock());
-//                // get child from main tree with same LibID
-//                const ValueTree& tree (filteredDataList.getChild (currentlySelectedRows[i]));
-//                //                const ValueTree& tree (filteredArray[currentlySelectedRows[i]]);
-//                
-//                ReferenceCountedValueTree::Ptr childTree = new ReferenceCountedValueTree (tree);
-//                itemsArray.append (childTree.getObject());
-//            }
-//        }
-//        
-//        return itemsArray;
-//        
-//	}
-//    
-//	return var::null;
-//}
+var MusicLibraryTable::getDragSourceDescription (const SparseSet< int > &currentlySelectedRows)
+{
+	if(! currentlySelectedRows.isEmpty())
+	{
+        Array<var> itemsArray;
+        
+        for (int i = 0; i < currentlySelectedRows.size(); ++i)
+        {
+            ValueTree currentRow = filteredDataList.getChild(currentlySelectedRows[i]);
+            itemsArray.add(currentRow.getProperty(MusicColumns::columnNames[MusicColumns::ID]));
+        }
+        
+        return var(itemsArray);
+        
+	}
+    
+	return var::null;
+}
 
 //==============================================================================
 void MusicLibraryTable::updateTableFilteredAndSorted()
@@ -343,33 +335,60 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
     Array<int> toDelete;
     
     for (int counter = 0; counter < selectedRows.size(); counter++) {
-        toDelete.add(filteredDataList.getChild(selectedRows[counter]).getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
+        toDelete.add(filteredDataList.getChild(selectedRows[counter]).getProperty(MusicColumns::columnNames[MusicColumns::ID]));
     } 
     
     for (int counter = 0; counter < toDelete.size(); counter++)
     {
-        ValueTree valueDelete = singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], toDelete[counter]);
+        ValueTree valueDelete = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], toDelete[counter]);
 
         
         if (tablePlayingRow == valueDelete)
         {
             singletonPlayState = false;
         }
-        singletonLibraryTree.removeChild(valueDelete, singletonUndoManager);
+ 
+        filteredDataList.removeChild(valueDelete, singletonUndoManager);
 
     }
+    
+    if (displayPlaylist)
+    {
+        String playlistName = playlistTree.getProperty("Name").toString();
+        int playlistId = playlistTree.getProperty("PlaylistID");
+        playlistTree.removeAllProperties(0);
+        
+        playlistTree.setProperty("Name", playlistName, 0);
+        playlistTree.setProperty("PlaylistID", playlistId, 0);
+        
+        playlistTree.setProperty("Modified", Time::getCurrentTime().getMilliseconds(), 0);
+        
+        int size = 1;
+        
+        for (int i = 0; i < filteredDataList.getNumChildren(); i++) {
+            String trackID ("TrackID");
+            trackID << size++;
+            playlistTree.setProperty(trackID, filteredDataList.getChild(i).getProperty("ID"), 0);
+        }
+        
+        playlistTree.setProperty("Size", size, 0);
+    }
+    
+    
         //DBG("Trans num = " << singletonUndoManager->getNumActionsInCurrentTransaction());
         //DBG("Undo message = " << singletonUndoManager->getUndoDescription());
     tableUpdateRequired = true;
     tableDeleting = false;
     
     table.deselectAllRows();
-    table.selectRow(selectedRows[0]);
+    table.selectRow(selectedRows[0]-1);
     if(filteredDataList.getNumChildren() > 0)
     {
-        tableSelectedRow = filteredDataList.getChild(selectedRows[0]);
+        tableSelectedRow = filteredDataList.getChild(selectedRows[0]-1);
         tableLoadSelected = true;
     }
+    
+    updateTableFilteredAndSorted();
 }
 
 void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::MouseEvent &event)
@@ -520,4 +539,9 @@ void MusicLibraryTable::changeDisplay(bool displayPlaylists)
 {
     displayPlaylist = displayPlaylists;
     libraryChanged (currentLibrary);
+}
+
+void MusicLibraryTable::setSortColumn (int columnNumber)
+{
+    table.getHeader().setSortColumnId(columnNumber, true);
 }

@@ -14,7 +14,8 @@
 #include "MusicLibraryTableModel.h"
 
 class MusicLibraryDropTarget  :  public Component,
-                            public FileDragAndDropTarget
+                                 public FileDragAndDropTarget,
+                                 public DragAndDropContainer
 {
 public:
     MusicLibraryDropTarget ();
