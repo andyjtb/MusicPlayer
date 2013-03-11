@@ -182,7 +182,7 @@ void GuiControl::changeListenerCallback (ChangeBroadcaster* changeBroadcaster)
         if (libraryView.getSelectedPlaylist() == "Library")
         {
             musicTable->changeDisplay(false);
-            musicTable->sortOrderChanged(MusicColumns::Artist, true);
+            musicTable->setSortColumn(MusicColumns::Artist);
         }
         else
         {

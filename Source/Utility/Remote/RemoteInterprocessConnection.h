@@ -35,7 +35,9 @@ public:
     void sendPosition (double position);
     void sendVolume (double volume);
     void sendPlayState();
-
+    void sendPlaylistData();
+    void sendLibraryData();
+    
 private:
     int connectionNumber;
     String lastAlbum;

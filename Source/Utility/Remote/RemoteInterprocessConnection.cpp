@@ -36,24 +36,26 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
     DBG("Connection #" + String (connectionNumber) + " - message received: " + stringMessage);
     
     if (stringMessage.startsWith("ConnectionMade"))
-        {
-            sendPlayingData();
-        }
+    {
+        sendPlayingData();
+        sendLibraryData();
+        sendPlaylistData();
+    }
     
     if (stringMessage.startsWith("PlayTrack"))
-        {
-            ValueTree test (singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::Song], stringMessage.fromFirstOccurrenceOf("PlayTrack ", false, true)));
-            if (test.isValid()) {
-                tableSelectedRow = test;
-                tableShouldPlay = true;
-            }
-            
+    {
+        ValueTree test (singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::Song], stringMessage.fromFirstOccurrenceOf("PlayTrack ", false, true)));
+        if (test.isValid()) {
+            tableSelectedRow = test;
+            tableShouldPlay = true;
         }
+        
+    }
     if (stringMessage == "Play")
     {
         if (tablePlayingRow.isValid()) {
             if (!singletonPlayState.getValue())
-            singletonPlayState = true;
+                singletonPlayState = true;
         }
     }
     if (stringMessage.startsWith("Pause"))
@@ -68,7 +70,7 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
         if (tableSelectedRow.isValid()) {
             int toPlay = filteredDataList.indexOf(tableSelectedRow);
             ++toPlay;
-            if (toPlay <= filteredDataList.getNumChildren())
+            if (toPlay < filteredDataList.getNumChildren())
             {
                 tableSelectedRow = filteredDataList.getChild(toPlay);
                 if (singletonPlayState.getValue())
@@ -118,20 +120,20 @@ void RemoteInterprocessConnection::setControls(GuiControl *gui, AudioControl *au
 
 void RemoteInterprocessConnection::sendPlayingData()
 {
-        sendString("Song: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString());
-        sendString("Artist: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
-//        sendString("TracksTotal: " + String(filteredDataList.getNumChildren()));
-//        sendString("TrackNum: " + String(filteredDataList.indexOf(tablePlayingRow)+1));
-        sendTrackNums();
-        sendLength(audioControl->getTransportLength());
-        sendVolume(audioControl->getVolume());
-//        String currentAlbum = tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString();
+    sendString("Song: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString());
+    sendString("Artist: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
+    //        sendString("TracksTotal: " + String(filteredDataList.getNumChildren()));
+    //        sendString("TrackNum: " + String(filteredDataList.indexOf(tablePlayingRow)+1));
+    sendTrackNums();
+    sendLength(audioControl->getTransportLength());
+    sendVolume(audioControl->getVolume());
+    //        String currentAlbum = tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString();
     
-        sendString("AlbumTitle: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString());
-        sendAlbumArt();
+    sendString("AlbumTitle: " + tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString());
+    sendAlbumArt();
     
-        sendString("NewTrack");
-        sendString("PlayState: " + singletonPlayState.getValue().toString());  
+    sendString("NewTrack");
+    sendString("PlayState: " + singletonPlayState.getValue().toString());  
 }
 
 void RemoteInterprocessConnection::sendAlbumArt()
@@ -149,7 +151,7 @@ void RemoteInterprocessConnection::sendTrackNums()
 {
     //int currentLibId = tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::LibID]);
     ValueTree searchTree = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
-
+    
     if (searchTree.isValid()) {
         sendString("TracksTotal: " + String(filteredDataList.getNumChildren()));
         sendString("TrackNum: " + String(filteredDataList.indexOf(searchTree)+1));
@@ -183,4 +185,26 @@ void RemoteInterprocessConnection::sendPlayState()
     {
         remoteConnections[counter]->sendString("PlayState: " + singletonPlayState.getValue().toString());
     }
+}
+
+void RemoteInterprocessConnection::sendPlaylistData()
+{
+    sendString("Playlists");
+    MemoryOutputStream playlistOutput;
+    singletonPlaylistsTree.writeToStream(playlistOutput);
+    
+    MemoryBlock playlistMemoryBlock = playlistOutput.getMemoryBlock();
+    
+    sendMessage(playlistMemoryBlock);
+}
+
+void RemoteInterprocessConnection::sendLibraryData()
+{
+    sendString("Library");
+    MemoryOutputStream libraryOutput;
+    filteredDataList.writeToStream(libraryOutput);
+    
+    MemoryBlock libraryMemoryBlock = libraryOutput.getMemoryBlock();
+    
+    sendMessage(libraryMemoryBlock);
 }
