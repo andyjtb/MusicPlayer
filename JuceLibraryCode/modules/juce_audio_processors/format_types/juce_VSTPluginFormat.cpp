@@ -251,7 +251,7 @@ namespace
         return 0;
     }
 
-    int getPropertyFromXWindow (Window handle, Atom atom)
+    EventProcPtr getPropertyFromXWindow (Window handle, Atom atom)
     {
         XErrorHandler oldErrorHandler = XSetErrorHandler (temporaryErrorHandler);
         xErrorTriggered = false;
@@ -266,7 +266,7 @@ namespace
 
         XSetErrorHandler (oldErrorHandler);
 
-        return (userCount == 1 && ! xErrorTriggered) ? *reinterpret_cast<int*> (data)
+        return (userCount == 1 && ! xErrorTriggered) ? *reinterpret_cast<EventProcPtr*> (data)
                                                      : 0;
     }
 
@@ -892,6 +892,20 @@ public:
         return effect == nullptr || (effect->flags & effFlagsNoSoundInStop) != 0;
     }
 
+    double getTailLengthSeconds() const
+    {
+        if (effect == nullptr)
+            return 0.0;
+
+        const double sampleRate = getSampleRate();
+
+        if (sampleRate <= 0)
+            return 0.0;
+
+        VstIntPtr samples = dispatch (effGetTailSize, 0, 0, 0, 0);
+        return samples / sampleRate;
+    }
+
     bool acceptsMidi() const    { return wantsMidiMessages; }
     bool producesMidi() const   { return dispatch (effCanDo, 0, 0, (void*) "sendVstMidiEvent", 0) > 0; }
 
@@ -1393,7 +1407,7 @@ public:
                 if (JUCEApplication* app = JUCEApplication::getInstance())
                     hostName = app->getApplicationName();
 
-                hostName.copyToUTF8 ((char*) ptr, jmin (kVstMaxVendorStrLen, kVstMaxProductStrLen) - 1);
+                hostName.copyToUTF8 ((char*) ptr, (size_t) jmin (kVstMaxVendorStrLen, kVstMaxProductStrLen) - 1);
                 break;
             }
 

@@ -53,6 +53,7 @@ public:
 		AudioPrefs = 3,
 		ImportItunes = 4,
         UndoChange = 5,
+        EffectsMenu = 6,
 		
 		NumFileItems
 	};

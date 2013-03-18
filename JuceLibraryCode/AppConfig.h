@@ -11,8 +11,8 @@
 
 */
 
-#ifndef __JUCE_APPCONFIG_V5ATPE__
-#define __JUCE_APPCONFIG_V5ATPE__
+#ifndef __JUCE_APPCONFIG_CFC9AT__
+#define __JUCE_APPCONFIG_CFC9AT__
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
@@ -85,6 +85,10 @@
 
 #ifndef    JUCE_USE_MP3AUDIOFORMAT
  //#define JUCE_USE_MP3AUDIOFORMAT
+#endif
+
+#ifndef    JUCE_USE_LAME_AUDIO_FORMAT
+ //#define JUCE_USE_LAME_AUDIO_FORMAT
 #endif
 
 #ifndef    JUCE_USE_WINDOWS_MEDIA_FORMAT
@@ -178,4 +182,4 @@
 #endif
 
 
-#endif  // __JUCE_APPCONFIG_V5ATPE__
+#endif  // __JUCE_APPCONFIG_CFC9AT__

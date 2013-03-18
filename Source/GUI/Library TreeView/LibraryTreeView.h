@@ -172,6 +172,8 @@ public:
     LibraryTreeView();
     ~LibraryTreeView();
     
+    void updateItems();
+    
     void paint(Graphics &g);
     void resized();
     

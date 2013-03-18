@@ -51,9 +51,9 @@ void TransportSlider::setTransportRange (double minimum, double maximum, double 
 	transport.setRange(minimum, maximum, interval);
     
     String length = "/ ";
-    length << timeHelpers::secondsToTimeLength(maximum);
+    length << TimeHelpers::secondsToTimeLength(maximum);
     //DBG("Maximum = " << maximum);
-    lengthLabel.setText("/ "+timeHelpers::secondsToTimeLength(maximum), false);
+    lengthLabel.setText("/ "+TimeHelpers::secondsToTimeLength(maximum), false);
 }
 
 void TransportSlider::setTransportPosition (double position)

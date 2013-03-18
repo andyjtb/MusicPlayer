@@ -109,6 +109,10 @@ namespace MusicColumns {
 		Location,
 		Score,
         TrackNum,
+        Size,
+        BitRate,
+        SampleRate,
+        
 		numColumns
 	};
 	
@@ -131,7 +135,11 @@ namespace MusicColumns {
         "Modified",
 		"Location",
 		"Score",
-        "TrackNum"
+        //NON Drow
+        "TrackNum",
+        "Size",
+        "BitRate",
+        "SampleRate"
 	};
 	
 	static const UNUSED_NOWARN char *iTunesNames[] = {
@@ -153,7 +161,10 @@ namespace MusicColumns {
         "Date Modified",
 		"Location",
 		"Score",
-        "TrackNum"
+        "Track Number",
+        "Size",
+        "Bit Rate",
+        "Sample Rate"
 	};
 	
 	static const int columnWidths[] = {
@@ -175,11 +186,14 @@ namespace MusicColumns {
 		125,
 		300,
 		60,
+        50,
+        80,
+        50,
         50
 	};
 }
 
-namespace timeHelpers {
+namespace TimeHelpers {
 	static const String secondsToTimeLength (double numSeconds)
 	{
 		double decimalTime = numSeconds / 60000.0;

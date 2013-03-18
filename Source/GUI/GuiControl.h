@@ -12,14 +12,19 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AudioControl.h"
+
 #include "PlayButton.h"
 #include "BackwardsButton.h"
 #include "ForwardButton.h"
+
 #include "OutputMeter.h"
 #include "VolumeControl.h"
 #include "TransportSlider.h"
+
 #include "TrackInfo.h"
 #include "AlbumArt.h"
+
+#include "InfoBar.h"
 
 #include "MusicLibraryTableModel.h"
 #include "MusicLibraryHelpers.h"
@@ -30,7 +35,9 @@
 #include "MusicLibraryDropTarget.h"
 
 #include "LibraryTreeView.h"
-//#include "CoverFlowComponent.h"
+
+#include "Equaliser.h"
+#include "SpeedPitch.h"
 
 class RemoteInterprocessConnection;
 
@@ -91,6 +98,8 @@ public:
     void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged);
     void valueTreeRedirected (ValueTree &treeWhichHasBeenChanged);
 
+    //Menu Bar function
+    void showEffectsMenu();
 private:
 	AudioControl* audioControl;
 	
@@ -98,9 +107,11 @@ private:
 	VolumeControl volumeControl;
 	OutputMeter outputMeters;
 	TransportSlider transport;
-	TrackInfo trackInfo;
-    
+	
+    TrackInfo trackInfo;
 	AlbumArt albumArt;
+    
+    InfoBar infoBar;
     
     MusicLibraryTable* musicTable;
     
@@ -110,6 +121,10 @@ private:
 
     LibraryTreeView libraryView;
 //    CoverFlowComponent* coverflow;
+//Effects pointers
+    ScopedPointer<TabbedComponent> effectsTabbed;
+    ScopedPointer<Equaliser> equaliser;
+    ScopedPointer<SpeedPitch> speedPitch;
 };
 
 

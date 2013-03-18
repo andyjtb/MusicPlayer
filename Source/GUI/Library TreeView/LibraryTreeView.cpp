@@ -12,14 +12,10 @@ LibraryTreeView::LibraryTreeView() : treeView("TreeView")
 {    
     addAndMakeVisible(&treeView);
     
-    rootItem = new LibraryViewItem ("Root");//, this);
+    rootItem = new LibraryViewItem ("Root");
     rootItem->setOpen (true);
     
-    for (int i = 0; i < singletonPlaylistsTree.getNumChildren(); i++) {
-        LibraryViewItem* currentItem = new LibraryViewItem(singletonPlaylistsTree.getChild(i).getProperty("Name").toString());
-        currentItem->addActionListener(this);
-        rootItem->addSubItem(currentItem);
-    }
+    updateItems();
     
     treeView.setRootItemVisible(false);
     treeView.setRootItem(rootItem);
@@ -36,6 +32,17 @@ LibraryTreeView::LibraryTreeView() : treeView("TreeView")
 }
 LibraryTreeView::~LibraryTreeView()
 {}
+
+void LibraryTreeView::updateItems()
+{
+    rootItem->clearSubItems();
+    
+    for (int i = 0; i < singletonPlaylistsTree.getNumChildren(); i++) {
+        LibraryViewItem* currentItem = new LibraryViewItem(singletonPlaylistsTree.getChild(i).getProperty("Name").toString());
+        currentItem->addActionListener(this);
+        rootItem->addSubItem(currentItem);
+    } 
+}
 
 void LibraryTreeView::paint(Graphics &g)
 {

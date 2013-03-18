@@ -126,24 +126,19 @@ void TrackSummary::setTrack(ValueTree incomingTrack)
     
     type.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Kind]).toString(), false);
     
-    size.setText(File::descriptionOfSizeInBytes(selectedFile.getSize()), false);
+    size.setText(File::descriptionOfSizeInBytes(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Size])), false);
     
     String addedString = Time (int64 (incomingTrack[MusicColumns::columnNames[MusicColumns::Added]])).formatted ("%d/%m/%Y - %H:%M");
     added.setText (addedString, false);
     
     String modifiedString = Time (int64 (incomingTrack[MusicColumns::columnNames[MusicColumns::Modified]])).formatted ("%d/%m/%Y - %H:%M");
     modified.setText (modifiedString, false);
-    
-    AudioFormatManager formatManager;
-    formatManager.registerBasicFormats();
-    
-    ScopedPointer<AudioFormatReader> reader;
-    reader = formatManager.createReaderFor (selectedFile);
-    //int bitRateNum = (((reader->sampleRate*reader->bitsPerSample)*reader->numChannels)/8);
-    
-    String bitRateString (String(TagReader::getBitRate(selectedFile)) + " kbps");
+
+    int bitRateInt = incomingTrack[MusicColumns::columnNames[MusicColumns::BitRate]];
+    String bitRateString (String(bitRateInt) + " kbps");
     bitRate.setText(bitRateString, false);
     
-    String sampleRateString (String(reader->sampleRate) + " Hz");
+    int sampleRateInt = incomingTrack[MusicColumns::columnNames[MusicColumns::SampleRate]];
+    String sampleRateString (String(sampleRateInt) + " Hz");
     sampleRate.setText(sampleRateString, false);
 }

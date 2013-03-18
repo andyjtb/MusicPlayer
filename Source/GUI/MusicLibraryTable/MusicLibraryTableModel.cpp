@@ -66,6 +66,9 @@ finishedLoading (true)
     table.getHeader().setColumnVisible (MusicColumns::Key, false);
     table.getHeader().setColumnVisible (MusicColumns::Kind, false);
     table.getHeader().setColumnVisible (MusicColumns::Score, false);
+    table.getHeader().setColumnVisible (MusicColumns::SampleRate, false);
+    table.getHeader().setColumnVisible (MusicColumns::BitRate, false);
+    table.getHeader().setColumnVisible (MusicColumns::Size, false);
     
     
 	setFilterText (String::empty);
@@ -131,7 +134,7 @@ void MusicLibraryTable::libraryChanged (ITunesLibrary* library)
 {
 	if (library == currentLibrary)
 	{
-        DBG("Library changed");
+        //DBG("Library changed");
         //NON DROW
         if(displayPlaylist)
         {
@@ -197,10 +200,14 @@ void MusicLibraryTable::paintCell (Graphics& g,
             String text;
             
             if(columnId == MusicColumns::Length)
-                text = timeHelpers::secondsToTimeLength (rowElement[MusicColumns::columnNames[columnId]].toString().getIntValue());
+                text = TimeHelpers::secondsToTimeLength (rowElement[MusicColumns::columnNames[columnId]].toString().getIntValue());
             else if(columnId == MusicColumns::Added
                     || columnId == MusicColumns::Modified)
                 text = Time (int64 (rowElement[MusicColumns::columnNames[columnId]])).formatted ("%d/%m/%Y - %H:%M");
+            else if(columnId == MusicColumns::Size)
+                text = File::descriptionOfSizeInBytes(rowElement[MusicColumns::columnNames[columnId]]);
+            else if(columnId == MusicColumns::BitRate)
+                text = String(rowElement[MusicColumns::columnNames[columnId]].toString()+"kbps");
             else
                 text = rowElement[MusicColumns::columnNames[columnId]].toString();
             
@@ -224,7 +231,8 @@ void MusicLibraryTable::sortOrderChanged (int newSortColumnId, bool isForwards)
 			|| newSortColumnId == MusicColumns::LibID
 			|| newSortColumnId == MusicColumns::ID
             || newSortColumnId == MusicColumns::Added
-            || newSortColumnId == MusicColumns::Modified)
+            || newSortColumnId == MusicColumns::Modified
+            || newSortColumnId == MusicColumns::Size)
 		{
 			ValueTreeComparators::Numerical sorter (MusicColumns::columnNames[newSortColumnId], isForwards);
 			filteredDataList.sort (sorter, 0, false);
@@ -315,6 +323,15 @@ void MusicLibraryTable::updateLibrary()
 void MusicLibraryTable::selectedRowsChanged(int lastRowSelected)
 {
     tableSelectedRow = filteredDataList.getChild(lastRowSelected);
+    
+    SparseSet<int> selectedRows = table.getSelectedRows();
+    tableSelectedTracks.clear();
+    
+    for (int counter = 0; counter < selectedRows.size(); counter++) {
+        tableSelectedTracks.add(filteredDataList.getChild(selectedRows[counter]).getProperty(MusicColumns::columnNames[MusicColumns::ID]));
+    } 
+    
+    sendActionMessage("SelectedRowsChanged");
 }
 
 void MusicLibraryTable::returnKeyPressed(int currentSelectedRow)
@@ -332,15 +349,15 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
     //Add a confirmation screen containing the option to delete file as well
     
     SparseSet<int> selectedRows = table.getSelectedRows();
-    Array<int> toDelete;
-    
-    for (int counter = 0; counter < selectedRows.size(); counter++) {
-        toDelete.add(filteredDataList.getChild(selectedRows[counter]).getProperty(MusicColumns::columnNames[MusicColumns::ID]));
-    } 
-    
-    for (int counter = 0; counter < toDelete.size(); counter++)
+//    Array<int> toDelete;
+//    
+//    for (int counter = 0; counter < selectedRows.size(); counter++) {
+//        toDelete.add(filteredDataList.getChild(selectedRows[counter]).getProperty(MusicColumns::columnNames[MusicColumns::ID]));
+//    } 
+//    
+    for (int counter = 0; counter < tableSelectedTracks.size(); counter++)
     {
-        ValueTree valueDelete = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], toDelete[counter]);
+        ValueTree valueDelete = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], tableSelectedTracks[counter]);
 
         
         if (tablePlayingRow == valueDelete)
@@ -381,10 +398,15 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
     tableDeleting = false;
     
     table.deselectAllRows();
-    table.selectRow(selectedRows[0]-1);
+
+    if (selectedRows[0] == 0 || selectedRows[0] == (table.getNumRows()-1))
+        table.selectRow(selectedRows[0]);
+    else 
+        table.selectRow(selectedRows[0]-1);
+    
     if(filteredDataList.getNumChildren() > 0)
     {
-        tableSelectedRow = filteredDataList.getChild(selectedRows[0]-1);
+        tableSelectedRow = filteredDataList.getChild(table.getSelectedRow());
         tableLoadSelected = true;
     }
     

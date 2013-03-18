@@ -305,14 +305,19 @@ static ASIOAudioIODevice* volatile currentASIODev[3] = { 0 };
 
 extern HWND juce_messageWindowHandle;
 
+class ASIOAudioIODeviceType;
+static void sendASIODeviceChangeToListeners (ASIOAudioIODeviceType*);
+
 //==============================================================================
 class ASIOAudioIODevice  : public AudioIODevice,
                            private Timer
 {
 public:
-    ASIOAudioIODevice (const String& devName, const CLSID clsID, const int slotNumber,
-                       const String& dllForDirectLoading)
+    ASIOAudioIODevice (ASIOAudioIODeviceType* ownerType,
+                       const String& devName, const CLSID clsID,
+                       const int slotNumber, const String& dllForDirectLoading)
        : AudioIODevice (devName, "ASIO"),
+         owner (ownerType),
          asioObject (nullptr),
          classId (clsID),
          optionalDllForDirectLoading (dllForDirectLoading),
@@ -400,24 +405,24 @@ public:
         if (bufferSizeSamples <= 0)
             shouldUsePreferredSize = true;
 
-        if (asioObject == nullptr || ! isASIOOpen)
         {
-            JUCE_ASIO_LOG ("Warning: device not open");
-            const String err (openDevice());
+            const String openingError (openDevice());
 
             if (asioObject == nullptr || ! isASIOOpen)
-                return err;
+                return openingError;
         }
 
         isStarted = false;
         bufferIndex = -1;
-        long err = 0;
-        long newPreferredSize = 0;
         minSize = 0;
         maxSize = 0;
         granularity = 0;
 
-        if (asioObject->getBufferSize (&minSize, &maxSize, &newPreferredSize, &granularity) == 0)
+        long err = asioObject->getChannels (&totalNumInputChans, &totalNumOutputChans);
+        jassert (err == ASE_OK);
+
+        long newPreferredSize = 0;
+        if (asioObject->getBufferSize (&minSize, &maxSize, &newPreferredSize, &granularity) == ASE_OK)
         {
             if (preferredSize != 0 && newPreferredSize != 0 && newPreferredSize != preferredSize)
                 shouldUsePreferredSize = true;
@@ -434,7 +439,7 @@ public:
         {
             JUCE_ASIO_LOG ("Using preferred size for buffer..");
 
-            if ((err = asioObject->getBufferSize (&minSize, &maxSize, &preferredSize, &granularity)) == 0)
+            if ((err = asioObject->getBufferSize (&minSize, &maxSize, &preferredSize, &granularity)) == ASE_OK)
             {
                 bufferSizeSamples = preferredSize;
             }
@@ -811,19 +816,20 @@ public:
             // used to cause a reset
             JUCE_ASIO_LOG ("restart request!");
 
-            if (deviceIsOpen)
-            {
-                AudioIODeviceCallback* const oldCallback = currentCallback;
+            AudioIODeviceCallback* const oldCallback = currentCallback;
 
-                close();
+            close();
 
-                needToReset = true;
-                open (BigInteger (currentChansIn), BigInteger (currentChansOut),
-                      currentSampleRate, currentBlockSizeSamples);
+            needToReset = true;
+            open (BigInteger (currentChansIn), BigInteger (currentChansOut),
+                  currentSampleRate, currentBlockSizeSamples);
 
-                if (oldCallback != nullptr)
-                    start (oldCallback);
-            }
+            reloadChannelNames();
+
+            if (oldCallback != nullptr)
+                start (oldCallback);
+
+            sendASIODeviceChangeToListeners (owner);
         }
         else
         {
@@ -833,6 +839,7 @@ public:
 
 private:
     //==============================================================================
+    WeakReference<ASIOAudioIODeviceType> owner;
     IASIO* volatile asioObject;
     ASIOCallbacks callbacks;
 
@@ -878,6 +885,37 @@ private:
         WCHAR wideVersion [64] = { 0 };
         MultiByteToWideChar (CP_ACP, 0, text, length, wideVersion, numElementsInArray (wideVersion));
         return wideVersion;
+    }
+
+    String getChannelName (int index, bool isInput) const
+    {
+        ASIOChannelInfo channelInfo = { 0 };
+        channelInfo.channel = index;
+        channelInfo.isInput = isInput ? 1 : 0;
+        asioObject->getChannelInfo (&channelInfo);
+
+        return convertASIOString (channelInfo.name, sizeof (channelInfo.name));
+    }
+
+    void reloadChannelNames()
+    {
+        if (asioObject != nullptr
+             && asioObject->getChannels (&totalNumInputChans, &totalNumOutputChans) == ASE_OK)
+        {
+            inputChannelNames.clear();
+            outputChannelNames.clear();
+
+            for (int i = 0; i < totalNumInputChans; ++i)
+                inputChannelNames.add (getChannelName (i, true));
+
+            for (int i = 0; i < totalNumOutputChans; ++i)
+                outputChannelNames.add (getChannelName (i, false));
+
+            outputChannelNames.trim();
+            inputChannelNames.trim();
+            outputChannelNames.appendNumbersToDuplicates (false, true);
+            inputChannelNames.appendNumbersToDuplicates (false, true);
+        }
     }
 
     int resetBuffers (const BigInteger& inputChannels,
@@ -1107,8 +1145,9 @@ private:
                         numActiveOutputChans = 0;
 
                         ASIOBufferInfo* info = bufferInfos;
-                        int i, numChans = 0;
-                        for (i = 0; i < jmin (2, (int) totalNumInputChans); ++i)
+                        int numChans = 0;
+
+                        for (int i = 0; i < jmin (2, (int) totalNumInputChans); ++i)
                         {
                             info->isInput = 1;
                             info->channelNum = i;
@@ -1119,7 +1158,7 @@ private:
 
                         const int outputBufferIndex = numChans;
 
-                        for (i = 0; i < jmin (2, (int) totalNumOutputChans); ++i)
+                        for (int i = 0; i < jmin (2, (int) totalNumOutputChans); ++i)
                         {
                             info->isInput = 0;
                             info->channelNum = i;
@@ -1151,24 +1190,15 @@ private:
 
                         updateSampleRates();
 
-                        for (i = 0; i < totalNumInputChans; ++i)
-                        {
-                            ASIOChannelInfo channelInfo = { 0 };
-                            channelInfo.channel = i;
-                            channelInfo.isInput = 1;
-                            asioObject->getChannelInfo (&channelInfo);
+                        reloadChannelNames();
 
-                            inputChannelNames.add (convertASIOString (channelInfo.name, sizeof (channelInfo.name)));
-                        }
-
-                        for (i = 0; i < totalNumOutputChans; ++i)
+                        for (int i = 0; i < totalNumOutputChans; ++i)
                         {
                             ASIOChannelInfo channelInfo = { 0 };
                             channelInfo.channel = i;
                             channelInfo.isInput = 0;
                             asioObject->getChannelInfo (&channelInfo);
 
-                            outputChannelNames.add (convertASIOString (channelInfo.name, sizeof (channelInfo.name)));
                             outputFormat[i] = ASIOSampleFormat (channelInfo.type);
 
                             if (i < 2)
@@ -1178,11 +1208,6 @@ private:
                                 outputFormat[i].clear (bufferInfos [outputBufferIndex + i].buffers[1], preferredSize);
                             }
                         }
-
-                        outputChannelNames.trim();
-                        inputChannelNames.trim();
-                        outputChannelNames.appendNumbersToDuplicates (false, true);
-                        inputChannelNames.appendNumbersToDuplicates (false, true);
 
                         // start and stop because cubase does it..
                         asioObject->getLatencies (&inputLatency, &outputLatency);
@@ -1388,6 +1413,11 @@ public:
         CoInitialize (0);
     }
 
+    ~ASIOAudioIODeviceType()
+    {
+        masterReference.clear();
+    }
+
     //==============================================================================
     void scanForDevices()
     {
@@ -1469,13 +1499,19 @@ public:
             const int freeSlot = findFreeSlot();
 
             if (freeSlot >= 0)
-                return new ASIOAudioIODevice (outputDeviceName, *(classIds [index]), freeSlot, String::empty);
+                return new ASIOAudioIODevice (this, outputDeviceName, *(classIds [index]), freeSlot, String::empty);
         }
 
         return nullptr;
     }
 
-    //==============================================================================
+    void sendDeviceChangeToListeners()
+    {
+        callDeviceChangeListeners();
+    }
+
+    WeakReference<ASIOAudioIODeviceType>::Master masterReference;
+
 private:
     StringArray deviceNames;
     OwnedArray <CLSID> classIds;
@@ -1569,6 +1605,12 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ASIOAudioIODeviceType)
 };
 
+void sendASIODeviceChangeToListeners (ASIOAudioIODeviceType* type)
+{
+    if (type != nullptr)
+        type->sendDeviceChangeToListeners();
+}
+
 AudioIODeviceType* AudioIODeviceType::createAudioIODeviceType_ASIO()
 {
     return new ASIOAudioIODeviceType();
@@ -1582,5 +1624,5 @@ AudioIODevice* juce_createASIOAudioIODeviceForGUID (const String& name, void* gu
     if (freeSlot < 0)
         return nullptr;
 
-    return new ASIOAudioIODevice (name, *(CLSID*) guid, freeSlot, optionalDllForDirectLoading);
+    return new ASIOAudioIODevice (nullptr, name, *(CLSID*) guid, freeSlot, optionalDllForDirectLoading);
 }

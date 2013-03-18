@@ -172,12 +172,6 @@ void ITunesLibraryParser::run()
                             break;
                         }
                     }
-                    //NON DROW
-                    if (elementKey == "Track Number")
-                    {
-                        String entry = e2->getNextElement()->getAllSubText();
-                        newElement.setProperty (MusicColumns::columnNames[MusicColumns::TrackNum], entry.getIntValue(), nullptr);
-                    }
                     
                     // and check the entry against each column
                     for(int i = 2; i < MusicColumns::numColumns; i++)
@@ -249,9 +243,10 @@ void ITunesLibraryParser::run()
                     
                     if (elementKey == "Name")
                     {
-                        //DBG("Playlist = " << playlist->getNextElement()->getAllSubText());
                         String name = playlist->getNextElement()->getAllSubText();
-                        if (name == "Library")
+                        ValueTree existingCheck = playlistsTree.getChildWithProperty("Name", name);
+                        
+                        if (name == "Library" || existingCheck.isValid())
                             break;
                         else
                             singlePlaylist.setProperty("Name", playlist->getNextElement()->getAllSubText(), 0);

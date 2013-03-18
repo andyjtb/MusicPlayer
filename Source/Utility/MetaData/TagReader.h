@@ -51,6 +51,12 @@ public:
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Genre], f.tag()->genre().toCString(), nullptr);         
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Label], String (CharPointer_UTF8(f.tag()->comment().toCString())), nullptr);
                 
+                tags.setProperty(MusicColumns::columnNames[MusicColumns::Size], audioFile.getSize(), nullptr);
+                
+                
+                                                           
+                tags.setProperty(MusicColumns::columnNames[MusicColumns::BitRate], f.audioProperties()->bitrate(), nullptr);                                         
+                
                 AudioFormatManager formatManager;
                 formatManager.registerBasicFormats();
                 
@@ -63,6 +69,9 @@ public:
                     int32 length = ((reader->lengthInSamples/reader->sampleRate)*1000);            
                     tags.setProperty(MusicColumns::columnNames[MusicColumns::Length],length , nullptr);
                 }
+                
+                tags.setProperty(MusicColumns::columnNames[MusicColumns::SampleRate], reader->sampleRate, nullptr);
+                
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Kind], "MPEG audio file", nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Added], Time::getCurrentTime().toMilliseconds(), nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Modified], audioFile.getLastModificationTime().toMilliseconds(), nullptr);
@@ -252,12 +261,6 @@ public:
         }
         else
             return false;
-    }
-    
-    static int getBitRate (File& audioFile)
-    {
-        TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8());
-        return f.audioProperties()->bitrate();
     }
     
     static void writeTag (int columnId, ValueTree incomingTrack)

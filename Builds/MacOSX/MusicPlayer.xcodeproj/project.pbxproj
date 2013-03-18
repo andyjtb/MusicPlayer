@@ -51,6 +51,10 @@
 		A16DFA0116BD901300DD45E6 /* dRowAudio_SoundTouchAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A16DF9FD16BD901300DD45E6 /* dRowAudio_SoundTouchAudioSource.cpp */; };
 		A16DFA0216BD901300DD45E6 /* dRowAudio_SoundTouchProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A16DF9FF16BD901300DD45E6 /* dRowAudio_SoundTouchProcessor.cpp */; };
 		A16DFA3116BD907100DD45E6 /* SoundTouch_Source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A16DFA1816BD901F00DD45E6 /* SoundTouch_Source.cpp */; };
+		A18B4B1A16F224E4006A17B8 /* Equaliser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A18B4B1816F224E4006A17B8 /* Equaliser.cpp */; };
+		A18B4B2116F23674006A17B8 /* SpeedPitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A18B4B1F16F23672006A17B8 /* SpeedPitch.cpp */; };
+		A18B4B2416F25192006A17B8 /* InfoBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A18B4B2216F2518F006A17B8 /* InfoBar.cpp */; };
+		A18B4B3516F690F0006A17B8 /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18B4B3416F690F0006A17B8 /* vecLib.framework */; };
 		A1BB0B7A16A63EF3005DC71A /* TrackMulti.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1BB0B7816A63EF1005DC71A /* TrackMulti.cpp */; };
 		A1E4E193163AD6BB009E3941 /* GuiControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1E4E192163AD6BB009E3941 /* GuiControl.cpp */; };
 		A1E82168163C550000308912 /* TrackInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1E82166163C550000308912 /* TrackInfo.cpp */; };
@@ -680,6 +684,13 @@
 		A16DFA1C16BD901F00DD45E6 /* STTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STTypes.h; sourceTree = "<group>"; };
 		A16DFA1D16BD901F00DD45E6 /* TDStretch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TDStretch.cpp; sourceTree = "<group>"; };
 		A16DFA1E16BD901F00DD45E6 /* TDStretch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDStretch.h; sourceTree = "<group>"; };
+		A18B4B1816F224E4006A17B8 /* Equaliser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Equaliser.cpp; sourceTree = "<group>"; };
+		A18B4B1916F224E4006A17B8 /* Equaliser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Equaliser.h; sourceTree = "<group>"; };
+		A18B4B1F16F23672006A17B8 /* SpeedPitch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpeedPitch.cpp; sourceTree = "<group>"; };
+		A18B4B2016F23673006A17B8 /* SpeedPitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeedPitch.h; sourceTree = "<group>"; };
+		A18B4B2216F2518F006A17B8 /* InfoBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InfoBar.cpp; sourceTree = "<group>"; };
+		A18B4B2316F25190006A17B8 /* InfoBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoBar.h; sourceTree = "<group>"; };
+		A18B4B3416F690F0006A17B8 /* vecLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vecLib.framework; path = /System/Library/Frameworks/vecLib.framework; sourceTree = "<absolute>"; };
 		A1A13BF9DA7E05C76D9C45DD /* juce_AudioPluginFormatManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_AudioPluginFormatManager.h; path = ../../JuceLibraryCode/modules/juce_audio_processors/format/juce_AudioPluginFormatManager.h; sourceTree = SOURCE_ROOT; };
 		A1A192860DBA887C124BF8F2 /* juce_MidiKeyboardState.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_MidiKeyboardState.cpp; path = ../../JuceLibraryCode/modules/juce_audio_basics/midi/juce_MidiKeyboardState.cpp; sourceTree = SOURCE_ROOT; };
 		A1BB0B7816A63EF1005DC71A /* TrackMulti.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TrackMulti.cpp; path = Track/TrackMulti.cpp; sourceTree = "<group>"; };
@@ -1038,6 +1049,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A18B4B3516F690F0006A17B8 /* vecLib.framework in Frameworks */,
 				24335406D5A724CF35ACC1C1 /* AudioToolbox.framework in Frameworks */,
 				D2590EB6C7A817D07A5AE158 /* Carbon.framework in Frameworks */,
 				D05D40BEDEDCDF34E5D516F5 /* Cocoa.framework in Frameworks */,
@@ -2062,6 +2074,7 @@
 		9DDE183EB4FC8B15E1DA0900 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A18B4B3416F690F0006A17B8 /* vecLib.framework */,
 				6754A314942E403CA3F0FE60 /* AudioToolbox.framework */,
 				14421A2162E06997E3343C4A /* Carbon.framework */,
 				6955D20BBC3116EDD30F81E5 /* Cocoa.framework */,
@@ -2206,6 +2219,7 @@
 		A13AB2481639B437004E4FE4 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				A18B4B1416F21D2D006A17B8 /* Effects */,
 				A13AB2491639B437004E4FE4 /* Buttons */,
 				A13AB2501639B437004E4FE4 /* Meters */,
 				A13AB2551639B437004E4FE4 /* Sliders */,
@@ -2293,6 +2307,17 @@
 			path = Taglib;
 			sourceTree = "<group>";
 		};
+		A18B4B1416F21D2D006A17B8 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				A18B4B1F16F23672006A17B8 /* SpeedPitch.cpp */,
+				A18B4B2016F23673006A17B8 /* SpeedPitch.h */,
+				A18B4B1816F224E4006A17B8 /* Equaliser.cpp */,
+				A18B4B1916F224E4006A17B8 /* Equaliser.h */,
+			);
+			path = Effects;
+			sourceTree = "<group>";
+		};
 		A1A9495316BDC70400C040FA /* LibraryTreeView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2308,6 +2333,8 @@
 		A1E82165163C550000308912 /* Information */ = {
 			isa = PBXGroup;
 			children = (
+				A18B4B2216F2518F006A17B8 /* InfoBar.cpp */,
+				A18B4B2316F25190006A17B8 /* InfoBar.h */,
 				A16C32701677D02600D631B1 /* UrlLoad.cpp */,
 				A16C32711677D02600D631B1 /* UrlLoad.h */,
 				A12D4B1D1670EC9D005AAFAD /* Track */,
@@ -3135,6 +3162,9 @@
 				A16DFA3116BD907100DD45E6 /* SoundTouch_Source.cpp in Sources */,
 				A139CCEA16D195D400135DD4 /* LibraryTreeView.cpp in Sources */,
 				A139CCEB16D195D400135DD4 /* LibraryTreeViewBinaryData.cpp in Sources */,
+				A18B4B1A16F224E4006A17B8 /* Equaliser.cpp in Sources */,
+				A18B4B2116F23674006A17B8 /* SpeedPitch.cpp in Sources */,
+				A18B4B2416F25192006A17B8 /* InfoBar.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

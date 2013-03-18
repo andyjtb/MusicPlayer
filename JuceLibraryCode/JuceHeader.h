@@ -10,8 +10,8 @@
 
 */
 
-#ifndef __APPHEADERFILE_BWTHMZ__
-#define __APPHEADERFILE_BWTHMZ__
+#ifndef __APPHEADERFILE_CFC9AT__
+#define __APPHEADERFILE_CFC9AT__
 
 #include "AppConfig.h"
 #include "modules/juce_audio_basics/juce_audio_basics.h"
@@ -42,4 +42,4 @@ namespace ProjectInfo
     const int          versionNumber  = 0x10000;
 }
 
-#endif   // __APPHEADERFILE_BWTHMZ__
+#endif   // __APPHEADERFILE_CFC9AT__

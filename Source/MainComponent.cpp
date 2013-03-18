@@ -68,6 +68,8 @@ PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const St
     else if (topLevelMenuIndex == 1)
     {
         menu.addCommandItem (&commandManager, undoMenu);
+        menu.addSeparator();
+        menu.addItem(EffectsMenu, "Effects");
         return menu;
     }
     else
@@ -152,6 +154,10 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
     }
     if (topLevelMenuIndex == EditMenu)
     {
+        if (menuItemID == EffectsMenu)
+        {
+            guiControl.showEffectsMenu();
+        }
     }
     
     if (topLevelMenuIndex == ControlMenu)

@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Settings.h"
 #include "dRowAudio_SoundTouchAudioSource.h"
+#include "dRowAudio_SoundTouchProcessor.h"
 
 
 /**
@@ -78,10 +79,13 @@ public:
 	
 	void valueChanged (Value& valueChanged);
     
+    SoundTouchProcessor::PlaybackSettings getSoundTouchSettings (){return soundTouchSettings;}
+    
 private:
     AudioDeviceManager audioDeviceManager;	// this wraps the actual audio device
 	AudioSourcePlayer audioSourcePlayer;
 	
+    TimeSliceThread transportThread;
 	AudioTransportSource transport;
 	
 	ScopedPointer<AudioFormatReaderSource> currentAudioFileSource;

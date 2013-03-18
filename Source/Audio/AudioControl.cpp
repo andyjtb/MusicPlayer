@@ -11,7 +11,7 @@
 
 
 
-AudioControl::AudioControl()
+AudioControl::AudioControl() : transportThread("MusicPlayer AudioBuffer")
 {	
 	singletonPlayState.addListener(this);
     
@@ -27,7 +27,7 @@ AudioControl::AudioControl()
     }
     else
     {
-//        soundTouch = new SoundTouchAudioSource(&transport, false);
+        soundTouch = new SoundTouchAudioSource(&transport, false);
 //        audioSourcePlayer.setSource (soundTouch);
 		audioSourcePlayer.setSource(&transport);
     
@@ -72,8 +72,8 @@ void AudioControl::loadFile (const File audioFile)
 			currentAudioFileSource = new AudioFormatReaderSource (reader, true);
 			
 			// ..and plug it into our transport source
+			//transport.setSource (currentAudioFileSource, 4096, &transportThread);
 			transport.setSource (currentAudioFileSource);
-			
 			sendChangeMessage();
 			
 		}  

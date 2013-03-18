@@ -127,6 +127,11 @@ int& Settings::getCurrentPlaylistId()
     return currentPlaylistId;
 }
 
+Array<int>& Settings::getSelectedTracks()
+{
+    return selectedTracks;
+}
+
 OwnedArray <RemoteInterprocessConnection, CriticalSection>& Settings::getConnections()
 {
     return connections;

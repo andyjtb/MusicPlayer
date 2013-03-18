@@ -26,6 +26,8 @@ GuiControl::GuiControl()
 	addAndMakeVisible(&trackInfo);
 	
 	addAndMakeVisible(&albumArt);
+    
+    addAndMakeVisible(&infoBar);
 	
     addAndMakeVisible(&searchBox);
     searchBox.getSearchTextEditor().addListener(this);
@@ -65,9 +67,12 @@ void GuiControl::resized()
 	transport.setBounds(150, 20, 300, 60);
 	trackInfo.setBounds(180, 100, 270, 150);
 	albumArt.setBounds(400,100,175,175);
+    
+    infoBar.setBounds(0, getHeight()-15, getWidth(), 15);
+    
 	searchBox.setBounds(getWidth()-200, 0, 175, 60);
 
-    musicLibraryDropTarget.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
+    musicLibraryDropTarget.setBounds(0, getHeight()/2, getWidth(), (getHeight()/2)-15);
     //musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
 
     libraryView.setBounds(600, 100, 200, 200);
@@ -105,7 +110,8 @@ void GuiControl::timerCallback(int timerId)
             stopTimer(1);
             
             int toPlay = filteredDataList.indexOf(tablePlayingRow);
-            toPlay++;
+            if (toPlay != -1)
+                toPlay++;
             
             ValueTree test(filteredDataList.getChild(toPlay));
             if (test.isValid()) {
@@ -147,6 +153,7 @@ void GuiControl::actionListenerCallback (const String& message)
 		ITunesLibrary::getInstance()->setLibraryTree(singletonLibraryTree);
         
         musicTable->setFilterText(String::empty);
+        libraryView.updateItems();
 	}
     
 	if (message.startsWith("transportPosition")) 
@@ -155,6 +162,11 @@ void GuiControl::actionListenerCallback (const String& message)
         double value = subString.getDoubleValue();
 		
 		audioControl->setTransportPosition(value);
+    }
+    
+    if (message.startsWith("SelectedRows"))
+    {
+        infoBar.updateBar();
     }
 }
 
@@ -183,6 +195,7 @@ void GuiControl::changeListenerCallback (ChangeBroadcaster* changeBroadcaster)
         {
             musicTable->changeDisplay(false);
             musicTable->setSortColumn(MusicColumns::Artist);
+            musicTable->getTableListBox().selectRow(filteredDataList.indexOf(tablePlayingRow));
         }
         else
         {
@@ -211,7 +224,6 @@ void GuiControl::changeListenerCallback (ChangeBroadcaster* changeBroadcaster)
                     {
                         toAdd.setProperty("LibID", int(playlistValueTree.getProperty("Size"))+i, 0);
                         toLoad.addChild(toAdd, -1, 0);
-                        DBG("Loading id " << loadID);
                     }
                 }
                 
@@ -367,5 +379,19 @@ void GuiControl::valueTreeRedirected (ValueTree &treeWhichHasBeenChanged)
 {  
     //Selected Row change listener
     loadFile();
+}
+
+void GuiControl::showEffectsMenu()
+{
+    effectsTabbed = new TabbedComponent(TabbedButtonBar::TabsAtBottom);
+    effectsTabbed->setSize(550, 300);
+    
+    equaliser = new Equaliser(audioControl);
+    speedPitch = new SpeedPitch(audioControl);
+    
+    effectsTabbed->addTab("Equaliser", Colours::white, equaliser, false);
+    effectsTabbed->addTab("Speed/Pitch", Colours::white, speedPitch, false);
+    
+    DialogWindow::showDialog("Effects", effectsTabbed, 0, Colours::white, true);
 }
 
