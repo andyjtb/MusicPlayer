@@ -33,13 +33,13 @@ void InfoBar::paint (Graphics& g)
 
     g.setColour (Colours::black);
     g.drawText (numTracks,
-                (getWidth()/2)-175, 0, 100, getHeight(),
+                (getWidth()/2)-250, 0, 150, getHeight(),
                 Justification::centredRight, true);
     g.drawText (time,
-                (getWidth()/2)-25, 0, 100, getHeight(),
-                Justification::centredLeft, true);
+                (getWidth()/2)-50, 0, 100, getHeight(),
+                Justification::centred, true);
     g.drawText (size,
-                (getWidth()/2)+75, 0, 100, getHeight(),
+                (getWidth()/2)+100, 0, 100, getHeight(),
                 Justification::centredLeft, true);
 }
 
@@ -51,7 +51,7 @@ void InfoBar::resized()
 void InfoBar::updateBar()
 {
     int64 sizeInt = 0;
-    int64 lengthInt = 0;
+    int64 timeInt = 0;
     
     if (tableSelectedTracks.size() > 1)
     {
@@ -59,7 +59,7 @@ void InfoBar::updateBar()
             ValueTree currentTrack = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], tableSelectedTracks[i]);
             
             sizeInt += int(currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Size]));
-            lengthInt += int(currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Length]));
+            timeInt += int(currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Length]));
         }
         
         numTracks = String(tableSelectedTracks.size())+ " of " + String(filteredDataList.getNumChildren())+ " Songs";
@@ -70,7 +70,7 @@ void InfoBar::updateBar()
             ValueTree currentTrack = filteredDataList.getChild(i);
         
             sizeInt += int(currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Size]));
-            lengthInt += int(currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Length]));
+            timeInt += int(currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Length]));
         }
         
         numTracks = String(filteredDataList.getNumChildren())+ " Songs";
@@ -78,7 +78,7 @@ void InfoBar::updateBar()
     
     size = File::descriptionOfSizeInBytes(sizeInt);
     
-    time = String(TimeHelpers::secondsToTimeLength(lengthInt));
+    time = RelativeTime::milliseconds(timeInt).getDescription();
     
     repaint();
 }

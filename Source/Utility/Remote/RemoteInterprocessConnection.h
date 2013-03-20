@@ -35,10 +35,13 @@ public:
     void sendPosition (double position);
     void sendVolume (double volume);
     void sendPlayState();
-    void sendPlaylistData();
+    
     void sendLibraryData();
     
 private:
+    //Called as part of send library data
+    void sendPlaylistData();
+    
     int connectionNumber;
     String lastAlbum;
     

@@ -117,6 +117,7 @@ void GuiControl::timerCallback(int timerId)
             if (test.isValid()) {
                 tableSelectedRow = test;
                 tableShouldPlay = true;
+                
             }
             else
             {
@@ -140,7 +141,7 @@ void GuiControl::actionListenerCallback (const String& message)
         singletonPlaylistsTree.sort (playlistSorter, 0, false);
         
         singletonCurrentLibId = singletonLibraryTree.getChild(singletonLibraryTree.getNumChildren()-1).getProperty(MusicColumns::columnNames[MusicColumns::LibID]);
-        
+        DBG("Current lib id = " << singletonCurrentLibId);
         singletonCurrentValueTreeId = singletonLibraryTree.getChild(singletonLibraryTree.getNumChildren()-1).getProperty(MusicColumns::columnNames[MusicColumns::ID]);
         
         singletonCurrentPlaylistId = singletonPlaylistsTree.getChild(singletonPlaylistsTree.getNumChildren()-1).getProperty(MusicColumns::playlistID);
@@ -252,6 +253,7 @@ void GuiControl::valueChanged (Value& valueChanged)
     
     if (valueChanged == tableShouldPlay)
     {
+        musicTable->getTableListBox().selectRow(filteredDataList.indexOf(tablePlayingRow));
         loadFile();
     }
     

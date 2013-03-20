@@ -55,21 +55,13 @@ finishedLoading (true)
 	// we could now change some initial settings..
 	table.getHeader().setSortColumnId (MusicColumns::Artist, true); // sort forwards by the Artist column
     
-	table.getHeader().setColumnVisible (MusicColumns::LibID, false);
-	table.getHeader().setColumnVisible (MusicColumns::ID, false);
-	//table.getHeader().setColumnVisible (MusicColumns::Rating, false);
-	table.getHeader().setColumnVisible (MusicColumns::Location, false);
-	table.getHeader().setColumnVisible (MusicColumns::Modified, false);
-    table.getHeader().setColumnVisible (MusicColumns::BPM, false);
-    table.getHeader().setColumnVisible (MusicColumns::SubGenre, false);
-    table.getHeader().setColumnVisible (MusicColumns::Label, false);
-    table.getHeader().setColumnVisible (MusicColumns::Key, false);
-    table.getHeader().setColumnVisible (MusicColumns::Kind, false);
-    table.getHeader().setColumnVisible (MusicColumns::Score, false);
-    table.getHeader().setColumnVisible (MusicColumns::SampleRate, false);
-    table.getHeader().setColumnVisible (MusicColumns::BitRate, false);
-    table.getHeader().setColumnVisible (MusicColumns::Size, false);
-    
+    for (int i = 0; i < MusicColumns::numColumns; i++)
+    {
+        if (i == 3|| i==4 || i== 5 || i== 6 || i== 8 || i== 12 || i== 15 || i== 18)
+            table.getHeader().setColumnVisible (i, true);
+        else
+            table.getHeader().setColumnVisible(i, false);
+    }
     
 	setFilterText (String::empty);
 }
@@ -154,6 +146,11 @@ void MusicLibraryTable::libraryUpdated (ITunesLibrary* library)
 {
 	if (library == currentLibrary)
 	{
+        if(remoteConnections.getFirst() != nullptr)
+        {
+            //remoteConnections.getFirst()->sendLibraryData();
+        }
+        
         updateTableFilteredAndSorted();
 	}
 }
@@ -287,8 +284,10 @@ void MusicLibraryTable::focusOfChildComponentChanged (FocusChangeType /*cause*/)
 	repaint();
 }
 
+//NON DROW
 var MusicLibraryTable::getDragSourceDescription (const SparseSet< int > &currentlySelectedRows)
 {
+
 	if(! currentlySelectedRows.isEmpty())
 	{
         Array<var> itemsArray;
@@ -342,32 +341,93 @@ void MusicLibraryTable::returnKeyPressed(int currentSelectedRow)
 
 void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
 {
-    //Re-sorts and filters the table to reposition newly added tracks
-    //setFilterText(currentFilterText);
+    if (displayPlaylist) {
+        deleteTracks(true);
+    }
+    else
+    {
+        SparseSet<int> selectedRows = table.getSelectedRows();
+        
+        String deleteString = "Delete ";
+        deleteString << selectedRows.size();
+        
+        String trackString;
+        selectedRows.size() > 1 ? trackString << " tracks?" : trackString << " track?";
+        deleteString << trackString;
+        
+        String longString = "Are you sure you wish to delete ";
+        longString << selectedRows.size() << trackString << "\nYou may chose to delete from the library only or from your computer permanently";
+        
+        
+        AlertWindow deletePopup(deleteString, longString, AlertWindow::WarningIcon);
+        
+        deletePopup.addButton("Cancel", 0);
+        deletePopup.addButton("Library", 1);
+        deletePopup.addButton("Computer and library", 2);
+        
+        int result = deletePopup.runModalLoop();
+        
+        if (result == 1)
+        {
+            deleteTracks(true);
+        }
+        else if (result == 2)
+        {
+            deleteTracks(false);
+        }
+    }
+}
+
+void MusicLibraryTable::deleteTracks (bool libraryOnly)
+{
     
     tableDeleting = true;
     //Add a confirmation screen containing the option to delete file as well
+    //Removing this section seems sensible as tableSelectedTracks does the same, but if used it only deletes half of the selection at a time
     
     SparseSet<int> selectedRows = table.getSelectedRows();
-//    Array<int> toDelete;
-//    
-//    for (int counter = 0; counter < selectedRows.size(); counter++) {
-//        toDelete.add(filteredDataList.getChild(selectedRows[counter]).getProperty(MusicColumns::columnNames[MusicColumns::ID]));
-//    } 
-//    
-    for (int counter = 0; counter < tableSelectedTracks.size(); counter++)
+    Array<int> toDelete;
+    
+    for (int counter = 0; counter < selectedRows.size(); counter++) {
+        toDelete.add(filteredDataList.getChild(selectedRows[counter]).getProperty(MusicColumns::columnNames[MusicColumns::ID]));
+    } 
+    
+    String failedToDelete = "Could not delete: ";
+    
+    for (int counter = 0; counter < toDelete.size(); counter++)
     {
-        ValueTree valueDelete = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], tableSelectedTracks[counter]);
-
+        ValueTree valueDelete = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], toDelete[counter]);
+        
         
         if (tablePlayingRow == valueDelete)
         {
             singletonPlayState = false;
         }
- 
+        
+        if (!libraryOnly) {
+            File fileToDelete = valueDelete.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString();
+            bool result = fileToDelete.moveToTrash();
+            
+            if (!result)
+                failedToDelete << fileToDelete.getFileName() << "\n";
+        }
+        
+        //Move this line to within the libraryonly if statement and remove undomanager to make sure they can't undo until you work out how to get something back from the trash
         filteredDataList.removeChild(valueDelete, singletonUndoManager);
-
+        
     }
+    
+    //If deleting files
+    if (!libraryOnly)
+    {
+        //If anything has been added to the failed to delete string then something has failed
+        if (failedToDelete!= "Could not delete: ") 
+            AlertWindow::showMessageBox(AlertWindow::WarningIcon, "Failed", failedToDelete);
+        
+        else
+            AlertWindow::showMessageBox(AlertWindow::InfoIcon, "Success", "All files successfully moved to the trash");
+    }
+    
     
     if (displayPlaylist)
     {
@@ -392,13 +452,13 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
     }
     
     
-        //DBG("Trans num = " << singletonUndoManager->getNumActionsInCurrentTransaction());
-        //DBG("Undo message = " << singletonUndoManager->getUndoDescription());
+    //DBG("Trans num = " << singletonUndoManager->getNumActionsInCurrentTransaction());
+    //DBG("Undo message = " << singletonUndoManager->getUndoDescription());
     tableUpdateRequired = true;
     tableDeleting = false;
     
     table.deselectAllRows();
-
+    
     if (selectedRows[0] == 0 || selectedRows[0] == (table.getNumRows()-1))
         table.selectRow(selectedRows[0]);
     else 
@@ -433,6 +493,14 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
 		rightClick.addItem(3, "Display Info");
         rightClick.addItem(4, "Show in Finder");
         rightClick.addSeparator();
+        
+        if (displayPlaylist)
+        {
+            rightClick.addItem(6, "Move Up");
+            rightClick.addItem(7, "Move Down");
+            rightClick.addSeparator();
+        }
+        
         rightClick.addItem(5, "Delete Song");
 		
         int result = rightClick.show();
@@ -506,6 +574,19 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
                 deleteKeyPressed(rowNumber);
                 break;
             }
+                
+            case 6:
+            {
+                playlistRearrange(rowNumber, true);
+                break;
+            }
+            
+            case 7:
+            {
+                playlistRearrange(rowNumber, false);
+                break;
+            }
+                
             default:
             {
                 break;
@@ -566,4 +647,26 @@ void MusicLibraryTable::changeDisplay(bool displayPlaylists)
 void MusicLibraryTable::setSortColumn (int columnNumber)
 {
     table.getHeader().setSortColumnId(columnNumber, true);
+}
+
+void MusicLibraryTable::playlistRearrange (int selectedRow, bool movingUp)
+{
+    Identifier libID = "LibID";
+    ValueTree movingRow = filteredDataList.getChild(selectedRow);
+    if (movingUp)
+        selectedRow--;
+    else
+        selectedRow++;
+    
+    ValueTree otherRow = filteredDataList.getChild(selectedRow);
+    
+    if (otherRow.isValid())
+    {
+        int movingID = movingRow.getProperty(libID);
+        int otherID = otherRow.getProperty(libID);
+        movingRow.setProperty(libID, otherID, 0);
+        otherRow.setProperty(libID, movingID, 0);
+    }
+    
+    updateTableFilteredAndSorted();
 }

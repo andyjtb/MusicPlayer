@@ -39,7 +39,6 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
     {
         sendPlayingData();
         sendLibraryData();
-        sendPlaylistData();
     }
     
     if (stringMessage.startsWith("PlayTrack"))
@@ -207,4 +206,6 @@ void RemoteInterprocessConnection::sendLibraryData()
     MemoryBlock libraryMemoryBlock = libraryOutput.getMemoryBlock();
     
     sendMessage(libraryMemoryBlock);
+    
+    sendPlaylistData();
 }

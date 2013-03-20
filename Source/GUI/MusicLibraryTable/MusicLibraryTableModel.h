@@ -29,7 +29,7 @@
 #include "TrackDialog.h"
 #include "TrackMulti.h"
 
-
+//class RemoteInterprocessConnection;
 
 
 //==============================================================================
@@ -133,6 +133,10 @@ public:
     void setPlaylistTree (ValueTree& playlist);
     void changeDisplay (bool displayPlaylists);
     void setSortColumn (int columnNumber);
+    
+    void deleteTracks (bool libraryOnly);
+    
+    void playlistRearrange (int selectedRow, bool moveUp);
     
 private:
     //==============================================================================
