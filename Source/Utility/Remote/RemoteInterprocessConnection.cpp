@@ -41,8 +41,10 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
         sendLibraryData();
     }
     
-    if (stringMessage.startsWith("PlayTrack"))
+    else if (stringMessage.startsWith("PlayTrack"))
     {
+        guiControl->setPlaylist("Library");
+        
         int libID = stringMessage.fromFirstOccurrenceOf("PlayTrack ", false, true).getIntValue();
         DBG("Lib id = " << libID);
         ValueTree test (singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], libID));
@@ -52,6 +54,22 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
         }
         
     }
+    else if (stringMessage.startsWith("PlaylistTrack"))
+    {
+        String playlistName = stringMessage.fromFirstOccurrenceOf("PlaylistTrack ", false, true).upToFirstOccurrenceOf(" ID=", false, true);
+        
+        guiControl->setPlaylist(playlistName);
+        
+        int ID = stringMessage.fromFirstOccurrenceOf("ID=", false, true).getIntValue();
+        
+        ValueTree test (filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], ID));
+        if (test.isValid()) {
+            tableSelectedRow = test;
+            tableShouldPlay = true;
+        }
+        
+    }
+    
     if (stringMessage == "Play")
     {
         if (tablePlayingRow.isValid()) {

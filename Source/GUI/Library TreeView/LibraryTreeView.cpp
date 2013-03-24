@@ -69,6 +69,11 @@ void LibraryTreeView::actionListenerCallback (const String& message)
         }
 }
 
+void LibraryTreeView::setSelected(String incomingPlaylist)
+{
+    selectedPlaylist = incomingPlaylist;
+}
+
 String LibraryTreeView::getSelectedPlaylist()
 {
     return selectedPlaylist;

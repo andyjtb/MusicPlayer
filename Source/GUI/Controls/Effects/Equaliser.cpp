@@ -8,9 +8,14 @@
  */
 #include "Equaliser.h"
 
-Equaliser::Equaliser (AudioControl* incomingAudioControl)
+Equaliser::Equaliser (AudioControl* incomingAudioControl) : eqSettings("EQSETTINGS")
 {
+    ValueTree staticValues ("StaticValues");
+    
     audioControl = incomingAudioControl;
+    
+    
+    Identifier frequencies [10] = {"32", "64", "125", "250", "500", "1K", "2K", "4K", "8K", "16K"};
     
     //NOT HAPPY, work out how to add this all in 1 line
     frequencyLabels.add("32");
@@ -110,7 +115,12 @@ void Equaliser::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
     if (comboBoxThatHasChanged == &presetCombo)
     {
-
+        if (presetCombo.getSelectedIdAsValue().toString() == "Flat")
+        {
+            for (int i = 0; i < frequencyLabels.size(); i++) {
+                frequencySliders[i].setValue(0);
+            }
+        }
     }
 }
 

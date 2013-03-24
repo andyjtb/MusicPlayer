@@ -36,20 +36,6 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "0"
-         filePath = "/Users/Andy/Desktop/University/Musicplayer/JuceLibraryCode/modules/juce_audio_devices/sources/juce_AudioTransportSource.cpp"
-         timestampString = "385646233.654372"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "100"
-         endingLineNumber = "100"
-         landmarkName = "AudioTransportSource::setSource (PositionableAudioSource* const newSource, int readAheadBufferSize_, TimeSliceThread* readAheadThread, double sourceSampleRateToCorrectFor, int maxNumChannels)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "0"
          filePath = "/Users/Andy/Desktop/University/Musicplayer/JuceLibraryCode/modules/juce_audio_basics/sources/juce_BufferingAudioSource.cpp"
          timestampString = "385646515.475249"
          startingColumnNumber = "9223372036854775807"

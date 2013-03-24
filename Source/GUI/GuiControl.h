@@ -100,6 +100,8 @@ public:
 
     //Menu Bar function
     void showEffectsMenu();
+    
+    void setPlaylist (String incomingPlaylist);
 private:
 	AudioControl* audioControl;
 	

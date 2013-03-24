@@ -397,3 +397,9 @@ void GuiControl::showEffectsMenu()
     DialogWindow::showDialog("Effects", effectsTabbed, 0, Colours::white, true);
 }
 
+void GuiControl::setPlaylist (String incomingPlaylist)
+{
+    libraryView.setSelected(incomingPlaylist);
+    changeListenerCallback(&libraryView);
+}
+

@@ -33,6 +33,7 @@ private:
     
     Slider frequencySliders[10];
     StringArray frequencyLabels;
+    ValueTree eqSettings;
 
     AudioControl* audioControl;
 };
