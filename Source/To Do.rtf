@@ -5,7 +5,9 @@
 \deftab720
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
 
-\f0\fs24 \cf0 TO FIX SOON
+\f0\fs24 \cf0 IIRFilter\
+\
+TO FIX SOON
 \f1 \
 
 \f0 \
@@ -30,11 +32,8 @@ Seems to cause it to crash, gives no reason. Maybe something to do with how the 
 \cf0 \
 General lag on tangled hair tracks - Large album art?\
 \
-Playlists - Look into moving and ordering the tracks in the playlist\
-\
-Consider checking to see if the information in the table is the same as in the tag data and updating it when the song is played or maybe selected, depending on how processor intensive it is\
-\
-RemoteStuff - Adding the details to the array, should be TrackItem so they contain all the required information, so playTrack ID can be used instead of a long string comparison\
+Saving empty art, saving edits for things that havnt been changed.\
+Artwork copy and paste doesn't update in main window, doesn't seem to work at all in multi selected\
 \
 EFFECTS\
 Soundtouch - Soundtouch processor uses silly amounts of cpu and doesn't have any transport controls  - Rejig it, so audioformatreader sets the soundtouch then the soundtouch is set to the transport\
@@ -47,9 +46,7 @@ Temporary fix in place guicontrol line 113\
 Add tracks then import itunes library - LidID is the same as the stuff coming in.\
 Add the currentLibId to the libid in the parser\'85?\
 \
-Multi saves each field regardless of change, consider ways to neaten this\
-\
-Play button, when first song is selected allow clicking to begin playing the song\
+Consider checking to see if the information in the table is the same as in the tag data and updating it when the song is played or maybe selected, depending on how processor intensive it is\
 \
 TO FIX LATER\
 \
@@ -60,6 +57,10 @@ TO FIX LATER\
 \pard\pardeftab720\ql\qnatural
 \cf0 \
 TO ADD\
+\
+RemoteStuff - Adding the details to the array, should be TrackItem so they contain all the required information, so playTrack ID can be used instead of a long string comparison\
+\
+Visible columns - have an array with the column integers, read from it and save to it\
 \pard\pardeftab720\ql\qnatural
 
 \f0 \cf0 \

@@ -47,7 +47,7 @@ AudioControl::~AudioControl()
 
 }
 
-void AudioControl::loadFile (const File audioFile)
+void AudioControl::loadFile (const File& audioFile)
 {
 	//this is called when the user changes the filename in the file chooser box
 	if(audioFile.existsAsFile())
@@ -70,7 +70,7 @@ void AudioControl::loadFile (const File audioFile)
 		{
 			//currentFile = audioFile;
 			currentAudioFileSource = new AudioFormatReaderSource (reader, true);
-			
+            
 			// ..and plug it into our transport source
 			//transport.setSource (currentAudioFileSource, 4096, &transportThread);
 			transport.setSource (currentAudioFileSource);
@@ -147,12 +147,19 @@ void AudioControl::audioDeviceIOCallback (const float** inputChannelData,
 	float *outL;
 	float *outR;
 	
-	audioSourcePlayer.audioDeviceIOCallback(inputChannelData, numInputChannels, outputChannelData, numOutputChannels, numSamples);
-    
-	inL = inputChannelData[0];
+    inL = inputChannelData[0];
 	outL = outputChannelData[0]; 
     outR = outputChannelData[1];
-	
+    
+    if (applyEQ.getValue())
+    {
+        eqFilters.applyFilters (outL, numSamples);
+        eqFilters.applyFilters(outR, numSamples);
+    }
+    
+	audioSourcePlayer.audioDeviceIOCallback(inputChannelData, numInputChannels, outputChannelData, numOutputChannels, numSamples);
+    
+    
     while(numSamples--) 
     {		
 		if (fabsf(*outL) > audioMeterOutputL) 

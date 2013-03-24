@@ -88,7 +88,7 @@ void PlayButton::valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged)
 {}
 void PlayButton::valueTreeRedirected (ValueTree &treeWhichHasBeenChanged)
 {  
-    //Selected Row change listener
+    //Playing Row change listener
     if (tablePlayingRow.isValid())
     {
         setClickingTogglesState(true);

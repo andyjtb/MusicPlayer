@@ -12,6 +12,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Settings.h"
+#include "EQFilters.h"
+
 #include "dRowAudio_SoundTouchAudioSource.h"
 #include "dRowAudio_SoundTouchProcessor.h"
 
@@ -38,7 +40,7 @@ public:
 	/**
      Loads the file at the specified location
      */
-    void loadFile (const File audioFile);
+    void loadFile (const File& audioFile);
     
     /**
      Sets the play state
@@ -79,6 +81,8 @@ public:
 	
 	void valueChanged (Value& valueChanged);
     
+    Value& getApplyEQ() {return applyEQ;}
+    
     SoundTouchProcessor::PlaybackSettings getSoundTouchSettings (){return soundTouchSettings;}
     
 private:
@@ -89,7 +93,7 @@ private:
 	AudioTransportSource transport;
 	
 	ScopedPointer<AudioFormatReaderSource> currentAudioFileSource;
-	
+	EQFilters eqFilters;
 	ScopedPointer<SoundTouchAudioSource> soundTouch;
 	SoundTouchProcessor::PlaybackSettings soundTouchSettings;
 	
@@ -101,6 +105,8 @@ private:
     CriticalSection sharedMemory;
     float sharedMeterOutputL;
 	float sharedMeterOutputR;
+    
+    Value applyEQ;
 };
 
 

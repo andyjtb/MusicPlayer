@@ -27,8 +27,7 @@ Equaliser::Equaliser (AudioControl* incomingAudioControl)
     
     addAndMakeVisible (&toggleButton);
     toggleButton.setButtonText ("On");
-    toggleButton.addListener (this);
-
+    
     addAndMakeVisible (&presetCombo);
     presetCombo.addItem("Flat", 1);
     presetCombo.setSelectedId(1);
@@ -37,13 +36,16 @@ Equaliser::Equaliser (AudioControl* incomingAudioControl)
     presetCombo.addListener (this);
 
     for (int i = 0; i < frequencyLabels.size(); i++) {
-        frequencySliders[i].setRange (-12, 12, 1);
+        frequencySliders[i].setRange (0, 2, 0.1);
+        frequencySliders[i].setValue(1);
         frequencySliders[i].setSliderStyle (Slider::LinearVertical);
         frequencySliders[i].setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
         frequencySliders[i].addListener (this);
         addAndMakeVisible (&frequencySliders[i]);
     }
 
+    toggleButton.getToggleStateValue().referTo(audioControl->getApplyEQ());
+    
     setSize (550, 275);
 
 }
@@ -102,14 +104,6 @@ void Equaliser::resized()
         frequencySliders[i].setBounds (sliderX, 42, 31, 200);
         sliderX += 40;
     }
-}
-
-void Equaliser::buttonClicked (Button* buttonThatWasClicked)
-{
-    if (buttonThatWasClicked == &toggleButton)
-    {
-    }
-
 }
 
 void Equaliser::comboBoxChanged (ComboBox* comboBoxThatHasChanged)

@@ -68,7 +68,7 @@ public:
     Value& getUpdateRequired();
     Value& getTableDeleting();
     Value& getAlbumArtUpdate();
-    Value& getLoadSelected();
+    Value& getLoadSelected(){return loadSelected;}
     
     ImageWithType& getArtClipboard();
     

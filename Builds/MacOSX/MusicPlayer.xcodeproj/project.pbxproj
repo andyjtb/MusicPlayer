@@ -44,6 +44,7 @@
 		A13E9EA8163EDABF005DF341 /* ITunesLibraryParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13E9E99163EDABF005DF341 /* ITunesLibraryParser.cpp */; };
 		A13E9EAA163EDABF005DF341 /* TagLibAmalgam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13E9EA3163EDABF005DF341 /* TagLibAmalgam.cpp */; };
 		A13EA04B163F0327005DF341 /* AlbumArt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13EA04A163F0327005DF341 /* AlbumArt.cpp */; };
+		A1432EDD16FE100400849A72 /* EQFilters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1432EDC16FE100400849A72 /* EQFilters.cpp */; };
 		A16C326E1677D01B00D631B1 /* TrackArt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A16C326A1677D01B00D631B1 /* TrackArt.cpp */; };
 		A16C326F1677D01B00D631B1 /* TrackDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A16C326C1677D01B00D631B1 /* TrackDialog.cpp */; };
 		A16C32721677D02600D631B1 /* UrlLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A16C32701677D02600D631B1 /* UrlLoad.cpp */; };
@@ -642,6 +643,8 @@
 		A13EA049163F0327005DF341 /* AlbumArt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumArt.h; sourceTree = "<group>"; };
 		A13EA04A163F0327005DF341 /* AlbumArt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AlbumArt.cpp; sourceTree = "<group>"; };
 		A142D15BEBC1E371E375A0B3 /* juce_ComponentAnimator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ComponentAnimator.cpp; path = ../../JuceLibraryCode/modules/juce_gui_basics/layout/juce_ComponentAnimator.cpp; sourceTree = SOURCE_ROOT; };
+		A1432EDB16FE100400849A72 /* EQFilters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EQFilters.h; sourceTree = "<group>"; };
+		A1432EDC16FE100400849A72 /* EQFilters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EQFilters.cpp; sourceTree = "<group>"; };
 		A143A646F575BE5002609CFE /* juce_PropertiesFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_PropertiesFile.h; path = ../../JuceLibraryCode/modules/juce_data_structures/app_properties/juce_PropertiesFile.h; sourceTree = SOURCE_ROOT; };
 		A1685DB418D60A4E265590BC /* juce_ComponentMovementWatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_ComponentMovementWatcher.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/layout/juce_ComponentMovementWatcher.h; sourceTree = SOURCE_ROOT; };
 		A16C326A1677D01B00D631B1 /* TrackArt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TrackArt.cpp; path = Track/TrackArt.cpp; sourceTree = "<group>"; };
@@ -2151,6 +2154,8 @@
 			isa = PBXGroup;
 			children = (
 				A13AB0FE163996C8004E4FE4 /* dRow */,
+				A1432EDB16FE100400849A72 /* EQFilters.h */,
+				A1432EDC16FE100400849A72 /* EQFilters.cpp */,
 			);
 			path = AudioSource;
 			sourceTree = "<group>";
@@ -3165,6 +3170,7 @@
 				A18B4B1A16F224E4006A17B8 /* Equaliser.cpp in Sources */,
 				A18B4B2116F23674006A17B8 /* SpeedPitch.cpp in Sources */,
 				A18B4B2416F25192006A17B8 /* InfoBar.cpp in Sources */,
+				A1432EDD16FE100400849A72 /* EQFilters.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

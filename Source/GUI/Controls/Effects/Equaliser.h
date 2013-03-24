@@ -14,7 +14,6 @@
 #include "AudioControl.h"
 
 class Equaliser  : public Component,
-                   public ButtonListener,
                    public ComboBoxListener,
                    public SliderListener
 {
@@ -24,19 +23,17 @@ public:
     
     void paint (Graphics& g);
     void resized();
-    void buttonClicked (Button* buttonThatWasClicked);
+
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
     void sliderValueChanged (Slider* sliderThatWasMoved);
-
+    
 private:
     ToggleButton toggleButton;
     ComboBox presetCombo;
     
     Slider frequencySliders[10];
     StringArray frequencyLabels;
-    //String frequencyLabels [];
-    
-    AudioControl* audioControl;
 
+    AudioControl* audioControl;
 };
 #endif
