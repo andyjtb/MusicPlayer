@@ -11,6 +11,8 @@
 #define H_AUDIOCONTROL
 
 #include "../JuceLibraryCode/JuceHeader.h"
+
+#include "TagReader.h"
 #include "Settings.h"
 #include "EQFilters.h"
 
@@ -41,6 +43,8 @@ public:
      Loads the file at the specified location
      */
     void loadFile (const File& audioFile);
+    
+    void reloadFile (const File& audioFile, bool couldBeFound);
     
     /**
      Sets the play state
@@ -82,13 +86,15 @@ public:
 	void valueChanged (Value& valueChanged);
     
     Value& getApplyEQ() {return applyEQ;}
+    EQFilters* getEqFilters() {return &eqFilters;}
     
     SoundTouchProcessor::PlaybackSettings getSoundTouchSettings (){return soundTouchSettings;}
     
 private:
     AudioDeviceManager audioDeviceManager;	// this wraps the actual audio device
 	AudioSourcePlayer audioSourcePlayer;
-	
+	AudioFormatManager formatManager;
+    
     TimeSliceThread transportThread;
 	AudioTransportSource transport;
 	

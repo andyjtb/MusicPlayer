@@ -20,7 +20,7 @@
 class TagReader
 {	
 public:
-	static ValueTree addToLibrary (File& audioFile)
+	static ValueTree addToLibrary (const File& audioFile)
 	{
         //Only things required in the if are the declaration of f and the setProperty kind. Sort that out bruv
         //Also remember to add a thread called DuplicateRemover or similar which searches the library for duplicates in the background and removes them
@@ -78,21 +78,17 @@ public:
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Location], audioFile.getFullPathName(), nullptr);
                 
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::TrackNum], int(f.tag()->track()), nullptr);
-                
-//                ScopedPointer<XmlElement> treeAsXml (tags.createXml());
-//                File testFile("~/tagTest.xml");
-//                treeAsXml->writeToFile (testFile, String::empty, "UTF-8", 200);			
-                
-                
+                     
                 return tags;
 //            }
 //                DBG("Tags not present");
 //                return ValueTree();
             }
-            DBG("FILE DOESNT EXIST");
+            DBG("FILE NOT SUPPORTED");
             return ValueTree();
 		}
 		else {
+            DBG("FILE DOESNT EXIST");
 			return ValueTree();
 		}
 

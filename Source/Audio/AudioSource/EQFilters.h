@@ -11,6 +11,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#define numFrequencies 10
+
 class EQFilters
 {
 public:
@@ -18,9 +20,12 @@ public:
 	
     ~EQFilters();
     
-    void applyFilters(float* samples, int numSamples);
+    void setFilter (int frequency, float gain);
+    void setSampleRate (int _sampleRate);
+    void applyFilters(float** samples, int numSamples, int numChannels);
     
 private:
     OwnedArray<IIRFilter> filters;
+    int sampleRate;
 };
 #endif

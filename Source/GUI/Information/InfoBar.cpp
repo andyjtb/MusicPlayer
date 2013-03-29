@@ -12,6 +12,7 @@
 InfoBar::InfoBar ()
 {
     filteredDataList.addListener(this);
+
 }
 
 InfoBar::~InfoBar()
@@ -45,7 +46,6 @@ void InfoBar::paint (Graphics& g)
 
 void InfoBar::resized()
 {
-
 }
 
 void InfoBar::updateBar()
@@ -60,7 +60,7 @@ void InfoBar::updateBar()
             
             sizeInt += int(currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Size]));
             timeInt += int(currentTrack.getProperty(MusicColumns::columnNames[MusicColumns::Length]));
-        }
+        }   
         
         numTracks = String(tableSelectedTracks.size())+ " of " + String(filteredDataList.getNumChildren())+ " Songs";
     }

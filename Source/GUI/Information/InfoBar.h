@@ -34,5 +34,6 @@ public:
     
 private:
     String size, time, numTracks;
+
 };
 #endif

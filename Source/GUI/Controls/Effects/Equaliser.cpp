@@ -8,27 +8,14 @@
  */
 #include "Equaliser.h"
 
+
 Equaliser::Equaliser (AudioControl* incomingAudioControl) : eqSettings("EQSETTINGS")
 {
-    ValueTree staticValues ("StaticValues");
+    audioControl.set(incomingAudioControl, false);
+    eqFilters.set(audioControl->getEqFilters(), false);
     
-    audioControl = incomingAudioControl;
-    
-    
-    Identifier frequencies [10] = {"32", "64", "125", "250", "500", "1K", "2K", "4K", "8K", "16K"};
-    
-    //NOT HAPPY, work out how to add this all in 1 line
-    frequencyLabels.add("32");
-    frequencyLabels.add("64");
-    frequencyLabels.add("125");
-    frequencyLabels.add("250");
-    frequencyLabels.add("500");
-    frequencyLabels.add("1K");
-    frequencyLabels.add("2K");
-    frequencyLabels.add("4K");
-    frequencyLabels.add("8K");
-    frequencyLabels.add("16K");
-    //
+    String frequencyStrings [numFrequencies] = {"32", "64", "125", "250", "500", "1K", "2K", "4K", "8K", "16K"};
+    int frequencies[numFrequencies] = {32,64,125,250,500,1000,2000,4000,8000,16000};
     
     addAndMakeVisible (&toggleButton);
     toggleButton.setButtonText ("On");
@@ -40,15 +27,19 @@ Equaliser::Equaliser (AudioControl* incomingAudioControl) : eqSettings("EQSETTIN
     presetCombo.addItem("Custom", presetCombo.getNumItems()+1);
     presetCombo.addListener (this);
 
-    for (int i = 0; i < frequencyLabels.size(); i++) {
-        frequencySliders[i].setRange (0, 2, 0.1);
+    for (int i = 0; i < numFrequencies; i++) {
+        frequencySliders[i].setName(String(frequencies[i]));
+        frequencySliders[i].setRange (0.01, 2, 0.1);
         frequencySliders[i].setValue(1);
         frequencySliders[i].setSliderStyle (Slider::LinearVertical);
         frequencySliders[i].setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
         frequencySliders[i].addListener (this);
         addAndMakeVisible (&frequencySliders[i]);
+        
+        frequencyLabels[i].setText(frequencyStrings[i], false);
+        addAndMakeVisible(&frequencyLabels[i]);
     }
-
+    
     toggleButton.getToggleStateValue().referTo(audioControl->getApplyEQ());
     
     setSize (550, 275);
@@ -88,15 +79,6 @@ void Equaliser::paint (Graphics& g)
         g.fillRect (109, lineCounter, 380, 2);
     }
 
-    g.setColour (Colours::black);
-    g.setFont (Font (13.0000f, Font::plain));
-    int labelX = 105;
-    for (int i = 0; i < frequencyLabels.size(); i++) {
-        g.drawText (frequencyLabels[i],
-                    labelX, 235, 32, 30,
-                    Justification::centred, true);
-        labelX += 40;
-    }
 }
 
 void Equaliser::resized()
@@ -105,9 +87,13 @@ void Equaliser::resized()
     presetCombo.setBounds (224, 8, 150, 24);
     
     int sliderX = 104;
-    for (int i = 0; i < frequencyLabels.size(); i++) {
+    int labelX = 105;
+    for (int i = 0; i < numFrequencies; i++) {
         frequencySliders[i].setBounds (sliderX, 42, 31, 200);
         sliderX += 40;
+        
+        frequencyLabels[i].setBounds(labelX, 235, 32, 30);
+        labelX += 40;
     }
 }
 
@@ -117,7 +103,7 @@ void Equaliser::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     {
         if (presetCombo.getSelectedIdAsValue().toString() == "Flat")
         {
-            for (int i = 0; i < frequencyLabels.size(); i++) {
+            for (int i = 0; i < numFrequencies; i++) {
                 frequencySliders[i].setValue(0);
             }
         }
@@ -126,7 +112,6 @@ void Equaliser::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 void Equaliser::sliderValueChanged (Slider* sliderThatWasMoved)
 {
-
-
+    eqFilters->setFilter(sliderThatWasMoved->getName().getIntValue(), sliderThatWasMoved->getValue());
 }
 

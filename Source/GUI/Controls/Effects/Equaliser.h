@@ -12,6 +12,9 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AudioControl.h"
+#include "EQFilters.h"
+
+
 
 class Equaliser  : public Component,
                    public ComboBoxListener,
@@ -31,10 +34,13 @@ private:
     ToggleButton toggleButton;
     ComboBox presetCombo;
     
-    Slider frequencySliders[10];
-    StringArray frequencyLabels;
+    String frequencyStrings[numFrequencies];
+    int frequencies[numFrequencies];
+    Slider frequencySliders[numFrequencies];
+    Label frequencyLabels[numFrequencies];
     ValueTree eqSettings;
 
-    AudioControl* audioControl;
+    OptionalScopedPointer<AudioControl> audioControl;
+    OptionalScopedPointer<EQFilters> eqFilters;
 };
 #endif

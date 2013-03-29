@@ -221,7 +221,8 @@ void RemoteInterprocessConnection::sendLibraryData()
 {
     sendString("Library");
     MemoryOutputStream libraryOutput;
-    filteredDataList.writeToStream(libraryOutput);
+    //Could be filtered
+    singletonLibraryTree.writeToStream(libraryOutput);
     
     MemoryBlock libraryMemoryBlock = libraryOutput.getMemoryBlock();
     

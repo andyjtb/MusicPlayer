@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "0"
          filePath = "/Users/Andy/Desktop/University/MusicPlayer/Source/Utility/MetaData/TagReader.h"
-         timestampString = "385245635.204125"
+         timestampString = "386214527.7765"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "120"
-         endingLineNumber = "120"
+         startingLineNumber = "116"
+         endingLineNumber = "116"
          landmarkName = "getAlbumArt (File&amp; audioFile)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -32,7 +32,7 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "0"
@@ -43,6 +43,20 @@
          startingLineNumber = "80"
          endingLineNumber = "80"
          landmarkName = "BufferingAudioSource::prepareToPlay (int samplesPerBlockExpected, double sampleRate_)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "0"
+         filePath = "/Users/Andy/Desktop/University/Musicplayer/Source/GUI/Information/AlbumArt.cpp"
+         timestampString = "386211477.076466"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "159"
+         endingLineNumber = "159"
+         landmarkName = "AlbumArt::setCover (Image cover)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

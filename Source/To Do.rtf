@@ -1,13 +1,11 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf360
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 TimesNewRomanPSMT;}
-{\colortbl;\red255\green255\blue255;\red255\green3\blue0;\red255\green18\blue0;}
+{\colortbl;\red255\green255\blue255;\red255\green3\blue0;}
 \paperw11900\paperh16840\margl1440\margr1440\vieww17560\viewh13520\viewkind0
 \deftab720
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
 
-\f0\fs24 \cf0 IIRFilter\
-\
-TO FIX SOON
+\f0\fs24 \cf0 TO FIX SOON
 \f1 \
 
 \f0 \
@@ -16,7 +14,6 @@ ORDERING!!!! - Artist then album then track num\
 \cf0 \
 Getting undo message from manager, allowing undo of one thing at a time 
 \f1 \
-Undo move to trash delete?\
 \
 Update iphone library when files are added/removed from library/playlist\
 Currently in musiclibrarytable, called on libraryupdated, possibly called too often\'85\
@@ -27,19 +24,20 @@ Audio slow down - Soundtouch puts processor usage up to 23%\
 Processor heavy stuff kills its, opening dialogues causes glitches\
 Standard playing = 14% probably the remote connection position send stuff\
 \
-\cf3 BUUFFFFFEEEERR THE TRANSPORT SOURCE with own thread\
-Seems to cause it to crash, gives no reason. Maybe something to do with how the audioformatreadersource is created during runtime\
-\cf0 \
 General lag on tangled hair tracks - Large album art?\
 \
 Saving empty art, saving edits for things that havnt been changed.\
-Artwork copy and paste doesn't update in main window, doesn't seem to work at all in multi selected\
 \
+Remote - pushing nil view controllers still\'85.\
 Remote - select tuuunes and play a song then go to BBC playlist and select a track, it claims it can't load it\
+Remote - Find a way to display the ip address - http://www.rawmaterialsoftware.com/viewtopic.php?f=2&t=9506\
+\
+Unsupported file type handling, non existent files etc - Work already begun in audiocontrol, work required in tag reader for other file types\
+\
+EQ - Filtering causing too much gain, making the track distort\
 \
 EFFECTS\
 Soundtouch - Soundtouch processor uses silly amounts of cpu and doesn't have any transport controls  - Rejig it, so audioformatreader sets the soundtouch then the soundtouch is set to the transport\
-EQ - Decide on how to do the filtering\
 \
 MINOR THINGS\
 Play back home by yellow card then search for yellowcard, it'll jumped back to the top of the table after it stops\
@@ -51,7 +49,6 @@ Add the currentLibId to the libid in the parser\'85?\
 Consider checking to see if the information in the table is the same as in the tag data and updating it when the song is played or maybe selected, depending on how processor intensive it is\
 \
 TO FIX LATER\
-\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
 
 \f0 \cf0 Coverflow guessed at some changes, didn't work
@@ -59,18 +56,13 @@ TO FIX LATER\
 \pard\pardeftab720\ql\qnatural
 \cf0 \
 TO ADD\
-\
-RemoteStuff - Adding the details to the array, should be TrackItem so they contain all the required information, so playTrack ID can be used instead of a long string comparison\
-\
 Visible columns - have an array with the column integers, read from it and save to it\
 \pard\pardeftab720\ql\qnatural
 
 \f0 \cf0 \
 Intercepts from keyboard, searches for string being entered\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
-\cf0 Incorporate tag reading/directory load for types other than .mp3\
-Use mac mainbar instead, maaaybe\
-Track info display - See visual resources file\
+\cf0 Track info display - See visual resources file\
 \pard\pardeftab720\ql\qnatural
 
 \f1 \cf0 \

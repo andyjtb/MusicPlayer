@@ -34,13 +34,17 @@ AudioControl::AudioControl() : transportThread("MusicPlayer AudioBuffer")
         // start the IO device pulling its data from our callback..
         audioDeviceManager.addAudioCallback (this);
     }
-	
+    
+    // Sets format manager to be able to read wav aiff flac ogg and OS specific (aac m4a wmv) etc
+    formatManager.registerBasicFormats();
+
 	audioMeterOutputL = audioMeterOutputR = sharedMeterOutputL = sharedMeterOutputR = 0.f;
-	
+    
+	transportThread.startThread();
 }
 AudioControl::~AudioControl()
 {
-    
+    transportThread.stopThread(100);
     audioSourcePlayer.setSource (nullptr);
 	transport.setSource(nullptr);//unload the current file
     audioDeviceManager.removeAudioCallback(this);
@@ -52,38 +56,70 @@ void AudioControl::loadFile (const File& audioFile)
 	//this is called when the user changes the filename in the file chooser box
 	if(audioFile.existsAsFile())
 	{
-		//DBG("Loc = " << audioFile.getFullPathName());
 		// unload the previous file source and delete it..
 		transport.stop();
 		transport.setSource (nullptr);
 		currentAudioFileSource = nullptr;
-
-		
-		// create a new file source from the file..
-		// get a format manager and set it up with the basic types (wav, ogg and aiff).
-		AudioFormatManager formatManager;
-		formatManager.registerBasicFormats();
 		
 		AudioFormatReader* reader = formatManager.createReaderFor (audioFile);
 		
 		if (reader != nullptr)
 		{
-			//currentFile = audioFile;
+            eqFilters.setSampleRate(reader->sampleRate);
 			currentAudioFileSource = new AudioFormatReaderSource (reader, true);
             
 			// ..and plug it into our transport source
-			//transport.setSource (currentAudioFileSource, 4096, &transportThread);
-			transport.setSource (currentAudioFileSource);
+			transport.setSource (currentAudioFileSource, 44100, &transportThread);
+
 			sendChangeMessage();
 			
 		}  
+        else
+        {
+            reloadFile(audioFile, true);
+        }
 	}
 	else
 	{
-		AlertWindow::showMessageBox (AlertWindow::WarningIcon,
-									 ProjectInfo::projectName,
-									 "Audio File could not be opened/found!\n\n");
+        reloadFile(audioFile, false);
 	}	    
+}
+
+void AudioControl::reloadFile(const File& audioFile, bool couldBeFound)
+{
+    ScopedPointer<AlertWindow> fileFailed;
+    if (couldBeFound) {
+        fileFailed = new AlertWindow("File Could Not Be Opened", "The selected file could not be opened, the listing for it could be incorrect\n Would you like to try reloading this file?", AlertWindow::WarningIcon);
+        fileFailed->addButton("Reload", 1);
+    }
+    else
+    {
+        fileFailed = new AlertWindow("File Could Not Be Found", "The selected file could not be found, the listing for it could be incorrect\n Would you like to try finding this file?", AlertWindow::WarningIcon);
+        fileFailed->addButton("Find", 1);
+    }
+    
+    fileFailed->addButton("Cancel", 0);
+    
+    
+    if (fileFailed->runModalLoop() != 0)
+    {
+        ValueTree currentTrack = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::Location], audioFile.getFullPathName());
+        if (currentTrack.isValid())
+        {
+            singletonLibraryTree.removeChild(currentTrack, 0/*add undoManager possibly*/);
+            
+            if (couldBeFound) {
+                ValueTree reloadChild = TagReader::addToLibrary(audioFile);
+                if (reloadChild.isValid()) 
+                    singletonLibraryTree.addChild(reloadChild, -1, 0);
+            }
+            else
+            {
+                
+            }
+            tableUpdateRequired = true;
+        }
+    }
 }
 
 bool AudioControl::isPlaying()
@@ -143,21 +179,18 @@ void AudioControl::audioDeviceIOCallback (const float** inputChannelData,
 										  int numOutputChannels,
 										  int numSamples)
 {    
-	const float *inL;
 	float *outL;
 	float *outR;
-	
-    inL = inputChannelData[0];
+
 	outL = outputChannelData[0]; 
     outR = outputChannelData[1];
     
+	audioSourcePlayer.audioDeviceIOCallback(inputChannelData, numInputChannels, outputChannelData, numOutputChannels, numSamples);
+    
     if (applyEQ.getValue())
     {
-        eqFilters.applyFilters (outL, numSamples);
-        eqFilters.applyFilters(outR, numSamples);
+        eqFilters.applyFilters (outputChannelData, numSamples, numOutputChannels);
     }
-    
-	audioSourcePlayer.audioDeviceIOCallback(inputChannelData, numInputChannels, outputChannelData, numOutputChannels, numSamples);
     
     
     while(numSamples--) 

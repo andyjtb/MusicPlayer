@@ -156,7 +156,7 @@ void AlbumArt::setCover (Image cover)
             //If parent is the guicontrol display then it saves when the image is set, otherwise save is called from another function when ok is pressed.
             GuiControl* gc = findParentComponentOfClass<GuiControl>();
             if (gc != nullptr)
-            TagReader::saveAlbumArt(audioFile, cover, extension);
+                TagReader::saveAlbumArt(audioFile, cover, extension);
         }
 	}
 	else {
