@@ -63,6 +63,7 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
         int ID = stringMessage.fromFirstOccurrenceOf("ID=", false, true).getIntValue();
         
         ValueTree test (filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], ID));
+        
         if (test.isValid()) {
             tableSelectedRow = test;
             tableShouldPlay = true;

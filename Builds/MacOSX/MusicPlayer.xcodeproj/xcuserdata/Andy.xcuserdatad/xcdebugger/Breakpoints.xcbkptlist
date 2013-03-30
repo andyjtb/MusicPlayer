@@ -8,41 +8,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "0"
-         filePath = "/Users/Andy/Desktop/University/MusicPlayer/Source/Utility/MetaData/TagReader.h"
-         timestampString = "386214527.7765"
+         filePath = "/Users/Andy/Desktop/University/Musicplayer/Source/Utility/Remote/RemoteInterprocessConnection.cpp"
+         timestampString = "386294573.304364"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "116"
-         endingLineNumber = "116"
-         landmarkName = "getAlbumArt (File&amp; audioFile)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/Andy/Desktop/University/Musicplayer/Source/GUI/LibraryTreeView/LibraryTreeView.h"
-         timestampString = "381539955.334641"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "51"
-         endingLineNumber = "51"
-         landmarkName = "paintItem (Graphics&amp; g, int width, int height)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/Andy/Desktop/University/Musicplayer/JuceLibraryCode/modules/juce_audio_basics/sources/juce_BufferingAudioSource.cpp"
-         timestampString = "385646515.475249"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "80"
-         endingLineNumber = "80"
-         landmarkName = "BufferingAudioSource::prepareToPlay (int samplesPerBlockExpected, double sampleRate_)"
+         startingLineNumber = "63"
+         endingLineNumber = "63"
+         landmarkName = "RemoteInterprocessConnection::messageReceived (const MemoryBlock&amp; message)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -50,13 +22,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "0"
-         filePath = "/Users/Andy/Desktop/University/Musicplayer/Source/GUI/Information/AlbumArt.cpp"
-         timestampString = "386211477.076466"
+         filePath = "/Users/Andy/Desktop/University/Musicplayer/Source/Audio/AudioControl.cpp"
+         timestampString = "386298631.255759"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "159"
-         endingLineNumber = "159"
-         landmarkName = "AlbumArt::setCover (Image cover)"
+         startingLineNumber = "68"
+         endingLineNumber = "68"
+         landmarkName = "AudioControl::loadFile (const File&amp; audioFile)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

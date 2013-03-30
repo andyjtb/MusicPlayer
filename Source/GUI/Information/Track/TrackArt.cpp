@@ -99,9 +99,12 @@ void TrackArt::setTrack (ValueTree incomingTrack)
 
 void TrackArt::saveArt()
 {
-    cover.image = albumArt.getCover();
-    cover.type = albumArt.extension;
-    
-    TagReader::saveAlbumArt(selectedFile, cover.image, cover.type);
-    artUpdateRequired = true;
+    if (albumArt.getCover().isValid() && albumArt.getCover().getWidth() > 2) {
+        cover.image = albumArt.getCover();
+        cover.type = albumArt.extension;
+        
+        TagReader::saveAlbumArt(selectedFile, cover.image, cover.type);
+        artUpdateRequired = true;
+    }
+
 }

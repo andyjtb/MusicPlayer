@@ -100,7 +100,8 @@ private:
 	
 	ScopedPointer<AudioFormatReaderSource> currentAudioFileSource;
 	EQFilters eqFilters;
-	ScopedPointer<SoundTouchAudioSource> soundTouch;
+	//ScopedPointer<SoundTouchAudioSource> soundTouch;
+    SoundTouchAudioSource soundTouch;
 	SoundTouchProcessor::PlaybackSettings soundTouchSettings;
 	
 	//audio variables

@@ -200,10 +200,6 @@ void GuiControl::changeListenerCallback (ChangeBroadcaster* changeBroadcaster)
         }
         else
         {
-            //Saves current tree to desktop for debugging
-            File test = File(File::getSpecialLocation(File::userDesktopDirectory).getChildFile("PlaylistTest.xml"));
-            writeValueTreeToFile(singletonPlaylistsTree, test);
-            
             ValueTree playlistValueTree = singletonPlaylistsTree.getChildWithProperty("Name", libraryView.getSelectedPlaylist());
             
             if (playlistValueTree.isValid()) {
@@ -310,6 +306,7 @@ void GuiControl::loadFile()
     if (tableDeleting != true)
     {
         File selectedFile (tableSelectedRow.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
+
         if(tableShouldPlay.getValue())
         {
             singletonPlayState = false;

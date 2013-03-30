@@ -10,6 +10,7 @@
 #define EQFILTERS
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "dRowAudio_BiquadFilter.h"
 
 #define numFrequencies 10
 
@@ -25,7 +26,9 @@ public:
     void applyFilters(float** samples, int numSamples, int numChannels);
     
 private:
-    OwnedArray<IIRFilter> filters;
+    OwnedArray<BiquadFilter> filters;
+    
     int sampleRate;
+    float q;
 };
 #endif

@@ -27,7 +27,7 @@ AudioControl::AudioControl() : transportThread("MusicPlayer AudioBuffer")
     }
     else
     {
-        soundTouch = new SoundTouchAudioSource(&transport, false);
+//        soundTouch = new SoundTouchAudioSource(&transport, false);
 //        audioSourcePlayer.setSource (soundTouch);
 		audioSourcePlayer.setSource(&transport);
     
@@ -69,19 +69,21 @@ void AudioControl::loadFile (const File& audioFile)
 			currentAudioFileSource = new AudioFormatReaderSource (reader, true);
             
 			// ..and plug it into our transport source
-			transport.setSource (currentAudioFileSource, 44100, &transportThread);
+            soundTouch.setSource(currentAudioFileSource);
+			transport.setSource (&soundTouch, 88200, &transportThread);
 
 			sendChangeMessage();
-			
 		}  
         else
         {
-            reloadFile(audioFile, true);
+            DBG("Reader failed\nFile is = "<< audioFile.getFullPathName());
+            //reloadFile(audioFile, true);
         }
 	}
 	else
 	{
-        reloadFile(audioFile, false);
+        DBG("File doesn't exist");
+        //reloadFile(audioFile, false);
 	}	    
 }
 
@@ -158,7 +160,7 @@ void AudioControl::setPlaybackSpeed(const float incomingSpeed)
     if (incomingSpeed >= 0.f && incomingSpeed <= 10.f) 
     {
 		soundTouchSettings.tempo = incomingSpeed;
-        soundTouch->setPlaybackSettings(soundTouchSettings);
+        soundTouch.setPlaybackSettings(soundTouchSettings);
     }
 }
 
@@ -167,7 +169,7 @@ void AudioControl::setPitch(const float incomingPitch)
 	if (incomingPitch >= 0.f && incomingPitch <= 10.f) 
     {
 		soundTouchSettings.pitch = incomingPitch;
-        soundTouch->setPlaybackSettings(soundTouchSettings);
+        soundTouch.setPlaybackSettings(soundTouchSettings);
     }
 }
 

@@ -21,23 +21,23 @@ Currently in musiclibrarytable, called on libraryupdated, possibly called too of
 \pard\pardeftab720\ql\qnatural
 \cf0 \
 Audio slow down - Soundtouch puts processor usage up to 23%\
-Processor heavy stuff kills its, opening dialogues causes glitches\
 Standard playing = 14% probably the remote connection position send stuff\
 \
 General lag on tangled hair tracks - Large album art?\
+Writing large album art is very slow\
 \
-Saving empty art, saving edits for things that havnt been changed.\
-\
-Remote - pushing nil view controllers still\'85.\
-Remote - select tuuunes and play a song then go to BBC playlist and select a track, it claims it can't load it\
+Remote - select tuuunes and play a song then go to BBC playlist and select a track, it claims it can't load it - tableSelectedRow is valid first time, but not the second time it loops through load file\
 Remote - Find a way to display the ip address - http://www.rawmaterialsoftware.com/viewtopic.php?f=2&t=9506\
 \
 Unsupported file type handling, non existent files etc - Work already begun in audiocontrol, work required in tag reader for other file types\
+Can't read metallica and justice for all or ride the lightning\
 \
-EQ - Filtering causing too much gain, making the track distort\
+EQ - Filtering causing a strong crackle - maybe not processing the samples fast enough\
+EQ - Presets, customs, saving\
 \
 EFFECTS\
 Soundtouch - Soundtouch processor uses silly amounts of cpu and doesn't have any transport controls  - Rejig it, so audioformatreader sets the soundtouch then the soundtouch is set to the transport\
+Currently rejigged but not working well at all, pitch works fine, looking into buffering amounts etc\
 \
 MINOR THINGS\
 Play back home by yellow card then search for yellowcard, it'll jumped back to the top of the table after it stops\

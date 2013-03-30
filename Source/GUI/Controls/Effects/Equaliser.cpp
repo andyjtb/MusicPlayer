@@ -29,7 +29,7 @@ Equaliser::Equaliser (AudioControl* incomingAudioControl) : eqSettings("EQSETTIN
 
     for (int i = 0; i < numFrequencies; i++) {
         frequencySliders[i].setName(String(frequencies[i]));
-        frequencySliders[i].setRange (0.01, 2, 0.1);
+        frequencySliders[i].setRange (0.1, 1.9, 0.1);
         frequencySliders[i].setValue(1);
         frequencySliders[i].setSliderStyle (Slider::LinearVertical);
         frequencySliders[i].setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
