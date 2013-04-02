@@ -95,13 +95,14 @@ private:
 	AudioSourcePlayer audioSourcePlayer;
 	AudioFormatManager formatManager;
     
-    TimeSliceThread transportThread;
+    TimeSliceThread bufferingThread;
 	AudioTransportSource transport;
 	
+    EQFilters eqFilters;
 	ScopedPointer<AudioFormatReaderSource> currentAudioFileSource;
-	EQFilters eqFilters;
-	//ScopedPointer<SoundTouchAudioSource> soundTouch;
-    SoundTouchAudioSource soundTouch;
+	ScopedPointer<SoundTouchAudioSource> soundTouch;
+    ScopedPointer<BufferingAudioSource> bufferingAudioSource;
+    //SoundTouchAudioSource soundTouch;
 	SoundTouchProcessor::PlaybackSettings soundTouchSettings;
 	
 	//audio variables

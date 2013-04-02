@@ -23,12 +23,13 @@
 
 #include "TrackInfo.h"
 #include "AlbumArt.h"
+#include "Settings.h"
 
 #include "InfoBar.h"
 
 #include "MusicLibraryTableModel.h"
 #include "MusicLibraryHelpers.h"
-#include "Settings.h"
+
 #include "Comparators.h"
 
 #include "SearchBox.h"
@@ -100,6 +101,8 @@ public:
 
     //Menu Bar function
     void showEffectsMenu();
+    
+    void remoteConnectionChanged(String ipAddress) { infoBar.getConnectionIndicator().remoteConnectionChanged(ipAddress);}
     
     void setPlaylist (String incomingPlaylist);
 private:

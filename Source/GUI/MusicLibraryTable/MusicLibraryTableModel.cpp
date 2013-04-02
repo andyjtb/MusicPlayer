@@ -70,6 +70,9 @@ MusicLibraryTable::~MusicLibraryTable()
 {
 	if (currentLibrary != nullptr)
 		currentLibrary->removeListener(this);
+    
+    if (!displayPlaylist)
+        DBG(table.getHeader().toString());
 }
 
 void MusicLibraryTable::setLibraryToUse (ITunesLibrary* library)

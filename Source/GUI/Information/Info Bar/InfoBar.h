@@ -12,6 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Settings.h"
+#include "ConnectionIndicator.h"
 
 class InfoBar  : public Component,
                  public ValueTree::Listener
@@ -32,8 +33,10 @@ public:
     void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged){}
     void valueTreeRedirected (ValueTree &treeWhichHasBeenChanged){}
     
+    ConnectionIndicator& getConnectionIndicator () { return indicator;}
+    
 private:
     String size, time, numTracks;
-
+    ConnectionIndicator indicator;
 };
 #endif

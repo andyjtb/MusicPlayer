@@ -7,6 +7,7 @@
 //
 
 #include "RemoteInterprocessConnection.h"
+#include "J_IPAddress.h"
 
 RemoteInterprocessConnection::RemoteInterprocessConnection () : InterprocessConnection(true)
 {
@@ -15,19 +16,21 @@ RemoteInterprocessConnection::RemoteInterprocessConnection () : InterprocessConn
 
 RemoteInterprocessConnection::~RemoteInterprocessConnection()
 {
-    
+    guiControl->remoteConnectionChanged(getConnectedHostName());
 }
 
 void RemoteInterprocessConnection::connectionMade()
 {
     DBG("Connection #" + String (connectionNumber) + " - connection started");
     DBG("Connected to = " << getConnectedHostName());
+    
+    guiControl->remoteConnectionChanged(getConnectedHostName());
 }
 
 void RemoteInterprocessConnection::connectionLost()
 {
     DBG("Connection #" + String (connectionNumber) + " - connection lost");
-    remoteConnections.remove(connectionNumber);
+    remoteConnections.removeObject(this);
 }
 
 void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)

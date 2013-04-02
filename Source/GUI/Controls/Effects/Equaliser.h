@@ -18,7 +18,8 @@
 
 class Equaliser  : public Component,
                    public ComboBoxListener,
-                   public SliderListener
+                   public SliderListener,
+                   public ButtonListener
 {
 public:
     Equaliser (AudioControl* incomingAudioControl);
@@ -30,6 +31,8 @@ public:
     void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
     void sliderValueChanged (Slider* sliderThatWasMoved);
     
+    void buttonClicked (Button* button);
+    
 private:
     ToggleButton toggleButton;
     ComboBox presetCombo;
@@ -39,6 +42,8 @@ private:
     Slider frequencySliders[numFrequencies];
     Label frequencyLabels[numFrequencies];
     ValueTree eqSettings;
+    
+    TextButton add, minus;
 
     OptionalScopedPointer<AudioControl> audioControl;
     OptionalScopedPointer<EQFilters> eqFilters;

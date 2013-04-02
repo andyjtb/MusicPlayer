@@ -20,18 +20,18 @@
 
 #include "dRowAudio_SoundTouchAudioSource.h"
 
-SoundTouchAudioSource::SoundTouchAudioSource (/*PositionableAudioSource* source_,*/
+SoundTouchAudioSource::SoundTouchAudioSource (PositionableAudioSource* source_,
                                               bool deleteSourceWhenDeleted,
                                               int numberOfSamplesToBuffer_,
                                               int numberOfChannels_)
-: /*source (source_, deleteSourceWhenDeleted),*/
+: source (source_, deleteSourceWhenDeleted),
 numberOfSamplesToBuffer (jmax (1024, numberOfSamplesToBuffer_)),
 numberOfChannels (numberOfChannels_),
 buffer (numberOfChannels_, 0),
 nextReadPos (0),
 isPrepared (false)
 {
-    //jassert (source_ != nullptr);
+    jassert (source_ != nullptr);
     
     soundTouchProcessor.clear();
 }
@@ -74,7 +74,8 @@ void SoundTouchAudioSource::releaseResources()
     
     isPrepared = false;
     
-    source->releaseResources();
+    if (source != nullptr)
+        source->releaseResources();
 }
 
 void SoundTouchAudioSource::getNextAudioBlock (const AudioSourceChannelInfo& info)

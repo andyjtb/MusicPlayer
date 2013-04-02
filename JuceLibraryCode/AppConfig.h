@@ -11,8 +11,8 @@
 
 */
 
-#ifndef __JUCE_APPCONFIG_CFC9AT__
-#define __JUCE_APPCONFIG_CFC9AT__
+#ifndef __JUCE_APPCONFIG_UDI1LK__
+#define __JUCE_APPCONFIG_UDI1LK__
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
@@ -182,4 +182,4 @@
 #endif
 
 
-#endif  // __JUCE_APPCONFIG_CFC9AT__
+#endif  // __JUCE_APPCONFIG_UDI1LK__

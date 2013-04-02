@@ -40,7 +40,7 @@ public:
      of samples has been process. For fine control try reducing this but beware
      the extra function calls will use more CPU.
      */
-    SoundTouchAudioSource (/*PositionableAudioSource* source,*/
+    SoundTouchAudioSource (PositionableAudioSource* source,
                            bool deleteSourceWhenDeleted = false,
                            int numberOfSamplesToBuffer = 2048,
                            int numberOfChannels = 2);

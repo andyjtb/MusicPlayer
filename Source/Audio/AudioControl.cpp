@@ -11,7 +11,7 @@
 
 
 
-AudioControl::AudioControl() : transportThread("MusicPlayer AudioBuffer")
+AudioControl::AudioControl() : bufferingThread("MusicPlayer AudioBuffer")
 {	
 	singletonPlayState.addListener(this);
     
@@ -40,13 +40,17 @@ AudioControl::AudioControl() : transportThread("MusicPlayer AudioBuffer")
 
 	audioMeterOutputL = audioMeterOutputR = sharedMeterOutputL = sharedMeterOutputR = 0.f;
     
-	transportThread.startThread();
+	bufferingThread.startThread();
+    
 }
 AudioControl::~AudioControl()
 {
-    transportThread.stopThread(100);
+    bufferingThread.stopThread(100);
     audioSourcePlayer.setSource (nullptr);
 	transport.setSource(nullptr);//unload the current file
+    soundTouch = nullptr;
+    bufferingAudioSource = nullptr;
+    
     audioDeviceManager.removeAudioCallback(this);
 
 }
@@ -56,11 +60,16 @@ void AudioControl::loadFile (const File& audioFile)
 	//this is called when the user changes the filename in the file chooser box
 	if(audioFile.existsAsFile())
 	{
+        if (soundTouch != nullptr)
+            soundTouchSettings = soundTouch->getPlaybackSettings();
+        
 		// unload the previous file source and delete it..
 		transport.stop();
 		transport.setSource (nullptr);
-		currentAudioFileSource = nullptr;
-		
+        soundTouch = nullptr;
+        bufferingAudioSource = nullptr;
+        
+        
 		AudioFormatReader* reader = formatManager.createReaderFor (audioFile);
 		
 		if (reader != nullptr)
@@ -68,9 +77,12 @@ void AudioControl::loadFile (const File& audioFile)
             eqFilters.setSampleRate(reader->sampleRate);
 			currentAudioFileSource = new AudioFormatReaderSource (reader, true);
             
-			// ..and plug it into our transport source
-            soundTouch.setSource(currentAudioFileSource);
-			transport.setSource (&soundTouch, 88200, &transportThread);
+			// ..and plug it into our effects sources
+            bufferingAudioSource = new BufferingAudioSource (currentAudioFileSource, bufferingThread, false, 88200);
+            soundTouch = new SoundTouchAudioSource (bufferingAudioSource);
+            soundTouch->setPlaybackSettings(soundTouchSettings);
+
+            transport.setSource (soundTouch);
 
 			sendChangeMessage();
 		}  
@@ -160,7 +172,8 @@ void AudioControl::setPlaybackSpeed(const float incomingSpeed)
     if (incomingSpeed >= 0.f && incomingSpeed <= 10.f) 
     {
 		soundTouchSettings.tempo = incomingSpeed;
-        soundTouch.setPlaybackSettings(soundTouchSettings);
+        if (soundTouch != nullptr)
+            soundTouch->setPlaybackSettings(soundTouchSettings);
     }
 }
 
@@ -169,7 +182,8 @@ void AudioControl::setPitch(const float incomingPitch)
 	if (incomingPitch >= 0.f && incomingPitch <= 10.f) 
     {
 		soundTouchSettings.pitch = incomingPitch;
-        soundTouch.setPlaybackSettings(soundTouchSettings);
+        if (soundTouch != nullptr)
+            soundTouch->setPlaybackSettings(soundTouchSettings);
     }
 }
 

@@ -12,6 +12,8 @@
 InfoBar::InfoBar ()
 {
     filteredDataList.addListener(this);
+    
+    addAndMakeVisible(&indicator);
 
 }
 
@@ -46,6 +48,7 @@ void InfoBar::paint (Graphics& g)
 
 void InfoBar::resized()
 {
+    indicator.setBounds(10, getHeight()/4, 10, getHeight()-5);
 }
 
 void InfoBar::updateBar()

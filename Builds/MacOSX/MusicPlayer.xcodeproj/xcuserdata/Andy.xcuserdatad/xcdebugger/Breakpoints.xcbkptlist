@@ -9,26 +9,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "0"
          filePath = "/Users/Andy/Desktop/University/Musicplayer/Source/Utility/Remote/RemoteInterprocessConnection.cpp"
-         timestampString = "386294573.304364"
+         timestampString = "386558111.627485"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "63"
-         endingLineNumber = "63"
+         startingLineNumber = "65"
+         endingLineNumber = "65"
          landmarkName = "RemoteInterprocessConnection::messageReceived (const MemoryBlock&amp; message)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/Andy/Desktop/University/Musicplayer/Source/Audio/AudioControl.cpp"
-         timestampString = "386298631.255759"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "68"
-         endingLineNumber = "68"
-         landmarkName = "AudioControl::loadFile (const File&amp; audioFile)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

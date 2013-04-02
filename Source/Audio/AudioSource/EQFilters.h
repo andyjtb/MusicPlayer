@@ -23,12 +23,16 @@ public:
     
     void setFilter (int frequency, float gain);
     void setSampleRate (int _sampleRate);
+    
+    void setFilterID (int currentFilter);
+    int getFilterID();
+    
     void applyFilters(float** samples, int numSamples, int numChannels);
     
 private:
-    OwnedArray<BiquadFilter> filters;
-    
-    int sampleRate;
+    //OwnedArray<BiquadFilter> filters;
+    BiquadFilter filters[10][2];
+    int sampleRate, filterID;
     float q;
 };
 #endif

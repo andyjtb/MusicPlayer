@@ -28,25 +28,8 @@ public:
         
         playlistTitle = incomingPlaylistTitle;
         
-        setLinesDrawnForSubItems(false);
-        //isLibrary = isTypeLibrary;
-        //label = createItemComponent();
-//        if(label)
-//        {
-//            label->setText("helo");
-//            
-//            DBG("Label text - " << label->getText());
-//        }
-//        else
-//            DBG("Label not made");
-        
+        setLinesDrawnForSubItems(false);  
     }
-    
-//    void paint()
-//    {
-//        label->setSelected(isSelected());
-//        treeHasChanged();
-//    }
     
     void itemSelectionChanged(bool isNowSelected)
     {
