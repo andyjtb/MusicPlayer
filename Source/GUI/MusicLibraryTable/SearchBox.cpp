@@ -12,7 +12,7 @@
 SearchBox::SearchBox ()
 {
     addAndMakeVisible (&searchLabel);
-    searchLabel.setText("Search: ", false);
+    searchLabel.setText("Search: ", dontSendNotification);
 
     addAndMakeVisible (&search);
     search.setMultiLine (false);

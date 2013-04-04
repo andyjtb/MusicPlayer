@@ -25,41 +25,41 @@ TrackSummary::TrackSummary ()
     
     
     addAndMakeVisible (&locationLabel);
-    locationLabel.setText("Location: ", false);
+    locationLabel.setText("Location: ", dontSendNotification);
     
     addAndMakeVisible (&location);
     
     addAndMakeVisible (&typeLabel);
-    typeLabel.setText("Type: ", false);
+    typeLabel.setText("Type: ", dontSendNotification);
     
     addAndMakeVisible (&type);
     
     addAndMakeVisible (&sizeLabel);
-    sizeLabel.setText("Size: ", false);
+    sizeLabel.setText("Size: ", dontSendNotification);
     
     addAndMakeVisible (&size);
     
     
     addAndMakeVisible (&addedLabel);
-    addedLabel.setText("Added: ", false);
+    addedLabel.setText("Added: ", dontSendNotification);
     
     addAndMakeVisible (&added);
     
     
     addAndMakeVisible (&modifiedLabel);
-    modifiedLabel.setText("Modified: ", false);
+    modifiedLabel.setText("Modified: ", dontSendNotification);
     
     addAndMakeVisible (&modified);
     
     
     addAndMakeVisible (&bitLabel);
-    bitLabel.setText("Bit Rate: ", false);
+    bitLabel.setText("Bit Rate: ", dontSendNotification);
     
     addAndMakeVisible (&bitRate);
     
     
     addAndMakeVisible (&sampleLabel);
-    sampleLabel.setText("Sample Rate: ", false);
+    sampleLabel.setText("Sample Rate: ", dontSendNotification);
     
     addAndMakeVisible (&sampleRate);
     
@@ -115,30 +115,30 @@ void TrackSummary::setTrack(ValueTree incomingTrack)
 {
     File selectedFile (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
     
-    artist.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString(), false);
+    artist.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString(), dontSendNotification);
     albumArt.setCover(selectedFile);
     
-    album.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString(), false);
+    album.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString(), dontSendNotification);
     
-    song.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString(), false);
+    song.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString(), dontSendNotification);
     
-    location.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString(), false);
+    location.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString(), dontSendNotification);
     
-    type.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Kind]).toString(), false);
+    type.setText (incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Kind]).toString(), dontSendNotification);
     
-    size.setText(File::descriptionOfSizeInBytes(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Size])), false);
+    size.setText(File::descriptionOfSizeInBytes(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Size])), dontSendNotification);
     
     String addedString = Time (int64 (incomingTrack[MusicColumns::columnNames[MusicColumns::Added]])).formatted ("%d/%m/%Y - %H:%M");
-    added.setText (addedString, false);
+    added.setText (addedString, dontSendNotification);
     
     String modifiedString = Time (int64 (incomingTrack[MusicColumns::columnNames[MusicColumns::Modified]])).formatted ("%d/%m/%Y - %H:%M");
-    modified.setText (modifiedString, false);
+    modified.setText (modifiedString, dontSendNotification);
 
     int bitRateInt = incomingTrack[MusicColumns::columnNames[MusicColumns::BitRate]];
     String bitRateString (String(bitRateInt) + " kbps");
-    bitRate.setText(bitRateString, false);
+    bitRate.setText(bitRateString, dontSendNotification);
     
     int sampleRateInt = incomingTrack[MusicColumns::columnNames[MusicColumns::SampleRate]];
     String sampleRateString (String(sampleRateInt) + " Hz");
-    sampleRate.setText(sampleRateString, false);
+    sampleRate.setText(sampleRateString, dontSendNotification);
 }

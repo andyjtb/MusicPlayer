@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AudioControl.h"
 #include "EQFilters.h"
+#include "Settings.h"
 
 
 
@@ -41,7 +42,6 @@ private:
     int frequencies[numFrequencies];
     Slider frequencySliders[numFrequencies];
     Label frequencyLabels[numFrequencies];
-    ValueTree eqSettings;
     
     TextButton add, minus;
 

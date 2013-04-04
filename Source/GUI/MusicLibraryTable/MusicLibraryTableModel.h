@@ -51,7 +51,8 @@
 class MusicLibraryTable	: public Component,
                           public TableListBoxModel,
 						  public ITunesLibrary::Listener,
-						  public ActionBroadcaster
+						  public ActionBroadcaster,
+                          public TextEditorListener
 {
 public:
     //==============================================================================
@@ -128,7 +129,10 @@ public:
     void deleteKeyPressed (int currentSelectedRow);
     void cellClicked (int rowNumber, int columnId, const MouseEvent &event);
     void cellDoubleClicked(int rowNumber, int columnId, const MouseEvent &event);
-    void editDirectly (int rowNumber, int columnId);
+    
+    void editDirectly (int rowNumber, int columnId, const MouseEvent &event);
+    void textEditorReturnKeyPressed (TextEditor & editor);
+    void textEditorEscapeKeyPressed(TextEditor &);
     
     void setPlaylistTree (ValueTree& playlist);
     void changeDisplay (bool displayPlaylists);
@@ -148,6 +152,11 @@ private:
     ValueTree dataList, playlistTree;
     
     ScopedPointer<TrackDialog> trackDialog;
+    
+    OptionalScopedPointer<CallOutBox> callout;
+    int columnEditing, rowEditing;
+    ValueTree currentlyEditing;
+    ScopedPointer<TextEditor> editDirectlyText;
     
     int filteredNumRows, currentPlaylist;
 	bool finishedLoading, displayPlaylist;

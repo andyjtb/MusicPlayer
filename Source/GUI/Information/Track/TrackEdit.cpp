@@ -12,7 +12,7 @@ TrackEdit::TrackEdit()
 {    
     saveRequired = false;
     addAndMakeVisible (&songLabel);
-    songLabel.setText("Song: ", false);
+    songLabel.setText("Song: ", dontSendNotification);
     
     addAndMakeVisible (&song);
     song.setMultiLine (false);
@@ -24,7 +24,7 @@ TrackEdit::TrackEdit()
 //    song.addListener(this);
     
     addAndMakeVisible (&artistLabel);
-    artistLabel.setText("Artist: ", false);
+    artistLabel.setText("Artist: ", dontSendNotification);
     
     addAndMakeVisible (&artist);
     artist.setMultiLine (false);
@@ -36,7 +36,7 @@ TrackEdit::TrackEdit()
 //    artist.addListener(this);
     
     addAndMakeVisible (&albumLabel);
-    albumLabel.setText("Album: ", false);
+    albumLabel.setText("Album: ", dontSendNotification);
     
     addAndMakeVisible (&album);
     album.setMultiLine (false);
@@ -48,7 +48,7 @@ TrackEdit::TrackEdit()
 //    album.addListener(this);
     
     addAndMakeVisible (&genreLabel);
-    genreLabel.setText("Genre: ", false);
+    genreLabel.setText("Genre: ", dontSendNotification);
     
     addAndMakeVisible (&genre);
     genre.setMultiLine (false);
@@ -60,7 +60,7 @@ TrackEdit::TrackEdit()
 //    genre.addListener(this);
     
     addAndMakeVisible (&ratingLabel);
-    ratingLabel.setText("Rating: ", false);
+    ratingLabel.setText("Rating: ", dontSendNotification);
     
     addAndMakeVisible (&rating);
     rating.setRange (0, 5, 1);
@@ -69,7 +69,7 @@ TrackEdit::TrackEdit()
 //    rating.addListener(this);
     
     addAndMakeVisible (&labelLabel);
-    labelLabel.setText("Label: ", false);
+    labelLabel.setText("Label: ", dontSendNotification);
     
     addAndMakeVisible (&label);
     label.setMultiLine (true);
@@ -81,7 +81,7 @@ TrackEdit::TrackEdit()
 //    label.addListener(this);
     
     addAndMakeVisible (&trackLabel);
-    trackLabel.setText("Track Number: ", false);
+    trackLabel.setText("Track Number: ", dontSendNotification);
     
     addAndMakeVisible (&trackNum);
     trackNum.setInputRestrictions(4, "0123456789");

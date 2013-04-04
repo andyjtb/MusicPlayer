@@ -13,7 +13,7 @@
 #include "AudioControl.h"
 #include "GuiControl.h"
 #include "Settings.h"
-#include "XmlHelpers.h"
+//#include "XmlHelpers.h"
 #include "TagReader.h"
 #include "DirectoryLoader.h"
 
@@ -48,8 +48,8 @@ public:
     
     enum FileMenuItems 
 	{
-		OpenFile = 1,
-		OpenDirectory = 2,
+		AddFile = 1,
+		AddDirectory = 2,
 		AudioPrefs = 3,
 		ImportItunes = 4,
         UndoChange = 5,
@@ -68,8 +68,6 @@ public:
     PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName);
 	void menuItemSelected (int menuItemID, int topLevelMenuIndex); 
 
-    void checkFirstTime();
-    
     ApplicationCommandTarget* getNextCommandTarget();
     void getAllCommands (Array <CommandID>& commands);
     void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result);

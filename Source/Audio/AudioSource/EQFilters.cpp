@@ -13,6 +13,8 @@ EQFilters::EQFilters ()
 {
     sampleRate = 44100;
     q = 1.8f;
+    
+    filterID = 1;
 }
 
 EQFilters::~EQFilters()

@@ -18,11 +18,11 @@ TransportSlider::TransportSlider ()
     transport.addListener (this);
 
 	addAndMakeVisible(&timeLabel);
-	timeLabel.setText("0:00:0",false);
+	timeLabel.setText("0:00:0",dontSendNotification);
 	timeLabel.setFont (Font (27.4000f, Font::plain));
     
     //addAndMakeVisible(&lengthLabel);
-    lengthLabel.setText("/ 0:00", false);
+    lengthLabel.setText("/ 0:00", dontSendNotification);
 	lengthLabel.setFont (Font (27.4000f, Font::plain));
     
     setSize (300, 60);
@@ -53,7 +53,7 @@ void TransportSlider::setTransportRange (double minimum, double maximum, double 
     String length = "/ ";
     length << TimeHelpers::secondsToTimeLength(maximum);
     //DBG("Maximum = " << maximum);
-    lengthLabel.setText("/ "+TimeHelpers::secondsToTimeLength(maximum), false);
+    lengthLabel.setText("/ "+TimeHelpers::secondsToTimeLength(maximum), dontSendNotification);
 }
 
 void TransportSlider::setTransportPosition (double position)
@@ -76,7 +76,7 @@ void TransportSlider::updateTime(double time)
 		stringTime <<minutes<<":"<<seconds<<":"<<tenths<<"\n";
 	}
 	
-	timeLabel.setText(stringTime,false);	
+	timeLabel.setText(stringTime,dontSendNotification);	
 }
 
 void TransportSlider::sliderValueChanged (Slider* sliderThatWasMoved)

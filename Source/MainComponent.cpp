@@ -23,8 +23,6 @@ MainContentComponent::MainContentComponent()
     addKeyListener (commandManager.getKeyMappings());
     setApplicationCommandManagerToWatch (&commandManager);
     
-	checkFirstTime();
-    
     addAndMakeVisible(&guiControl);
 	guiControl.setAudioControl(&audioControl);
 
@@ -56,8 +54,8 @@ PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const St
     
 	if (topLevelMenuIndex == 0)
 	{
-		menu.addItem(OpenFile, "Open Files", true, false);
-		menu.addItem(OpenDirectory, "Open Directory", true, false);
+		menu.addItem(AddFile, "Add Files", true, false);
+		menu.addItem(AddDirectory, "Add Directory", true, false);
 		menu.addSeparator();
         menu.addItem(AudioPrefs, "Audio Preferences", true, false);
 		menu.addItem(ImportItunes, "Import Itunes Library", true, false);
@@ -87,9 +85,9 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
         {
             audioControl.showAudioPreferences(this);
         }
-        if (menuItemID == OpenFile)
+        if (menuItemID == AddFile)
 		{
-			FileChooser fc ("Choose files to open...",File::getCurrentWorkingDirectory(),"*",true);
+			FileChooser fc ("Choose files to add...",File::getCurrentWorkingDirectory(),"*",true);
 			
 			if (fc.browseForMultipleFilesToOpen())
 			{
@@ -107,9 +105,9 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 			}
 		}
 		
-		if (menuItemID == OpenDirectory)
+		if (menuItemID == AddDirectory)
 		{
-			FileChooser fc ("Choose a directory to open...",File::getCurrentWorkingDirectory(),"*",true);
+			FileChooser fc ("Choose a directory to add...",File::getCurrentWorkingDirectory(),"*",true);
 			if (fc.browseForDirectory()) 
 			{
                 DirectoryLoader d;
@@ -163,25 +161,6 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
     if (topLevelMenuIndex == ControlMenu)
     {
         
-    }
-}
-
-
-void MainContentComponent::checkFirstTime()
-{
-    if(XmlHelpers::checkFirstTime())
-    {
-        if(XmlHelpers::createSettingsFile())
-        {
-            DBG("New settings file Created");  
-        }
-        else
-        {
-            DBG("Something has gone wrong with checkFirstTime as this means createSettings was called but settings already existed");
-        }
-        
-        singletonPlaylistsFile = File(File::getSpecialLocation(File::userMusicDirectory).getFullPathName() + "/MusicPlayer/MusicPlayerPlaylists.xml");
-        singletonLibraryFile = File(File::getSpecialLocation(File::userMusicDirectory).getFullPathName() + "/MusicPlayer/MusicPlayerLibrary.xml");
     }
 }
 

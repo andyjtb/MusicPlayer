@@ -12,22 +12,22 @@
 TrackInfo::TrackInfo ()
 {
 	addAndMakeVisible(&lTitle);
-	lTitle.setText("Song Title", false);
+	lTitle.setText("Song Title", dontSendNotification);
 
 	addAndMakeVisible(&lArtist);
-	lArtist.setText("Artist", false);
+	lArtist.setText("Artist", dontSendNotification);
 
 	addAndMakeVisible(&lId3);
-	lId3.setText("ID3 Tag Check :", false);
+	lId3.setText("ID3 Tag Check :", dontSendNotification);
 
 	addAndMakeVisible(&artist);
-	artist.setText("Artist", false);
+	artist.setText("Artist", dontSendNotification);
 
 	addAndMakeVisible(&title);
-	title.setText("Song Title", false);
+	title.setText("Song Title", dontSendNotification);
 
 	addAndMakeVisible(&id3);
-	id3.setText("Waiting...", false);
+	id3.setText("Waiting...", dontSendNotification);
 
     addAndMakeVisible (&toggleId3);
 	toggleId3.setClickingTogglesState (false);
@@ -56,16 +56,16 @@ void TrackInfo::loadTrackInfo(ValueTree tags)
 {	
    if (tags.hasType("ITEM")) {
 	   toggleId3.setToggleState(true,false);
-	   title.setText (tags.getProperty(MusicColumns::columnNames[MusicColumns::Song].toString(), 0),false);
-	   artist.setText (tags.getProperty(MusicColumns::columnNames[MusicColumns::Artist].toString(), 0),false);
-	   id3.setText ("Tag Loaded",false);
+	   title.setText (tags.getProperty(MusicColumns::columnNames[MusicColumns::Song].toString(), 0),dontSendNotification);
+	   artist.setText (tags.getProperty(MusicColumns::columnNames[MusicColumns::Artist].toString(), 0),dontSendNotification);
+	   id3.setText ("Tag Loaded",dontSendNotification);
 	   
    }
 	else {
 		toggleId3.setToggleState(false,false);
-		title.setText ("Failed",false);
-		artist.setText ("Failed",false);
-		id3.setText ("Tag Not Found",false);
+		title.setText ("Failed",dontSendNotification);
+		artist.setText ("Failed",dontSendNotification);
+		id3.setText ("Tag Not Found",dontSendNotification);
 	}
 }
 

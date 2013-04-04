@@ -13,7 +13,7 @@ TrackMulti::TrackMulti(Array<int> incomingIds)
     libraryIds = incomingIds;
     
     addAndMakeVisible (&artistLabel);
-    artistLabel.setText("Artist: ", false);
+    artistLabel.setText("Artist: ", dontSendNotification);
     
     addAndMakeVisible (&artist);
     artist.setMultiLine (false);
@@ -25,7 +25,7 @@ TrackMulti::TrackMulti(Array<int> incomingIds)
 //    artist.addListener(this);
     
     addAndMakeVisible (&albumLabel);
-    albumLabel.setText("Album: ", false);
+    albumLabel.setText("Album: ", dontSendNotification);
     
     addAndMakeVisible (&album);
     album.setMultiLine (false);
@@ -37,7 +37,7 @@ TrackMulti::TrackMulti(Array<int> incomingIds)
 //    album.addListener(this);
     
     addAndMakeVisible (&genreLabel);
-    genreLabel.setText("Genre: ", false);
+    genreLabel.setText("Genre: ", dontSendNotification);
     
     addAndMakeVisible (&genre);
     genre.setMultiLine (false);
@@ -49,7 +49,7 @@ TrackMulti::TrackMulti(Array<int> incomingIds)
 //    genre.addListener(this);
     
     addAndMakeVisible (&ratingLabel);
-    ratingLabel.setText("Rating: ", false);
+    ratingLabel.setText("Rating: ", dontSendNotification);
     
     addAndMakeVisible (&rating);
     rating.setRange (0, 5, 1);
@@ -58,7 +58,7 @@ TrackMulti::TrackMulti(Array<int> incomingIds)
 //    rating.addListener(this);
     
     addAndMakeVisible (&labelLabel);
-    labelLabel.setText("Label: ", false);
+    labelLabel.setText("Label: ", dontSendNotification);
     
     addAndMakeVisible (&label);
     label.setMultiLine (true);
@@ -70,7 +70,7 @@ TrackMulti::TrackMulti(Array<int> incomingIds)
 //    label.addListener(this);
     
     addAndMakeVisible(&artLabel);
-    artLabel.setText("Album Art: ", false);
+    artLabel.setText("Album Art: ", dontSendNotification);
     
     addAndMakeVisible(&art);
     

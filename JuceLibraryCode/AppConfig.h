@@ -11,8 +11,8 @@
 
 */
 
-#ifndef __JUCE_APPCONFIG_UDI1LK__
-#define __JUCE_APPCONFIG_UDI1LK__
+#ifndef __JUCE_APPCONFIG_ASEG5F__
+#define __JUCE_APPCONFIG_ASEG5F__
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
@@ -182,4 +182,4 @@
 #endif
 
 
-#endif  // __JUCE_APPCONFIG_UDI1LK__
+#endif  // __JUCE_APPCONFIG_ASEG5F__

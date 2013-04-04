@@ -73,6 +73,9 @@ MusicLibraryTable::~MusicLibraryTable()
     
     if (!displayPlaylist)
         DBG(table.getHeader().toString());
+    
+    //Clears the callout pointer as it has to be optional as the modal state also trys to delete the object being pointed to
+    callout.clear();
 }
 
 void MusicLibraryTable::setLibraryToUse (ITunesLibrary* library)
@@ -511,7 +514,7 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
         switch (result) {
             case 1:
             {
-                editDirectly(rowNumber, columnId);
+                editDirectly(rowNumber, columnId, event);
                 break;
             }
             case 2:
@@ -598,7 +601,7 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
     }
     if (event.mods.isAltDown())
     {
-        editDirectly(rowNumber, columnId);
+        editDirectly(rowNumber, columnId, event);
     }
 }
 
@@ -608,32 +611,39 @@ void MusicLibraryTable::cellDoubleClicked(int rowNumber, int columnId, const juc
     tableSelectedRow = filteredDataList.getChild(rowNumber);
 }
 
-void MusicLibraryTable::editDirectly (int rowNumber, int columnId)
+void MusicLibraryTable::editDirectly (int rowNumber, int columnId, const MouseEvent& event)
 {
-    ValueTree currentlyEditing = filteredDataList.getChild(rowNumber);
+    columnEditing = columnId;
+    rowEditing = rowNumber;
+    currentlyEditing = filteredDataList.getChild(rowEditing);
     File test = currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString();
     
     if (test.exists())
     {
-        String popupTitle = ("Edit " + MusicColumns::columnNames[columnId].toString()+"...");
-        String info = ("Editing: \n" + currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Song]).toString() + " by " + currentlyEditing.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString());
-        AlertWindow editPopup(popupTitle, info, AlertWindow::NoIcon);
-        TextEditor editText;
-        
-        editText.setBounds(getWidth()/2, getHeight()/2, 300, 25);
-        editText.setText(currentlyEditing.getProperty(MusicColumns::columnNames[columnId]));
-        
-        editPopup.addCustomComponent(&editText);
-        
-        editPopup.addButton("Cancel", 0);
-        editPopup.addButton("Ok", 1);
-        
-        if (editPopup.runModalLoop() != 0) {
-            currentlyEditing.setProperty(MusicColumns::columnNames[columnId], editText.getText(), singletonUndoManager);
-            TagReader::writeTag(columnId, currentlyEditing);
-        }
-        editPopup.removeCustomComponent(0);
+        Rectangle<int> position;
+        position.setPosition(event.getScreenPosition());
+
+        editDirectlyText = new TextEditor();
+        editDirectlyText->addListener(this);
+        editDirectlyText->setSize(300,25);
+        editDirectlyText->setText(currentlyEditing.getProperty(MusicColumns::columnNames[columnId]));
+
+        callout.set(new CallOutBox(*editDirectlyText, position, nullptr), false);
+        callout->enterModalState(true, nullptr, true);
     }
+}
+
+void MusicLibraryTable::textEditorReturnKeyPressed (TextEditor &editor)
+{
+    currentlyEditing.setProperty(MusicColumns::columnNames[columnEditing], editor.getText(), singletonUndoManager);
+    TagReader::writeTag(columnEditing, currentlyEditing);
+    
+    callout->exitModalState(0);
+}
+
+void MusicLibraryTable::textEditorEscapeKeyPressed(TextEditor &)
+{
+    callout->exitModalState(0);
 }
 
 void MusicLibraryTable::setPlaylistTree (ValueTree& playlist)

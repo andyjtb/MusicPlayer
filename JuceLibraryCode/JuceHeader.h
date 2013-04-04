@@ -10,8 +10,8 @@
 
 */
 
-#ifndef __APPHEADERFILE_UDI1LK__
-#define __APPHEADERFILE_UDI1LK__
+#ifndef __APPHEADERFILE_ASEG5F__
+#define __APPHEADERFILE_ASEG5F__
 
 #include "AppConfig.h"
 #include "modules/juce_audio_basics/juce_audio_basics.h"
@@ -42,4 +42,4 @@ namespace ProjectInfo
     const int          versionNumber  = 0x10000;
 }
 
-#endif   // __APPHEADERFILE_UDI1LK__
+#endif   // __APPHEADERFILE_ASEG5F__

@@ -12,7 +12,7 @@
 OutputMeter::OutputMeter()
 {
     addAndMakeVisible (&outputLabel);
-	outputLabel.setText("Output", false);
+	outputLabel.setText("Output", dontSendNotification);
     outputLabel.setFont (Font (26.2000f, Font::plain));
     outputLabel.setJustificationType (Justification::centredLeft);
     outputLabel.setEditable (false, false, false);

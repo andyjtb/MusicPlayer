@@ -14,6 +14,11 @@ struct ImageWithType {
     String type;
 };
 
+struct EqDetails{
+    int ID;
+    Value On;
+};
+
 #define singletonLibraryFile Settings::getInstance()->getLibraryFile()
 #define singletonLibraryTree Settings::getInstance()->getLibraryTree()
 #define singletonPlaylistsFile Settings::getInstance()->getPlaylistsFile()
@@ -23,6 +28,7 @@ struct ImageWithType {
 #define singletonCurrentPlaylistId Settings::getInstance()->getCurrentPlaylistId()
 #define singletonPlayState Settings::getInstance()->getPlayState()
 #define singletonUndoManager Settings::getInstance()->getUndoManager()
+#define singletonEqSettings Settings::getInstance()->getEqSettings()
 
 #define tableSelectedRow Settings::getInstance()->getSelectedRow()
 #define tableSelectedTracks Settings::getInstance()->getSelectedTracks()
@@ -38,6 +44,8 @@ struct ImageWithType {
 
 #define remoteConnections Settings::getInstance()->getConnections()
 
+#define currentEqDetails Settings::getInstance()->getCurrentEq()
+
 class Settings : public DeletedAtShutdown
 {
 public:
@@ -45,6 +53,10 @@ public:
 	
 	~Settings();
 
+    bool checkFirstTime();
+    bool createSettingsFile();
+    void initSettings();
+    
 	File& getLibraryFile();
     File& getPlaylistsFile();
 	
@@ -62,6 +74,7 @@ public:
     ValueTree& getSelectedRow();
     ValueTree& getPlayingRow();
     ValueTree& getFilteredList();
+    ValueTree& getEqSettings(){return eqSettings;}
     
     Value& getShouldPlay();
     Value& getPlayState();
@@ -72,21 +85,26 @@ public:
     
     ImageWithType& getArtClipboard();
     
+    EqDetails& getCurrentEq() {return eqDetails;}
+    
     void saveSingletons();
 	
 	juce_DeclareSingleton_SingleThreaded_Minimal (Settings)
 	
 private:
 
-    File settingsXmlFile, libraryFile, playlistFile;
-	ValueTree libraryTree, playlistTree, selectedRow, playingRow, filteredDataTree;
+    File settingsXmlFile, libraryFile, playlistFile, eqSettingsFile;
+	ValueTree libraryTree, playlistTree, selectedRow, playingRow, filteredDataTree, eqSettings;
     ScopedPointer<UndoManager> undoManager;
     int currentLibId, currentValueTreeId, currentPlaylistId;
+    EqDetails eqDetails;
     Array<int> selectedTracks;
     Value shouldPlay, loadSelected, playState, updateRequired, deletingTable, artUpdate;
     OwnedArray <RemoteInterprocessConnection, CriticalSection> connections;
     ImageWithType albumArtClipboard;
 
+    //==============================================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Settings);
 };
 
 #endif //H_SETTINGS

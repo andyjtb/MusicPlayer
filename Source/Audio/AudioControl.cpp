@@ -42,6 +42,8 @@ AudioControl::AudioControl() : bufferingThread("MusicPlayer AudioBuffer")
     
 	bufferingThread.startThread();
     
+    applyEQ.referTo(currentEqDetails.On);
+    
 }
 AudioControl::~AudioControl()
 {

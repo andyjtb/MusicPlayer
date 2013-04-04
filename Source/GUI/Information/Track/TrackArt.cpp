@@ -19,7 +19,7 @@ TrackArt::TrackArt ()
     
     addAndMakeVisible (&sizeLabel);
     sizeLabel.setFont (Font (20.5000f, Font::plain));
-    sizeLabel.setText ("Size:", false);
+    sizeLabel.setText ("Size:", dontSendNotification);
     
     addAndMakeVisible (&size);
     size.setRange (150, 400, 10);
