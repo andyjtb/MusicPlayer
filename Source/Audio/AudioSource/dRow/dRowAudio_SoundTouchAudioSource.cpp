@@ -46,11 +46,6 @@ void SoundTouchAudioSource::setPlaybackSettings (SoundTouchProcessor::PlaybackSe
     soundTouchProcessor.setPlaybackSettings (newSettings);
 }
 
-void SoundTouchAudioSource::setSource (PositionableAudioSource* source_)
-{
-    source.set(source_, false);
-}
-
 //==============================================================================
 void SoundTouchAudioSource::prepareToPlay (int /*samplesPerBlockExpected*/, double sampleRate_)
 {
@@ -80,13 +75,14 @@ void SoundTouchAudioSource::releaseResources()
 
 void SoundTouchAudioSource::getNextAudioBlock (const AudioSourceChannelInfo& info)
 {
-    while (soundTouchProcessor.getNumReady() < info.numSamples)
-        readNextBufferChunk();
-    
-    soundTouchProcessor.readSamples (info.buffer->getArrayOfChannels(), info.buffer->getNumChannels(),
-                                     info.numSamples, info.startSample);
-    
-    effectiveNextPlayPos += (int64) (info.numSamples * soundTouchProcessor.getEffectivePlaybackRatio());
+    //if (soundTouchProcessor.getPlaybackSettings().tempo != 1.0f || soundTouchProcessor.getPlaybackSettings().pitch != 1.0f)
+    //{
+        while (soundTouchProcessor.getNumReady() < info.numSamples)
+            readNextBufferChunk();
+        
+        soundTouchProcessor.readSamples (info.buffer->getArrayOfChannels(), info.buffer->getNumChannels(), info.numSamples, info.startSample);
+    //}    
+        effectiveNextPlayPos += (int64) (info.numSamples * soundTouchProcessor.getEffectivePlaybackRatio());
 }
 
 //==============================================================================

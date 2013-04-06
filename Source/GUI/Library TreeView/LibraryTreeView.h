@@ -25,7 +25,7 @@ public:
         
         libraryIcon = ImageCache::getFromMemory (LibraryTreeViewBinaryData::small_library_png, LibraryTreeViewBinaryData::small_library_pngSize);
         playlistIcon = ImageCache::getFromMemory (LibraryTreeViewBinaryData::small_playlist_png, LibraryTreeViewBinaryData::small_playlist_pngSize);
-        
+
         playlistTitle = incomingPlaylistTitle;
         
         setLinesDrawnForSubItems(false);  

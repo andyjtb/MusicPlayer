@@ -48,8 +48,6 @@ public:
     /** Destructor. */
     ~SoundTouchAudioSource();
     
-    void setSource (PositionableAudioSource* source);
-    
     /** Sets all of the settings at once.
      */
     void setPlaybackSettings (SoundTouchProcessor::PlaybackSettings newSettings);

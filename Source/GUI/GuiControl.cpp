@@ -249,6 +249,7 @@ void GuiControl::valueChanged (Value& valueChanged)
     
     if (valueChanged == tableShouldPlay)
     {
+        //iTunes feature, when a new song is to be played it moves the table to that song
         musicTable->getTableListBox().selectRow(filteredDataList.indexOf(tablePlayingRow));
         loadFile();
     }
@@ -288,6 +289,8 @@ void GuiControl::valueChanged (Value& valueChanged)
 		else {
             stopTimer(1);
 		}
+        //iTunes feature, pausing or playing changes the view to the currently playing track
+        musicTable->getTableListBox().selectRow(filteredDataList.indexOf(tablePlayingRow));
 	}
     
     if (valueChanged == artUpdateRequired)
@@ -333,6 +336,38 @@ void GuiControl::loadFile()
 void GuiControl::updateTagDisplay (File audioFile)
 {
 	albumArt.setCover(audioFile);
+}
+
+void GuiControl::next()
+{
+    if (tableSelectedRow.isValid()) {
+        int toPlay = filteredDataList.indexOf(tableSelectedRow);
+        ++toPlay;
+        if (toPlay < filteredDataList.getNumChildren())
+        {
+            tableSelectedRow = filteredDataList.getChild(toPlay);
+            if (singletonPlayState.getValue())
+                tableShouldPlay = true;
+            else
+                tableLoadSelected = true;
+        }
+    }
+}
+
+void GuiControl::previous()
+{
+    if (tableSelectedRow.isValid()) {
+        int toPlay = filteredDataList.indexOf(tableSelectedRow);
+        --toPlay;
+        if (toPlay >= 0)
+        {
+            tableSelectedRow = filteredDataList.getChild(toPlay);
+            if (singletonPlayState.getValue())
+                tableShouldPlay = true;
+            else
+                tableLoadSelected = true;
+        }
+    }
 }
 
 //Remote

@@ -80,9 +80,12 @@ public:
     
     void loadFile();
     
+    //Track control
+    void next();
+    void previous();
+    
     //Remote 
     void setVolume(double incomingVolume);
-    
     void setPosition(double incomingPosition);
     
     //Text Editor Callbacks

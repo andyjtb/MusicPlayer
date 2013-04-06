@@ -39,7 +39,7 @@ Equaliser::Equaliser (AudioControl* incomingAudioControl) :
 
     for (int i = 0; i < numFrequencies; i++) {
         frequencySliders[i].setName(String(frequencies[i]));
-        frequencySliders[i].setRange (0.15, 1.85, 0.1);
+        frequencySliders[i].setRange (0.1, 1.9, 0.1);
         frequencySliders[i].setSliderStyle (Slider::LinearVertical);
         frequencySliders[i].setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
         frequencySliders[i].addListener (this);

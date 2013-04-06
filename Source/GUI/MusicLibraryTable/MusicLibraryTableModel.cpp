@@ -19,6 +19,7 @@
  */
 
 #include "MusicLibraryTableModel.h"
+#include "RemoteInterprocessConnection.h"
 
 MusicLibraryTable::MusicLibraryTable()
 :	font (12.0f),
@@ -152,11 +153,13 @@ void MusicLibraryTable::libraryUpdated (ITunesLibrary* library)
 {
 	if (library == currentLibrary)
 	{
-        if(remoteConnections.getFirst() != nullptr)
+        if(!displayPlaylist)
         {
-            //remoteConnections.getFirst()->sendLibraryData();
+            if(remoteConnections.getFirst() != nullptr)
+            {
+                remoteConnections.getFirst()->sendLibraryData();
+            }
         }
-        
         updateTableFilteredAndSorted();
 	}
 }
@@ -386,18 +389,16 @@ void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
 
 void MusicLibraryTable::deleteTracks (bool libraryOnly)
 {
-    
     tableDeleting = true;
-    //Add a confirmation screen containing the option to delete file as well
-    //Removing this section seems sensible as tableSelectedTracks does the same, but if used it only deletes half of the selection at a time
     
+    //Removing this section seems sensible as tableSelectedTracks does the same, but if used it only deletes half of the selection at a time
     SparseSet<int> selectedRows = table.getSelectedRows();
     Array<int> toDelete;
     
     for (int counter = 0; counter < selectedRows.size(); counter++) {
         toDelete.add(filteredDataList.getChild(selectedRows[counter]).getProperty(MusicColumns::columnNames[MusicColumns::ID]));
     } 
-    
+    //
     String failedToDelete = "Could not delete: ";
     
     for (int counter = 0; counter < toDelete.size(); counter++)
@@ -637,6 +638,7 @@ void MusicLibraryTable::textEditorReturnKeyPressed (TextEditor &editor)
 {
     currentlyEditing.setProperty(MusicColumns::columnNames[columnEditing], editor.getText(), singletonUndoManager);
     TagReader::writeTag(columnEditing, currentlyEditing);
+    libraryUpdated(currentLibrary);
     
     callout->exitModalState(0);
 }
@@ -664,7 +666,6 @@ void MusicLibraryTable::setSortColumn (int columnNumber)
 
 void MusicLibraryTable::playlistRearrange (int selectedRow, bool movingUp)
 {
-    Identifier libID = "LibID";
     ValueTree movingRow = filteredDataList.getChild(selectedRow);
     if (movingUp)
         selectedRow--;
@@ -675,6 +676,7 @@ void MusicLibraryTable::playlistRearrange (int selectedRow, bool movingUp)
     
     if (otherRow.isValid())
     {
+        Identifier libID = "LibID";
         int movingID = movingRow.getProperty(libID);
         int otherID = otherRow.getProperty(libID);
         movingRow.setProperty(libID, otherID, 0);

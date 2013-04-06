@@ -40,7 +40,7 @@ AudioControl::AudioControl() : bufferingThread("MusicPlayer AudioBuffer")
 
 	audioMeterOutputL = audioMeterOutputR = sharedMeterOutputL = sharedMeterOutputR = 0.f;
     
-	bufferingThread.startThread();
+    bufferingThread.startThread();
     
     applyEQ.referTo(currentEqDetails.On);
     
@@ -66,6 +66,9 @@ void AudioControl::loadFile (const File& audioFile)
             soundTouchSettings = soundTouch->getPlaybackSettings();
         
 		// unload the previous file source and delete it..
+//        if (!bufferingThread.isThreadRunning())
+//            bufferingThread.notify();
+        
 		transport.stop();
 		transport.setSource (nullptr);
         soundTouch = nullptr;
@@ -196,42 +199,53 @@ void AudioControl::audioDeviceIOCallback (const float** inputChannelData,
 										  float** outputChannelData,
 										  int numOutputChannels,
 										  int numSamples)
-{    
-	float *outL;
-	float *outR;
-
-	outL = outputChannelData[0]; 
+{   
+    
+    float *outL;
+    float *outR;
+    
+    outL = outputChannelData[0]; 
     outR = outputChannelData[1];
+    //if (isPlaying())
+    //{ 
+        audioSourcePlayer.audioDeviceIOCallback(inputChannelData, numInputChannels, outputChannelData, numOutputChannels, numSamples);
+        
+        if (applyEQ.getValue())
+        {
+            eqFilters.applyFilters (outputChannelData, numSamples, numOutputChannels);
+        }
+        
+        
+        while(numSamples--) 
+        {		
+            if (fabsf(*outL) > audioMeterOutputL) 
+                audioMeterOutputL = fabsf(*outL);
+            else 
+                audioMeterOutputL *= 0.9999;
+            
+            if (fabsf(*outR) > audioMeterOutputR) 
+                audioMeterOutputR = fabsf(*outR);
+            else 
+                audioMeterOutputR *= 0.9999;
+            
+            outL++; 
+            outR++;	
+            
+        }
+        
+        sharedMemory.enter();
+        sharedMeterOutputL = audioMeterOutputL;
+        sharedMeterOutputR = audioMeterOutputR;
+        sharedMemory.exit();
+//    }
     
-	audioSourcePlayer.audioDeviceIOCallback(inputChannelData, numInputChannels, outputChannelData, numOutputChannels, numSamples);
-    
-    if (applyEQ.getValue())
-    {
-        eqFilters.applyFilters (outputChannelData, numSamples, numOutputChannels);
-    }
-    
-    
-    while(numSamples--) 
-    {		
-		if (fabsf(*outL) > audioMeterOutputL) 
-			audioMeterOutputL = fabsf(*outL);
-		else 
-			audioMeterOutputL *= 0.9999;
-		
-		if (fabsf(*outR) > audioMeterOutputR) 
-			audioMeterOutputR = fabsf(*outR);
-		else 
-			audioMeterOutputR *= 0.9999;
-		
-		outL++; 
-		outR++;	
-		
-    }
-	
-    sharedMemory.enter();
-    sharedMeterOutputL = audioMeterOutputL;
-	sharedMeterOutputR = audioMeterOutputR;
-    sharedMemory.exit();
+//    else
+//    {
+//        zeromem (outL, sizeof (float) * numSamples);
+//        zeromem (outR, sizeof (float) * numSamples);
+//        
+//        outputMeterAnimatedToZero();
+//    }
 }
 
 
@@ -245,9 +259,21 @@ void AudioControl::audioDeviceStopped()
 	audioSourcePlayer.audioDeviceStopped();
 }
 
+void AudioControl::outputMeterAnimatedToZero()
+{
+    int i = 300;
+    while (i--)
+    {
+        sharedMemory.enter();
+        sharedMeterOutputL *= 0.9999;
+        sharedMeterOutputR *= 0.9999;
+        sharedMemory.exit(); 
+    }
+}
+
 float AudioControl::getOutputMeterValue(const char* channel)
 {
-	if (channel == "L") {
+	if (strcmp(channel, "L") == 0) {
 		float valueL;
 		
 		sharedMemory.enter();
@@ -283,6 +309,19 @@ void AudioControl::valueChanged (Value& valueChanged)
 {
     if (valueChanged == singletonPlayState)
     {
-        singletonPlayState.getValue() ? transport.start() : transport.stop();
+        //singletonPlayState.getValue() ? transport.start() : transport.stop();
+        if (singletonPlayState.getValue())
+        {
+            //bufferingThread.notify();
+            transport.start();
+        }
+        else
+        {
+            transport.stop();
+
+            //Wait indefinately, quicker and less processor intensive than stopping the thread
+            //if(bufferingThread.isThreadRunning())
+                //bufferingThread.wait(-1);
+        }
     }
 }

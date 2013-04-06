@@ -72,6 +72,9 @@ public:
     
     void audioDeviceAboutToStart (AudioIODevice* device);
     void audioDeviceStopped();
+    
+    //Progressively lessens the output meter level so it fades to zero instead of abruptly stopping
+    void outputMeterAnimatedToZero();
 	float getOutputMeterValue(const char* channel);	
 	
 	void showAudioPreferences(Component* centerComponent);

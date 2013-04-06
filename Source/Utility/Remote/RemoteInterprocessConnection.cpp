@@ -90,33 +90,11 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
     }
     
     if (stringMessage.startsWith("Next")) {
-        if (tableSelectedRow.isValid()) {
-            int toPlay = filteredDataList.indexOf(tableSelectedRow);
-            ++toPlay;
-            if (toPlay < filteredDataList.getNumChildren())
-            {
-                tableSelectedRow = filteredDataList.getChild(toPlay);
-                if (singletonPlayState.getValue())
-                    tableShouldPlay = true;
-                else
-                    tableLoadSelected = true;
-            }
-        }
+        guiControl->next();
         
     }
     if (stringMessage.startsWith("Previous")) {
-        if (tableSelectedRow.isValid()) {
-            int toPlay = filteredDataList.indexOf(tableSelectedRow);
-            --toPlay;
-            if (toPlay >= 0)
-            {
-                tableSelectedRow = filteredDataList.getChild(toPlay);
-                if (singletonPlayState.getValue())
-                    tableShouldPlay = true;
-                else
-                    tableLoadSelected = true;
-            }
-        }
+        guiControl->previous();
         
     }
     if (stringMessage.startsWith("Position: "))

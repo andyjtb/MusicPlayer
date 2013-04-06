@@ -1,6 +1,7 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf360
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 TimesNewRomanPSMT;}
-{\colortbl;\red255\green255\blue255;\red255\green3\blue0;}
+{\colortbl;\red255\green255\blue255;\red255\green0\blue0;\red255\green6\blue0;\red255\green3\blue0;
+}
 \paperw11900\paperh16840\margl1440\margr1440\vieww25100\viewh13740\viewkind0
 \deftab720
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
@@ -16,13 +17,12 @@ Getting undo message from manager, allowing undo of one thing at a time
 \f1 \
 \
 Update iphone library when files are added/removed from library/playlist\
-Currently in musiclibrarytable, called on libraryupdated, possibly called too often\'85\
-\cf2 FORWARD DECLARATION PROBLEM\cf0 \
+Currently in musiclibrarytable, called on libraryupdated, possibly called too often\'85 More if statements required to cutdown of the likely hood of sending - May be worth using the phone to request new data every time it goes to the now playing view (could stop position messages) or every time they exit/re open. Maybe an extra tab bar button which leads to settings and a refresh button.\
 \pard\pardeftab720\ql\qnatural
 \cf0 \
-Remote - select tuuunes and play a song then go to BBC playlist and select a track, it claims it can't load it - tableSelectedRow is valid first time, but not the second time it loops through load file\
-Remote - Artist pick a song then now playing then select a different tab and pick any item, crash.\
-Remote - Artist select a song then go back to the list of albums for that artist then select albums tab, displays songs from last selected album but the title is wrong, maybe when changing tabs, pop all views from view controller\
+Remote - select tuuunes and play a song then go to BBC playlist and select a track, it claims it can't load it - tableSelectedRow is valid first time, but not the second time it loops through load file. \cf2 TRACE DESKTOP APPLICATION's loading process\cf0 \
+Remote - Artist pick a song then now playing then select a different tab and pick any item, crash. \cf3 FIXED BY POPPING\cf0 \
+Remote - Artist select a song then go back to the list of albums for that artist then select albums tab, displays songs from last selected album but the title is wrong, maybe when changing tabs. \cf4 Pop all views from view controller\cf0 \
 \
 Unsupported file type handling, non existent files etc - Work already begun in audiocontrol, work required in tag reader for other file types\
 Can't read metallica and justice for all or ride the lightning\
@@ -42,6 +42,7 @@ Consider checking to see if the information in the table is the same as in the t
 \
 Audio slow down - Soundtouch puts processor usage up to 23%\
 Standard playing = 14% probably the remote connection position send stuff\
+Timeslice thread - wait(-1) and notify()\
 \
 General lag on tangled hair tracks - Large album art?\
 Writing large album art is very slow\
@@ -75,8 +76,8 @@ Based on:\
 http://www.designkindle.com/2011/10/31/butterscotch-ui-kit/
 \f1 \
 \
-Current playlist icons:\
-http://svn.slimdevices.com/repos/jive/7.8/trunk/squeezeplay/assets/MasterIcons\
+Playlist icons:\
+http://www.premiumpixels.com/freebies/itunes-inspired-music-player-psd/\
 \
 Remote connection icons\
 http://modernl.com/article/led-icons\
