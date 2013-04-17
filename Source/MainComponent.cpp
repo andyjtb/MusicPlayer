@@ -11,8 +11,6 @@
 //==============================================================================
 MainContentComponent::MainContentComponent()
 {
-    //Tries to remove a listener which isn't present
-    //MenuBarModel::setMacMainMenu(this);
     remoteControl.setControls(&guiControl, &audioControl);
     
     commandManager.registerAllCommandsForTarget (this);
@@ -25,13 +23,14 @@ MainContentComponent::MainContentComponent()
     
     addAndMakeVisible(&guiControl);
 	guiControl.setAudioControl(&audioControl);
-
+    
 	setSize (1000, 630);
     
 }
 
 MainContentComponent::~MainContentComponent()
 {
+    
 }
 
 void MainContentComponent::resized()
@@ -57,7 +56,9 @@ PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const St
 		menu.addItem(AddFile, "Add Files", true, false);
 		menu.addItem(AddDirectory, "Add Directory", true, false);
 		menu.addSeparator();
+        /*
         menu.addItem(AudioPrefs, "Audio Preferences", true, false);
+        */
 		menu.addItem(ImportItunes, "Import Itunes Library", true, false);
         menu.addSeparator();
         menu.addCommandItem (&commandManager, StandardApplicationCommandIDs::quit);
@@ -79,12 +80,18 @@ PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const St
 
 void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuIndex)
 {
-	if (topLevelMenuIndex == FileMenu) 
+    if (topLevelMenuIndex == -1)
     {
+        //App name menu
         if (menuItemID == AudioPrefs) 
         {
             audioControl.showAudioPreferences(this);
         }
+    }
+    
+	if (topLevelMenuIndex == FileMenu) 
+    {
+        
         if (menuItemID == AddFile)
 		{
 			FileChooser fc ("Choose files to add...",File::getCurrentWorkingDirectory(),"*",true);

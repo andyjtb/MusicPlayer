@@ -18,12 +18,19 @@ TransportSlider::TransportSlider ()
     transport.addListener (this);
 
 	addAndMakeVisible(&timeLabel);
-	timeLabel.setText("0:00:0",dontSendNotification);
-	timeLabel.setFont (Font (27.4000f, Font::plain));
+	timeLabel.setText("0:00 ",dontSendNotification);
+    timeLabel.setJustificationType(Justification::centredRight);
+    timeLabel.setColour (Label::textColourId, Colours::black);
+	timeLabel.setFont (Font (27.0f, Font::plain));
     
-    //addAndMakeVisible(&lengthLabel);
-    lengthLabel.setText("/ 0:00", dontSendNotification);
-	lengthLabel.setFont (Font (27.4000f, Font::plain));
+    addAndMakeVisible(&lengthLabel);
+    lengthLabel.setFont (Font ("Helvetica Neue", 27.0f, Font::plain));
+    lengthLabel.setJustificationType (Justification::centredLeft);
+    lengthLabel.setText("/ 0:00",dontSendNotification);
+    lengthLabel.setColour (Label::textColourId, Colour (0xff6e7075));
+
+    
+    transport.setEnabled(false);
     
     setSize (300, 60);
 }
@@ -41,19 +48,20 @@ void TransportSlider::paint (Graphics& g)
 void TransportSlider::resized()
 {
     transport.setBounds (0, 10, 300, 50);
-    timeLabel.setBounds (104, 0, 85, 24);
-	//timeLabel.setBounds (50, 0, 85, 24);
-    //lengthLabel.setBounds(130, 0, 110, 24);	
+    timeLabel.setBounds (getWidth()/2-80, 0, 80, 25);
+    lengthLabel.setBounds(getWidth()/2, 0, 80, 25);	
 }
 
 void TransportSlider::setTransportRange (double minimum, double maximum, double interval)
 {
+    if (!transport.isEnabled())
+        transport.setEnabled(true);
+    
 	transport.setRange(minimum, maximum, interval);
     
     String length = "/ ";
-    length << TimeHelpers::secondsToTimeLength(maximum);
-    //DBG("Maximum = " << maximum);
-    lengthLabel.setText("/ "+TimeHelpers::secondsToTimeLength(maximum), dontSendNotification);
+    length << secondsFormatted(maximum);
+    lengthLabel.setText(length, dontSendNotification);
 }
 
 void TransportSlider::setTransportPosition (double position)
@@ -63,20 +71,8 @@ void TransportSlider::setTransportPosition (double position)
 }
 
 void TransportSlider::updateTime(double time)
-{
-	int minutes = time/60;
-	int seconds = time - (minutes * 60);
-	int tenths = (time-(floor(time)))*10;
-	
-	String stringTime;
-	if (seconds<10) {
-		stringTime <<minutes<<":"<<"0"<<seconds<<":"<<tenths<<"\n";
-	}
-	else {
-		stringTime <<minutes<<":"<<seconds<<":"<<tenths<<"\n";
-	}
-	
-	timeLabel.setText(stringTime,dontSendNotification);	
+{	
+	timeLabel.setText(secondsFormatted(time),dontSendNotification);	
 }
 
 void TransportSlider::sliderValueChanged (Slider* sliderThatWasMoved)
@@ -93,4 +89,23 @@ double TransportSlider::getMaximum()
     return transport.getMaximum();
 }
 
+String TransportSlider::secondsFormatted (double time)
+{
+    int minutes = time/60;
+	int seconds = time - (minutes * 60);
+	int tenths = (time-(floor(time)))*10;
+	
+    if (tenths > 0.5)
+        seconds++;
+    
+	String stringTime;
+	if (seconds<10) {
+		stringTime <<minutes<<":"<<"0"<<seconds;//<<":"<<tenths<<"\n";
+	}
+	else {
+		stringTime <<minutes<<":"<<seconds;//<<":"<<tenths<<"\n";
+	}
+    
+    return stringTime;
+}
 

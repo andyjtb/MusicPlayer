@@ -27,8 +27,6 @@ AudioControl::AudioControl() : bufferingThread("MusicPlayer AudioBuffer")
     }
     else
     {
-//        soundTouch = new SoundTouchAudioSource(&transport, false);
-//        audioSourcePlayer.setSource (soundTouch);
 		audioSourcePlayer.setSource(&transport);
     
         // start the IO device pulling its data from our callback..
@@ -42,7 +40,7 @@ AudioControl::AudioControl() : bufferingThread("MusicPlayer AudioBuffer")
     
     bufferingThread.startThread();
     
-    applyEQ.referTo(currentEqDetails.On);
+    //applyEQ.referTo(currentEqDetails.On);
     
 }
 AudioControl::~AudioControl()
@@ -66,14 +64,16 @@ void AudioControl::loadFile (const File& audioFile)
             soundTouchSettings = soundTouch->getPlaybackSettings();
         
 		// unload the previous file source and delete it..
-//        if (!bufferingThread.isThreadRunning())
-//            bufferingThread.notify();
-        
 		transport.stop();
 		transport.setSource (nullptr);
         soundTouch = nullptr;
         bufferingAudioSource = nullptr;
         
+        if (bufferingThread.isThreadRunning()) {
+            DBG("Thread is running, doesn't call notify");
+        }
+        else
+            bufferingThread.notify();
         
 		AudioFormatReader* reader = formatManager.createReaderFor (audioFile);
 		
@@ -210,7 +210,7 @@ void AudioControl::audioDeviceIOCallback (const float** inputChannelData,
     //{ 
         audioSourcePlayer.audioDeviceIOCallback(inputChannelData, numInputChannels, outputChannelData, numOutputChannels, numSamples);
         
-        if (applyEQ.getValue())
+        if (currentEqDetails.On.getValue())
         {
             eqFilters.applyFilters (outputChannelData, numSamples, numOutputChannels);
         }

@@ -30,7 +30,8 @@ public:
 	void updateTime(double time);
     
     double getMaximum();
-
+    
+    String secondsFormatted(double time);
 private:
 	void sliderValueChanged (Slider* sliderThatWasMoved);
     Slider transport;

@@ -70,8 +70,11 @@ public:
             MainContentComponent* mainContentComponent = new MainContentComponent();
             
 			setContentOwned (mainContentComponent, true);
-			setMenuBar (mainContentComponent);
-            
+            setMenuBar(mainContentComponent);
+            //3 is the value set in the main component enum
+            //appNameMenu.addItem(3, "Audio Preferences", true, false);
+            //MenuBarModel::setMacMainMenu(mainContentComponent, &appNameMenu);
+
             centreWithSize (getWidth(), getHeight());
             setVisible (true);
         }
@@ -95,6 +98,7 @@ public:
         
     private:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow);
+        PopupMenu appNameMenu;
  
     };
 

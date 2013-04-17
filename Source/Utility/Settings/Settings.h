@@ -37,6 +37,7 @@ struct EqDetails{
 #define tablePlayingRow Settings::getInstance()->getPlayingRow()
 #define tableUpdateRequired Settings::getInstance()->getUpdateRequired()
 #define tableDeleting Settings::getInstance()->getTableDeleting()
+#define tableLayoutString Settings::getInstance()->getTableLayout()
 
 #define artClipboard Settings::getInstance()->getArtClipboard()
 #define artUpdateRequired Settings::getInstance()->getAlbumArtUpdate()
@@ -87,6 +88,8 @@ public:
     
     EqDetails& getCurrentEq() {return eqDetails;}
     
+    String& getTableLayout() {return tableLayout;}
+    
     void saveSingletons();
 	
 	juce_DeclareSingleton_SingleThreaded_Minimal (Settings)
@@ -102,7 +105,8 @@ private:
     Value shouldPlay, loadSelected, playState, updateRequired, deletingTable, artUpdate;
     OwnedArray <RemoteInterprocessConnection, CriticalSection> connections;
     ImageWithType albumArtClipboard;
-
+    String tableLayout;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Settings);
 };

@@ -27,9 +27,19 @@ Remote - Artist select a song then go back to the list of albums for that artist
 Unsupported file type handling, non existent files etc - Work already begun in audiocontrol, work required in tag reader for other file types\
 Can't read metallica and justice for all or ride the lightning\
 \
-Delete musicplayer directory then run again, doesn't create settings file for some weird reason...\
-\
 Weird bug where the itunes ID numbers have shifted to odd instead of even - Causes issues with playlists, since they aren't overwritten with a new itunes library import, praps make different versions if conflicts exist\
+\
+EQ Doesn't work between songs, also doesn't work if you have it set to on when you reload the application\
+\
+Playlist track info is the only thing sent to the iphone, so if the playlist hasn't been opened yet there is no track info, maybe set each playlist when importfinished, maybe write a function in treeview that loads the track info and do that as the item is added to the treeview\
+\
+Cmd + f - sets keyboard focus to search box\
+\
+Other file formats\
+\
+Play count\
+\
+10 band graphic eq q values\
 \
 MINOR THINGS\
 Play back home by yellow card then search for yellowcard, it'll jumped back to the top of the table after it stops\
@@ -43,6 +53,7 @@ Consider checking to see if the information in the table is the same as in the t
 Audio slow down - Soundtouch puts processor usage up to 23%\
 Standard playing = 14% probably the remote connection position send stuff\
 Timeslice thread - wait(-1) and notify()\
+Soundtouch processor - get it to calculate play position but not process samples if speed and pitch are both 1.0\
 \
 General lag on tangled hair tracks - Large album art?\
 Writing large album art is very slow\
@@ -54,14 +65,12 @@ TO FIX LATER\
 \f1 \
 \pard\pardeftab720\ql\qnatural
 \cf0 \
-TO ADD\
-Saving table state - tableHeaderComponent toString function\
-\pard\pardeftab720\ql\qnatural
-
-\f0 \cf0 \
+TO ADD
+\f0 \
 Intercepts from keyboard, searches for string being entered\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural
 \cf0 Track info display - See visual resources file\
+Last.fm\
 \pard\pardeftab720\ql\qnatural
 
 \f1 \cf0 \

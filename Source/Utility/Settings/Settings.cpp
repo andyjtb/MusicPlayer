@@ -48,6 +48,8 @@ bool Settings::createSettingsFile()
     File settingsFile (File::getSpecialLocation(File::userMusicDirectory).getFullPathName()+ "/MusicPlayer/Settings");
     
     if (!settingsFile.existsAsFile()) {
+        settingsFile.getParentDirectory().createDirectory();
+        
         ValueTree settingsValue ("SETTINGS");
         ValueTree libraryValue("LIBRARY");
         libraryValue.setProperty("LibraryFile", File(File::getSpecialLocation(File::userMusicDirectory).getFullPathName()+ "/MusicPlayer/MusicPlayerLibrary.xml").getFullPathName() ,0);
@@ -65,6 +67,10 @@ bool Settings::createSettingsFile()
         eqValue.setProperty("ID", 1, 0);
         eqValue.setProperty("On", 0, 0);
         settingsValue.addChild(eqValue, -1, 0);
+        
+        ValueTree tableLayout ("TABLELAYOUT");
+        tableLayout.setProperty("Layout", "<TABLELAYOUT sortedCol=\"3\" sortForwards=\"1\"><COLUMN id=\"1\" visible=\"0\" width=\"30\"/><COLUMN id=\"2\" visible=\"0\" width=\"50\"/><COLUMN id=\"3\" visible=\"1\" width=\"150\"/><COLUMN id=\"4\" visible=\"1\" width=\"200\"/><COLUMN id=\"5\" visible=\"1\" width=\"150\"/><COLUMN id=\"6\" visible=\"1\" width=\"60\"/><COLUMN id=\"7\" visible=\"0\" width=\"60\"/><COLUMN id=\"8\" visible=\"1\" width=\"80\"/><COLUMN id=\"9\" visible=\"0\" width=\"100\"/><COLUMN id=\"10\" visible=\"0\" width=\"100\"/><COLUMN id=\"11\" visible=\"0\" width=\"30\"/><COLUMN id=\"12\" visible=\"1\" width=\"80\"/><COLUMN id=\"13\" visible=\"0\" width=\"60\"/><COLUMN id=\"14\" visible=\"0\" width=\"125\"/><COLUMN id=\"15\" visible=\"1\" width=\"125\"/><COLUMN id=\"16\" visible=\"0\" width=\"300\"/><COLUMN id=\"17\" visible=\"0\" width=\"60\"/><COLUMN id=\"18\" visible=\"1\" width=\"50\"/><COLUMN id=\"19\" visible=\"0\" width=\"80\"/><COLUMN id=\"20\" visible=\"0\" width=\"50\"/><COLUMN id=\"21\" visible=\"0\" width=\"50\"/></TABLELAYOUT>", 0);
+        settingsValue.addChild(tableLayout, -1, 0);
         
         ScopedPointer<XmlElement> settingsCreateXml;
         settingsCreateXml = settingsValue.createXml();
@@ -133,6 +139,12 @@ void Settings::initSettings()
                 eqSettingsFile.create();
                 DBG("EQ file not found");
             }
+        }
+        
+        XmlElement* tableLayoutXml;
+        tableLayoutXml = settingsXml->getChildByName("TABLELAYOUT");
+        if (tableLayoutXml != nullptr) {
+            tableLayout = tableLayoutXml->getStringAttribute("Layout");
         }
 	}	
     
@@ -294,6 +306,12 @@ void Settings::saveSingletons()
             eqDetailsXml->setAttribute("ID", eqDetails.ID);
             eqDetailsXml->setAttribute("On", eqDetails.On.toString());
         }
+        
+        XmlElement* tableLayoutXml;
+        tableLayoutXml = settingsXml->getChildByName("TABLELAYOUT");
+        
+        if (tableLayoutXml != nullptr)
+            tableLayoutXml->setAttribute("Layout", tableLayout);
         
         settingsXml->writeToFile(settingsXmlFile, String::empty, "UTF-8", 200);
 	}	

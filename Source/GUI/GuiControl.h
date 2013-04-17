@@ -64,6 +64,8 @@ public:
      Destructor
      */
 	~GuiControl();
+    
+    void paint(Graphics& g);
 	void resized();
 	
 	void setAudioControl (AudioControl* incomingAudioControl);

@@ -59,6 +59,18 @@ GuiControl::~GuiControl()
 	
 }
 
+void GuiControl::paint(Graphics& g)
+{
+//    g.fillAll (Colour (0xff323541));
+//    
+//    g.setGradientFill (ColourGradient (Colour (0x30ffffff),
+//                                       0.0f, 0.0f,
+//                                       Colour (0x6e000000),
+//                                       0, getHeight(),
+//                                       false));
+//    g.fillRect (0, 0, getWidth(), getHeight());    
+}
+
 void GuiControl::resized()
 {
 	playButton.setBounds(0, 0, 143, 143);
@@ -312,6 +324,7 @@ void GuiControl::loadFile()
 
         if(tableShouldPlay.getValue())
         {
+            DBG("Load file " << selectedFile.getFullPathName());
             singletonPlayState = false;
             audioControl->loadFile(selectedFile);
             tablePlayingRow = tableSelectedRow;
@@ -331,6 +344,7 @@ void GuiControl::loadFile()
         
         albumArt.setCover(selectedFile);
     }
+    
 }
 
 void GuiControl::updateTagDisplay (File audioFile)

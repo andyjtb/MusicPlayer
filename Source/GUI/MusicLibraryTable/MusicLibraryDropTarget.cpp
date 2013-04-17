@@ -100,6 +100,8 @@ void MusicLibraryDropTarget::filesDropped (const StringArray &files, int x, int 
     }
     
     tableUpdateRequired = true;
+    //musicTable.updateTableFilteredAndSorted();
+    
     somethingIsBeingDraggedOver = false;
     repaint();
 }

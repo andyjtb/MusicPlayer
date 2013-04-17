@@ -19,6 +19,7 @@ Equaliser::Equaliser (AudioControl* incomingAudioControl) :
     
     addAndMakeVisible (&toggleButton);
     toggleButton.setButtonText ("On");
+    toggleButton.addListener(this);
     
     addAndMakeVisible (&add);
     add.setButtonText ("+");
@@ -52,7 +53,7 @@ Equaliser::Equaliser (AudioControl* incomingAudioControl) :
     //Waits till all sliders have been created then triggers the combobox change callback to set them all to the incoming value
     presetCombo.setSelectedId(currentEqDetails.ID);
     
-    toggleButton.getToggleStateValue().referTo(audioControl->getApplyEQ());
+    toggleButton.setToggleState(currentEqDetails.On.getValue(), false);
     
     File eqTest = File(File::getSpecialLocation(File::userMusicDirectory).getFullPathName() + "/MusicPlayer/EQ.xml");
     writeValueTreeToFile(singletonEqSettings, eqTest);
@@ -201,5 +202,11 @@ void Equaliser::buttonClicked (Button* button)
             presetCombo.addItem(singletonEqSettings.getChild(i).getProperty("Name").toString(), presetCombo.getNumItems()+1);
         presetCombo.setSelectedId(1);
         
+    }
+    
+    else if (button == &toggleButton)
+    {
+        currentEqDetails.On = !currentEqDetails.On.getValue();
+        toggleButton.setToggleState(currentEqDetails.On.getValue(), false);
     }
 }

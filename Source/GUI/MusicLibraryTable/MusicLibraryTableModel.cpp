@@ -53,16 +53,18 @@ finishedLoading (true)
                                      800,
                                      TableHeaderComponent::defaultFlags);
     }
-	// we could now change some initial settings..
-	table.getHeader().setSortColumnId (MusicColumns::Artist, true); // sort forwards by the Artist column
     
-    for (int i = 0; i < MusicColumns::numColumns; i++)
-    {
-        if (i == 3|| i==4 || i== 5 || i== 6 || i== 8 || i== 12 || i== 15 || i== 18)
-            table.getHeader().setColumnVisible (i, true);
-        else
-            table.getHeader().setColumnVisible(i, false);
-    }
+    table.getHeader().restoreFromString(tableLayoutString);
+//	// we could now change some initial settings..
+//	table.getHeader().setSortColumnId (MusicColumns::Artist, true); // sort forwards by the Artist column
+//    
+//    for (int i = 0; i < MusicColumns::numColumns; i++)
+//    {
+//        if (i == 3|| i==4 || i== 5 || i== 6 || i== 8 || i== 12 || i== 15 || i== 18)
+//            table.getHeader().setColumnVisible (i, true);
+//        else
+//            table.getHeader().setColumnVisible(i, false);
+//    }
     
 	setFilterText (String::empty);
 }
@@ -73,7 +75,7 @@ MusicLibraryTable::~MusicLibraryTable()
 		currentLibrary->removeListener(this);
     
     if (!displayPlaylist)
-        DBG(table.getHeader().toString());
+        tableLayoutString = table.getHeader().toString();
     
     //Clears the callout pointer as it has to be optional as the modal state also trys to delete the object being pointed to
     callout.clear();
@@ -238,6 +240,7 @@ void MusicLibraryTable::sortOrderChanged (int newSortColumnId, bool isForwards)
 			|| newSortColumnId == MusicColumns::ID
             || newSortColumnId == MusicColumns::Added
             || newSortColumnId == MusicColumns::Modified
+            || newSortColumnId == MusicColumns::TrackNum
             || newSortColumnId == MusicColumns::Size)
 		{
 			ValueTreeComparators::Numerical sorter (MusicColumns::columnNames[newSortColumnId], isForwards);
@@ -462,8 +465,7 @@ void MusicLibraryTable::deleteTracks (bool libraryOnly)
     //DBG("Trans num = " << singletonUndoManager->getNumActionsInCurrentTransaction());
     //DBG("Undo message = " << singletonUndoManager->getUndoDescription());
     tableUpdateRequired = true;
-    tableDeleting = false;
-    
+
     table.deselectAllRows();
     
     if (selectedRows[0] == 0 || selectedRows[0] == (table.getNumRows()-1))
@@ -474,8 +476,11 @@ void MusicLibraryTable::deleteTracks (bool libraryOnly)
     if(filteredDataList.getNumChildren() > 0)
     {
         tableSelectedRow = filteredDataList.getChild(table.getSelectedRow());
-        tableLoadSelected = true;
+        //Causes the song to stop regardless, seems loadfile function is called multiple times
+        //tableLoadSelected = true;
     }
+    
+    tableDeleting = false;
     
     updateTableFilteredAndSorted();
 }
