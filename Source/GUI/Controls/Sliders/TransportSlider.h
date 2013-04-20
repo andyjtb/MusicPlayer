@@ -24,11 +24,11 @@ public:
 
     void paint (Graphics& g);
     void resized();
-    
-	void setTransportRange (double minimum, double maximum, double interval);
+
 	void setTransportPosition (double position);
 	void updateTime(double time);
     
+    void setMaximum(double _maximum);
     double getMaximum();
     
     String secondsFormatted(double time);

@@ -15,6 +15,9 @@ ConnectionIndicator::ConnectionIndicator()
     else
         connected = false;
     
+    IpAddress::findAllIpAddresses(ips);
+    tooltip << "Your Ip: \n" << ips[1].toString();
+    
     tipWindow.setMillisecondsBeforeTipAppears(300);
 }
 
@@ -55,22 +58,24 @@ void ConnectionIndicator::remoteConnectionChanged(String ipAddress)
     else
         connected = false;
     
+    //Clear tooltip and re-make it whenever the remoteconnection changes
+    tooltip = String::empty;
+    tooltip << "Your Ip: \n" << ips[1].toString();
+    //If any connections exist
+    if (remoteConnections.size() > 0)
+    {
+        tooltip << "\n\nCurrently connected to: \n";
+        
+        for (int i = 0; i < remoteConnections.size(); i++)
+        {
+            tooltip << connectedTo[i] << "\n";
+        }
+    }
+    
     repaint();
 }
 
 String ConnectionIndicator::getTooltip()
 {
-    String tooltip;
-    Array<IpAddress> ips;
-    IpAddress::findAllIpAddresses(ips);
-    
-    tooltip << "Your Ip: \n" << ips[1].toString();
-    tooltip << "\n\nCurrently connected to: \n";
-    
-    for (int i = 0; i < remoteConnections.size(); i++)
-    {
-        tooltip << connectedTo[i] << "\n";
-    }
-    
     return tooltip;
 }

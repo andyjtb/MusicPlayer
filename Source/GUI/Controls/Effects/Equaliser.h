@@ -38,8 +38,8 @@ private:
     ToggleButton toggleButton;
     ComboBox presetCombo;
     
-    String frequencyStrings[numFrequencies];
-    int frequencies[numFrequencies];
+    static String frequencyStrings[numFrequencies];
+    static int frequencies[numFrequencies];
     Slider frequencySliders[numFrequencies];
     Label frequencyLabels[numFrequencies];
     

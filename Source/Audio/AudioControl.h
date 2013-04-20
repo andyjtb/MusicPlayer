@@ -19,7 +19,6 @@
 #include "dRowAudio_SoundTouchAudioSource.h"
 #include "dRowAudio_SoundTouchProcessor.h"
 
-
 /**
  Top Level Audio Class
  */
@@ -42,7 +41,7 @@ public:
 	/**
      Loads the file at the specified location
      */
-    void loadFile (const File& audioFile);
+    int loadFile (const File& audioFile);
     
     void reloadFile (const File& audioFile, bool couldBeFound);
     
@@ -93,7 +92,10 @@ public:
     
     SoundTouchProcessor::PlaybackSettings getSoundTouchSettings (){return soundTouchSettings;}
     
+    String getRegisteredFormatWildcard() {return formatManager.getWildcardForAllFormats();}
+    
 private:
+    
     AudioDeviceManager audioDeviceManager;	// this wraps the actual audio device
 	AudioSourcePlayer audioSourcePlayer;
 	AudioFormatManager formatManager;

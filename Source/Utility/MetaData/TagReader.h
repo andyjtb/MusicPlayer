@@ -22,69 +22,67 @@ class TagReader
 public:
 	static ValueTree addToLibrary (const File& audioFile)
 	{
-        //Only things required in the if are the declaration of f and the setProperty kind. Sort that out bruv
-        //Also remember to add a thread called DuplicateRemover or similar which searches the library for duplicates in the background and removes them
 		if (audioFile.existsAsFile())
         {
-			if (audioFile.getFullPathName().endsWith(".mp3")) 
+            AudioFormatManager formatManager;
+            formatManager.registerBasicFormats();
+            
+            ScopedPointer<AudioFormatReader> reader;
+            reader = formatManager.createReaderFor (audioFile);
+            
+            
+			if (reader != nullptr) 
             {
                 ValueTree tags("ITEM");
-                TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8());	
-                
-//                if (f != NULL)
-//                {
-                
+                TagLib::FileRef f(audioFile.getFullPathName().toUTF8());	
+
                 singletonCurrentValueTreeId = singletonCurrentValueTreeId+2;
                 
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::ID],singletonCurrentValueTreeId, nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::LibID], ++singletonCurrentLibId, nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Artist], f.tag()->artist().toCString(), nullptr);
-                tags.setProperty(MusicColumns::columnNames[MusicColumns::Song], f.tag()->title().toCString(), nullptr);
-                tags.setProperty(MusicColumns::columnNames[MusicColumns::Album], f.tag()->album().toCString(), nullptr);
-                //		Rating,
                 
-//                TagLib::ID3v2::FrameList bpmFrame = f.ID3v2Tag()->frameList("TBPM");
-//                if (!bpmFrame.isEmpty()) {
-//                    tags.setProperty(MusicColumns::columnNames[MusicColumns::BPM], 0, nullptr);
-//                }
+                //If no tag song title exists, set the song title to file name
+                if (f.tag()->title().isEmpty())
+                    tags.setProperty(MusicColumns::columnNames[MusicColumns::Song], audioFile.getFileName(), nullptr);
+                else
+                    tags.setProperty(MusicColumns::columnNames[MusicColumns::Song], f.tag()->title().toCString(), nullptr);
+                    
+                tags.setProperty(MusicColumns::columnNames[MusicColumns::Album], f.tag()->album().toCString(), nullptr);
                 
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Genre], f.tag()->genre().toCString(), nullptr);         
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Label], String (CharPointer_UTF8(f.tag()->comment().toCString())), nullptr);
                 
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Size], audioFile.getSize(), nullptr);
                 
-                
-                                                           
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::BitRate], f.audioProperties()->bitrate(), nullptr);                                         
                 
-                AudioFormatManager formatManager;
-                formatManager.registerBasicFormats();
-                
-                ScopedPointer<AudioFormatReader> reader;
-                reader = formatManager.createReaderFor (audioFile);
-                
                 //Problem with 65days one time for all time album, fine for other mp3s
-                if(reader != nullptr)
-                {
+                //if(reader != nullptr)
+                //{
                     int32 length = ((reader->lengthInSamples/reader->sampleRate)*1000);            
                     tags.setProperty(MusicColumns::columnNames[MusicColumns::Length],length , nullptr);
-                }
+                //}
                 
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::SampleRate], reader->sampleRate, nullptr);
                 
-                tags.setProperty(MusicColumns::columnNames[MusicColumns::Kind], "MPEG audio file", nullptr);
+                if (audioFile.getFileExtension() == "mp3")
+                    tags.setProperty(MusicColumns::columnNames[MusicColumns::Kind], "MPEG audio file", nullptr);
+                else
+                    tags.setProperty(MusicColumns::columnNames[MusicColumns::Kind], reader->getFormatName(), nullptr);
+                
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Added], Time::getCurrentTime().toMilliseconds(), nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Modified], audioFile.getLastModificationTime().toMilliseconds(), nullptr);
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::Location], audioFile.getFullPathName(), nullptr);
                 
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::TrackNum], int(f.tag()->track()), nullptr);
+                
+                tags.setProperty(MusicColumns::columnNames[MusicColumns::PlayCount], 0, nullptr);
                      
                 return tags;
-//            }
-//                DBG("Tags not present");
-//                return ValueTree();
+                
             }
-            DBG("FILE NOT SUPPORTED");
+            DBG("FILE COULD NOT BE OPENED");
             return ValueTree();
 		}
 		else {
@@ -261,7 +259,7 @@ public:
     
     static void writeTag (int columnId, ValueTree incomingTrack)
     {
-        TagLib::MPEG::File f(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString().toUTF8());	
+        TagLib::FileRef f(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString().toUTF8());	
         
         switch (columnId) {
             case 3:

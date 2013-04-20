@@ -607,7 +607,15 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
     }
     if (event.mods.isAltDown())
     {
-        editDirectly(rowNumber, columnId, event);
+        if (columnId == MusicColumns::Artist ||
+            columnId == MusicColumns::Song ||
+            columnId == MusicColumns::Album ||
+            columnId == MusicColumns::Rating ||
+            columnId == MusicColumns::Genre ||
+            columnId == MusicColumns::Score) 
+        {
+            editDirectly(rowNumber, columnId, event);
+        }
     }
 }
 

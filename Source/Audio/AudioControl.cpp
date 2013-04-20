@@ -35,12 +35,13 @@ AudioControl::AudioControl() : bufferingThread("MusicPlayer AudioBuffer")
     
     // Sets format manager to be able to read wav aiff flac ogg and OS specific (aac m4a wmv) etc
     formatManager.registerBasicFormats();
+    DBG(formatManager.getWildcardForAllFormats());
 
 	audioMeterOutputL = audioMeterOutputR = sharedMeterOutputL = sharedMeterOutputR = 0.f;
     
     bufferingThread.startThread();
     
-    //applyEQ.referTo(currentEqDetails.On);
+    applyEQ.referTo(currentEqDetails.On);
     
 }
 AudioControl::~AudioControl()
@@ -55,7 +56,7 @@ AudioControl::~AudioControl()
 
 }
 
-void AudioControl::loadFile (const File& audioFile)
+int AudioControl::loadFile (const File& audioFile)
 {
 	//this is called when the user changes the filename in the file chooser box
 	if(audioFile.existsAsFile())
@@ -68,12 +69,12 @@ void AudioControl::loadFile (const File& audioFile)
 		transport.setSource (nullptr);
         soundTouch = nullptr;
         bufferingAudioSource = nullptr;
-        
-        if (bufferingThread.isThreadRunning()) {
-            DBG("Thread is running, doesn't call notify");
-        }
-        else
-            bufferingThread.notify();
+          
+//        if (bufferingThread.isThreadRunning()) {
+//            DBG("Thread is running, doesn't call notify");
+//        }
+//        else
+//            bufferingThread.notify();
         
 		AudioFormatReader* reader = formatManager.createReaderFor (audioFile);
 		
@@ -90,55 +91,21 @@ void AudioControl::loadFile (const File& audioFile)
             transport.setSource (soundTouch);
 
 			sendChangeMessage();
+            
+            //Loaded fine
+            return 0 ;
 		}  
         else
         {
-            DBG("Reader failed\nFile is = "<< audioFile.getFullPathName());
-            //reloadFile(audioFile, true);
+            //Reader failed
+            return 2;
         }
 	}
 	else
 	{
-        DBG("File doesn't exist");
-        //reloadFile(audioFile, false);
+        //Not found
+        return 1;
 	}	    
-}
-
-void AudioControl::reloadFile(const File& audioFile, bool couldBeFound)
-{
-    ScopedPointer<AlertWindow> fileFailed;
-    if (couldBeFound) {
-        fileFailed = new AlertWindow("File Could Not Be Opened", "The selected file could not be opened, the listing for it could be incorrect\n Would you like to try reloading this file?", AlertWindow::WarningIcon);
-        fileFailed->addButton("Reload", 1);
-    }
-    else
-    {
-        fileFailed = new AlertWindow("File Could Not Be Found", "The selected file could not be found, the listing for it could be incorrect\n Would you like to try finding this file?", AlertWindow::WarningIcon);
-        fileFailed->addButton("Find", 1);
-    }
-    
-    fileFailed->addButton("Cancel", 0);
-    
-    
-    if (fileFailed->runModalLoop() != 0)
-    {
-        ValueTree currentTrack = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::Location], audioFile.getFullPathName());
-        if (currentTrack.isValid())
-        {
-            singletonLibraryTree.removeChild(currentTrack, 0/*add undoManager possibly*/);
-            
-            if (couldBeFound) {
-                ValueTree reloadChild = TagReader::addToLibrary(audioFile);
-                if (reloadChild.isValid()) 
-                    singletonLibraryTree.addChild(reloadChild, -1, 0);
-            }
-            else
-            {
-                
-            }
-            tableUpdateRequired = true;
-        }
-    }
 }
 
 bool AudioControl::isPlaying()
@@ -210,7 +177,7 @@ void AudioControl::audioDeviceIOCallback (const float** inputChannelData,
     //{ 
         audioSourcePlayer.audioDeviceIOCallback(inputChannelData, numInputChannels, outputChannelData, numOutputChannels, numSamples);
         
-        if (currentEqDetails.On.getValue())
+        if (applyEQ.getValue())
         {
             eqFilters.applyFilters (outputChannelData, numSamples, numOutputChannels);
         }

@@ -61,7 +61,8 @@ public:
     enum CommandIDs
     {
         undoMenu = 0x2000,
-        spaceBar = 0x3000
+        spaceBar = 0x3000,
+        search = 0x4000
     };
     
     StringArray getMenuBarNames();

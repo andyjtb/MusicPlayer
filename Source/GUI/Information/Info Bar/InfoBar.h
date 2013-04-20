@@ -35,8 +35,13 @@ public:
     
     ConnectionIndicator& getConnectionIndicator () { return indicator;}
     
+    void displayFileStatus (File& file, int result);
+    
 private:
     String size, time, numTracks;
     ConnectionIndicator indicator;
+    
+    File currentFile;
+    bool notFound, notRead;
 };
 #endif

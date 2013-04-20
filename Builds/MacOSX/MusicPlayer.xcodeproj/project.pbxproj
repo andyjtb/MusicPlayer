@@ -61,6 +61,7 @@
 		A18B4B2416F25192006A17B8 /* InfoBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A18B4B2216F2518F006A17B8 /* InfoBar.cpp */; };
 		A18B4B3516F690F0006A17B8 /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18B4B3416F690F0006A17B8 /* vecLib.framework */; };
 		A1BB0B7A16A63EF3005DC71A /* TrackMulti.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1BB0B7816A63EF1005DC71A /* TrackMulti.cpp */; };
+		A1E22E16172176F600FDABD0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1E22E15172176F600FDABD0 /* CoreFoundation.framework */; };
 		A1E4E193163AD6BB009E3941 /* GuiControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1E4E192163AD6BB009E3941 /* GuiControl.cpp */; };
 		A1E82168163C550000308912 /* TrackInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1E82166163C550000308912 /* TrackInfo.cpp */; };
 		A1EAB82C168DFD880056B0D0 /* RemoteControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1EAB82B168DFD880056B0D0 /* RemoteControl.cpp */; };
@@ -712,6 +713,7 @@
 		A1BB0B7916A63EF2005DC71A /* TrackMulti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TrackMulti.h; path = Track/TrackMulti.h; sourceTree = "<group>"; };
 		A1C162432F64703B58A97968 /* juce_ValueTree.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ValueTree.cpp; path = ../../JuceLibraryCode/modules/juce_data_structures/values/juce_ValueTree.cpp; sourceTree = SOURCE_ROOT; };
 		A1DA48CF8079A269C91E66FB /* juce_FileBrowserListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_FileBrowserListener.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/filebrowser/juce_FileBrowserListener.h; sourceTree = SOURCE_ROOT; };
+		A1E22E15172176F600FDABD0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = ../../../../../../../System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<group>"; };
 		A1E4E191163AD6BB009E3941 /* GuiControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuiControl.h; sourceTree = "<group>"; };
 		A1E4E192163AD6BB009E3941 /* GuiControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuiControl.cpp; sourceTree = "<group>"; };
 		A1E82166163C550000308912 /* TrackInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackInfo.cpp; sourceTree = "<group>"; };
@@ -1077,6 +1079,7 @@
 				13E683070A4B04FA4485A9B7 /* QuartzCore.framework in Frameworks */,
 				670746D37AEACFC2782C8B60 /* QuickTime.framework in Frameworks */,
 				02AA5561890C5951B66F5B05 /* WebKit.framework in Frameworks */,
+				A1E22E16172176F600FDABD0 /* CoreFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2089,6 +2092,7 @@
 		9DDE183EB4FC8B15E1DA0900 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A1E22E15172176F600FDABD0 /* CoreFoundation.framework */,
 				A18B4B3416F690F0006A17B8 /* vecLib.framework */,
 				6754A314942E403CA3F0FE60 /* AudioToolbox.framework */,
 				14421A2162E06997E3343C4A /* Carbon.framework */,
@@ -3217,6 +3221,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_MODEL_TUNING = G5;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
@@ -3237,6 +3242,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_MODEL_TUNING = G5;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;

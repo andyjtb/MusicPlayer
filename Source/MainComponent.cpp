@@ -23,7 +23,7 @@ MainContentComponent::MainContentComponent()
     
     addAndMakeVisible(&guiControl);
 	guiControl.setAudioControl(&audioControl);
-    
+ 
 	setSize (1000, 630);
     
 }
@@ -74,6 +74,8 @@ PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const St
     else
     {
         menu.addCommandItem(&commandManager, spaceBar);
+        menu.addSeparator();
+        menu.addCommandItem(&commandManager, search);
         return menu;
     }
 }
@@ -94,7 +96,7 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
         
         if (menuItemID == AddFile)
 		{
-			FileChooser fc ("Choose files to add...",File::getCurrentWorkingDirectory(),"*",true);
+			FileChooser fc ("Choose files to add...",File::getCurrentWorkingDirectory(),audioControl.getRegisteredFormatWildcard(),true);
 			
 			if (fc.browseForMultipleFilesToOpen())
 			{
@@ -119,6 +121,7 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 			{
                 DirectoryLoader d;
                 d.setDirectory(fc.getResult());
+                d.setWildcards(audioControl.getRegisteredFormatWildcard());
                 
                 if (d.runThread())
                 {
@@ -181,7 +184,7 @@ ApplicationCommandTarget* MainContentComponent::getNextCommandTarget()
 void MainContentComponent::getAllCommands (Array <CommandID>& commands)
 {
     // this returns the set of all commands that this target can perform..
-    const CommandID ids[] = {undoMenu, spaceBar};
+    const CommandID ids[] = {undoMenu, spaceBar, search};
     
     commands.addArray (ids, numElementsInArray (ids));
 }
@@ -217,8 +220,14 @@ void MainContentComponent::getCommandInfo (CommandID commandID, ApplicationComma
             singletonPlayState.getValue() ? playPause = "Pause" : playPause = "Play";
             result.setInfo(playPause, "Play or Pause", generalCategory, 0);
             result.addDefaultKeypress(KeyPress::spaceKey, 0);
-            
-        }                
+            break;
+        } 
+        case search:
+        {
+            result.setInfo("Search Library", "Search Library", generalCategory, 0);
+            result.addDefaultKeypress('f', ModifierKeys::commandModifier);
+            break;
+        }
         default:
             break;
     };
@@ -237,6 +246,9 @@ bool MainContentComponent::perform (const InvocationInfo& info)
             break;
         case spaceBar:
             singletonPlayState.getValue() ? singletonPlayState = false : singletonPlayState = true;
+            break;
+        case search:
+            guiControl.getSearchBox().grabKeyboardFocus();
             break;
         default:
             return false;

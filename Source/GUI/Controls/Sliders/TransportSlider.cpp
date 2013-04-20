@@ -52,18 +52,6 @@ void TransportSlider::resized()
     lengthLabel.setBounds(getWidth()/2, 0, 80, 25);	
 }
 
-void TransportSlider::setTransportRange (double minimum, double maximum, double interval)
-{
-    if (!transport.isEnabled())
-        transport.setEnabled(true);
-    
-	transport.setRange(minimum, maximum, interval);
-    
-    String length = "/ ";
-    length << secondsFormatted(maximum);
-    lengthLabel.setText(length, dontSendNotification);
-}
-
 void TransportSlider::setTransportPosition (double position)
 {
 	transport.setValue(position, dontSendNotification);
@@ -82,6 +70,21 @@ void TransportSlider::sliderValueChanged (Slider* sliderThatWasMoved)
 	updateTime(transport.getValue());
 	sendActionMessage(transportLocation);
 	
+}
+
+void TransportSlider::setMaximum(double _maximum)
+{
+    if (!transport.isEnabled())
+        transport.setEnabled(true);
+    
+    if (_maximum < 1)
+        transport.setRange(0, _maximum, 0.01);
+    else
+        transport.setRange(0, _maximum, 0.1);
+    
+    String length = "/ ";
+    length << secondsFormatted(_maximum);
+    lengthLabel.setText(length, dontSendNotification);
 }
 
 double TransportSlider::getMaximum()

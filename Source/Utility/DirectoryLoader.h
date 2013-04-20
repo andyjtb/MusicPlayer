@@ -25,7 +25,7 @@ public:
         
         String filesFound;
         
-        DirectoryIterator directoryIterator (directory, true, "*.mp3",2);
+        DirectoryIterator directoryIterator (directory, true, wildcards,2);
         
         //setProgress(-1.0);
         
@@ -46,6 +46,13 @@ public:
     {
         directory = incomingDirectory;
     }
+    
+    void setWildcards (String _wildcards)
+    {
+        wildcards = _wildcards;
+    }
+    
+    String wildcards;
     File directory;
 };
 

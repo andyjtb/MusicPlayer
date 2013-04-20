@@ -31,7 +31,8 @@ public:
     
 private:
     //OwnedArray<BiquadFilter> filters;
-    BiquadFilter filters[10][2];
+    BiquadFilter filters[numFrequencies][2];
+    float gains[numFrequencies];
     int sampleRate, filterID;
     float q;
 };

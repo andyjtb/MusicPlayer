@@ -9,9 +9,10 @@
 #include "Equaliser.h"
 
 
-Equaliser::Equaliser (AudioControl* incomingAudioControl) :
-    frequencies ({32,64,125,250,500,1000,2000,4000,8000,16000}),
-    frequencyStrings({"32", "64", "125", "250", "500", "1K", "2K", "4K", "8K", "16K"})
+int Equaliser::frequencies[numFrequencies] {32,64,125,250,500,1000,2000,4000,8000,16000};
+String Equaliser::frequencyStrings[numFrequencies] {"32", "64", "125", "250", "500", "1K", "2K", "4K", "8K", "16K"};
+
+Equaliser::Equaliser (AudioControl* incomingAudioControl)
 {
     
     audioControl.set(incomingAudioControl, false);
@@ -19,7 +20,6 @@ Equaliser::Equaliser (AudioControl* incomingAudioControl) :
     
     addAndMakeVisible (&toggleButton);
     toggleButton.setButtonText ("On");
-    toggleButton.addListener(this);
     
     addAndMakeVisible (&add);
     add.setButtonText ("+");
@@ -53,7 +53,7 @@ Equaliser::Equaliser (AudioControl* incomingAudioControl) :
     //Waits till all sliders have been created then triggers the combobox change callback to set them all to the incoming value
     presetCombo.setSelectedId(currentEqDetails.ID);
     
-    toggleButton.setToggleState(currentEqDetails.On.getValue(), false);
+    toggleButton.getToggleStateValue().referTo(audioControl->getApplyEQ());
     
     File eqTest = File(File::getSpecialLocation(File::userMusicDirectory).getFullPathName() + "/MusicPlayer/EQ.xml");
     writeValueTreeToFile(singletonEqSettings, eqTest);
@@ -202,11 +202,5 @@ void Equaliser::buttonClicked (Button* button)
             presetCombo.addItem(singletonEqSettings.getChild(i).getProperty("Name").toString(), presetCombo.getNumItems()+1);
         presetCombo.setSelectedId(1);
         
-    }
-    
-    else if (button == &toggleButton)
-    {
-        currentEqDetails.On = !currentEqDetails.On.getValue();
-        toggleButton.setToggleState(currentEqDetails.On.getValue(), false);
     }
 }

@@ -88,9 +88,6 @@ void GuiControl::resized()
     //musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
 
     libraryView.setBounds(600, 100, 200, 200);
-    //libraryTreeView.setBounds((getWidth()/2)+50,100,100,100);
-    //treeViewDemo->setBounds((getWidth()/2)+100,50,400,200);
-//    coverflow->setBounds(100,100,100,100);
 }
 
 void GuiControl::setAudioControl(AudioControl* incomingAudioControl)
@@ -121,6 +118,10 @@ void GuiControl::timerCallback(int timerId)
             stopTimer(0);
             stopTimer(1);
             
+            int playCount = tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::PlayCount], 0);
+            playCount++;
+            tablePlayingRow.setProperty(MusicColumns::columnNames[MusicColumns::PlayCount], playCount, 0);
+            
             int toPlay = filteredDataList.indexOf(tablePlayingRow);
             if (toPlay != -1)
                 toPlay++;
@@ -128,6 +129,7 @@ void GuiControl::timerCallback(int timerId)
             ValueTree test(filteredDataList.getChild(toPlay));
             if (test.isValid()) {
                 tableSelectedRow = test;
+                loadingNew = true;
                 tableShouldPlay = true;
                 
             }
@@ -187,19 +189,13 @@ void GuiControl::changeListenerCallback (ChangeBroadcaster* changeBroadcaster)
 {
     //New song loaded change message
 	if (changeBroadcaster == audioControl) {
-        double value = audioControl->getTransportLength();
         audioControl->setVolume(volumeControl.getVolume());
         if(remoteConnections.getFirst() != nullptr)
         {
             remoteConnections.getFirst()->sendPlayingData();
         }
         
-		if (value < 1) {
-			transport.setTransportRange(0, value, 0.01);
-		}
-		else {
-			transport.setTransportRange(0, value, 0.1);
-		}
+        transport.setMaximum(audioControl->getTransportLength());
 	}
     
     if (changeBroadcaster == &libraryView)
@@ -262,7 +258,10 @@ void GuiControl::valueChanged (Value& valueChanged)
     if (valueChanged == tableShouldPlay)
     {
         //iTunes feature, when a new song is to be played it moves the table to that song
-        musicTable->getTableListBox().selectRow(filteredDataList.indexOf(tablePlayingRow));
+        if (!loadingNew)
+            musicTable->getTableListBox().selectRow(filteredDataList.indexOf(tablePlayingRow));
+        
+        loadingNew = false;
         loadFile();
     }
     
@@ -321,28 +320,41 @@ void GuiControl::loadFile()
     if (tableDeleting != true)
     {
         File selectedFile (tableSelectedRow.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
-
-        if(tableShouldPlay.getValue())
-        {
-            DBG("Load file " << selectedFile.getFullPathName());
-            singletonPlayState = false;
-            audioControl->loadFile(selectedFile);
-            tablePlayingRow = tableSelectedRow;
-            singletonPlayState = true;
-            trackInfo.loadTrackInfo(tableSelectedRow);
-            tableShouldPlay.setValue(false);
-        }
-        if (tableLoadSelected.getValue())
-        {
-            singletonPlayState = false;
-            audioControl->loadFile(selectedFile);
-            setPosition(0);
-            tablePlayingRow = tableSelectedRow;
-            trackInfo.loadTrackInfo(tableSelectedRow);
-            tableLoadSelected = false;
-        }
         
-        albumArt.setCover(selectedFile);
+        DBG("Gui load = " << selectedFile.getFileName());
+        
+        if (selectedFile.existsAsFile())
+        {
+            int result = 0;
+            
+            if(tableShouldPlay.getValue())
+            {
+                DBG("Load file " << selectedFile.getFullPathName());
+                singletonPlayState = false;
+                result = audioControl->loadFile(selectedFile);
+                tablePlayingRow = tableSelectedRow;
+                singletonPlayState = true;
+                trackInfo.loadTrackInfo(tableSelectedRow);
+                tableShouldPlay.setValue(false);
+            }
+            if (tableLoadSelected.getValue())
+            {
+                singletonPlayState = false;
+                result = audioControl->loadFile(selectedFile);
+                setPosition(0);
+                tablePlayingRow = tableSelectedRow;
+                trackInfo.loadTrackInfo(tableSelectedRow);
+                tableLoadSelected = false;
+            }
+            
+            infoBar.displayFileStatus(selectedFile, result);
+            albumArt.setCover(selectedFile);
+        }
+        else
+        {
+            //File not found
+            infoBar.displayFileStatus(selectedFile, 1);
+        }
     }
     
 }
@@ -402,7 +414,7 @@ void GuiControl::textEditorTextChanged (TextEditor &textEditor)
 {
     musicTable->setFilterText(textEditor.getText());
     if (remoteConnections.getFirst() != nullptr)
-    remoteConnections.getFirst()->sendTrackNums();
+        remoteConnections.getFirst()->sendTrackNums();
     
 }
 void GuiControl::textEditorReturnKeyPressed (TextEditor &textEditor)
@@ -414,7 +426,8 @@ void GuiControl::textEditorFocusLost (TextEditor &textEditor)
 
 //ValueTree Callbacks
 void GuiControl::valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
-{}
+{
+}
 void GuiControl::valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded)
 {}
 void GuiControl::valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved)
@@ -426,7 +439,12 @@ void GuiControl::valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged)
 void GuiControl::valueTreeRedirected (ValueTree &treeWhichHasBeenChanged)
 {  
     //Selected Row change listener
+    //if (treeWhichHasBeenChanged.getProperty(MusicColumns::columnNames[MusicColumns::LibID]) != tableSelectedRow.getProperty(MusicColumns::columnNames[MusicColumns::LibID]))
+    DBG("changed = " << treeWhichHasBeenChanged.getProperty(MusicColumns::columnNames[MusicColumns::LibID]).toString());
+    DBG("singleton = " << tableSelectedRow.getProperty(MusicColumns::columnNames[MusicColumns::LibID]).toString());
+    
     loadFile();
+
 }
 
 void GuiControl::showEffectsMenu()

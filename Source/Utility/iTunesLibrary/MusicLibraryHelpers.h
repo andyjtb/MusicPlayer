@@ -112,6 +112,7 @@ namespace MusicColumns {
         Size,
         BitRate,
         SampleRate,
+        PlayCount,
         
 		numColumns
 	};
@@ -139,7 +140,8 @@ namespace MusicColumns {
         "TrackNum",
         "Size",
         "BitRate",
-        "SampleRate"
+        "SampleRate",
+        "PlayCount"
 	};
 	
 	static const UNUSED_NOWARN char *iTunesNames[] = {
@@ -164,7 +166,8 @@ namespace MusicColumns {
         "Track Number",
         "Size",
         "Bit Rate",
-        "Sample Rate"
+        "Sample Rate",
+        "Play Count"
 	};
 	
 	static const int columnWidths[] = {
@@ -188,6 +191,7 @@ namespace MusicColumns {
 		60,
         50,
         80,
+        50,
         50,
         50
 	};

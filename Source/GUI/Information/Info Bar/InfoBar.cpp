@@ -14,7 +14,8 @@ InfoBar::InfoBar ()
     filteredDataList.addListener(this);
     
     addAndMakeVisible(&indicator);
-
+    
+    notFound = notRead = false;
 }
 
 InfoBar::~InfoBar()
@@ -44,6 +45,19 @@ void InfoBar::paint (Graphics& g)
     g.drawText (size,
                 (getWidth()/2)+100, 0, 100, getHeight(),
                 Justification::centredLeft, true);
+    
+    if (notFound) {
+        String notFoundString = currentFile.getFileName();
+        notFoundString << " Could not be found";
+        g.drawText(notFoundString, getWidth()-400, 0, 400, getHeight(), Justification::centredRight, true);
+    }
+    
+    if (notRead) {
+        String notReadString = currentFile.getFileName();
+        notReadString << " Could not be read";
+        g.drawText(notReadString, getWidth()-400, 0, 400, getHeight(), Justification::centredRight, true);
+    }
+    
 }
 
 void InfoBar::resized()
@@ -89,6 +103,26 @@ void InfoBar::updateBar()
 void InfoBar::valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved)
 {
     //Everytime the table changes it re-orders/re-creates the filtered data list, including sorting it so this is the most called function
+    
+    updateBar();
+}
+
+void InfoBar::displayFileStatus (File& file, int result)
+{
+    currentFile = file;
+    
+    if (result == 1)
+    {
+        notFound = true;
+        notRead = false;
+    }
+    else if (result == 2)
+    {
+        notFound = false;
+        notRead = true;
+    }
+    else
+        notFound = notRead = false;
     
     updateBar();
 }

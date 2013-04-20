@@ -110,6 +110,10 @@ public:
     void remoteConnectionChanged(String ipAddress) { infoBar.getConnectionIndicator().remoteConnectionChanged(ipAddress);}
     
     void setPlaylist (String incomingPlaylist);
+    
+    //Used for cmd+f keyboard shortcut focusing on the searchbox
+    SearchBox& getSearchBox() {return searchBox;}
+
 private:
 	AudioControl* audioControl;
 	
@@ -135,6 +139,9 @@ private:
     ScopedPointer<TabbedComponent> effectsTabbed;
     ScopedPointer<Equaliser> equaliser;
     ScopedPointer<SpeedPitch> speedPitch;
+    
+    //Allows itunes like should play without repeating songs
+    bool loadingNew;
 };
 
 

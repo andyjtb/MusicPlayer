@@ -35,6 +35,9 @@ private:
     TooltipWindow tipWindow;
     StringArray connectedTo;
     bool connected;
+    
+    String tooltip;
+    Array<IpAddress> ips;
 };
 
 #endif
