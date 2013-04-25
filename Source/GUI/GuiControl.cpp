@@ -317,7 +317,7 @@ void GuiControl::valueChanged (Value& valueChanged)
 }
 void GuiControl::loadFile()
 {
-    if (tableDeleting != true)
+    if (musicTable->isTableDeleting() != true)
     {
         File selectedFile (tableSelectedRow.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
         

@@ -16,10 +16,15 @@
 #include "Settings.h"
 
 #include <cstdio>
-
+/** A utility class containing a number of different static functions used for metadata tag manipulation.
+ */
 class TagReader
 {	
 public:
+    /** Reads metadata tags to fill ValueTree information in. Returns ValueTree with all of the relevant information about the file in the same format at the audio library 
+     @param audioFile The file to be added to the library
+     @return ValueTree containing all of the information about the file ready to add to the library
+     */
 	static ValueTree addToLibrary (const File& audioFile)
 	{
 		if (audioFile.existsAsFile())
@@ -92,6 +97,10 @@ public:
 
 	}
 	
+    /** Reads the album art metadata for an audio file returning a JUCE image and the image type as a string
+     @param audioFile The audio file from which the album art is to be extracted
+     @return The album art image and its file type (jpeg or png)
+     */
 	static ImageWithType getAlbumArt (File& audioFile)
 	{
         if (audioFile.exists())
@@ -122,6 +131,11 @@ public:
         return ImageWithType();
 	}
 
+    /** Saves album art to an audio file
+     @param audioFile The file where the album art is to be saved
+     @param newCover The image which is to be saved
+     @param imageType The file format of the image
+     */
     static void saveAlbumArt (File& audioFile, Image& newCover, String imageType)
     {
         if (audioFile.exists())
@@ -183,6 +197,11 @@ public:
         }
     }
     
+    /** Takes a JUCE image and converts it to raw data before placing this data in a TagLib::ByteVector, which is a container for a block of raw data
+     @param newCover The Image to be read into the ByteVector
+     @param imageType The Images type, used to ensure the correct image format is used
+     @param fillVector A reference to the ByteVector that will be filled with the image data
+     */
     static void readJuceImageToByteVector (Image& newCover, String imageType, TagLib::ByteVector& fillVector)
     {
         MemoryOutputStream newCoverData;
@@ -201,6 +220,11 @@ public:
         fillVector.setData(static_cast<const char*>(newCoverData.getData()), newCoverData.getDataSize());                           
     }
     
+    /** Reads the album art from a file and loads it as data into a MemoryBlock for network transfer
+     @param audioFile The audio file from which the album art is to be extracted
+     @param fillBlock A reference to the memory block where the album art is going to be read to
+     @return The file type of the album art extracted, jpeg or png
+     */
     static String fileImageToMemoryBlock (File& audioFile, MemoryBlock& fillBlock)
     {
         //Returns image type
@@ -242,6 +266,9 @@ public:
         return type;
     }
     
+    /** Compares the album art from two files to see if they are the same, used for editing of multiple tracks at once
+     @return Whether the two files have the same album art
+     */
     static bool compareAlbumArt (File& firstTrack, File& secondTrack)
     {
         MemoryBlock firstBlock, secondBlock;
@@ -257,6 +284,10 @@ public:
             return false;
     }
     
+    /** Writes tag information to an audio file
+     @param columnId The table column which has changed and will be saved to the tag
+     @param incomingTrack All of the information about the track
+     */
     static void writeTag (int columnId, ValueTree incomingTrack)
     {
         TagLib::FileRef f(incomingTrack.getProperty(MusicColumns::columnNames[MusicColumns::Location]).toString().toUTF8());	

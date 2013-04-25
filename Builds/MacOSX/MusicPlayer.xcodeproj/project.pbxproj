@@ -11,7 +11,6 @@
 		0353952CCD48B588258C888D /* juce_audio_utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = A32876655AC254403FFFA3D6 /* juce_audio_utils.mm */; };
 		0991A25AD515E3C8753A3135 /* juce_cryptography.mm in Sources */ = {isa = PBXBuildFile; fileRef = CA571A4979C30A1DA56194CA /* juce_cryptography.mm */; };
 		13E683070A4B04FA4485A9B7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 293827FB2927CC52FBEB871B /* QuartzCore.framework */; };
-		1989383DDBC7EAF6F182D56A /* MainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24256F80566C71A4A177045B /* MainComponent.cpp */; };
 		220D214843DDB6C2EECC2F9D /* juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2E6DFCA60DC74A3D63EACDFA /* juce_graphics.mm */; };
 		24335406D5A724CF35ACC1C1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6754A314942E403CA3F0FE60 /* AudioToolbox.framework */; };
 		276D47B0F7BC39C76E99A9A1 /* juce_opengl.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAB9A3095F88A576E854249D /* juce_opengl.mm */; };
@@ -27,6 +26,7 @@
 		981759ECC4BF6B158A89AA56 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA70E591FC6FD7BCD52D788B /* Main.cpp */; };
 		A105A92E165BD156003664AB /* MusicLibraryTableModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A105A92C165BD156003664AB /* MusicLibraryTableModel.cpp */; };
 		A10CFD7C16987EF6009E6AA0 /* MusicLibraryDropTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A10CFD7A16987EF6009E6AA0 /* MusicLibraryDropTarget.cpp */; };
+		A12176DB1725D0D600D52686 /* MainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24256F80566C71A4A177045B /* MainComponent.cpp */; };
 		A12D4B191670DC27005AAFAD /* SearchBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12D4B171670DC27005AAFAD /* SearchBox.cpp */; };
 		A12D4B271670ECB3005AAFAD /* TrackEdit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12D4B201670ECB3005AAFAD /* TrackEdit.cpp */; };
 		A12D4B281670ECB3005AAFAD /* TrackSummary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12D4B221670ECB3005AAFAD /* TrackSummary.cpp */; };
@@ -3151,7 +3151,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1989383DDBC7EAF6F182D56A /* MainComponent.cpp in Sources */,
 				981759ECC4BF6B158A89AA56 /* Main.cpp in Sources */,
 				3A779A837C239686AF20C1B2 /* juce_audio_basics.mm in Sources */,
 				371706A80426105219D9BCB4 /* juce_audio_devices.mm in Sources */,
@@ -3207,6 +3206,7 @@
 				A1376C9C1709BF600045B740 /* J_IPAddress.cpp in Sources */,
 				A1376CA01709C3340045B740 /* ConnectionIndicator.cpp in Sources */,
 				A1376CA41709C4790045B740 /* ConnectionIndicatorBinary.cpp in Sources */,
+				A12176DB1725D0D600D52686 /* MainComponent.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

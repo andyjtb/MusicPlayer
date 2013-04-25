@@ -167,6 +167,7 @@ public:
     
     void buttonClicked (Button* button);
     
+    void loadPlaylistsTrackInfo();
 //    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property);
 //    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded);
 //    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved);

@@ -65,7 +65,8 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
         
         int ID = stringMessage.fromFirstOccurrenceOf("ID=", false, true).getIntValue();
         
-        ValueTree test (filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], ID));
+        //ValueTree test (filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], ID));
+        ValueTree test (singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], ID));
         
         if (test.isValid()) {
             tableSelectedRow = test;
@@ -126,7 +127,7 @@ void RemoteInterprocessConnection::sendPlayingData()
     //        sendString("TracksTotal: " + String(filteredDataList.getNumChildren()));
     //        sendString("TrackNum: " + String(filteredDataList.indexOf(tablePlayingRow)+1));
     sendTrackNums();
-    sendLength(audioControl->getTransportLength());
+    sendString("Length: " + String(audioControl->getTransportLength()));
     sendVolume(audioControl->getVolume());
     //        String currentAlbum = tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::Album]).toString();
     
@@ -159,13 +160,6 @@ void RemoteInterprocessConnection::sendTrackNums()
     }   
 }
 
-void RemoteInterprocessConnection::sendLength(double length)
-{
-    for (int counter = 0; counter < remoteConnections.size(); counter++)
-    {
-        remoteConnections[counter]->sendString("Length: " + String(length));
-    }
-}
 void RemoteInterprocessConnection::sendPosition (double position)
 {
     for (int counter = 0; counter < remoteConnections.size(); counter++)

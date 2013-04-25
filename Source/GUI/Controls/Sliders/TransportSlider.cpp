@@ -55,19 +55,21 @@ void TransportSlider::resized()
 void TransportSlider::setTransportPosition (double position)
 {
 	transport.setValue(position, dontSendNotification);
-	updateTime(position);
+	//updateTime(position);
+    timeLabel.setText(secondsFormatted(position),dontSendNotification);
 }
 
-void TransportSlider::updateTime(double time)
-{	
-	timeLabel.setText(secondsFormatted(time),dontSendNotification);	
-}
+//void TransportSlider::updateTime(double time)
+//{	
+//	timeLabel.setText(secondsFormatted(time),dontSendNotification);	
+//}
 
 void TransportSlider::sliderValueChanged (Slider* sliderThatWasMoved)
 {
 	String transportLocation;
 	transportLocation << "transportPosition:" << transport.getValue();
-	updateTime(transport.getValue());
+//	updateTime(transport.getValue());
+    timeLabel.setText(secondsFormatted(transport.getValue()),dontSendNotification);
 	sendActionMessage(transportLocation);
 	
 }

@@ -258,11 +258,6 @@ Value& Settings::getUpdateRequired()
     return updateRequired;
 }
 
-Value& Settings::getTableDeleting()
-{
-    return deletingTable;
-}
-
 Value& Settings::getAlbumArtUpdate()
 {
     return artUpdate;

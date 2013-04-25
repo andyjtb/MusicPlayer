@@ -25,7 +25,7 @@ MainContentComponent::MainContentComponent()
 	guiControl.setAudioControl(&audioControl);
  
 	setSize (1000, 630);
-    
+    DBG("Test");
 }
 
 MainContentComponent::~MainContentComponent()
@@ -74,6 +74,11 @@ PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const St
     else
     {
         menu.addCommandItem(&commandManager, spaceBar);
+        menu.addSeparator();
+        menu.addCommandItem(&commandManager, nextTrack);
+        menu.addCommandItem(&commandManager, previousTrack);
+        menu.addCommandItem(&commandManager, volumeUp);
+        menu.addCommandItem(&commandManager, volumeDown);
         menu.addSeparator();
         menu.addCommandItem(&commandManager, search);
         return menu;
@@ -184,7 +189,7 @@ ApplicationCommandTarget* MainContentComponent::getNextCommandTarget()
 void MainContentComponent::getAllCommands (Array <CommandID>& commands)
 {
     // this returns the set of all commands that this target can perform..
-    const CommandID ids[] = {undoMenu, spaceBar, search};
+    const CommandID ids[] = {undoMenu, spaceBar, volumeUp, volumeDown, nextTrack, previousTrack, search};
     
     commands.addArray (ids, numElementsInArray (ids));
 }
@@ -228,6 +233,31 @@ void MainContentComponent::getCommandInfo (CommandID commandID, ApplicationComma
             result.addDefaultKeypress('f', ModifierKeys::commandModifier);
             break;
         }
+            
+        case volumeUp:
+        {
+            result.setInfo("Volume Up", "Volume Up", generalCategory, 0);
+            result.addDefaultKeypress(KeyPress::upKey, ModifierKeys::commandModifier);
+            break;
+        }
+        case volumeDown:
+        {
+            result.setInfo("Volume Down", "Volume Down", generalCategory, 0);
+            result.addDefaultKeypress(KeyPress::downKey, ModifierKeys::commandModifier);
+            break;
+        }
+        case nextTrack:
+        {
+            result.setInfo("Next Track", "Next Track", generalCategory, 0);
+            result.addDefaultKeypress(KeyPress::rightKey, ModifierKeys::commandModifier);
+            break;
+        }
+        case previousTrack:
+        {
+            result.setInfo("Previous Track", "Previous Track", generalCategory, 0);
+            result.addDefaultKeypress(KeyPress::leftKey, ModifierKeys::commandModifier);
+            break;
+        }
         default:
             break;
     };
@@ -249,6 +279,28 @@ bool MainContentComponent::perform (const InvocationInfo& info)
             break;
         case search:
             guiControl.getSearchBox().grabKeyboardFocus();
+            break;
+        case volumeUp:
+        {
+            if (audioControl.getVolume() < 0.9)
+                guiControl.setVolume(audioControl.getVolume()+0.1);
+            else
+                guiControl.setVolume(1);
+            break;
+        }
+        case volumeDown:
+        {
+            if (audioControl.getVolume() > 0.1)
+                guiControl.setVolume(audioControl.getVolume()-0.1);
+            else
+                guiControl.setVolume(0);
+            break;
+        }
+        case nextTrack:
+            guiControl.next();
+            break;
+        case previousTrack:
+            guiControl.previous();
             break;
         default:
             return false;

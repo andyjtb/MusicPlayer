@@ -12,13 +12,17 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Settings.h"
 #include "TagReader.h"
-
+/** A thread with a progress window used to recursively search through a directory for all files which match the wild card, adding them to the library
+    @see TagReader
+ */
 class DirectoryLoader : public ThreadWithProgressWindow
 {
 public:
     DirectoryLoader() : ThreadWithProgressWindow ("Loading...", false, true)
     {
     }
+    /**@internal
+     */
     void run()
     {
         const MessageManagerLock mmLock;
@@ -41,12 +45,16 @@ public:
             
         }
     }
-    
+    /** Sets the directory which is to be searched for appropriate files
+     @param incomingDirectory The directory to be searched
+     */
     void setDirectory (File incomingDirectory)
     {
         directory = incomingDirectory;
     }
-    
+    /** Sets the file extensions which will decide whether a file is appropriate or not
+     @param _wildcards The file extensions that the loader will load in the format *.fileExtension;*.otherFileExtension
+     */
     void setWildcards (String _wildcards)
     {
         wildcards = _wildcards;

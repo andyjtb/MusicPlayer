@@ -25,56 +25,56 @@
 #include "Utility.h"
 
 
-namespace LoopAndCueHelpers
-{
-    /** Returns the time from a give cue point index in a cue point tree.
-        The index starts at 0 and will return 0.0 if the index is out of range.
-     */
-    inline double getTimeFromCueTree (ValueTree& cueTree, int index)
-    {
-        if (index < cueTree.getNumProperties())
-        {
-            const String property(cueTree.getProperty(cueTree.getPropertyName(index)).toString());
-            return property.upToFirstOccurrenceOf(",", false, false).getDoubleValue();
-        }
-        
-        return 0.0;
-    }
-    
-    /** Returns the time from a give cue point index in a cue point tree.
-        The index starts at 0 and will return white if the index is out of range.
-     */
-    inline uint32 getColourFromCueTree (ValueTree& cueTree, int index)
-    {
-        if (index < cueTree.getNumProperties())
-        {
-            const String property(cueTree.getProperty(cueTree.getPropertyName(index)).toString());
-            return (uint32)property.fromLastOccurrenceOf(",", false, false).getLargeIntValue();
-        }
-        
-        return 0xffffffff;
-    }
-    
-    /** Returns the start time, end time and Colour of a give loop point in a loop tree.
-        The index starts at 0 and will return 0.0's if the index is out of range.
-     */
-    inline void getTimeAndColourFromLoopTree (ValueTree& loopTree, int index, double &startTime, double &endTime, uint32& colour)
-    {
-        if (index < loopTree.getNumProperties())
-        {
-            const String property(loopTree.getProperty(loopTree.getPropertyName(index)).toString());
-            startTime = property.upToFirstOccurrenceOf(",", false, false).getDoubleValue();
-            endTime = property.fromFirstOccurrenceOf(",", false, false).upToLastOccurrenceOf(",", false, false).getDoubleValue();
-            colour = (uint32)property.fromLastOccurrenceOf(",", false, false).getLargeIntValue();
-            return;
-        }
-        
-        startTime = endTime = 0.0;
-        colour = 0xffffffff;
-        
-        return;
-    }
-}
+//namespace LoopAndCueHelpers
+//{
+//    /** Returns the time from a give cue point index in a cue point tree.
+//        The index starts at 0 and will return 0.0 if the index is out of range.
+//     */
+//    inline double getTimeFromCueTree (ValueTree& cueTree, int index)
+//    {
+//        if (index < cueTree.getNumProperties())
+//        {
+//            const String property(cueTree.getProperty(cueTree.getPropertyName(index)).toString());
+//            return property.upToFirstOccurrenceOf(",", false, false).getDoubleValue();
+//        }
+//        
+//        return 0.0;
+//    }
+//    
+//    /** Returns the time from a give cue point index in a cue point tree.
+//        The index starts at 0 and will return white if the index is out of range.
+//     */
+//    inline uint32 getColourFromCueTree (ValueTree& cueTree, int index)
+//    {
+//        if (index < cueTree.getNumProperties())
+//        {
+//            const String property(cueTree.getProperty(cueTree.getPropertyName(index)).toString());
+//            return (uint32)property.fromLastOccurrenceOf(",", false, false).getLargeIntValue();
+//        }
+//        
+//        return 0xffffffff;
+//    }
+//    
+//    /** Returns the start time, end time and Colour of a give loop point in a loop tree.
+//        The index starts at 0 and will return 0.0's if the index is out of range.
+//     */
+//    inline void getTimeAndColourFromLoopTree (ValueTree& loopTree, int index, double &startTime, double &endTime, uint32& colour)
+//    {
+//        if (index < loopTree.getNumProperties())
+//        {
+//            const String property(loopTree.getProperty(loopTree.getPropertyName(index)).toString());
+//            startTime = property.upToFirstOccurrenceOf(",", false, false).getDoubleValue();
+//            endTime = property.fromFirstOccurrenceOf(",", false, false).upToLastOccurrenceOf(",", false, false).getDoubleValue();
+//            colour = (uint32)property.fromLastOccurrenceOf(",", false, false).getLargeIntValue();
+//            return;
+//        }
+//        
+//        startTime = endTime = 0.0;
+//        colour = 0xffffffff;
+//        
+//        return;
+//    }
+//}
 
 /**	Details the colums of the table.
  */
@@ -198,6 +198,10 @@ namespace MusicColumns {
 }
 
 namespace TimeHelpers {
+    /** Converts a number representing a time in seconds to a string in the format Hours:Minutes:Seconds
+     @param numSeconds The time to be converted from seconds to a string
+     @return The time as a string in the format H:M:S
+     */
 	static const String secondsToTimeLength (double numSeconds)
 	{
 		double decimalTime = numSeconds / 60000.0;

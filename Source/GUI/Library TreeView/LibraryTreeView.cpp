@@ -41,7 +41,9 @@ void LibraryTreeView::updateItems()
         LibraryViewItem* currentItem = new LibraryViewItem(singletonPlaylistsTree.getChild(i).getProperty("Name").toString());
         currentItem->addActionListener(this);
         rootItem->addSubItem(currentItem);
-    } 
+    }
+    
+    loadPlaylistsTrackInfo();
 }
 
 void LibraryTreeView::paint(Graphics &g)
@@ -92,9 +94,42 @@ String LibraryTreeView::getSelectedPlaylist()
 //void LibraryTreeView::valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged)
 //{}
 
+void LibraryTreeView::loadPlaylistsTrackInfo()
+{
+    for (int i = 0; i < singletonPlaylistsTree.getNumChildren(); i++)
+    {
+        ValueTree playlistValueTree = singletonPlaylistsTree.getChild(i);
+        
+        if (playlistValueTree.isValid()) {
+            ValueTree toLoad("TrackInfo");
+            
+            if (playlistValueTree.getChildWithName("TrackInfo").isValid())
+            {
+                toLoad = playlistValueTree.getChildWithName("TrackInfo");
+                toLoad.removeAllChildren(0);
+            }
+            
+            
+            for (int i = 1; i <= int(playlistValueTree.getProperty("Size")); i++)
+            {
+                int loadID = int(playlistValueTree.getProperty("TrackID" + String(i)));
+                ValueTree toAdd = singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], loadID).createCopy();
+                
+                if(toAdd.isValid())
+                {
+                    toAdd.setProperty("LibID", int(playlistValueTree.getProperty("Size"))+i, 0);
+                    toLoad.addChild(toAdd, -1, 0);
+                }
+            }
+            
+            playlistValueTree.addChild(toLoad, -1, 0);
+        }
+    }
+}
+
 void LibraryTreeView::buttonClicked(Button *button)
 {
-    if (button == &plusButton) 
+    if (button == &plusButton)
     {
         if (singletonPlaylistsTree.isValid())
         {

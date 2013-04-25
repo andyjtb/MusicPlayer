@@ -28,7 +28,7 @@ dataList (MusicColumns::libraryIdentifier),
 filteredNumRows (dataList.getNumChildren()),
 finishedLoading (true)
 {
-    displayPlaylist = false;
+    displayPlaylist = tableDeleting = false;
     
 	// Create our table component and add it to this component..
 	addAndMakeVisible (&table);

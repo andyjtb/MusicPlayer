@@ -18,20 +18,6 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "../../Source/Utility/Settings/Settings.cpp"
-         timestampString = "386646857.607883"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "41"
-         endingLineNumber = "41"
-         landmarkName = "Settings::checkFirstTime()"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
@@ -56,6 +42,19 @@
          startingLineNumber = "184"
          endingLineNumber = "184"
          landmarkName = "GuiControl::actionListenerCallback (const String&amp; message)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../Source/GUI/GuiControl.cpp"
+         timestampString = "388345563.467084"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "322"
+         endingLineNumber = "322"
+         landmarkName = "GuiControl::loadFile()"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

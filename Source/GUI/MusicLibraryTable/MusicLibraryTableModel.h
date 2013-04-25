@@ -142,6 +142,8 @@ public:
     
     void playlistRearrange (int selectedRow, bool moveUp);
     
+    bool isTableDeleting() { return tableDeleting;}
+    
 private:
     //==============================================================================
     Font font;	
@@ -159,7 +161,7 @@ private:
     ScopedPointer<TextEditor> editDirectlyText;
     
     int filteredNumRows, currentPlaylist;
-	bool finishedLoading, displayPlaylist;
+	bool finishedLoading, displayPlaylist, tableDeleting;
 	
     void updateTableFilteredAndSorted();
     
