@@ -50,8 +50,7 @@ class GuiControl  : public Component,
 					public ChangeListener,
 					public ValueListener,
 					public MultiTimer,
-                    public TextEditor::Listener,
-                    public ValueTree::Listener
+                    public TextEditor::Listener
 {
 public:
 	//==============================================================================
@@ -76,11 +75,11 @@ public:
 
 	void timerCallback(int timerId);
 	
-	void updateTagDisplay (File audioFile);
+	void updateSelectedDisplay ();
 	
 	void changeListenerCallback(ChangeBroadcaster* changeBroadcaster);
     
-    void loadFile();
+    void loadFile(ValueTree treeToLoad, bool shouldPlay);
     
     //Track control
     void next();
@@ -92,21 +91,20 @@ public:
     
     //Text Editor Callbacks
     void textEditorTextChanged (TextEditor &textEditor);
-    void textEditorReturnKeyPressed (TextEditor &textEditor);
-    void textEditorEscapeKeyPressed (TextEditor &textEditor);
-    void textEditorFocusLost (TextEditor &textEditor);
-	
-    //ValueTree Callbacks
-    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property);
-    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded);
-    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved);
-    void valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved);
-    void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged);
-    void valueTreeRedirected (ValueTree &treeWhichHasBeenChanged);
+//    /** Not needed, but required
+//     */
+//    void textEditorReturnKeyPressed (TextEditor &textEditor){}
+//    /** Not needed, but required
+//     */
+//    void textEditorEscapeKeyPressed (TextEditor &textEditor){}
+//    /** Not needed, but required
+//     */
+//    void textEditorFocusLost (TextEditor &textEditor){}
 
     //Menu Bar function
     void showEffectsMenu();
     
+    InfoBar* getInfoBar() { return &infoBar; }
     void remoteConnectionChanged(String ipAddress) { infoBar.getConnectionIndicator().remoteConnectionChanged(ipAddress);}
     
     void setPlaylist (String incomingPlaylist);
@@ -140,8 +138,8 @@ private:
     ScopedPointer<Equaliser> equaliser;
     ScopedPointer<SpeedPitch> speedPitch;
     
-    //Allows itunes like should play without repeating songs
-    bool loadingNew;
+    ValueTree currentlyPlayingList;
+    
 };
 
 

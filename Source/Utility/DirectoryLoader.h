@@ -12,13 +12,14 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Settings.h"
 #include "TagReader.h"
+#include "InfoBar.h"
 /** A thread with a progress window used to recursively search through a directory for all files which match the wild card, adding them to the library
     @see TagReader
  */
 class DirectoryLoader : public ThreadWithProgressWindow
 {
 public:
-    DirectoryLoader() : ThreadWithProgressWindow ("Loading...", false, true)
+    DirectoryLoader() : ThreadWithProgressWindow ("Loading...", true, true)
     {
     }
     /**@internal
@@ -29,18 +30,22 @@ public:
         
         String filesFound;
         
-        DirectoryIterator directoryIterator (directory, true, wildcards,2);
+        DirectoryIterator directoryIterator (directory, true, "*mp3",2);
         
         //setProgress(-1.0);
         
         while (directoryIterator.next())
         {
-            //            setProgress(-1.0);
+            setProgress(-1.0);
+            
             if (threadShouldExit())
                 break;
+            
             File fileFound (directoryIterator.getFile());
-            //            String loadingString("Loading : " + fileFound.getFileName());
-            //            setStatusMessage(loadingString);
+            
+            if (infoBar != nullptr)
+                infoBar->loadingFile(fileFound);
+            
             singletonLibraryTree.addChild(TagReader::addToLibrary(fileFound),-1,0);
             
         }
@@ -52,6 +57,12 @@ public:
     {
         directory = incomingDirectory;
     }
+    
+    void setupDirectoryLoader (File incomingDirectory, InfoBar* _infoBar)
+    {
+        infoBar.set(_infoBar, false);
+        directory = incomingDirectory;
+    }
     /** Sets the file extensions which will decide whether a file is appropriate or not
      @param _wildcards The file extensions that the loader will load in the format *.fileExtension;*.otherFileExtension
      */
@@ -60,6 +71,8 @@ public:
         wildcards = _wildcards;
     }
     
+private:
+    OptionalScopedPointer<InfoBar> infoBar;
     String wildcards;
     File directory;
 };

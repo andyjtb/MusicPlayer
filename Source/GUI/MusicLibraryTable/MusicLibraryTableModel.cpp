@@ -155,13 +155,13 @@ void MusicLibraryTable::libraryUpdated (ITunesLibrary* library)
 {
 	if (library == currentLibrary)
 	{
-        if(!displayPlaylist)
-        {
+        //if(!displayPlaylist)
+        //{
             if(remoteConnections.getFirst() != nullptr)
             {
                 remoteConnections.getFirst()->sendLibraryData();
             }
-        }
+        //}
         updateTableFilteredAndSorted();
 	}
 }
@@ -333,7 +333,8 @@ void MusicLibraryTable::updateLibrary()
 
 void MusicLibraryTable::selectedRowsChanged(int lastRowSelected)
 {
-    tableSelectedRow = filteredDataList.getChild(lastRowSelected);
+//    tableSelectedRow = filteredDataList.getChild(lastRowSelected);
+    currentlySelectedRow = filteredDataList.getChild(lastRowSelected);
     
     SparseSet<int> selectedRows = table.getSelectedRows();
     tableSelectedTracks.clear();
@@ -347,8 +348,7 @@ void MusicLibraryTable::selectedRowsChanged(int lastRowSelected)
 
 void MusicLibraryTable::returnKeyPressed(int currentSelectedRow)
 {
-    tableShouldPlay.setValue(true);
-    tableSelectedRow = filteredDataList.getChild(currentSelectedRow);
+    guiControl->loadFile(currentlySelectedRow, true);
 }
 
 void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
@@ -475,9 +475,7 @@ void MusicLibraryTable::deleteTracks (bool libraryOnly)
     
     if(filteredDataList.getNumChildren() > 0)
     {
-        tableSelectedRow = filteredDataList.getChild(table.getSelectedRow());
-        //Causes the song to stop regardless, seems loadfile function is called multiple times
-        //tableLoadSelected = true;
+        currentlySelectedRow = filteredDataList.getChild(table.getSelectedRow());
     }
     
     tableDeleting = false;
@@ -525,8 +523,7 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
             }
             case 2:
             {
-                tableShouldPlay.setValue(true);
-                tableSelectedRow = filteredDataList.getChild(rowNumber);
+                guiControl->loadFile(currentlySelectedRow, true);
                 break;
             }
             case 3:
@@ -621,8 +618,7 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
 
 void MusicLibraryTable::cellDoubleClicked(int rowNumber, int columnId, const juce::MouseEvent &event)
 {
-    tableShouldPlay = true;
-    tableSelectedRow = filteredDataList.getChild(rowNumber);
+    guiControl->loadFile(currentlySelectedRow, true);
 }
 
 void MusicLibraryTable::editDirectly (int rowNumber, int columnId, const MouseEvent& event)

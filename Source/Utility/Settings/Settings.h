@@ -30,10 +30,7 @@ struct EqDetails{
 #define singletonUndoManager Settings::getInstance()->getUndoManager()
 #define singletonEqSettings Settings::getInstance()->getEqSettings()
 
-#define tableSelectedRow Settings::getInstance()->getSelectedRow()
 #define tableSelectedTracks Settings::getInstance()->getSelectedTracks()
-#define tableShouldPlay Settings::getInstance()->getShouldPlay()
-#define tableLoadSelected Settings::getInstance()->getLoadSelected()
 #define tablePlayingRow Settings::getInstance()->getPlayingRow()
 #define tableUpdateRequired Settings::getInstance()->getUpdateRequired()
 #define tableLayoutString Settings::getInstance()->getTableLayout()

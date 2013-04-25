@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "0"
          filePath = "../../Source/Utility/Remote/RemoteInterprocessConnection.cpp"
-         timestampString = "386558111.627485"
+         timestampString = "388608537.887646"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "65"
-         endingLineNumber = "65"
+         startingLineNumber = "64"
+         endingLineNumber = "64"
          landmarkName = "RemoteInterprocessConnection::messageReceived (const MemoryBlock&amp; message)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -35,26 +35,65 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "388086618.280576"
+         filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
+         timestampString = "388605033.697662"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "184"
-         endingLineNumber = "184"
-         landmarkName = "GuiControl::actionListenerCallback (const String&amp; message)"
+         startingLineNumber = "337"
+         endingLineNumber = "337"
+         landmarkName = "MusicLibraryTable::selectedRowsChanged(int lastRowSelected)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "388345563.467084"
+         filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
+         timestampString = "388608537.887646"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "322"
-         endingLineNumber = "322"
-         landmarkName = "GuiControl::loadFile()"
+         startingLineNumber = "624"
+         endingLineNumber = "624"
+         landmarkName = "MusicLibraryTable::cellDoubleClicked(int rowNumber, int columnId, const juce::MouseEvent &amp;event)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
+         timestampString = "388619221.648099"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "162"
+         endingLineNumber = "162"
+         landmarkName = "MusicLibraryTable::libraryUpdated (ITunesLibrary* library)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../Source/Utility/DirectoryLoader.h"
+         timestampString = "388622867.411507"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "44"
+         endingLineNumber = "44"
+         landmarkName = "run()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../Source/MainComponent.cpp"
+         timestampString = "388622965.529095"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "128"
+         endingLineNumber = "128"
+         landmarkName = "MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuIndex)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

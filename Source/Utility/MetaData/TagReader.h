@@ -82,7 +82,7 @@ public:
                 
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::TrackNum], int(f.tag()->track()), nullptr);
                 
-                tags.setProperty(MusicColumns::columnNames[MusicColumns::PlayCount], 0, nullptr);
+                //tags.setProperty(MusicColumns::columnNames[MusicColumns::PlayCount], 0, nullptr);
                      
                 return tags;
                 

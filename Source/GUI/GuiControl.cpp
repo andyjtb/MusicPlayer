@@ -37,11 +37,9 @@ GuiControl::GuiControl()
     musicTable = musicLibraryDropTarget.getMusicTable();
 	musicTable->setLibraryToUse (ITunesLibrary::getInstance());
 	musicTable->addActionListener(this);
-    tableSelectedRow.addListener(this);
-    tableShouldPlay.addListener(this);
-    tableLoadSelected.addListener(this);
+    musicTable->setGuiControl (this);
+    
     tableUpdateRequired.addListener(this);
-	//addAndMakeVisible(&musicTable);
     
     addAndMakeVisible(&musicLibraryDropTarget);
     
@@ -122,21 +120,22 @@ void GuiControl::timerCallback(int timerId)
             playCount++;
             tablePlayingRow.setProperty(MusicColumns::columnNames[MusicColumns::PlayCount], playCount, 0);
             
-            int toPlay = filteredDataList.indexOf(tablePlayingRow);
-            if (toPlay != -1)
-                toPlay++;
-            
-            ValueTree test(filteredDataList.getChild(toPlay));
-            if (test.isValid()) {
-                tableSelectedRow = test;
-                loadingNew = true;
-                tableShouldPlay = true;
-                
-            }
-            else
-            {
-                singletonPlayState = false;
-            }
+            next();
+//            int toPlay = filteredDataList.indexOf(tablePlayingRow);
+//            if (toPlay != -1)
+//                toPlay++;
+//            
+//            ValueTree test(filteredDataList.getChild(toPlay));
+//            if (test.isValid()) {
+//                tableSelectedRow = test;
+//                loadingNew = true;
+//                tableShouldPlay = true;
+//                
+//            }
+//            else
+//            {
+//                singletonPlayState = false;
+//            }
         }
 	}
 }
@@ -182,6 +181,7 @@ void GuiControl::actionListenerCallback (const String& message)
     if (message.startsWith("SelectedRows"))
     {
         infoBar.updateBar();
+        updateSelectedDisplay();
     }
 }
 
@@ -255,21 +255,6 @@ void GuiControl::valueChanged (Value& valueChanged)
         }
 	}
     
-    if (valueChanged == tableShouldPlay)
-    {
-        //iTunes feature, when a new song is to be played it moves the table to that song
-        if (!loadingNew)
-            musicTable->getTableListBox().selectRow(filteredDataList.indexOf(tablePlayingRow));
-        
-        loadingNew = false;
-        loadFile();
-    }
-    
-    if (valueChanged == tableLoadSelected)
-    {
-        loadFile();
-    }
-    
     if (valueChanged == tableUpdateRequired)
     {
         if (tableUpdateRequired.getValue()) {
@@ -308,90 +293,112 @@ void GuiControl::valueChanged (Value& valueChanged)
     {
         if(artUpdateRequired.getValue())
         {
-            File audioFile = tableSelectedRow.getProperty("Location").toString();
+            File audioFile = musicTable->getCurrentlySelectedTree().getProperty("Location").toString();
             ImageWithType currentCover = TagReader::getAlbumArt(audioFile);
             albumArt.setCover(currentCover);
             artUpdateRequired = false;
         }
     }
 }
-void GuiControl::loadFile()
+void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
 {
-    if (musicTable->isTableDeleting() != true)
+    File selectedFile (treeToLoad.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
+    
+    DBG("Gui load = " << selectedFile.getFileName());
+    
+    if (selectedFile.existsAsFile())
     {
-        File selectedFile (tableSelectedRow.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
+        int result = 0;
         
-        DBG("Gui load = " << selectedFile.getFileName());
+        singletonPlayState = false;
+        result = audioControl->loadFile(selectedFile);
         
-        if (selectedFile.existsAsFile())
+        if (result != 2)
         {
-            int result = 0;
+            tablePlayingRow = treeToLoad;
             
-            if(tableShouldPlay.getValue())
-            {
-                DBG("Load file " << selectedFile.getFullPathName());
-                singletonPlayState = false;
-                result = audioControl->loadFile(selectedFile);
-                tablePlayingRow = tableSelectedRow;
+            if (musicTable->isDisplayingPlaylist())
+                currentlyPlayingList = filteredDataList.createCopy();
+            else
+                currentlyPlayingList = filteredDataList;
+            
+            if (treeToLoad != musicTable->getCurrentlySelectedTree())
+                musicTable->setCurrentlySelectedRow(filteredDataList.indexOf(treeToLoad));
+            
+            if (shouldPlay)
                 singletonPlayState = true;
-                trackInfo.loadTrackInfo(tableSelectedRow);
-                tableShouldPlay.setValue(false);
-            }
-            if (tableLoadSelected.getValue())
-            {
-                singletonPlayState = false;
-                result = audioControl->loadFile(selectedFile);
-                setPosition(0);
-                tablePlayingRow = tableSelectedRow;
-                trackInfo.loadTrackInfo(tableSelectedRow);
-                tableLoadSelected = false;
-            }
             
-            infoBar.displayFileStatus(selectedFile, result);
-            albumArt.setCover(selectedFile);
+            trackInfo.loadTrackInfo(tablePlayingRow);
         }
-        else
-        {
-            //File not found
-            infoBar.displayFileStatus(selectedFile, 1);
-        }
+        
+        
+        infoBar.displayFileStatus(selectedFile, result);
+        albumArt.setCover(selectedFile);
+    }
+    else
+    {
+        //File not found
+        infoBar.displayFileStatus(selectedFile, 1);
     }
     
 }
 
-void GuiControl::updateTagDisplay (File audioFile)
+void GuiControl::updateSelectedDisplay()
 {
-	albumArt.setCover(audioFile);
+    if (musicTable->isTableDeleting() != true)
+    {
+        File selectedFile (musicTable->getCurrentlySelectedTree().getProperty(MusicColumns::columnNames[MusicColumns::Location]));
+        
+        if (selectedFile.existsAsFile())
+        {
+            albumArt.setCover(selectedFile);
+        }
+        else
+        {
+            infoBar.displayFileStatus(selectedFile, 1);
+            albumArt.setCover(Image());
+        }
+    }
 }
 
 void GuiControl::next()
 {
-    if (tableSelectedRow.isValid()) {
-        int toPlay = filteredDataList.indexOf(tableSelectedRow);
+    if (tablePlayingRow.isValid()) {
+        Identifier id = MusicColumns::columnNames[MusicColumns::ID];
+        int toPlay = currentlyPlayingList.indexOf(currentlyPlayingList.getChildWithProperty(id, tablePlayingRow.getProperty(id)));
+        
         ++toPlay;
-        if (toPlay < filteredDataList.getNumChildren())
+        if (toPlay < currentlyPlayingList.getNumChildren())
         {
-            tableSelectedRow = filteredDataList.getChild(toPlay);
+            //valid next song
+            //Currently playing list is also the one being viewed, so move selectedrow
+            if (currentlyPlayingList.isEquivalentTo(filteredDataList))
+                musicTable->setCurrentlySelectedRow(toPlay);
+            
             if (singletonPlayState.getValue())
-                tableShouldPlay = true;
+                loadFile(currentlyPlayingList.getChild(toPlay), true);
             else
-                tableLoadSelected = true;
+                loadFile(currentlyPlayingList.getChild(toPlay), false);
         }
     }
 }
 
 void GuiControl::previous()
 {
-    if (tableSelectedRow.isValid()) {
-        int toPlay = filteredDataList.indexOf(tableSelectedRow);
+    if (tablePlayingRow.isValid()) {
+        Identifier id = MusicColumns::columnNames[MusicColumns::ID];
+        int toPlay = currentlyPlayingList.indexOf(currentlyPlayingList.getChildWithProperty(id, tablePlayingRow.getProperty(id)));
+
         --toPlay;
         if (toPlay >= 0)
         {
-            tableSelectedRow = filteredDataList.getChild(toPlay);
+            if (currentlyPlayingList.isEquivalentTo(filteredDataList))
+                musicTable->setCurrentlySelectedRow(toPlay);
+            
             if (singletonPlayState.getValue())
-                tableShouldPlay = true;
+                loadFile(currentlyPlayingList.getChild(toPlay), true);
             else
-                tableLoadSelected = true;
+                loadFile(currentlyPlayingList.getChild(toPlay), false);
         }
     }
 }
@@ -417,35 +424,7 @@ void GuiControl::textEditorTextChanged (TextEditor &textEditor)
         remoteConnections.getFirst()->sendTrackNums();
     
 }
-void GuiControl::textEditorReturnKeyPressed (TextEditor &textEditor)
-{}
-void GuiControl::textEditorEscapeKeyPressed (TextEditor &textEditor)
-{}
-void GuiControl::textEditorFocusLost (TextEditor &textEditor)
-{}
 
-//ValueTree Callbacks
-void GuiControl::valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
-{
-}
-void GuiControl::valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded)
-{}
-void GuiControl::valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved)
-{}
-void GuiControl::valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved)
-{}
-void GuiControl::valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged)
-{}
-void GuiControl::valueTreeRedirected (ValueTree &treeWhichHasBeenChanged)
-{  
-    //Selected Row change listener
-    //if (treeWhichHasBeenChanged.getProperty(MusicColumns::columnNames[MusicColumns::LibID]) != tableSelectedRow.getProperty(MusicColumns::columnNames[MusicColumns::LibID]))
-    DBG("changed = " << treeWhichHasBeenChanged.getProperty(MusicColumns::columnNames[MusicColumns::LibID]).toString());
-    DBG("singleton = " << tableSelectedRow.getProperty(MusicColumns::columnNames[MusicColumns::LibID]).toString());
-    
-    loadFile();
-
-}
 
 void GuiControl::showEffectsMenu()
 {

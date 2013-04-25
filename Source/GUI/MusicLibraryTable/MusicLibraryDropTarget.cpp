@@ -73,7 +73,6 @@ void MusicLibraryDropTarget::fileDragExit (const StringArray &files)
 }
 void MusicLibraryDropTarget::filesDropped (const StringArray &files, int x, int y)
 {
-    //The good shit
     for (int counter = 0; counter < files.size(); counter++)
     {
         File current = files[counter];
@@ -82,14 +81,7 @@ void MusicLibraryDropTarget::filesDropped (const StringArray &files, int x, int 
             DirectoryLoader d;
             d.setDirectory(current);
             
-            if (d.runThread())
-            {
-                DBG("Complete");
-            }
-            else
-            {
-                DBG("User quit early");
-            }
+            d.startThread();            
         }
         else
         {

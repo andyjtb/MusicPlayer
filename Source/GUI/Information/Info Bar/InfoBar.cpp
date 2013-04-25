@@ -15,7 +15,9 @@ InfoBar::InfoBar ()
     
     addAndMakeVisible(&indicator);
     
-    notFound = notRead = false;
+    addAndMakeVisible(&infoLabel);
+    infoLabel.setJustificationType(Justification::centredRight);
+    
 }
 
 InfoBar::~InfoBar()
@@ -45,24 +47,13 @@ void InfoBar::paint (Graphics& g)
     g.drawText (size,
                 (getWidth()/2)+100, 0, 100, getHeight(),
                 Justification::centredLeft, true);
-    
-    if (notFound) {
-        String notFoundString = currentFile.getFileName();
-        notFoundString << " Could not be found";
-        g.drawText(notFoundString, getWidth()-400, 0, 400, getHeight(), Justification::centredRight, true);
-    }
-    
-    if (notRead) {
-        String notReadString = currentFile.getFileName();
-        notReadString << " Could not be read";
-        g.drawText(notReadString, getWidth()-400, 0, 400, getHeight(), Justification::centredRight, true);
-    }
-    
+
 }
 
 void InfoBar::resized()
 {
     indicator.setBounds(10, getHeight()/4, 10, getHeight()-5);
+    infoLabel.setBounds (getWidth() - 400, 0, 400, getHeight());
 }
 
 void InfoBar::updateBar()
@@ -113,16 +104,25 @@ void InfoBar::displayFileStatus (File& file, int result)
     
     if (result == 1)
     {
-        notFound = true;
-        notRead = false;
+        String notFoundString = currentFile.getFileName();
+        notFoundString << " Could not be found";
+        infoLabel.setText(notFoundString, dontSendNotification);
     }
     else if (result == 2)
     {
-        notFound = false;
-        notRead = true;
+        String notReadString = currentFile.getFileName();
+        notReadString << " Could not be read";
+        infoLabel.setText(notReadString, dontSendNotification);
     }
     else
-        notFound = notRead = false;
-    
-    updateBar();
+        infoLabel.setText(String::empty, dontSendNotification);
+
+//    updateBar();
+}
+
+void InfoBar::loadingFile (File loadFile)
+{
+    String loadingString = loadFile.getFileName();
+    loadingString << " Added to Library";
+    infoLabel.setText(loadingString, dontSendNotification);
 }

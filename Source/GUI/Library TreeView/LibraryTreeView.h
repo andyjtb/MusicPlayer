@@ -16,7 +16,8 @@
 
 //==============================================================================
 class LibraryViewItem  : public TreeViewItem,
-                         public ActionBroadcaster
+                         public ActionBroadcaster,
+                         public TextEditor::Listener
 {
 public:
     LibraryViewItem (String incomingPlaylistTitle)
@@ -31,6 +32,10 @@ public:
         setLinesDrawnForSubItems(false);  
     }
     
+    ~LibraryViewItem()
+    {
+        callout.clear();
+    }
     void itemSelectionChanged(bool isNowSelected)
     {
         if (isNowSelected)
@@ -136,19 +141,101 @@ public:
         }
     }
     
+    void itemClicked (const MouseEvent& e)
+    {
+        if (playlistTitle != "Library")
+        {
+            if (e.mods.isPopupMenu())
+            {
+                PopupMenu rightClick;
+                
+                rightClick.addItem(1, "Rename Playlist");
+                rightClick.addSeparator();
+                rightClick.addItem(2, "Delete Playlist");
+                
+                if (rightClick.show() != 1)
+                {
+                    String deleteString = "Delete" + playlistTitle;
+                    
+                    String longString = "Are you sure you wish to delete ";
+                    longString << playlistTitle << "?";
+                    
+                    AlertWindow deletePopup(deleteString, longString, AlertWindow::WarningIcon);
+                    
+                    deletePopup.addButton("Cancel", 0);
+                    deletePopup.addButton("Ok", 1);
+                    
+                    if (deletePopup.runModalLoop() != 0)
+                    {
+                        ValueTree toDelete = singletonPlaylistsTree.getChildWithProperty(MusicColumns::playlistName, playlistTitle);
+                        if (toDelete.isValid())
+                            singletonPlaylistsTree.removeChild(toDelete, 0);
+                        sendActionMessage("UpdateItems");
+                    }
+                    
+                }
+                else
+                {
+                    rename(e);
+                }
+                
+            }
+            else if (e.mods.isAltDown())
+            {
+                rename(e);
+            }
+        }
+    }
+    
+    void rename(const MouseEvent& e)
+    {
+        Rectangle<int> position;
+        position.setPosition(e.getScreenPosition());
+        
+        editDirectlyText = new TextEditor();
+        editDirectlyText->addListener(this);
+        editDirectlyText->setSize(300,25);
+        editDirectlyText->setText(playlistTitle);
+        
+        callout.set(new CallOutBox(*editDirectlyText, position, nullptr), false);
+        callout->enterModalState(true, nullptr, true);
+    }
+    
+    void textEditorReturnKeyPressed (TextEditor &editor)
+    {
+        ValueTree rename = singletonPlaylistsTree.getChildWithProperty(MusicColumns::playlistName, playlistTitle);
+        if (rename.isValid())
+        {
+            rename.setProperty(MusicColumns::playlistName, editor.getText(), 0);
+            int idNum = rename.getProperty(MusicColumns::playlistID);
+            idNum += 200;
+            rename.setProperty(MusicColumns::playlistID, idNum, 0);
+            
+            sendActionMessage("UpdateItems");
+        }
+        
+        callout->exitModalState(0);
+    }
+    
+    void textEditorEscapeKeyPressed(TextEditor &)
+    {
+        callout->exitModalState(0);
+    }
+    
 private:
     String playlistTitle;
     
     Image playlistIcon;
     Image libraryIcon;
     
+    OptionalScopedPointer<CallOutBox> callout;
+    ScopedPointer<TextEditor> editDirectlyText;
     //LibraryTreeView* parent;
 };
 
 class LibraryTreeView : public Component,
                         public ActionListener,
                         public ChangeBroadcaster,
-                        //public ValueTree::Listener,
                         public Button::Listener
 {
 public:
@@ -168,11 +255,6 @@ public:
     void buttonClicked (Button* button);
     
     void loadPlaylistsTrackInfo();
-//    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property);
-//    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded);
-//    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved);
-//    void valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved);
-//    void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged);
     
 private:
     TreeView treeView;

@@ -37,11 +37,14 @@ public:
     
     void displayFileStatus (File& file, int result);
     
+    void loadingFile (File loadFile);
+    
 private:
     String size, time, numTracks;
     ConnectionIndicator indicator;
+    Label infoLabel;
     
     File currentFile;
-    bool notFound, notRead;
+    bool notFound, notRead, loading;
 };
 #endif

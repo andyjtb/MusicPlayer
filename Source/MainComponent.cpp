@@ -25,7 +25,6 @@ MainContentComponent::MainContentComponent()
 	guiControl.setAudioControl(&audioControl);
  
 	setSize (1000, 630);
-    DBG("Test");
 }
 
 MainContentComponent::~MainContentComponent()
@@ -125,17 +124,10 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 			if (fc.browseForDirectory()) 
 			{
                 DirectoryLoader d;
-                d.setDirectory(fc.getResult());
                 d.setWildcards(audioControl.getRegisteredFormatWildcard());
+                d.setupDirectoryLoader(fc.getResult(), guiControl.getInfoBar());
                 
-                if (d.runThread())
-                {
-                    DBG("Complete");
-                }
-                else
-                {
-                    DBG("User quit early");
-                }
+                d.runThread();
             }
 		}
 		

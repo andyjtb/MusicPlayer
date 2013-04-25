@@ -33,7 +33,6 @@
 		A12D4B291670ECB3005AAFAD /* TrackTabbed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12D4B241670ECB3005AAFAD /* TrackTabbed.cpp */; };
 		A1376C9C1709BF600045B740 /* J_IPAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1376C9B1709BF600045B740 /* J_IPAddress.cpp */; };
 		A1376CA01709C3340045B740 /* ConnectionIndicator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1376C9F1709C3340045B740 /* ConnectionIndicator.cpp */; };
-		A1376CA41709C4790045B740 /* ConnectionIndicatorBinary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1376CA21709C4790045B740 /* ConnectionIndicatorBinary.cpp */; };
 		A139CCEA16D195D400135DD4 /* LibraryTreeView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A139CCE516D195D400135DD4 /* LibraryTreeView.cpp */; };
 		A139CCEB16D195D400135DD4 /* LibraryTreeViewBinaryData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A139CCE716D195D400135DD4 /* LibraryTreeViewBinaryData.cpp */; };
 		A13AB25A1639B437004E4FE4 /* BackwardsButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A13AB24A1639B437004E4FE4 /* BackwardsButton.cpp */; };
@@ -620,8 +619,6 @@
 		A1376C9D1709BF6E0045B740 /* J_IPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = J_IPAddress.h; sourceTree = "<group>"; };
 		A1376C9F1709C3340045B740 /* ConnectionIndicator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConnectionIndicator.cpp; path = "Info Bar/ConnectionIndicator.cpp"; sourceTree = "<group>"; };
 		A1376CA11709C3410045B740 /* ConnectionIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectionIndicator.h; path = "Info Bar/ConnectionIndicator.h"; sourceTree = "<group>"; };
-		A1376CA21709C4790045B740 /* ConnectionIndicatorBinary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConnectionIndicatorBinary.cpp; path = "Info Bar/ConnectionIndicatorBinary.cpp"; sourceTree = "<group>"; };
-		A1376CA31709C4790045B740 /* ConnectionIndicatorBinary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectionIndicatorBinary.h; path = "Info Bar/ConnectionIndicatorBinary.h"; sourceTree = "<group>"; };
 		A139CCE516D195D400135DD4 /* LibraryTreeView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LibraryTreeView.cpp; path = "../Library TreeView/LibraryTreeView.cpp"; sourceTree = "<group>"; };
 		A139CCE616D195D400135DD4 /* LibraryTreeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LibraryTreeView.h; path = "../Library TreeView/LibraryTreeView.h"; sourceTree = "<group>"; };
 		A139CCE716D195D400135DD4 /* LibraryTreeViewBinaryData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LibraryTreeViewBinaryData.cpp; path = "../Library TreeView/LibraryTreeViewBinaryData.cpp"; sourceTree = "<group>"; };
@@ -2159,8 +2156,6 @@
 		A1376C9E1709C3130045B740 /* Info Bar */ = {
 			isa = PBXGroup;
 			children = (
-				A1376CA21709C4790045B740 /* ConnectionIndicatorBinary.cpp */,
-				A1376CA31709C4790045B740 /* ConnectionIndicatorBinary.h */,
 				A18B4B2216F2518F006A17B8 /* InfoBar.cpp */,
 				A18B4B2316F25190006A17B8 /* InfoBar.h */,
 				A1376C9F1709C3340045B740 /* ConnectionIndicator.cpp */,
@@ -3205,7 +3200,6 @@
 				A161904E170676A600581D76 /* dRowAudio_BiquadFilter.cpp in Sources */,
 				A1376C9C1709BF600045B740 /* J_IPAddress.cpp in Sources */,
 				A1376CA01709C3340045B740 /* ConnectionIndicator.cpp in Sources */,
-				A1376CA41709C4790045B740 /* ConnectionIndicatorBinary.cpp in Sources */,
 				A12176DB1725D0D600D52686 /* MainComponent.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

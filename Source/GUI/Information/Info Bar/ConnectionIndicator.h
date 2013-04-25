@@ -12,7 +12,6 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "J_IPAddress.h"
 #include "Settings.h"
-#include "ConnectionIndicatorBinary.h"
 
 class ConnectionIndicator : public Component,
                             public TooltipClient
@@ -31,7 +30,6 @@ public:
     String getTooltip();
 
 private:    
-    Image on, off;
     TooltipWindow tipWindow;
     StringArray connectedTo;
     bool connected;

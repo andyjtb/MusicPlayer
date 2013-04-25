@@ -69,6 +69,9 @@ void LibraryTreeView::actionListenerCallback (const String& message)
                 sendChangeMessage();
             }
         }
+    
+    if (message.startsWith("UpdateItems"))
+        updateItems();
 }
 
 void LibraryTreeView::setSelected(String incomingPlaylist)
@@ -80,19 +83,6 @@ String LibraryTreeView::getSelectedPlaylist()
 {
     return selectedPlaylist;
 }
-
-//ValueTree Callbacks
-//void LibraryTreeView::valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
-//{}
-//void LibraryTreeView::valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded)
-//{
-//}
-//void LibraryTreeView::valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved)
-//{}
-//void LibraryTreeView::valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved)
-//{}
-//void LibraryTreeView::valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged)
-//{}
 
 void LibraryTreeView::loadPlaylistsTrackInfo()
 {

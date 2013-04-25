@@ -19,6 +19,8 @@ ConnectionIndicator::ConnectionIndicator()
     tooltip << "Your Ip: \n" << ips[1].toString();
     
     tipWindow.setMillisecondsBeforeTipAppears(300);
+    
+    
 }
 
 ConnectionIndicator::~ConnectionIndicator()
@@ -26,21 +28,38 @@ ConnectionIndicator::~ConnectionIndicator()
 
 void ConnectionIndicator::paint(Graphics &g)
 {
+    //Makes everything a variable amount smaller, so the edges don't look quite so squashed
+    int edgeBuffer = 1;
+    
     if (connected)
-        g.drawImage (on,
-                 0, 0, on.getWidth(), on.getHeight(),
-                 0, 0, on.getWidth(), on.getHeight());
+    {
+        g.setColour (Colour (0xff27ff00));
+        g.fillEllipse (0, 0, getWidth() - edgeBuffer, getHeight()- edgeBuffer);
+        
+        g.setColour (Colour (0xff686868));
+        g.drawEllipse (0, 0, getWidth()- edgeBuffer, getHeight()- edgeBuffer, 1);
+        
+        g.setGradientFill (ColourGradient (Colour (0xbaffffff),
+                                           2, 2,
+                                           Colour (0x8000),
+                                           getWidth()/2, getHeight()/2,
+                                           true));
+        g.fillRect (0, 0, getWidth()- edgeBuffer, getHeight()- edgeBuffer);
+    }
     else
-        g.drawImage (off,
-                     0, 0, off.getWidth(), off.getHeight(),
-                     0, 0, off.getWidth(), off.getHeight());
+    {
+        g.setColour (Colour (0xff4d9025));
+        g.fillEllipse (0, 0, getWidth()- edgeBuffer, getHeight()- edgeBuffer);
+        
+        g.setColour (Colour (0xff686868));
+        g.drawEllipse (0, 0, getWidth()- edgeBuffer, getHeight()- edgeBuffer, 1);
+    }
+
 }
 
 void ConnectionIndicator::resized()
 {
-    on = ImageCache::getFromMemory (ConnectionIndicatorBinary::on_png, ConnectionIndicatorBinary::on_pngSize).rescaled(getWidth(), getHeight());
-    
-    off = ImageCache::getFromMemory (ConnectionIndicatorBinary::off_png, ConnectionIndicatorBinary::off_pngSize).rescaled(getWidth(), getHeight());
+
 }
 
 void ConnectionIndicator::remoteConnectionChanged(String ipAddress)

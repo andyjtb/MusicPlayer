@@ -29,8 +29,7 @@
 #include "TrackDialog.h"
 #include "TrackMulti.h"
 
-//class RemoteInterprocessConnection;
-
+class GuiControl;
 
 //==============================================================================
 /**
@@ -123,6 +122,9 @@ public:
 	var getDragSourceDescription (const SparseSet<int>& currentlySelectedRows);
 
     //NON DROW FUNCTIONS
+    void setGuiControl(GuiControl* _guiControl) { guiControl.set(_guiControl, false); }
+    GuiControl* getGuiControl() { return guiControl; }
+    
     void updateLibrary();
     void selectedRowsChanged (int lastRowSelected);
     void returnKeyPressed (int currentSelectedRow);
@@ -136,13 +138,19 @@ public:
     
     void setPlaylistTree (ValueTree& playlist);
     void changeDisplay (bool displayPlaylists);
+    bool isDisplayingPlaylist() { return displayPlaylist; }
     void setSortColumn (int columnNumber);
     
     void deleteTracks (bool libraryOnly);
     
     void playlistRearrange (int selectedRow, bool moveUp);
     
-    bool isTableDeleting() { return tableDeleting;}
+    bool isTableDeleting() { return tableDeleting; }
+    
+    ValueTree getCurrentlySelectedTree() { return currentlySelectedRow; }
+    int getCurrentlySelectedRow() { return table.getSelectedRow(); }
+    
+    void setCurrentlySelectedRow(int selectRow, bool scrollToRow=false, bool deselectRows=true) { table.selectRow(selectRow, scrollToRow, deselectRows); }
     
 private:
     //==============================================================================
@@ -151,13 +159,15 @@ private:
     TableListBox table;
     String currentFilterText;
     
+    OptionalScopedPointer<GuiControl> guiControl;
+    
     ValueTree dataList, playlistTree;
     
     ScopedPointer<TrackDialog> trackDialog;
     
     OptionalScopedPointer<CallOutBox> callout;
     int columnEditing, rowEditing;
-    ValueTree currentlyEditing;
+    ValueTree currentlyEditing, currentlySelectedRow;
     ScopedPointer<TextEditor> editDirectlyText;
     
     int filteredNumRows, currentPlaylist;
