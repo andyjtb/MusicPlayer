@@ -21,20 +21,17 @@ Getting undo message from manager, allowing undo of one thing at a time
 \cf0 Remote - Artist, then select their album, then select albums tab and select an album, crashes pushing the same view twice...\
 Remote - Have to press connect hundreds of times -\cf3  add some sort of timeout or something\cf0 \
 \
-Connection Indicator - Connected to array, works the first time, then disconnect and connect again, the thing is missing\
-\
-EQ Doesn't work fully, saved to gains array works between songs but no closing and opening application, needs work generally\
-\
 10 band graphic eq q values\
-\
-Play song in playlist then go to library view, first song works, then in the loadFile the filtereddatalist is set to the current playing list incorrectly, need to check something...\
-\
-Other file types album art\'85. maybe?\
 \
 Drop target is currently broken, directory loader wildcards also doesn't seem to be working\'85\
 Adding directory - Remove thread with progress window, change it to a standard thread, then update the info bar for each song instead\
 \
 Filtering - search for an exact song, select play, press next/previous on remote - weird bug with no being able to find the song, not sure why yet...\
+Play song in playlist then go to library view, first song works, then in the loadFile the filtereddatalist is set to the current playing list incorrectly, need to check something...\
+\
+File not found - click the label and give the user the option to find it\
+\
+Other file type album art - https://gist.github.com/guymac/1468279 - reads m4a, should read ogg, doesn't write either\
 \
 MINOR THINGS\
 Play back home by yellow card then search for yellowcard, it'll jumped back to the top of the table after it stops\

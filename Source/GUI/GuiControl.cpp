@@ -83,7 +83,6 @@ void GuiControl::resized()
 	searchBox.setBounds(getWidth()-200, 0, 175, 60);
 
     musicLibraryDropTarget.setBounds(0, getHeight()/2, getWidth(), (getHeight()/2)-15);
-    //musicTable.setBounds(0, getHeight()/2, getWidth(), getHeight()/2);
 
     libraryView.setBounds(600, 100, 200, 200);
 }
@@ -121,21 +120,6 @@ void GuiControl::timerCallback(int timerId)
             tablePlayingRow.setProperty(MusicColumns::columnNames[MusicColumns::PlayCount], playCount, 0);
             
             next();
-//            int toPlay = filteredDataList.indexOf(tablePlayingRow);
-//            if (toPlay != -1)
-//                toPlay++;
-//            
-//            ValueTree test(filteredDataList.getChild(toPlay));
-//            if (test.isValid()) {
-//                tableSelectedRow = test;
-//                loadingNew = true;
-//                tableShouldPlay = true;
-//                
-//            }
-//            else
-//            {
-//                singletonPlayState = false;
-//            }
         }
 	}
 }
@@ -295,7 +279,7 @@ void GuiControl::valueChanged (Value& valueChanged)
         {
             File audioFile = musicTable->getCurrentlySelectedTree().getProperty("Location").toString();
             ImageWithType currentCover = TagReader::getAlbumArt(audioFile);
-            albumArt.setCover(currentCover);
+            albumArt.setImageOnly(currentCover);
             artUpdateRequired = false;
         }
     }
@@ -303,7 +287,7 @@ void GuiControl::valueChanged (Value& valueChanged)
 void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
 {
     File selectedFile (treeToLoad.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
-    
+    DBG("Extension = " << selectedFile.getFileExtension());
     DBG("Gui load = " << selectedFile.getFileName());
     
     if (selectedFile.existsAsFile())
@@ -317,13 +301,20 @@ void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
         {
             tablePlayingRow = treeToLoad;
             
+            //Ensures playlists continue playing in order even when the user changes view to the library
             if (musicTable->isDisplayingPlaylist())
+            {
                 currentlyPlayingList = filteredDataList.createCopy();
-            else
+                //currentlyPlayingName = libraryView.getSelectedPlaylist();
+            }
+            else if (!musicTable->isPlayingPlaylist())
+            {
                 currentlyPlayingList = filteredDataList;
+            }
+            
             
             if (treeToLoad != musicTable->getCurrentlySelectedTree())
-                musicTable->setCurrentlySelectedRow(filteredDataList.indexOf(treeToLoad));
+                musicTable->setCurrentlySelectedRow(currentlyPlayingList.indexOf(treeToLoad));
             
             if (shouldPlay)
                 singletonPlayState = true;

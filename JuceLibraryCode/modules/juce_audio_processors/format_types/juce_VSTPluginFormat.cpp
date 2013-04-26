@@ -33,7 +33,7 @@
 #if JUCE_MAC
  static bool makeFSRefFromPath (FSRef* destFSRef, const String& path)
  {
-     return FSPathMakeRef (reinterpret_cast <const UInt8*> (path.toUTF8().getAddress()), destFSRef, 0) == noErr;
+     return FSPathMakeRef (reinterpret_cast <const UInt8*> (path.toRawUTF8()), destFSRef, 0) == noErr;
  }
 #endif
 
@@ -65,6 +65,10 @@
 #include "juce_VSTMidiEventList.h"
 
 #if JUCE_MINGW
+ #ifndef WM_APPCOMMAND
+  #define WM_APPCOMMAND 0x0319
+ #endif
+
  extern "C" void _fpreset();
  extern "C" void _clearfp();
 #elif ! JUCE_WINDOWS
@@ -493,7 +497,7 @@ public:
 
         if (file.hasFileExtension (".vst"))
         {
-            const char* const utf8 = file.getFullPathName().toUTF8().getAddress();
+            const char* const utf8 = file.getFullPathName().toRawUTF8();
 
             if (CFURLRef url = CFURLCreateFromFileSystemRepresentation (0, (const UInt8*) utf8,
                                                                         strlen (utf8), file.isDirectory()))
@@ -556,7 +560,7 @@ public:
         {
             FSRef fn;
 
-            if (FSPathMakeRef ((UInt8*) file.getFullPathName().toUTF8().getAddress(), &fn, 0) == noErr)
+            if (FSPathMakeRef ((UInt8*) file.getFullPathName().toRawUTF8(), &fn, 0) == noErr)
             {
                 resFileId = FSOpenResFile (&fn, fsRdPerm);
 
@@ -578,7 +582,7 @@ public:
                             DetachResource (resHandle);
                             HLock (resHandle);
 
-                            Ptr ptr;
+                            ::Ptr ptr;
                             Str255 errorText;
 
                             OSErr err = GetMemFragment (*resHandle, GetHandleSize (resHandle),
@@ -1245,7 +1249,7 @@ public:
         if (index == getCurrentProgram())
         {
             if (getNumPrograms() > 0 && newName != getCurrentProgramName())
-                dispatch (effSetProgramName, 0, 0, (void*) newName.substring (0, 24).toUTF8().getAddress(), 0.0f);
+                dispatch (effSetProgramName, 0, 0, (void*) newName.substring (0, 24).toRawUTF8(), 0.0f);
         }
         else
         {
@@ -1834,7 +1838,7 @@ private:
        #if JUCE_MAC
         return (VstIntPtr) (void*) &module->parentDirFSSpec;
        #else
-        return (VstIntPtr) (pointer_sized_uint) module->fullParentDirectoryPathName.toUTF8().getAddress();
+        return (VstIntPtr) (pointer_sized_uint) module->fullParentDirectoryPathName.toRawUTF8();
        #endif
     }
 
@@ -2046,7 +2050,7 @@ public:
         {
             if (ComponentPeer* const peer = getPeer())
             {
-                peer->addMaskedRegion (getScreenBounds() - peer->getScreenPosition());
+                peer->addMaskedRegion (peer->globalToLocal (getScreenBounds()));
 
                #if JUCE_LINUX
                 if (pluginWindow != 0)
@@ -2619,7 +2623,7 @@ private:
         {
             if (ComponentPeer* const peer = getPeer())
             {
-                const Point<int> pos (getScreenPosition() - peer->getScreenPosition());
+                const Point<int> pos (peer->globalToLocal (getScreenPosition()));
                 ERect r;
                 r.left   = (VstInt16) pos.getX();
                 r.top    = (VstInt16) pos.getY();

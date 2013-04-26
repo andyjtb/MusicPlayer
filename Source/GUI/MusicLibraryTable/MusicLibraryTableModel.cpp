@@ -28,7 +28,7 @@ dataList (MusicColumns::libraryIdentifier),
 filteredNumRows (dataList.getNumChildren()),
 finishedLoading (true)
 {
-    displayPlaylist = tableDeleting = false;
+    displayPlaylist = playingPlaylist = tableDeleting = false;
     
 	// Create our table component and add it to this component..
 	addAndMakeVisible (&table);
@@ -349,6 +349,11 @@ void MusicLibraryTable::selectedRowsChanged(int lastRowSelected)
 void MusicLibraryTable::returnKeyPressed(int currentSelectedRow)
 {
     guiControl->loadFile(currentlySelectedRow, true);
+    
+    if (displayPlaylist)
+        playingPlaylist = true;
+    else
+        playingPlaylist = false;
 }
 
 void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
@@ -524,6 +529,12 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
             case 2:
             {
                 guiControl->loadFile(currentlySelectedRow, true);
+                
+                if (displayPlaylist)
+                    playingPlaylist = true;
+                else
+                    playingPlaylist = false;
+                    
                 break;
             }
             case 3:
@@ -619,6 +630,12 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
 void MusicLibraryTable::cellDoubleClicked(int rowNumber, int columnId, const juce::MouseEvent &event)
 {
     guiControl->loadFile(currentlySelectedRow, true);
+    
+    if (displayPlaylist)
+        playingPlaylist = true;
+    else
+        playingPlaylist = false;
+
 }
 
 void MusicLibraryTable::editDirectly (int rowNumber, int columnId, const MouseEvent& event)

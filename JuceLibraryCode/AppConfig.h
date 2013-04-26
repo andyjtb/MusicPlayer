@@ -11,8 +11,8 @@
 
 */
 
-#ifndef __JUCE_APPCONFIG_ASEG5F__
-#define __JUCE_APPCONFIG_ASEG5F__
+#ifndef __JUCE_APPCONFIG_PFT2H1__
+#define __JUCE_APPCONFIG_PFT2H1__
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
@@ -182,4 +182,4 @@
 #endif
 
 
-#endif  // __JUCE_APPCONFIG_ASEG5F__
+#endif  // __JUCE_APPCONFIG_PFT2H1__

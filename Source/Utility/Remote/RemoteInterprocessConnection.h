@@ -77,6 +77,7 @@ private:
     void sendPlaylistData();
     
     int connectionNumber;
+    String connectionName;
     String lastAlbum;
     
     OptionalScopedPointer<GuiControl> guiControl;

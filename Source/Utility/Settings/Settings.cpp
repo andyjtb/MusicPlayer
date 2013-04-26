@@ -178,6 +178,18 @@ void Settings::initSettings()
     if (!eqSettings.hasType("EQSETTINGS"))
         eqSettings = ValueTree("EQSETTINGS");
     
+    //Restore eq state
+    if (eqSettings.isValid())
+    {
+        //Minus 2 as in the dropdown box where it is set, 0 is not allowed and 1 is always flat
+        ValueTree currentEqPreset = eqSettings.getChild(eqDetails.ID - 2);
+        if (currentEqPreset.isValid())
+            for (int i = 1; i < currentEqPreset.getNumProperties(); i++)
+                eqDetails.gains.add(float(currentEqPreset.getProperty(currentEqPreset.getPropertyName(i))));
+
+    }
+    
+    
     shouldPlay = false;
     
     undoManager = new UndoManager(30,30);

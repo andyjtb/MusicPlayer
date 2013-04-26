@@ -11,11 +11,11 @@
 //========================================================================
 EQFilters::EQFilters ()
 {
-    sampleRate = 44100;
+    sampleRate = 1;
     q = 1.8f;
     
     //Fills gains array with 1
-    std::fill_n(gains, numFrequencies, 1);
+    //std::fill_n(gains, numFrequencies, 1);
 }
 
 EQFilters::~EQFilters()
@@ -28,43 +28,43 @@ void EQFilters::setFilter (int frequency, float gain)
     {
         switch (frequency) {
             case 32:
-                gains[0] = gain;
+                currentEqDetails.gains.set(0, gain);
                 filters[0][i].makePeakNotch(sampleRate, frequency, q, gain);
                 break;
             case 64:
-                gains[1] = gain;
+                currentEqDetails.gains.set(1, gain);
                 filters[1][i].makePeakNotch(sampleRate, frequency, q, gain);
                 break;
             case 125:
-                gains[2] = gain;
+                currentEqDetails.gains.set(2, gain);
                 filters[2][i].makePeakNotch(sampleRate, frequency, q, gain);
                 break;
             case 250:
-                gains[3] = gain;
+                currentEqDetails.gains.set(3, gain);
                 filters[3][i].makePeakNotch(sampleRate, frequency, q, gain);
                 break;
             case 500:
-                gains[4] = gain;
+                currentEqDetails.gains.set(4, gain);
                 filters[4][i].makePeakNotch(sampleRate, frequency, q, gain);
                 break;
             case 1000:
-                gains[5] = gain;
+               currentEqDetails.gains.set(5, gain);
                 filters[5][i].makePeakNotch(sampleRate, frequency, q, gain);
                 break;
             case 2000:
-                gains[6] = gain;
+                currentEqDetails.gains.set(6, gain);
                 filters[6][i].makePeakNotch(sampleRate, frequency, q, gain);
                 break;
             case 4000:
-                gains[7] = gain;
+                currentEqDetails.gains.set(7, gain);
                 filters[7][i].makePeakNotch(sampleRate, frequency, q, gain);
                 break;
             case 8000:
-                gains[8] = gain;
+                currentEqDetails.gains.set(8, gain);
                 filters[8][i].makePeakNotch(sampleRate, frequency, q, gain);
                 break;
             case 16000:
-                gains[9] = gain;
+                currentEqDetails.gains.set(9, gain);
                 filters[9][i].makePeakNotch(sampleRate, frequency, q, gain);
                 break;
             default:
@@ -81,7 +81,7 @@ void EQFilters::setSampleRate(int _sampleRate)
         for (int i = 0; i < numFrequencies; i++)
         {
             for (int j = 0; j < 2; j++)
-                filters[i][j].makePeakNotch(sampleRate, 500, q, gains[i]);
+                filters[i][j].makePeakNotch(sampleRate, 500, q, currentEqDetails.gains[i]);
         }
     }
 }

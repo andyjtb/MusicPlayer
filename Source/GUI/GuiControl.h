@@ -101,6 +101,8 @@ public:
 //     */
 //    void textEditorFocusLost (TextEditor &textEditor){}
 
+    ValueTree getCurrentlyPlayingList() { return currentlyPlayingList; }
+    
     //Menu Bar function
     void showEffectsMenu();
     
@@ -139,6 +141,7 @@ private:
     ScopedPointer<SpeedPitch> speedPitch;
     
     ValueTree currentlyPlayingList;
+    String currentlyPlayingName;
     
 };
 

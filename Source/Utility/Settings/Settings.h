@@ -17,6 +17,7 @@ struct ImageWithType {
 struct EqDetails{
     int ID;
     Value On;
+    Array<float> gains;
 };
 
 #define singletonLibraryFile Settings::getInstance()->getLibraryFile()

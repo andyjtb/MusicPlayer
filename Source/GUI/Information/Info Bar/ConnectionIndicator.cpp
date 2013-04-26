@@ -64,6 +64,8 @@ void ConnectionIndicator::resized()
 
 void ConnectionIndicator::remoteConnectionChanged(String ipAddress)
 {
+    DBG("Ip change = " << ipAddress);
+    
     bool contains = connectedTo.contains(ipAddress);
     if (contains) {
         //If already exists then must be deleting

@@ -139,6 +139,7 @@ public:
     void setPlaylistTree (ValueTree& playlist);
     void changeDisplay (bool displayPlaylists);
     bool isDisplayingPlaylist() { return displayPlaylist; }
+    bool isPlayingPlaylist() { return playingPlaylist; }
     void setSortColumn (int columnNumber);
     
     void deleteTracks (bool libraryOnly);
@@ -166,12 +167,11 @@ private:
     ScopedPointer<TrackDialog> trackDialog;
     
     OptionalScopedPointer<CallOutBox> callout;
-    int columnEditing, rowEditing;
     ValueTree currentlyEditing, currentlySelectedRow;
     ScopedPointer<TextEditor> editDirectlyText;
     
-    int filteredNumRows, currentPlaylist;
-	bool finishedLoading, displayPlaylist, tableDeleting;
+    int filteredNumRows, columnEditing, rowEditing;
+	bool finishedLoading, displayPlaylist, playingPlaylist, tableDeleting;
 	
     void updateTableFilteredAndSorted();
     

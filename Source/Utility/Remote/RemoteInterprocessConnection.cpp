@@ -16,13 +16,15 @@ RemoteInterprocessConnection::RemoteInterprocessConnection () : InterprocessConn
 
 RemoteInterprocessConnection::~RemoteInterprocessConnection()
 {
-    guiControl->remoteConnectionChanged(getConnectedHostName());
+    guiControl->remoteConnectionChanged(connectionName);
 }
 
 void RemoteInterprocessConnection::connectionMade()
 {
     DBG("Connection #" + String (connectionNumber) + " - connection started");
     DBG("Connected to = " << getConnectedHostName());
+    
+    connectionName = getConnectedHostName();
     
     guiControl->remoteConnectionChanged(getConnectedHostName());
 }
@@ -149,12 +151,11 @@ void RemoteInterprocessConnection::sendAlbumArt()
 
 void RemoteInterprocessConnection::sendTrackNums()
 {
-    //int currentLibId = tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::LibID]);
-    ValueTree searchTree = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::LibID]));
+    ValueTree searchTree = guiControl->getCurrentlyPlayingList().getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], tablePlayingRow.getProperty(MusicColumns::columnNames[MusicColumns::ID]));
     
     if (searchTree.isValid()) {
-        sendString("TracksTotal: " + String(filteredDataList.getNumChildren()));
-        sendString("TrackNum: " + String(filteredDataList.indexOf(searchTree)+1));
+        sendString("TracksTotal: " + String(guiControl->getCurrentlyPlayingList().getNumChildren()));
+        sendString("TrackNum: " + String(guiControl->getCurrentlyPlayingList().indexOf(searchTree)+1));
     }   
 }
 

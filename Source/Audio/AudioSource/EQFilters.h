@@ -11,6 +11,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "dRowAudio_BiquadFilter.h"
+#include "Settings.h"
 
 #define numFrequencies 10
 /** A bank of fixed frequency graphic EQ style filters 

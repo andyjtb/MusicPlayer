@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "0"
          filePath = "../../Source/Utility/Remote/RemoteInterprocessConnection.cpp"
-         timestampString = "388608537.887646"
+         timestampString = "388666470.064011"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "64"
-         endingLineNumber = "64"
+         startingLineNumber = "67"
+         endingLineNumber = "67"
          landmarkName = "RemoteInterprocessConnection::messageReceived (const MemoryBlock&amp; message)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -49,11 +49,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
-         timestampString = "388608537.887646"
+         timestampString = "388666884.893011"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "624"
-         endingLineNumber = "624"
+         startingLineNumber = "634"
+         endingLineNumber = "634"
          landmarkName = "MusicLibraryTable::cellDoubleClicked(int rowNumber, int columnId, const juce::MouseEvent &amp;event)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -71,29 +71,55 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "../../Source/Utility/DirectoryLoader.h"
-         timestampString = "388622867.411507"
+         filePath = "../../Source/GUI/Information/AlbumArt.cpp"
+         timestampString = "388708204.54892"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "44"
-         endingLineNumber = "44"
-         landmarkName = "run()"
+         startingLineNumber = "153"
+         endingLineNumber = "153"
+         landmarkName = "AlbumArt::setCover (ImageWithType cover)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../Source/Utility/MetaData/TagReader.h"
+         timestampString = "388711132.803498"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "306"
+         endingLineNumber = "306"
+         landmarkName = "saveAlbumArt (File&amp; audioFile, Image&amp; newCover, String imageType)"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "../../Source/MainComponent.cpp"
-         timestampString = "388622965.529095"
+         filePath = "../../Source/Utility/MetaData/TagReader.h"
+         timestampString = "388711506.476049"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "128"
-         endingLineNumber = "128"
-         landmarkName = "MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuIndex)"
+         startingLineNumber = "174"
+         endingLineNumber = "174"
+         landmarkName = "getAlbumArt (File&amp; audioFile)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../Source/GUI/Information/AlbumArt.cpp"
+         timestampString = "388711922.339535"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "309"
+         endingLineNumber = "309"
+         landmarkName = "AlbumArt::fromUrl()"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

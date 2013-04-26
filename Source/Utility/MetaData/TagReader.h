@@ -105,7 +105,7 @@ public:
 	{
         if (audioFile.exists())
         {
-            if (audioFile.getFullPathName().endsWith(".mp3")) {
+            if (audioFile.getFileExtension() == ".mp3") {
                 
                 TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
                 
@@ -127,6 +127,72 @@ public:
                     }
                 }
             }
+            
+            else if (audioFile.getFileExtension() == ".m4a" || audioFile.getFileExtension() == ".aac")
+            {
+                TagLib::MP4::File f(audioFile.getFullPathName().toUTF8());
+                
+                TagLib::MP4::ItemListMap itemsListMap = f.tag()->itemListMap();
+                
+                TagLib::MP4::Item coverItem = itemsListMap["covr"];
+                
+                TagLib::MP4::CoverArtList coverArtList = coverItem.toCoverArtList();
+                
+                TagLib::MP4::CoverArt coverArt = coverArtList.front();
+                
+                ImageWithType mCover;
+                //12 = gif, 13 = jpeg, 14 = png, 27 = bmp
+                switch (coverArt.format())
+                {
+                    case 12:
+                        mCover.type = "gif";
+                        break;
+                    case 13:
+                        mCover.type = "jpeg";
+                        break;
+                    case 14:
+                        mCover.type = "png";
+                        break;
+                    case 27:
+                        mCover.type = "bmp";
+                        break;
+                    default:
+                        break;
+                }
+                
+                mCover.image = ImageFileFormat::loadFrom(coverArt.data().data(), coverArt.data().size());
+                
+                return mCover;
+            }
+            
+            else if (audioFile.getFileExtension() == ".ogg" || audioFile.getFileExtension().compareIgnoreCase(".flac"))
+            {
+                TagLib::Ogg::Vorbis::File f(audioFile.getFullPathName().toUTF8());
+                
+                if (f.tag()->contains("METADATA_BLOCK_PICTURE")) {
+                    //Ogg/flac album art is saved in a base64 encoded string
+                    TagLib::String encodedData = f.tag()->fieldListMap()["METADATA_BLOCK_PICTURE"].front();
+                    
+                    String juceEncoded = encodedData.toCString();
+                    
+                    MemoryBlock memoryBlock;
+                    //Fill memoryblock by decoding string
+                    if (memoryBlock.fromBase64Encoding(juceEncoded))
+                    {
+                        //Put data into taglib bytevector
+                        TagLib::ByteVector data (static_cast<const char*>(memoryBlock.getData()), memoryBlock.getSize());
+                        //Make a picture from the data, allows the file type to be read, otherwise I would have just gone memoryblock to image
+                        TagLib::FLAC::Picture *picture = new TagLib::FLAC::Picture(data);
+                        
+                        ImageWithType oCover;
+                        oCover.image = ImageFileFormat::loadFrom(data.data(), data.size());
+                        oCover.type = String(picture->mimeType().toCString()).fromFirstOccurrenceOf("/", false, true);
+                        
+                        return oCover;
+                    }
+
+                }
+            }
         }
         return ImageWithType();
 	}
@@ -140,7 +206,7 @@ public:
     {
         if (audioFile.exists())
         {
-            if (audioFile.getFullPathName().endsWith(".mp3")) {
+            if (audioFile.getFileExtension() == ".mp3") {
                 
                 TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
 
@@ -158,7 +224,7 @@ public:
                             
                             readJuceImageToByteVector(newCover, imageType, byteVector);
                             
-                            if (imageType == "JPEG")
+                            if (imageType.compareIgnoreCase("JPEG") ||  imageType.compareIgnoreCase("JPG"))
                                 frame->setMimeType("image/jpeg");
                             else
                                 frame->setMimeType("image/png");
@@ -180,7 +246,7 @@ public:
                         
                         //frame->setType(TagLib::ID3v2::AttachedPictureFrame::FrontCover);
                         
-                        if (imageType == "JPEG")
+                        if (imageType.compareIgnoreCase("JPEG") ||  imageType.compareIgnoreCase("JPG"))
                             frame->setMimeType("image/jpeg");
                         else
                             frame->setMimeType("image/png");
@@ -194,6 +260,81 @@ public:
                 }
                   
             }
+            
+            else if (audioFile.getFileExtension() == ".m4a" || audioFile.getFileExtension() == ".aac")
+            {
+                // read the image file
+                TagLib::ByteVector coverVector;
+                readJuceImageToByteVector(newCover, imageType, coverVector);
+                
+                DBG("image type = " << imageType << " vector size = " << String(coverVector.size()));
+                
+                TagLib::MP4::CoverArt::Format format;
+                
+                if (imageType.compareIgnoreCase("jpeg") || imageType.compareIgnoreCase("jpg"))
+                    format = TagLib::MP4::CoverArt::Format::JPEG;
+                else if (imageType.compareIgnoreCase("gif"))
+                    format = TagLib::MP4::CoverArt::Format::GIF;
+                else if (imageType.compareIgnoreCase("png"))
+                    format = TagLib::MP4::CoverArt::Format::PNG;
+                else if (imageType.compareIgnoreCase("bmp"))
+                    format = TagLib::MP4::CoverArt::Format::BMP;
+                
+                TagLib::MP4::CoverArt coverArt(format, coverVector);
+                
+                // read the mp4 file
+                TagLib::MP4::File f(audioFile.getFullPathName().toUTF8());
+                
+                TagLib::MP4::ItemListMap itemsListMap = f.tag()->itemListMap();
+                // create cleanr cover art list
+                TagLib::MP4::CoverArtList coverArtList;
+                // append instance
+                coverArtList.append(coverArt);
+                
+                TagLib::MP4::Item coverItem(coverArtList);
+                
+                //Overwrite old cover art
+                itemsListMap.insert("covr", coverItem);
+                
+                f.tag()->save();
+                f.save();
+
+            }
+            
+            else if (audioFile.getFileExtension() == ".ogg" || audioFile.getFileExtension().compareIgnoreCase(".flac"))
+            {
+                TagLib::Ogg::Vorbis::File f(audioFile.getFullPathName().toUTF8());
+                /*
+                 PROPOSED http://wiki.xiph.org/VorbisComment#METADATA_BLOCK_PICTURE
+                 */
+                TagLib::FLAC::Picture* picture = new TagLib::FLAC::Picture();
+                
+                //Read juce image to taglib data
+                TagLib::ByteVector byteVector;
+                readJuceImageToByteVector(newCover, imageType, byteVector);
+                //Create picture
+                picture->setData(byteVector);
+                picture->setType((TagLib::FLAC::Picture::Type) 0x03); // FrontCover
+                
+                if (imageType.compareIgnoreCase("JPEG") ||  imageType.compareIgnoreCase("JPG"))
+                    picture->setMimeType("image/jpeg");
+                else
+                    picture->setMimeType("image/png");
+                picture->setDescription("Front Cover");
+                
+                //Convert picture back to raw data
+                TagLib::ByteVector block = picture->render();
+                
+                //Convert raw data to juce raw data
+                MemoryBlock juceStringCover (block.data(), block.size());
+                //64 bit encode juce data to string then taglib string
+                TagLib::String encodedCover = juceStringCover.toBase64Encoding().toWideCharPointer();
+                
+                //Copy newly encoded string over existing art
+                f.tag()->addField("METADATA_BLOCK_PICTURE", encodedCover, true);
+                
+                f.save();
+            }
         }
     }
     
@@ -206,7 +347,7 @@ public:
     {
         MemoryOutputStream newCoverData;
         
-        if (imageType == "JPEG")
+        if (imageType.compareIgnoreCase("JPEG") || imageType.compareIgnoreCase("jpg"))
         {
             JPEGImageFormat image;
             image.writeImageToStream(newCover, newCoverData);

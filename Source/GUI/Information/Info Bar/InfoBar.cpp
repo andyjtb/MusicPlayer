@@ -47,12 +47,14 @@ void InfoBar::paint (Graphics& g)
     g.drawText (size,
                 (getWidth()/2)+100, 0, 100, getHeight(),
                 Justification::centredLeft, true);
+    
+    g.drawText("Remote: ", 5, 0, 47, getHeight(), Justification::centredLeft, false);
 
 }
 
 void InfoBar::resized()
 {
-    indicator.setBounds(10, getHeight()/4, 10, getHeight()-5);
+    indicator.setBounds(57, getHeight()/4, 10, getHeight()-5);
     infoLabel.setBounds (getWidth() - 400, 0, 400, getHeight());
 }
 

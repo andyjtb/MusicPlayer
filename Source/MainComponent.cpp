@@ -125,7 +125,8 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 			{
                 DirectoryLoader d;
                 d.setWildcards(audioControl.getRegisteredFormatWildcard());
-                d.setupDirectoryLoader(fc.getResult(), guiControl.getInfoBar());
+                d.setInfoBar(guiControl.getInfoBar());
+                d.setDirectory(fc.getResult());
                 
                 d.runThread();
             }

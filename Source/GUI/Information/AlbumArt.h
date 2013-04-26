@@ -24,6 +24,8 @@ public:
     void resized();
 	void paint(Graphics& g);
 	
+    void setImageOnly (ImageWithType cover);
+    
 	void setCover (File& incomingAudioFile);
     void setCover (ImageWithType cover);
     void setCover (Image cover);

@@ -61,6 +61,38 @@ void AlbumArt::paint(Graphics& g)
     }
 }
 
+void AlbumArt::setImageOnly (ImageWithType cover)
+{
+    if (cover.image.isValid() && cover.image.getWidth() > 2) {
+		fileSelected = true;
+        tagMissing = false;
+        
+        imageWidth = cover.image.getWidth();
+        imageHeight = cover.image.getHeight();
+        
+        if(findParentComponentOfClass<Viewport>())
+        {
+            setSize(getParentWidth(), getParentHeight());
+        }
+        
+        if (audioFile.existsAsFile())
+        {
+            currentCover = cover.image;
+            extension = cover.type;
+            
+            setImage (cover.image);
+        }
+	}
+	else {
+		tagMissing = true;
+        if (cover.image.getWidth() == 2)
+        {
+            multiTrack = true;
+        }
+		repaint();
+	}
+}
+
 void AlbumArt::setCover (File& incomingAudioFile)
 {
     audioFile = incomingAudioFile;
@@ -118,7 +150,7 @@ void AlbumArt::setCover (ImageWithType cover)
             //If parent is the guicontrol display then it saves when the image is set, otherwise save is called from another function when ok is pressed.
             GuiControl* gc = findParentComponentOfClass<GuiControl>();
             if (gc != nullptr)
-            TagReader::saveAlbumArt(audioFile, currentCover, extension);
+                TagReader::saveAlbumArt(audioFile, currentCover, extension);
         }
 	}
 	else {
@@ -274,14 +306,19 @@ void AlbumArt::fromUrl()
     
     if (urlAlert.runModalLoop() != 0) {
         currentCover = urlLoad.getImage();
+        if (urlLoad.jpeg)
+            extension = "jpg";
+        else
+            extension = "png";
+        
         setCover(currentCover);
-        if (!multiTrack) {
-            if (urlLoad.jpeg)
-                TagReader::saveAlbumArt(audioFile, currentCover, "JPEG");
-            else
-                TagReader::saveAlbumArt(audioFile, currentCover, "PNG"); 
-            
-        }
+//        if (!multiTrack) {
+//            if (urlLoad.jpeg)
+//                setCover()
+//            else
+//                TagReader::saveAlbumArt(audioFile, currentCover, "PNG"); 
+        
+//        }
         
         artUpdateRequired = true;
     }

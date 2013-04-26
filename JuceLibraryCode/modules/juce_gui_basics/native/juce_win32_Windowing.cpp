@@ -112,11 +112,13 @@ typedef BOOL (WINAPI* RegisterTouchWindowFunc) (HWND, ULONG);
 typedef BOOL (WINAPI* GetTouchInputInfoFunc) (HTOUCHINPUT, UINT, TOUCHINPUT*, int);
 typedef BOOL (WINAPI* CloseTouchInputHandleFunc) (HTOUCHINPUT);
 typedef BOOL (WINAPI* GetGestureInfoFunc) (HGESTUREINFO, GESTUREINFO*);
+typedef BOOL (WINAPI* SetProcessDPIAwareFunc)();
 
 static RegisterTouchWindowFunc   registerTouchWindow = nullptr;
 static GetTouchInputInfoFunc     getTouchInputInfo = nullptr;
 static CloseTouchInputHandleFunc closeTouchInputHandle = nullptr;
 static GetGestureInfoFunc        getGestureInfo = nullptr;
+static SetProcessDPIAwareFunc    setProcessDPIAware = nullptr;
 
 static bool hasCheckedForMultiTouch = false;
 
@@ -138,6 +140,27 @@ static bool canUseMultiTouch()
 static inline Rectangle<int> rectangleFromRECT (const RECT& r) noexcept
 {
     return Rectangle<int>::leftTopRightBottom ((int) r.left, (int) r.top, (int) r.right, (int) r.bottom);
+}
+
+static void setDPIAwareness()
+{
+    if (JUCEApplication::isStandaloneApp())
+    {
+        if (setProcessDPIAware == nullptr)
+            setProcessDPIAware = (SetProcessDPIAwareFunc) getUser32Function ("SetProcessDPIAware");
+
+        if (setProcessDPIAware != nullptr)
+            setProcessDPIAware();
+    }
+}
+
+inline float getDisplayScale()
+{
+    HDC dc = GetDC (0);
+    const float scale = (GetDeviceCaps (dc, LOGPIXELSX)
+                         + GetDeviceCaps (dc, LOGPIXELSY)) / (2.0f * 96.0f);
+    ReleaseDC (0, dc);
+    return scale;
 }
 
 //==============================================================================
@@ -561,16 +584,6 @@ public:
         SetWindowText (hwnd, title.toWideCharPointer());
     }
 
-    void setPosition (int x, int y)
-    {
-        offsetWithinParent (x, y);
-        SetWindowPos (hwnd, 0,
-                      x - windowBorder.getLeft(),
-                      y - windowBorder.getTop(),
-                      0, 0,
-                      SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
-    }
-
     void repaintNowIfTransparent()
     {
         if (isUsingUpdateLayeredWindow() && lastPaintTime > 0 && Time::getMillisecondCounter() > lastPaintTime + 30)
@@ -596,33 +609,37 @@ public:
        #endif
     }
 
-    void setSize (int w, int h)
-    {
-        SetWindowPos (hwnd, 0, 0, 0,
-                      w + windowBorder.getLeftAndRight(),
-                      h + windowBorder.getTopAndBottom(),
-                      SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOZORDER | SWP_NOOWNERZORDER);
-
-        if (isValidPeer (this))
-        {
-            updateBorderSize();
-            repaintNowIfTransparent();
-        }
-    }
-
-    void setBounds (int x, int y, int w, int h, bool isNowFullScreen)
+    void setBounds (const Rectangle<int>& bounds, bool isNowFullScreen)
     {
         fullScreen = isNowFullScreen;
-        offsetWithinParent (x, y);
+
+        Rectangle<int> newBounds (windowBorder.addedTo (bounds));
+
+        if (isUsingUpdateLayeredWindow())
+        {
+            if (HWND parentHwnd = GetParent (hwnd))
+            {
+                RECT parentRect;
+                GetWindowRect (parentHwnd, &parentRect);
+                newBounds.translate (parentRect.left, parentRect.top);
+            }
+        }
+
+        const Rectangle<int> oldBounds (getBounds());
+        const bool hasMoved = (oldBounds.getPosition() != bounds.getPosition());
+        const bool hasResized = (oldBounds.getWidth() != bounds.getWidth()
+                                  || oldBounds.getHeight() != bounds.getHeight());
+
+        DWORD flags = SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOOWNERZORDER;
+        if (! hasMoved)    flags |= SWP_NOMOVE;
+        if (! hasResized)  flags |= SWP_NOSIZE;
 
         SetWindowPos (hwnd, 0,
-                      x - windowBorder.getLeft(),
-                      y - windowBorder.getTop(),
-                      w + windowBorder.getLeftAndRight(),
-                      h + windowBorder.getTopAndBottom(),
-                      SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+                      newBounds.getX(), newBounds.getY(),
+                      newBounds.getWidth(), newBounds.getHeight(),
+                      flags);
 
-        if (isValidPeer (this))
+        if (hasResized && isValidPeer (this))
         {
             updateBorderSize();
             repaintNowIfTransparent();
@@ -635,8 +652,7 @@ public:
         GetWindowRect (hwnd, &r);
         Rectangle<int> bounds (rectangleFromRECT (r));
 
-        HWND parentH = GetParent (hwnd);
-        if (parentH != 0)
+        if (HWND parentH = GetParent (hwnd))
         {
             GetWindowRect (parentH, &r);
             bounds.translate (-r.left, -r.top);
@@ -719,13 +735,7 @@ public:
                     ShowWindow (hwnd, SW_SHOWNORMAL);
 
                 if (! boundsCopy.isEmpty())
-                {
-                    setBounds (boundsCopy.getX(),
-                               boundsCopy.getY(),
-                               boundsCopy.getWidth(),
-                               boundsCopy.getHeight(),
-                               false);
-                }
+                    setBounds (boundsCopy, false);
             }
             else
             {
@@ -1323,6 +1333,7 @@ private:
             if (canUseMultiTouch())
                 registerTouchWindow (hwnd, 0);
 
+            setDPIAwareness();
             updateBorderSize();
 
             // Calling this function here is (for some reason) necessary to make Windows
@@ -1367,20 +1378,6 @@ private:
     static void* getFocusCallback (void*)
     {
         return GetFocus();
-    }
-
-    void offsetWithinParent (int& x, int& y) const
-    {
-        if (isUsingUpdateLayeredWindow())
-        {
-            if (HWND parentHwnd = GetParent (hwnd))
-            {
-                RECT parentRect;
-                GetWindowRect (parentHwnd, &parentRect);
-                x += parentRect.left;
-                y += parentRect.top;
-            }
-        }
     }
 
     bool isUsingUpdateLayeredWindow() const
@@ -1778,8 +1775,13 @@ private:
         return false;
     }
 
-    void doTouchEvent (const int numInputs, HTOUCHINPUT eventHandle)
+    LRESULT doTouchEvent (const int numInputs, HTOUCHINPUT eventHandle)
     {
+        if ((styleFlags & windowIgnoresMouseClicks) != 0)
+            if (HWNDComponentPeer* const parent = getOwnerOfWindow (GetParent (hwnd)))
+                if (parent != this)
+                    return parent->doTouchEvent (numInputs, eventHandle);
+
         HeapBlock<TOUCHINPUT> inputInfo (numInputs);
 
         if (getTouchInputInfo (eventHandle, numInputs, inputInfo, sizeof (TOUCHINPUT)))
@@ -1792,12 +1794,13 @@ private:
                 {
                     if (! handleTouchInput (inputInfo[i], (flags & TOUCHEVENTF_DOWN) != 0,
                                                           (flags & TOUCHEVENTF_UP) != 0))
-                        return;  // abandon method if this window was deleted by the callback
+                        return 0;  // abandon method if this window was deleted by the callback
                 }
             }
         }
 
         closeTouchInputHandle (eventHandle);
+        return 0;
     }
 
     bool handleTouchInput (const TOUCHINPUT& touch, const bool isDown, const bool isUp)
@@ -2244,7 +2247,8 @@ private:
             case WM_NCHITTEST:
                 if ((styleFlags & windowIgnoresMouseClicks) != 0)
                     return HTTRANSPARENT;
-                else if (! hasTitleBar())
+
+                if (! hasTitleBar())
                     return HTCLIENT;
 
                 break;
@@ -2296,11 +2300,10 @@ private:
                 return 0;
 
             case WM_TOUCH:
-                if (getTouchInputInfo == nullptr)
-                    break;
+                if (getTouchInputInfo != nullptr)
+                    return doTouchEvent ((int) wParam, (HTOUCHINPUT) lParam);
 
-                doTouchEvent ((int) wParam, (HTOUCHINPUT) lParam);
-                return 0;
+                break;
 
             case 0x119: /* WM_GESTURE */
                 if (doGestureEvent (lParam))
@@ -3159,6 +3162,8 @@ static BOOL CALLBACK enumMonitorsProc (HMONITOR, HDC, LPRECT r, LPARAM userInfo)
 
 void Desktop::Displays::findDisplays()
 {
+    setDPIAwareness();
+
     Array <Rectangle<int> > monitors;
     EnumDisplayMonitors (0, 0, &enumMonitorsProc, (LPARAM) &monitors);
 

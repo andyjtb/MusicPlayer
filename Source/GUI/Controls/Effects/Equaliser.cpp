@@ -55,9 +55,6 @@ Equaliser::Equaliser (AudioControl* incomingAudioControl)
     
     toggleButton.getToggleStateValue().referTo(audioControl->getApplyEQ());
     
-    File eqTest = File(File::getSpecialLocation(File::userMusicDirectory).getFullPathName() + "/MusicPlayer/EQ.xml");
-    writeValueTreeToFile(singletonEqSettings, eqTest);
-    
     setSize (550, 275);
 
 }
