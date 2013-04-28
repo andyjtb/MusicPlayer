@@ -17,6 +17,7 @@ InfoBar::InfoBar ()
     
     addAndMakeVisible(&infoLabel);
     infoLabel.setJustificationType(Justification::centredRight);
+    infoLabel.addMouseListener(this, false);
     
 }
 
@@ -118,8 +119,6 @@ void InfoBar::displayFileStatus (File& file, int result)
     }
     else
         infoLabel.setText(String::empty, dontSendNotification);
-
-//    updateBar();
 }
 
 void InfoBar::loadingFile (File loadFile)
@@ -127,4 +126,54 @@ void InfoBar::loadingFile (File loadFile)
     String loadingString = loadFile.getFileName();
     loadingString << " Added to Library";
     infoLabel.setText(loadingString, dontSendNotification);
+}
+
+void InfoBar::mouseDoubleClick(const MouseEvent &e)
+{
+    if (e.getMouseDownScreenX() >= infoLabel.getScreenPosition().getX())
+    {
+        //Bottom right hand corner clicked
+        if (infoLabel.getText().contains("Could not"))
+        {
+            ScopedPointer<AlertWindow> fileFailed;
+            if (infoLabel.getText().contains("Could not be read")) {
+                fileFailed = new AlertWindow("File Could Not Be Opened", "The selected file could not be opened, the listing for it could be incorrect\n Would you like to try reloading this file?", AlertWindow::WarningIcon);
+                fileFailed->addButton("Reload", 1);
+            }
+            else
+            {
+                fileFailed = new AlertWindow("File Could Not Be Found", "The selected file could not be found, the listing for it could be incorrect\n Would you like to try finding this file?", AlertWindow::WarningIcon);
+                fileFailed->addButton("Find", 1);
+            }
+            
+            fileFailed->addButton("Cancel", 0);
+            
+            
+            if (fileFailed->runModalLoop() != 0)
+            {
+                ValueTree currentTrack = singletonPlaylistsTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::Location], currentFile.getFullPathName());
+                if (currentTrack.isValid())
+                {
+                    singletonLibraryTree.removeChild(currentTrack, 0/*add undoManager possibly*/);
+                    
+                    if (infoLabel.getText().contains("Could not be found")) {
+                        ValueTree reloadChild = TagReader::addToLibrary(currentFile);
+                        if (reloadChild.isValid())
+                            singletonLibraryTree.addChild(reloadChild, -1, 0);
+                        else
+                        {
+                            //Make file chooser and ask to find file
+                            
+                        }
+                    }
+                    else
+                    {
+                        
+                    }
+                    tableUpdateRequired = true;
+                }
+            }
+
+        }
+    }
 }

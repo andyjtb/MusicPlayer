@@ -251,9 +251,13 @@ void MusicLibraryTable::sortOrderChanged (int newSortColumnId, bool isForwards)
 //			ValueTreeComparators::LexicographicWithBackup sorter (MusicColumns::columnNames[newSortColumnId],
 //                                                                  MusicColumns::columnNames[MusicColumns::LibID],
 //                                                                  isForwards);
-            ValueTreeComparators::LexicographicWithNumerical sorter (MusicColumns::columnNames[newSortColumnId],
-                                                                    MusicColumns::columnNames[MusicColumns::LibID],
-                                                                    isForwards);
+//            ValueTreeComparators::LexicographicWithNumerical sorter (MusicColumns::columnNames[newSortColumnId],
+//                                                                    MusicColumns::columnNames[MusicColumns::LibID],
+//                                                                    isForwards);
+            ValueTreeComparators::LexicographicWithTrackNum sorter (MusicColumns::columnNames[newSortColumnId],
+                                                                     MusicColumns::columnNames[MusicColumns::Album],
+                                                                    MusicColumns::columnNames[MusicColumns::TrackNum],
+                                                                     isForwards);
             
 			filteredDataList.sort (sorter, 0, false);
 		}
@@ -348,12 +352,8 @@ void MusicLibraryTable::selectedRowsChanged(int lastRowSelected)
 
 void MusicLibraryTable::returnKeyPressed(int currentSelectedRow)
 {
+    guiControl->playingPlaylist(displayPlaylist);
     guiControl->loadFile(currentlySelectedRow, true);
-    
-    if (displayPlaylist)
-        playingPlaylist = true;
-    else
-        playingPlaylist = false;
 }
 
 void MusicLibraryTable::deleteKeyPressed(int currentSelectedRow)
@@ -528,13 +528,9 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
             }
             case 2:
             {
+                guiControl->playingPlaylist(displayPlaylist);
                 guiControl->loadFile(currentlySelectedRow, true);
                 
-                if (displayPlaylist)
-                    playingPlaylist = true;
-                else
-                    playingPlaylist = false;
-                    
                 break;
             }
             case 3:
@@ -629,13 +625,8 @@ void MusicLibraryTable::cellClicked(int rowNumber, int columnId, const juce::Mou
 
 void MusicLibraryTable::cellDoubleClicked(int rowNumber, int columnId, const juce::MouseEvent &event)
 {
+    guiControl->playingPlaylist(displayPlaylist);
     guiControl->loadFile(currentlySelectedRow, true);
-    
-    if (displayPlaylist)
-        playingPlaylist = true;
-    else
-        playingPlaylist = false;
-
 }
 
 void MusicLibraryTable::editDirectly (int rowNumber, int columnId, const MouseEvent& event)
@@ -703,10 +694,36 @@ void MusicLibraryTable::playlistRearrange (int selectedRow, bool movingUp)
     if (otherRow.isValid())
     {
         Identifier libID = "LibID";
-        int movingID = movingRow.getProperty(libID);
-        int otherID = otherRow.getProperty(libID);
-        movingRow.setProperty(libID, otherID, 0);
-        otherRow.setProperty(libID, movingID, 0);
+        int movingLibID = movingRow.getProperty(libID);
+        int otherLibID = otherRow.getProperty(libID);
+        //Rearrange in datalist
+        movingRow.setProperty(libID, otherLibID, 0);
+        otherRow.setProperty(libID, movingLibID, 0);
+        
+        //Rearrange in overall playlist tree, saving the change
+        int movingID = movingRow.getProperty(MusicColumns::columnNames[MusicColumns::ID]);
+        int otherID = otherRow.getProperty(MusicColumns::columnNames[MusicColumns::ID]);
+        
+        ValueTree playlistTree = singletonPlaylistsTree.getChildWithProperty(MusicColumns::playlistName, guiControl->getPlaylist());
+        Identifier moving;
+        Identifier other;
+        
+        for (int i = 0; i < playlistTree.getNumProperties(); i++) {
+            if (int(playlistTree.getProperty(playlistTree.getPropertyName(i), 0)) == movingID)
+            {
+                moving = playlistTree.getPropertyName(i);
+                DBG("Moving = " << moving.toString());
+            }
+            
+            if (int(playlistTree.getProperty(playlistTree.getPropertyName(i), 0)) == otherID)
+            {
+                other = playlistTree.getPropertyName(i);
+                DBG("Other = " << other.toString());
+            }
+        }
+        
+        playlistTree.setProperty(moving, otherID, 0);
+        playlistTree.setProperty(other, movingID, 0);
     }
     
     updateTableFilteredAndSorted();

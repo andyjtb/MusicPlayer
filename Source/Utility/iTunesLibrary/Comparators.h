@@ -118,7 +118,7 @@ namespace ValueTreeComparators
     };
     
     //==============================================================================
-    /** Compare used for sorting by artist/album first then by track number
+    /** Compare used for sorting by artist/album first then by Lib ID
      */
     class LexicographicWithNumerical
     {
@@ -151,6 +151,44 @@ namespace ValueTreeComparators
         const int direction;
         
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LexicographicWithNumerical);
+    };
+    /** Compare used for sorting by a string value with track num being a determining factor
+     NON dRow
+     */
+    class LexicographicWithTrackNum
+    {
+    public:
+        LexicographicWithTrackNum (const Identifier attributeToSort_, const Identifier backupAttribute_, const Identifier trackNum_, bool forwards)
+        : attributeToSort (attributeToSort_),
+        backupAttribute (backupAttribute_),
+        trackNum (trackNum_),
+        direction (forwards ? 1 : -1)
+        {
+        }
+        
+        int compareElements (const ValueTree &first, const ValueTree &second) const
+        {
+            int result = 0;
+            
+            result = first[attributeToSort].toString().compareLexicographically (second[attributeToSort].toString());
+            
+            if (result == 0)
+                result = first[backupAttribute].toString().compareLexicographically (second[backupAttribute].toString());
+            
+            if (result == 0)
+                result = (double(first[trackNum]) > double(second[trackNum])) ? 1 : -1;
+            
+            
+            return direction * result;
+        }
+        
+    private:
+        const Identifier attributeToSort;
+        const Identifier backupAttribute;
+        const Identifier trackNum;
+        const int direction;
+        
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LexicographicWithTrackNum);
     };
     
 

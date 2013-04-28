@@ -10,8 +10,8 @@
 
 */
 
-#ifndef __APPHEADERFILE_PFT2H1__
-#define __APPHEADERFILE_PFT2H1__
+#ifndef __APPHEADERFILE_QEJYXJ__
+#define __APPHEADERFILE_QEJYXJ__
 
 #include "AppConfig.h"
 #include "modules/juce_audio_basics/juce_audio_basics.h"
@@ -42,4 +42,4 @@ namespace ProjectInfo
     const int          versionNumber  = 0x10000;
 }
 
-#endif   // __APPHEADERFILE_PFT2H1__
+#endif   // __APPHEADERFILE_QEJYXJ__

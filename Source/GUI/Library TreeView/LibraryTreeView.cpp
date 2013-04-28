@@ -31,7 +31,9 @@ LibraryTreeView::LibraryTreeView() : treeView("TreeView")
     minusButton.setConnectedEdges(Button::ConnectedOnRight);
 }
 LibraryTreeView::~LibraryTreeView()
-{}
+{
+
+}
 
 void LibraryTreeView::updateItems()
 {

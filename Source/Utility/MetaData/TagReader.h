@@ -286,9 +286,9 @@ public:
                 TagLib::MP4::File f(audioFile.getFullPathName().toUTF8());
                 
                 TagLib::MP4::ItemListMap itemsListMap = f.tag()->itemListMap();
-                // create cleanr cover art list
+                // create empty cover art list
                 TagLib::MP4::CoverArtList coverArtList;
-                // append instance
+                // append new album art
                 coverArtList.append(coverArt);
                 
                 TagLib::MP4::Item coverItem(coverArtList);
@@ -372,37 +372,31 @@ public:
         String type = "none";
         ImageWithType currentCover = getAlbumArt(audioFile);
         
-        //Makes sure memory block is sent to trigger receiving art bool to change
+        //Makes sure atleast something is sent, triggering receiving art bool to change
         fillBlock.setSize(10, true);
         
         if (currentCover.image.isValid())
         {
-            TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
-            TagLib::ID3v2::FrameList frames = f.ID3v2Tag()->frameList("APIC");
-            TagLib::ID3v2::AttachedPictureFrame *frame = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
+            MemoryOutputStream outputStream;
+            type = currentCover.type;
             
-            if (frame != nullptr)
+            if (type.compareIgnoreCase("jpg") || type.compareIgnoreCase("jpeg"))
             {
-                MemoryOutputStream outputStream;
-                type = currentCover.type;
-                
-                if (type == "image/jpeg")
-                {
-                    JPEGImageFormat image;
-                    image.writeImageToStream(currentCover.image, outputStream);
-                    type = "jpeg";
-                }
-                else
-                {
-                    JPEGImageFormat image;
-                    image.writeImageToStream(currentCover.image, outputStream);
-                    type = "png";
-                }
-
-                fillBlock.replaceWith(outputStream.getData(), outputStream.getDataSize());
-                
-                return type;
+                JPEGImageFormat image;
+                image.writeImageToStream(currentCover.image, outputStream);
+                type = "jpeg";
             }
+            else
+            {
+                JPEGImageFormat image;
+                image.writeImageToStream(currentCover.image, outputStream);
+                type = "png";
+            }
+            
+            fillBlock.replaceWith(outputStream.getData(), outputStream.getDataSize());
+            
+            return type;
+            
         }
         return type;
     }

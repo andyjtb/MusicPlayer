@@ -54,6 +54,7 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
         DBG("Lib id = " << libID);
         ValueTree test (singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], libID));
         if (test.isValid()) {
+            guiControl->playingPlaylist(false);
             guiControl->loadFile(test, true);
         }
         
@@ -70,6 +71,7 @@ void RemoteInterprocessConnection::messageReceived (const MemoryBlock& message)
         ValueTree test (singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::ID], ID));
         
         if (test.isValid()) {
+            guiControl->playingPlaylist(true);
             guiControl->loadFile(test, true);
         }
         

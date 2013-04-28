@@ -146,6 +146,7 @@ void GuiControl::actionListenerCallback (const String& message)
         DBG("Library file = " << singletonLibraryFile.getFullPathName());
         DBG("Playlist file = " << singletonPlaylistsFile.getFullPathName());
         
+        Settings::getInstance()->saveSingletons();
 		ITunesLibrary::getInstance()->saveLibrary();
 		singletonLibraryTree = ITunesLibrary::getInstance()->getLibraryTree();
 		ITunesLibrary::getInstance()->setLibraryTree(singletonLibraryTree);
@@ -287,7 +288,7 @@ void GuiControl::valueChanged (Value& valueChanged)
 void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
 {
     File selectedFile (treeToLoad.getProperty(MusicColumns::columnNames[MusicColumns::Location]));
-    DBG("Extension = " << selectedFile.getFileExtension());
+
     DBG("Gui load = " << selectedFile.getFileName());
     
     if (selectedFile.existsAsFile())
@@ -302,15 +303,16 @@ void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
             tablePlayingRow = treeToLoad;
             
             //Ensures playlists continue playing in order even when the user changes view to the library
-            if (musicTable->isDisplayingPlaylist())
-            {
-                currentlyPlayingList = filteredDataList.createCopy();
-                //currentlyPlayingName = libraryView.getSelectedPlaylist();
-            }
-            else if (!musicTable->isPlayingPlaylist())
-            {
-                currentlyPlayingList = filteredDataList;
-            }
+//            if (musicTable->isDisplayingPlaylist())
+//            {
+//                currentlyPlayingList = filteredDataList.createCopy();
+//                //currentlyPlayingName = libraryView.getSelectedPlaylist();
+//            }
+//            else if (!musicTable->isPlayingPlaylist())
+//            {
+//                currentlyPlayingList = filteredDataList;
+//            }
+            
             
             
             if (treeToLoad != musicTable->getCurrentlySelectedTree())
@@ -342,6 +344,7 @@ void GuiControl::updateSelectedDisplay()
         
         if (selectedFile.existsAsFile())
         {
+            infoBar.displayFileStatus(selectedFile, 0);
             albumArt.setCover(selectedFile);
         }
         else
@@ -356,6 +359,11 @@ void GuiControl::next()
 {
     if (tablePlayingRow.isValid()) {
         Identifier id = MusicColumns::columnNames[MusicColumns::ID];
+        
+        //Updates the list to allow for reordering playlists or changing the search 
+        if (currentlyPlayingName == libraryView.getSelectedPlaylist())
+            currentlyPlayingList = filteredDataList.createCopy();
+        
         int toPlay = currentlyPlayingList.indexOf(currentlyPlayingList.getChildWithProperty(id, tablePlayingRow.getProperty(id)));
         
         ++toPlay;
@@ -371,6 +379,8 @@ void GuiControl::next()
             else
                 loadFile(currentlyPlayingList.getChild(toPlay), false);
         }
+        else
+            singletonPlayState = false;
     }
 }
 
@@ -378,6 +388,11 @@ void GuiControl::previous()
 {
     if (tablePlayingRow.isValid()) {
         Identifier id = MusicColumns::columnNames[MusicColumns::ID];
+        
+        //Updates the list to allow for reordering playlists or changing the search
+        if (currentlyPlayingName == libraryView.getSelectedPlaylist())
+            currentlyPlayingList = filteredDataList.createCopy();
+        
         int toPlay = currentlyPlayingList.indexOf(currentlyPlayingList.getChildWithProperty(id, tablePlayingRow.getProperty(id)));
 
         --toPlay;
@@ -411,6 +426,9 @@ void GuiControl::setVolume (double incomingVolume)
 void GuiControl::textEditorTextChanged (TextEditor &textEditor)
 {
     musicTable->setFilterText(textEditor.getText());
+    
+    
+    
     if (remoteConnections.getFirst() != nullptr)
         remoteConnections.getFirst()->sendTrackNums();
     
@@ -437,3 +455,16 @@ void GuiControl::setPlaylist (String incomingPlaylist)
     changeListenerCallback(&libraryView);
 }
 
+void GuiControl::playingPlaylist(bool isPlayingPlaylist)
+{
+    if (isPlayingPlaylist)
+    {
+        currentlyPlayingList = filteredDataList.createCopy();
+        currentlyPlayingName = libraryView.getSelectedPlaylist();
+    }
+    else
+    {
+        currentlyPlayingList = filteredDataList;
+        currentlyPlayingName = libraryView.getSelectedPlaylist();
+    }
+}

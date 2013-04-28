@@ -16,11 +16,6 @@
 /** A thread with a progress window used to recursively search through a directory for all files which match the wild card, adding them to the library
     @see TagReader
  */
-namespace directoryLoaderStatics
-{
-    static OptionalScopedPointer<InfoBar> infoBar;
-    static String wildcards;
-}
 
 class DirectoryLoader : public ThreadWithProgressWindow
 {
@@ -36,7 +31,7 @@ public:
         
         String filesFound;
         
-        DirectoryIterator directoryIterator (directory, true, "*.mp3",2);
+        DirectoryIterator directoryIterator (directory, true, wildcards,2);
         
         //setProgress(-1.0);
         
@@ -49,8 +44,8 @@ public:
             
             File fileFound (directoryIterator.getFile());
             
-            if (directoryLoaderStatics::infoBar != nullptr)
-                directoryLoaderStatics::infoBar->loadingFile(fileFound);
+            if (infoBar != nullptr)
+                infoBar->loadingFile(fileFound);
             
             singletonLibraryTree.addChild(TagReader::addToLibrary(fileFound),-1,0);
             
@@ -64,20 +59,22 @@ public:
         directory = incomingDirectory;
     }
     
-    static void setInfoBar (InfoBar* _infoBar)
+    void setInfoBar (InfoBar* _infoBar)
     {
-        directoryLoaderStatics::infoBar.set(_infoBar, false);
+        infoBar.set(_infoBar, false);
     }
     /** Sets the file extensions which will decide whether a file is appropriate or not
      @param _wildcards The file extensions that the loader will load in the format *.fileExtension;*.otherFileExtension
      */
-    static void setWildcards (String _wildcards)
+    void setWildcards (String _wildcards)
     {
-        directoryLoaderStatics::wildcards = _wildcards;
+        wildcards = _wildcards;
     }
     
 private:
     File directory;
+    OptionalScopedPointer<InfoBar> infoBar;
+    String wildcards;
 };
 
 #endif

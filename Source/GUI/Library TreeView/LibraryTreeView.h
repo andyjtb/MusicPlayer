@@ -155,7 +155,7 @@ public:
                 
                 if (rightClick.show() != 1)
                 {
-                    String deleteString = "Delete" + playlistTitle;
+                    String deleteString = "Delete " + playlistTitle;
                     
                     String longString = "Are you sure you wish to delete ";
                     longString << playlistTitle << "?";

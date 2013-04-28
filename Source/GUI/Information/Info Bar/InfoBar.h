@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Settings.h"
 #include "ConnectionIndicator.h"
+#include "TagReader.h"
 
 class InfoBar  : public Component,
                  public ValueTree::Listener
@@ -38,6 +39,8 @@ public:
     void displayFileStatus (File& file, int result);
     
     void loadingFile (File loadFile);
+    
+    void mouseDoubleClick (const MouseEvent& e);
     
 private:
     String size, time, numTracks;

@@ -68,7 +68,8 @@ public:
 	void resized();
 	
 	void setAudioControl (AudioControl* incomingAudioControl);
-	
+	AudioControl* getAudioControl () { return audioControl; }
+    
 	void actionListenerCallback (const String& message);
 	
 	void valueChanged (Value& valueChanged);
@@ -110,9 +111,12 @@ public:
     void remoteConnectionChanged(String ipAddress) { infoBar.getConnectionIndicator().remoteConnectionChanged(ipAddress);}
     
     void setPlaylist (String incomingPlaylist);
+    String getPlaylist() { return libraryView.getSelectedPlaylist(); }
     
     //Used for cmd+f keyboard shortcut focusing on the searchbox
     SearchBox& getSearchBox() {return searchBox;}
+    
+    void playingPlaylist (bool isPlayingPlaylist);
 
 private:
 	AudioControl* audioControl;
