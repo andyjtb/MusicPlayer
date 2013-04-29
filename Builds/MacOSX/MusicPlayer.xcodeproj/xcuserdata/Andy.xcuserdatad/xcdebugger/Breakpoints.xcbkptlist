@@ -23,11 +23,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "0"
          filePath = "../../Source/Utility/Settings/Settings.cpp"
-         timestampString = "387684441.103708"
+         timestampString = "388939013.120581"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "72"
-         endingLineNumber = "72"
+         startingLineNumber = "71"
+         endingLineNumber = "71"
          landmarkName = "Settings::createSettingsFile()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -36,11 +36,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
-         timestampString = "388832519.570471"
+         timestampString = "388938883.155946"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "341"
-         endingLineNumber = "341"
+         startingLineNumber = "343"
+         endingLineNumber = "343"
          landmarkName = "MusicLibraryTable::selectedRowsChanged(int lastRowSelected)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -49,11 +49,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
-         timestampString = "388619221.648099"
+         timestampString = "388938883.155946"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "162"
-         endingLineNumber = "162"
+         startingLineNumber = "164"
+         endingLineNumber = "164"
          landmarkName = "MusicLibraryTable::libraryUpdated (ITunesLibrary* library)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -62,11 +62,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/Information/AlbumArt.cpp"
-         timestampString = "388708204.54892"
+         timestampString = "388951809.098966"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "153"
-         endingLineNumber = "153"
+         startingLineNumber = "161"
+         endingLineNumber = "161"
          landmarkName = "AlbumArt::setCover (ImageWithType cover)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -101,11 +101,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/Information/AlbumArt.cpp"
-         timestampString = "388711922.339535"
+         timestampString = "388951809.098966"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "309"
-         endingLineNumber = "309"
+         startingLineNumber = "317"
+         endingLineNumber = "317"
          landmarkName = "AlbumArt::fromUrl()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -120,6 +120,32 @@
          startingLineNumber = "134"
          endingLineNumber = "134"
          landmarkName = "InfoBar::mouseDoubleClick(const MouseEvent &amp;e)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../Source/GUI/GuiControl.cpp"
+         timestampString = "388954313.253983"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "331"
+         endingLineNumber = "331"
+         landmarkName = "GuiControl::updateSelectedDisplay()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../Source/GUI/GuiControl.cpp"
+         timestampString = "388954313.253983"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "293"
+         endingLineNumber = "293"
+         landmarkName = "GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

@@ -13,10 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AudioControl.h"
 
-#include "PlayButton.h"
-#include "BackwardsButton.h"
-#include "ForwardButton.h"
-
+#include "PlaybackControl.h"
 #include "OutputMeter.h"
 #include "VolumeControl.h"
 #include "TransportSlider.h"
@@ -92,15 +89,6 @@ public:
     
     //Text Editor Callbacks
     void textEditorTextChanged (TextEditor &textEditor);
-//    /** Not needed, but required
-//     */
-//    void textEditorReturnKeyPressed (TextEditor &textEditor){}
-//    /** Not needed, but required
-//     */
-//    void textEditorEscapeKeyPressed (TextEditor &textEditor){}
-//    /** Not needed, but required
-//     */
-//    void textEditorFocusLost (TextEditor &textEditor){}
 
     ValueTree getCurrentlyPlayingList() { return currentlyPlayingList; }
     
@@ -120,8 +108,8 @@ public:
 
 private:
 	AudioControl* audioControl;
-	
-	PlayButton playButton;
+    
+    PlaybackControl playbackControl;
 	VolumeControl volumeControl;
 	OutputMeter outputMeters;
 	TransportSlider transport;
@@ -131,14 +119,13 @@ private:
     
     InfoBar infoBar;
     
-    MusicLibraryTable* musicTable;
-    
     SearchBox searchBox;
     
     MusicLibraryDropTarget musicLibraryDropTarget;
+    MusicLibraryTable* musicTable;
 
     LibraryTreeView libraryView;
-//    CoverFlowComponent* coverflow;
+
 //Effects pointers
     ScopedPointer<TabbedComponent> effectsTabbed;
     ScopedPointer<Equaliser> equaliser;

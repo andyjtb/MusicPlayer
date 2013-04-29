@@ -17,13 +17,10 @@ PlayButton::PlayButton ()
     cachedImage_pause_png = ImageCache::getFromMemory (pause_png, pause_pngSize);
     cachedImage_pauseDown_png = ImageCache::getFromMemory (pauseDown_png, pauseDown_pngSize);
 	
-    //singletonPlayState.addListener(this);
     singletonPlayState = false;
     tablePlayingRow.addListener(this);
     getToggleStateValue().referTo(singletonPlayState);
 	setClickingTogglesState(false);
-	//singletonPlayState.setValue(false);
-    setSize (143, 143);
 }
 
 PlayButton::~PlayButton()
@@ -39,34 +36,33 @@ void PlayButton::resized()
 
 void PlayButton::paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown)
 {
-	
-	if (singletonPlayState.getValue() == var(true)) {
-		if (isButtonDown == true) {
+	if (bool(singletonPlayState.getValue())) {
+		if (isButtonDown) {
 			g.setColour (Colours::black);
             g.drawImage (cachedImage_pauseDown_png,
-                         0, 0, 124, 124,
+                         0, 0, getWidth(), getHeight(),
                          0, 0, cachedImage_pauseDown_png.getWidth(), cachedImage_pauseDown_png.getHeight());
 		}
 		else {
 			g.setColour (Colours::black);
             g.drawImage (cachedImage_pause_png,
-                         0, 0, 124, 124,
+                         0, 0, getWidth(), getHeight(),
                          0, 0, cachedImage_pause_png.getWidth(), cachedImage_pause_png.getHeight());	
 		}
 
 	}
 	
-	if (singletonPlayState.getValue() == var(false)) {
-		if (isButtonDown == true) {
+	if (!bool(singletonPlayState.getValue())) {
+		if (isButtonDown) {
 			g.setColour (Colours::black);
             g.drawImage (cachedImage_playDown_png,
-                         0, 0, 124, 124,
+                         0, 0, getWidth(), getHeight(),
                          0, 0, cachedImage_playDown_png.getWidth(), cachedImage_play_png.getHeight());
 		}
 		else {
 			g.setColour (Colours::black);
             g.drawImage (cachedImage_play_png,
-                         0, 0, 124, 124,
+                         0, 0, getWidth(), getHeight(),
                          0, 0, cachedImage_play_png.getWidth(), cachedImage_play_png.getHeight());
 			
 		}

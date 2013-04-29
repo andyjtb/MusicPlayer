@@ -12,8 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-class BackwardsButton  :    public Button,
-							public ActionBroadcaster
+class BackwardsButton  :    public Button
 {
 public:
     BackwardsButton ();

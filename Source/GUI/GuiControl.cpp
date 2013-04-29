@@ -10,10 +10,9 @@
 #include "GuiControl.h"
 #include "RemoteInterprocessConnection.h"
 
-GuiControl::GuiControl()
+GuiControl::GuiControl() : playbackControl(this)
 {	
-	addAndMakeVisible(&playButton);
-	//playButton.addListener(this);
+	addAndMakeVisible(&playbackControl);
 	
 	addAndMakeVisible(&volumeControl);
 	volumeControl.addValueListener(this);
@@ -71,20 +70,21 @@ void GuiControl::paint(Graphics& g)
 
 void GuiControl::resized()
 {
-	playButton.setBounds(0, 0, 143, 143);
-	volumeControl.setBounds(0, 143, 380, 80);
-	outputMeters.setBounds(0, 250, 250, 80);
-	transport.setBounds(150, 20, 300, 60);
-	trackInfo.setBounds(180, 100, 270, 150);
-	albumArt.setBounds(400,100,175,175);
+    playbackControl.setBounds(10, 5, 200, 65);
+	volumeControl.setBounds(10, 90, 380, 80);
+	outputMeters.setBounds(400, 90, 250, 80);
+	transport.setBounds(playbackControl.getWidth() - 50, albumArt.getHeight()+10, 300, 60);
+    
+	trackInfo.setBounds(400, 6, 300, 70);
+	albumArt.setBounds(220,5,175,175);
     
     infoBar.setBounds(0, getHeight()-15, getWidth(), 15);
     
 	searchBox.setBounds(getWidth()-200, 0, 175, 60);
 
-    musicLibraryDropTarget.setBounds(0, getHeight()/2, getWidth(), (getHeight()/2)-15);
+    musicLibraryDropTarget.setBounds(0, getHeight()/2-30, getWidth(), (getHeight()/2+30)-15);
 
-    libraryView.setBounds(600, 100, 200, 200);
+    libraryView.setBounds(getWidth()-205, 50, 200, 200);
 }
 
 void GuiControl::setAudioControl(AudioControl* incomingAudioControl)
@@ -166,7 +166,8 @@ void GuiControl::actionListenerCallback (const String& message)
     if (message.startsWith("SelectedRows"))
     {
         infoBar.updateBar();
-        updateSelectedDisplay();
+        if (tablePlayingRow != musicTable->getCurrentlySelectedTree())
+            updateSelectedDisplay();
     }
 }
 
@@ -302,21 +303,8 @@ void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
         {
             tablePlayingRow = treeToLoad;
             
-            //Ensures playlists continue playing in order even when the user changes view to the library
-//            if (musicTable->isDisplayingPlaylist())
-//            {
-//                currentlyPlayingList = filteredDataList.createCopy();
-//                //currentlyPlayingName = libraryView.getSelectedPlaylist();
-//            }
-//            else if (!musicTable->isPlayingPlaylist())
-//            {
-//                currentlyPlayingList = filteredDataList;
-//            }
-            
-            
-            
-            if (treeToLoad != musicTable->getCurrentlySelectedTree())
-                musicTable->setCurrentlySelectedRow(currentlyPlayingList.indexOf(treeToLoad));
+            //if (treeToLoad != musicTable->getCurrentlySelectedTree())
+            //    musicTable->setCurrentlySelectedRow(currentlyPlayingList.indexOf(treeToLoad));
             
             if (shouldPlay)
                 singletonPlayState = true;
@@ -371,8 +359,8 @@ void GuiControl::next()
         {
             //valid next song
             //Currently playing list is also the one being viewed, so move selectedrow
-            if (currentlyPlayingList.isEquivalentTo(filteredDataList))
-                musicTable->setCurrentlySelectedRow(toPlay);
+//            if (currentlyPlayingList.isEquivalentTo(filteredDataList))
+//                musicTable->setCurrentlySelectedRow(toPlay, true);
             
             if (singletonPlayState.getValue())
                 loadFile(currentlyPlayingList.getChild(toPlay), true);
@@ -398,8 +386,8 @@ void GuiControl::previous()
         --toPlay;
         if (toPlay >= 0)
         {
-            if (currentlyPlayingList.isEquivalentTo(filteredDataList))
-                musicTable->setCurrentlySelectedRow(toPlay);
+//            if (currentlyPlayingList.isEquivalentTo(filteredDataList))
+//                musicTable->setCurrentlySelectedRow(toPlay, true);
             
             if (singletonPlayState.getValue())
                 loadFile(currentlyPlayingList.getChild(toPlay), true);

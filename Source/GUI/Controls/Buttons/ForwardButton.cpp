@@ -12,15 +12,10 @@
 
 //==============================================================================
 ForwardButton::ForwardButton ()
-: Button ("Forward"),
-cachedImage_forward_png (0),
-cachedImage_forwardDown_png (0)
+: Button ("Forward")
 {
     cachedImage_forward_png = ImageCache::getFromMemory (forward_png, forward_pngSize);
     cachedImage_forwardDown_png = ImageCache::getFromMemory (forwardDown_png, forwardDown_pngSize);
-	
-    setSize (124, 124);
-
 }
 
 ForwardButton::~ForwardButton()
@@ -40,21 +35,21 @@ void ForwardButton::paintButton (Graphics& g, bool isMouseOverButton, bool isBut
     {
         g.setColour (Colours::black);
         g.drawImage (cachedImage_forwardDown_png,
-                     0, 0, 124, 124,
+                     0, 0, getWidth(), getHeight(),
                      0, 0, cachedImage_forwardDown_png.getWidth(), cachedImage_forwardDown_png.getHeight());
     }
     else
     {
         g.setColour (Colours::black);
         g.drawImage (cachedImage_forward_png,
-                     0, 0, 124, 124,
+                     0, 0, getWidth(), getHeight(),
                      0, 0, cachedImage_forward_png.getWidth(), cachedImage_forward_png.getHeight());
     }
 }
 
 void ForwardButton::clicked()
 {
-	sendActionMessage("forward");
+	//
 }
 
 void ForwardButton::buttonStateChanged()

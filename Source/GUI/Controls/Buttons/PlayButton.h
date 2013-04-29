@@ -51,8 +51,6 @@ private:
     Image cachedImage_playDown_png;
     Image cachedImage_pause_png;
     Image cachedImage_pauseDown_png;
-	
-
     //==============================================================================
 
 };

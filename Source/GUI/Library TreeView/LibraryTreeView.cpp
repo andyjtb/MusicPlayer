@@ -50,12 +50,16 @@ void LibraryTreeView::updateItems()
 
 void LibraryTreeView::paint(Graphics &g)
 {
-    //g.fillAll(Colours::white);
+    g.setColour (Colours::black);
+    g.setFont (Font (15.0000f, Font::plain));
+    g.drawText ("Library/Playlists",
+                15, 0, getWidth(), 30,
+                Justification::centredLeft, true);
 }
 
 void LibraryTreeView::resized()
 {
-    treeView.setBounds(0,0,getWidth(), getHeight()-40);
+    treeView.setBounds(0,25,getWidth(), getHeight()-55);
     
     plusButton.setBounds((getWidth()/2)+22.5, getHeight()-30, 45, 25);
     minusButton.setBounds((getWidth()/2)-22.5, getHeight()-30, 45, 25);

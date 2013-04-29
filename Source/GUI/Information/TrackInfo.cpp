@@ -11,28 +11,23 @@
 
 TrackInfo::TrackInfo ()
 {
-	addAndMakeVisible(&lTitle);
-	lTitle.setText("Song Title", dontSendNotification);
-
-	addAndMakeVisible(&lArtist);
-	lArtist.setText("Artist", dontSendNotification);
-
-	addAndMakeVisible(&lId3);
-	lId3.setText("ID3 Tag Check :", dontSendNotification);
-
 	addAndMakeVisible(&artist);
-	artist.setText("Artist", dontSendNotification);
-
+	artist.setText("", dontSendNotification);
+    artist.setColour (Label::textColourId, Colour (0xff6e7075));
+    artist.setFont (Font ("Helvetica Neue", 15.0000f, Font::plain));
+    artist.setText ("Artist",dontSendNotification);
+    
 	addAndMakeVisible(&title);
-	title.setText("Song Title", dontSendNotification);
-
-	addAndMakeVisible(&id3);
-	id3.setText("Waiting...", dontSendNotification);
-
-    addAndMakeVisible (&toggleId3);
-	toggleId3.setClickingTogglesState (false);
-
-    setSize (274, 150);
+	title.setText("", dontSendNotification);
+    title.setColour (Label::textColourId, Colours::black);
+    title.setFont (Font ("Helvetica Neue", 15.0000f, Font::plain));
+    title.setText ("Song Title",dontSendNotification);
+    
+    addAndMakeVisible(&album);
+    album.setText("", dontSendNotification);
+    album.setColour (Label::textColourId, Colour (0xff6e7075));
+    album.setFont (Font ("Helvetica Neue", 15.0000f, Font::plain));		
+    album.setText("Album", dontSendNotification);
 }
 
 TrackInfo::~TrackInfo()
@@ -42,30 +37,23 @@ TrackInfo::~TrackInfo()
 
 void TrackInfo::resized()
 {
-    lTitle.setBounds (0, 0, 80, 24);
-    lArtist.setBounds (2, 48, 46, 24);
-    lId3.setBounds (8, 104, 104, 24);
-    artist.setBounds (8, 65, 256, 24);
-    title.setBounds (8, 16, 264, 24);
-    id3.setBounds (112, 104, 104, 24);
-    toggleId3.setBounds (32, 120, 24, 32);
+    title.setBounds (0, 0, getWidth(), 20);
+    artist.setBounds (0, 25, getWidth(), 20);
+    album.setBounds (0, 45, getWidth(), 20);
 
 }
 
 void TrackInfo::loadTrackInfo(ValueTree tags)
 {	
    if (tags.hasType("ITEM")) {
-	   toggleId3.setToggleState(true,false);
 	   title.setText (tags.getProperty(MusicColumns::columnNames[MusicColumns::Song].toString(), 0),dontSendNotification);
 	   artist.setText (tags.getProperty(MusicColumns::columnNames[MusicColumns::Artist].toString(), 0),dontSendNotification);
-	   id3.setText ("Tag Loaded",dontSendNotification);
-	   
+	   album.setText (tags.getProperty(MusicColumns::columnNames[MusicColumns::Album].toString(), 0),dontSendNotification);
    }
 	else {
-		toggleId3.setToggleState(false,false);
-		title.setText ("Failed",dontSendNotification);
-		artist.setText ("Failed",dontSendNotification);
-		id3.setText ("Tag Not Found",dontSendNotification);
+		title.setText ("Song Title",dontSendNotification);
+		artist.setText ("Artist",dontSendNotification);
+        album.setText("Album", dontSendNotification);
 	}
 }
 

@@ -44,8 +44,8 @@ public:
             
             File fileFound (directoryIterator.getFile());
             
-            if (infoBar != nullptr)
-                infoBar->loadingFile(fileFound);
+            //if (infoBar != nullptr)
+            //    infoBar->loadingFile(fileFound);
             
             singletonLibraryTree.addChild(TagReader::addToLibrary(fileFound),-1,0);
             

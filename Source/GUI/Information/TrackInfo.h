@@ -11,7 +11,6 @@
 #define TRACKINFO
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "TagReader.h"
 #include "MusicLibraryHelpers.h"
 #include "Settings.h"
 
@@ -25,13 +24,9 @@ public:
 	void loadTrackInfo(ValueTree tags);
 
 private:
-    Label lTitle;
-    Label lArtist;
-    Label lId3;
     Label artist;
     Label title;
-    Label id3;
-    ToggleButton toggleId3;
+    Label album;
 
 };
 

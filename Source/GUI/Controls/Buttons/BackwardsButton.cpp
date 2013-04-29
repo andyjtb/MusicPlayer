@@ -10,14 +10,10 @@
 #include "BackwardsButton.h"
 
 BackwardsButton::BackwardsButton ()
-    : Button ("BackwardsButton"),
-      cachedImage_backwards_png (0),
-      cachedImage_backwardsDown_png (0)
+    : Button ("Back")
 {
     cachedImage_backwards_png = ImageCache::getFromMemory (backwards_png, backwards_pngSize);
     cachedImage_backwardsDown_png = ImageCache::getFromMemory (backwardsDown_png, backwardsDown_pngSize);
-
-	buttonName = "Back";
 	
     setSize (124, 124);
 
@@ -41,21 +37,21 @@ void BackwardsButton::paintButton (Graphics& g, bool isMouseOverButton, bool isB
     {
         g.setColour (Colours::black);
         g.drawImage (cachedImage_backwardsDown_png,
-                     0, 0, 124, 124,
+                     0, 0, getWidth(), getHeight(),
                      0, 0, cachedImage_backwardsDown_png.getWidth(), cachedImage_backwardsDown_png.getHeight());
     }
     else
     {
         g.setColour (Colours::black);
         g.drawImage (cachedImage_backwards_png,
-                     0, 0, 124, 124,
+                     0, 0, getWidth(), getHeight(),
                      0, 0, cachedImage_backwards_png.getWidth(), cachedImage_backwards_png.getHeight());
     }
 }
 
 void BackwardsButton::clicked()
 {
-	sendActionMessage("back");
+	//
 }
 
 void BackwardsButton::buttonStateChanged()

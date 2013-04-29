@@ -13,8 +13,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-class ForwardButton  :  public Button,
-						public ActionBroadcaster
+class ForwardButton  :  public Button
 {
 public:
     ForwardButton ();

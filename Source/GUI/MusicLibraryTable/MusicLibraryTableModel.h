@@ -151,7 +151,7 @@ public:
     ValueTree getCurrentlySelectedTree() { return currentlySelectedRow; }
     int getCurrentlySelectedRow() { return table.getSelectedRow(); }
     
-    void setCurrentlySelectedRow(int selectRow, bool scrollToRow=false, bool deselectRows=true) { table.selectRow(selectRow, scrollToRow, deselectRows); }
+    void setCurrentlySelectedRow(int selectRow, bool scrollToRow = false, bool deselectRows = true) { table.selectRow(selectRow, scrollToRow, deselectRows); }
     
 private:
     //==============================================================================

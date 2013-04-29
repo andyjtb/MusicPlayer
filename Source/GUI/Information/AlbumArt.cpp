@@ -33,6 +33,14 @@ void AlbumArt::paint(Graphics& g)
 	if (fileSelected == true && tagMissing == false) {
 		g.setOpacity (1.0f);
 		g.drawImageWithin (getImage(), 0, 0, getWidth(), getHeight(), getImagePlacement(), false);
+        
+        //Shine... Sort of
+//        g.setGradientFill (ColourGradient (Colour (0x7dffffff),
+//                                           0, 0,
+//                                           Colour (0xffffff),
+//                                           72, 80,
+//                                           false));
+//        g.fillRect (0, 0, getWidth(), getHeight());
 	}
 	
 	if (tagMissing && !multiTrack) {
