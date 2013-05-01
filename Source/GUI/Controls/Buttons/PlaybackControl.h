@@ -16,13 +16,18 @@
 
 class GuiControl;
 
+/**
+ A container class for the 3 playback buttons, play/pause, forward and backward
+ 
+ @see PlayButton, ForwardButton, BackwardsButton,
+ */
 class PlaybackControl : public Component,
                         public Button::Listener
 {
 public:
 	//==============================================================================
     /**
-     Constructor
+     Constructor - Takes a pointer to the parent GuiControl class to allow button clicks to call GuiControl functions
      */
 	PlaybackControl(GuiControl* _parent);
     
@@ -31,9 +36,16 @@ public:
      */
 	~PlaybackControl();
     
+    /** @internal */
     void paint(Graphics& g);
+    /** @internal */
 	void resized();
     
+    /** 
+     Called if previous or forward buttons are pressed, calls corresponding functions in GuiControl
+     @param clicked The button that was clicked
+     @see GuiControl
+     */
     void buttonClicked (Button* clicked);
     
 private:

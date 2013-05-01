@@ -12,6 +12,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+/** The jfitzpat IpAddress class
+ */
 class JUCE_API IpAddress
 {
 public:

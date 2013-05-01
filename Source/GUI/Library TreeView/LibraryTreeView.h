@@ -15,11 +15,13 @@
 #include "Utility.h"
 
 //==============================================================================
+/** Each item in the LibraryTreeView */
 class LibraryViewItem  : public TreeViewItem,
                          public ActionBroadcaster,
                          public TextEditor::Listener
 {
 public:
+    /** Constructor - Takes the playlists title as a string */
     LibraryViewItem (String incomingPlaylistTitle)
     {
         //parent = incomingParent;
@@ -31,11 +33,13 @@ public:
         
         setLinesDrawnForSubItems(false);  
     }
-    
+    /** Destuctor */
     ~LibraryViewItem()
     {
         callout.clear();
     }
+    /** Called when an item is selected. 
+     If isNowSelected is true sends a message saying it has been selected */
     void itemSelectionChanged(bool isNowSelected)
     {
         if (isNowSelected)
@@ -43,27 +47,27 @@ public:
             sendActionMessage("Playlist Changed: " + playlistTitle);
         }
     }
-    
+    /** Returns pre defined item width */
     int getItemWidth() const
     {
         return 150;
     }
-    
+    /** Returns pre define item height */
     int getItemHeight() const
     {
         return 30;
     }
-    
+    /** Returns the playlists title */
     String getUniqueName() const
     {
         return String(playlistTitle);
     }
-
+    /** Returns false */
     bool mightContainSubItems()
     {
         return 0;//xml->getFirstChildElement() != 0;
     }
-    
+    /** Draws the item - title and icon, also draws highlight overlay when selected */
     void paintItem (Graphics& g, int width, int height)
     {
         g.setFont (Font (17.0f, Font::plain));
@@ -97,11 +101,11 @@ public:
         }
         
     }
-    
+    /** @internal */
     void itemOpennessChanged (bool isNowOpen)
     {
     }
-    
+    /** Allows songs to be dragged to the playlist item in the LibraryTreeView */
     bool isInterestedInDragSource (const DragAndDropTarget::SourceDetails& dragSourceDetails)
     {
         if (playlistTitle != "Library") 
@@ -113,7 +117,7 @@ public:
         }
         return false;
     }
-    
+    /** Adds the songs dropped to the playlist */
     void itemDropped (const DragAndDropTarget::SourceDetails& dragSourceDetails, int insertIndex)
     {
         Array<var>* incomingArray = dragSourceDetails.description.getArray();
@@ -140,7 +144,7 @@ public:
             }
         }
     }
-    
+    /** Allows renaming through the right click or alt-click, allows deleting through right click */
     void itemClicked (const MouseEvent& e)
     {
         if (playlistTitle != "Library")
@@ -186,7 +190,7 @@ public:
             }
         }
     }
-    
+    /** Displays a box allowing the playlist to be renamed */
     void rename(const MouseEvent& e)
     {
         Rectangle<int> position;
@@ -200,7 +204,7 @@ public:
         callout.set(new CallOutBox(*editDirectlyText, position, nullptr), false);
         callout->enterModalState(true, nullptr, true);
     }
-    
+    /** Saves the new playlist name is the user presses the enter key whilst renaming */
     void textEditorReturnKeyPressed (TextEditor &editor)
     {
         ValueTree rename = singletonPlaylistsTree.getChildWithProperty(MusicColumns::playlistName, playlistTitle);
@@ -216,7 +220,7 @@ public:
         
         callout->exitModalState(0);
     }
-    
+    /** Hides rename box is the user presses escape whilst renaming */
     void textEditorEscapeKeyPressed(TextEditor &)
     {
         callout->exitModalState(0);
@@ -232,7 +236,8 @@ private:
     ScopedPointer<TextEditor> editDirectlyText;
     //LibraryTreeView* parent;
 };
-
+/** A TreeView displaying the library and the playlists in a user's library. Allows them to be selected
+ @see LibraryViewItem */
 class LibraryTreeView : public Component,
                         public ActionListener,
                         public ChangeBroadcaster,
@@ -242,18 +247,23 @@ public:
     LibraryTreeView();
     ~LibraryTreeView();
     
+    /** Reloads all LibraryTreeViewItem s */
     void updateItems();
-    
+    /** @internal */
     void paint(Graphics &g);
+    /** @internal */
     void resized();
     
+    /** Sets selectedPlaylist to incomingPlaylist */
     void setSelected (String incomingPlaylist);
+    /** Gets the selectedPlaylist name */
     String getSelectedPlaylist();
-    
+    /** Controls loading new playlists and updateing items when the action message is received */
     void actionListenerCallback (const String& message);
-    
+    /** Button listener for add or remove playlist buttons */
     void buttonClicked (Button* button);
     
+    /** Fills a ValueTree with the full information for a playlist's tracks based on the trackID numbers for each song */
     void loadPlaylistsTrackInfo();
     
 private:

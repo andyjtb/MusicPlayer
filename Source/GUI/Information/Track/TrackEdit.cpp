@@ -15,49 +15,29 @@ TrackEdit::TrackEdit()
     songLabel.setText("Song: ", dontSendNotification);
     
     addAndMakeVisible (&song);
-    song.setMultiLine (false);
-    song.setReturnKeyStartsNewLine (false);
-    song.setReadOnly (false);
     song.setScrollbarsShown (false);
-    song.setCaretVisible (true);
     song.setPopupMenuEnabled (true);
-//    song.addListener(this);
     
     addAndMakeVisible (&artistLabel);
     artistLabel.setText("Artist: ", dontSendNotification);
     
     addAndMakeVisible (&artist);
-    artist.setMultiLine (false);
-    artist.setReturnKeyStartsNewLine (false);
-    artist.setReadOnly (false);
     artist.setScrollbarsShown (false);
-    artist.setCaretVisible (true);
     artist.setPopupMenuEnabled (true);
-//    artist.addListener(this);
     
     addAndMakeVisible (&albumLabel);
     albumLabel.setText("Album: ", dontSendNotification);
     
     addAndMakeVisible (&album);
-    album.setMultiLine (false);
-    album.setReturnKeyStartsNewLine (false);
-    album.setReadOnly (false);
     album.setScrollbarsShown (false);
-    album.setCaretVisible (true);
     album.setPopupMenuEnabled (true);
-//    album.addListener(this);
     
     addAndMakeVisible (&genreLabel);
     genreLabel.setText("Genre: ", dontSendNotification);
     
     addAndMakeVisible (&genre);
-    genre.setMultiLine (false);
-    genre.setReturnKeyStartsNewLine (false);
-    genre.setReadOnly (false);
     genre.setScrollbarsShown (false);
-    genre.setCaretVisible (true);
     genre.setPopupMenuEnabled (true);
-//    genre.addListener(this);
     
     addAndMakeVisible (&ratingLabel);
     ratingLabel.setText("Rating: ", dontSendNotification);
@@ -66,7 +46,6 @@ TrackEdit::TrackEdit()
     rating.setRange (0, 5, 1);
     rating.setSliderStyle (Slider::IncDecButtons);
     rating.setTextBoxStyle (Slider::TextBoxLeft, false, 30, 20);
-//    rating.addListener(this);
     
     addAndMakeVisible (&labelLabel);
     labelLabel.setText("Label: ", dontSendNotification);
@@ -78,20 +57,14 @@ TrackEdit::TrackEdit()
     label.setScrollbarsShown (true);
     label.setCaretVisible (true);
     label.setPopupMenuEnabled (true);
-//    label.addListener(this);
     
     addAndMakeVisible (&trackLabel);
     trackLabel.setText("Track Number: ", dontSendNotification);
     
     addAndMakeVisible (&trackNum);
     trackNum.setInputRestrictions(4, "0123456789");
-    trackNum.setMultiLine (false);
-    trackNum.setReturnKeyStartsNewLine (false);
-    trackNum.setReadOnly (false);
     trackNum.setScrollbarsShown (false);
-    trackNum.setCaretVisible (true);
     trackNum.setPopupMenuEnabled (false);    
-//    trackNum.addListener(this);
     
     setSize (530, 510);
     
@@ -124,7 +97,6 @@ void TrackEdit::resized()
     label.setBounds (16, 272, 440, 120);
     trackLabel.setBounds (360, 56, 112, 24);
     trackNum.setBounds (384, 80, 56, 24);
-    //save.setBounds (192, 432, 150, 24);
 }
 
 
@@ -211,12 +183,6 @@ void TrackEdit::textEditorTextChanged (TextEditor &textEditor)
 {
     saveRequired = true;
 }
-void TrackEdit::textEditorReturnKeyPressed (TextEditor &textEditor)
-{}
-void TrackEdit::textEditorEscapeKeyPressed (TextEditor &textEditor)
-{}
-void TrackEdit::textEditorFocusLost (TextEditor &textEditor)
-{}
 
 void TrackEdit::sliderValueChanged (Slider* sliderThatWasMoved)
 {

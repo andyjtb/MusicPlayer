@@ -83,7 +83,6 @@ void MusicLibraryDropTarget::filesDropped (const StringArray &files, int x, int 
         if (current.isDirectory())
         {
             DirectoryLoader d;
-            d.setInfoBar(musicTable.getGuiControl()->getInfoBar());
             d.setWildcards(musicTable.getGuiControl()->getAudioControl()->getRegisteredFormatWildcard());
             d.setDirectory(current);
             

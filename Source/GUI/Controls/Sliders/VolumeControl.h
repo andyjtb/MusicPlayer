@@ -11,26 +11,50 @@
 #define H_VOLUMECONTROL
 
 #include "../JuceLibraryCode/JuceHeader.h"
-
+/**
+ A slider with a volume icon that updates based on the volume being displayed by the slider
+ */
 class VolumeControl  :  public Component,
                         public SliderListener,
                         public ButtonListener,
 						public ActionBroadcaster
 {
 public:
-
+    /** 
+     Constructor
+     */
     VolumeControl ();
+    /** 
+     Destructor
+     */
     ~VolumeControl();
 
-
+    /** 
+     @internal
+     */
     void paint (Graphics& g);
+    /** 
+     @internal
+     */
     void resized();
-	
+    /** 
+     Adds the incoming class as a listener to the volume slider's Value
+     @param incomingListener The listener to be added to the volume slider listener list
+     */
 	void addValueListener (Value::Listener* incomingListener);
+    /** 
+     @return The Value object for the volume slider
+     */
 	Value& getSliderValue();
 	
+    /**
+     @return The current volume between 0 - 1
+     */
     double getVolume();
-    
+    /**
+     Sets the volume between 0 - 1, triggers listeners who are listening to the slider
+     @param incomingVolume The new volume
+     */
     void setVolume(double incomingVolume);
     
     // Binary resources:
@@ -48,7 +72,14 @@ public:
 	
 	
 private:
+    /**
+     Adjusts the volume based on the slider value
+     @param sliderThatWasMoved A pointer to the slider that moved, only ever volumeSlider
+     */
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    /**
+     Mutes the volume if the volume icon is clicked
+     */
     void buttonClicked (Button* buttonThatWasClicked);
 	
 	

@@ -15,28 +15,38 @@
 #include "TagReader.h"
 #include "Settings.h"
 
+/** The album art display class used throughout the application */
 class AlbumArt  :	public ImageComponent
 {
 public:
+    /** Constructor */
     AlbumArt ();
+    /** Destructor */
     ~AlbumArt();
 	
+    /** @internal */
     void resized();
+    /** Draws the image on the component, if no album art is found displays a message saying so */
 	void paint(Graphics& g);
-	
+	/** Sets the image only, does not save the incoming image to the files metadata */
     void setImageOnly (ImageWithType cover);
-    
+    /** Loads the image, Sets the image, saves the incoming image to the files metadata */
 	void setCover (File& incomingAudioFile);
+    /** Sets the image, saves the incoming image to the files metadata */
     void setCover (ImageWithType cover);
+    /** Sets the image, saves the incoming image to the files metadata */
     void setCover (Image cover);
     
+    /** Returns the image being displayed */
     Image getCover();
     
+    /** Allows new album art to be loaded from a file and saved to the metadata tag */
     void fromFile();
+    /** Allows new album art to be loaded from a URL and saved to the metadat tag */
     void fromUrl();
-    
+    /** Changes the size of the image, for the zoom function provided in TrackArt */
     void changeSize (double incomingSize);
-    
+    /** The currently displayed pictures file type */
     String extension;
     
 private:

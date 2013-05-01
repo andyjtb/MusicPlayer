@@ -9,11 +9,17 @@
 //#include "RemoteInterprocessConnection.h"
 class RemoteInterprocessConnection;
 
+/**
+ A struct which stores a JUCE Image along with it's file type as a string (jpeg, png etc.)
+ */
 struct ImageWithType {
     Image image;
     String type;
 };
 
+/**
+ A struct which stores the applications eq details, whether eq is switched on, which preset is currently being used and the gain levels for each frequency
+ */
 struct EqDetails{
     int ID;
     Value On;
@@ -147,7 +153,7 @@ public:
 	juce_DeclareSingleton_SingleThreaded_Minimal (Settings)
 	
 private:
-    /** @internal. */
+    /** Reads settings file and loads library/playlists, eq settings and table layout */
     void initSettings();
     
     File settingsXmlFile, libraryFile, playlistFile, eqSettingsFile;

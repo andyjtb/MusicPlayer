@@ -59,10 +59,10 @@ public:
         directory = incomingDirectory;
     }
     
-    void setInfoBar (InfoBar* _infoBar)
-    {
-        infoBar.set(_infoBar, false);
-    }
+//    void setInfoBar (InfoBar* _infoBar)
+//    {
+//        infoBar.set(_infoBar, false);
+//    }
     /** Sets the file extensions which will decide whether a file is appropriate or not
      @param _wildcards The file extensions that the loader will load in the format *.fileExtension;*.otherFileExtension
      */

@@ -22,7 +22,6 @@ SearchBox::SearchBox ()
     search.setCaretVisible (true);
     search.setSelectAllWhenFocused(true);
     search.setTextToShowWhenEmpty("Search", Colour (0xff8b8b8b));
-    search.setLookAndFeel(&searchBoxLookAndFeel);
     
     setSize (175, 60);
 

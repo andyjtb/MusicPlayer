@@ -83,7 +83,7 @@ namespace ValueTreeComparators
     };	
         
     //==============================================================================
-    /** A Lexiographc ValueTreeComparitor which will use a second comparitor if the
+    /** A Lexiographc ValueTreeComparitor which will use a second comparator if the
         result is the same, useful when sorting tables withough using the much
         slower maintainSortOrder method.
      */
@@ -118,7 +118,7 @@ namespace ValueTreeComparators
     };
     
     //==============================================================================
-    /** Compare used for sorting by artist/album first then by Lib ID
+    /** Non-dRow - Compare used for sorting by artist/album first then by Lib ID
      */
     class LexicographicWithNumerical
     {
@@ -152,8 +152,7 @@ namespace ValueTreeComparators
         
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LexicographicWithNumerical);
     };
-    /** Compare used for sorting by a string value with track num being a determining factor
-     NON dRow
+    /** Non-dRow - Compare used for sorting by a string value with track num being a determining factor
      */
     class LexicographicWithTrackNum
     {

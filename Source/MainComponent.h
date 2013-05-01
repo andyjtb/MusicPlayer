@@ -21,7 +21,7 @@
 
 
 //==============================================================================
-/*
+/**
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
@@ -101,16 +101,20 @@ public:
 	 */
 	void menuItemSelected (int menuItemID, int topLevelMenuIndex); 
 
-    /** Returns the next parent component that is an ApplicationCommandTarget
+    /** 
+     Returns the next parent component that is an ApplicationCommandTarget
      */
     ApplicationCommandTarget* getNextCommandTarget();
-    /** Fills an array of all commands that can be performed by this target
+    /** 
+     Fills an array of all commands that can be performed by this target
      */
     void getAllCommands (Array <CommandID>& commands);
-    /** Provides information about the command that can be performed, used to display the action and key command in the top menu bar
+    /** 
+     Provides information about the command that can be performed, used to display the action and key command in the top menu bar
      */
     void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result);
-    /** Called when a key command is recieved, performs the related action
+    /** 
+     Called when a key command is recieved, performs the related action
      */
     bool perform (const InvocationInfo& info);
     

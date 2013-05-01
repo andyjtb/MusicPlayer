@@ -12,24 +12,33 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+/**
+ An audio meter, made using sliders.
+ Three sliders are used to cover the audio range, green (0-0.8), yellow (0.8-0.99) and red (0.99-1)
+ */
 class Meter  : public Component
-               
 {
 public:
-   
+	/**
+     Constructor
+     */
     Meter ();
+	/**
+     Destructor
+     */
     ~Meter();
-
-
-    void paint (Graphics& g);
-    void resized();
+	/**
+	 Used to control the value displayed on the Meter
+	 @param meterValue The value to be displayed by the Meter
+	 */
 	void externalMeterValue(float meterValue);
 	
-
-
 private:
-	
-
+    /** @internal*/
+	void paint (Graphics& g);
+    /** @internal*/
+    void resized();
+    
     Slider meterLow;
     Slider meterMid;
     Slider meterHigh;

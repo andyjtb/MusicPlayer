@@ -122,35 +122,56 @@ public:
 	var getDragSourceDescription (const SparseSet<int>& currentlySelectedRows);
 
     //NON DROW FUNCTIONS
+    /** Sets the pointer to the GuiControl parent class */
     void setGuiControl(GuiControl* _guiControl) { guiControl.set(_guiControl, false); }
+    /** Gets the pointer to the GuiControl parent class */
     GuiControl* getGuiControl() { return guiControl; }
-    
+    /** Calls the libraryUpdated function on this library - Wrapper class to allow other classes to call libraryUpdated without having a pointer to the iTunesLibrary in use */
     void updateLibrary();
+    /** Updates the selectedTree and selectedRow. Sends an ActionMessage alerting other classes to this change, if multiple rows are selected, reads their unique ID numbers into an array */
     void selectedRowsChanged (int lastRowSelected);
+    /** Plays the currently selected song when the return key is pressed */
     void returnKeyPressed (int currentSelectedRow);
+    /** Calls deleteTracks when delete key is press */
     void deleteKeyPressed (int currentSelectedRow);
+    /** Brings up the right click menu, also allows alt-click to edit directly. */
     void cellClicked (int rowNumber, int columnId, const MouseEvent &event);
+    /** Plays the song that was double clicked */
     void cellDoubleClicked(int rowNumber, int columnId, const MouseEvent &event);
     
+    /** Brings up a calloutBox allowing the user to directly edit the information selected */
     void editDirectly (int rowNumber, int columnId, const MouseEvent &event);
+    /** Created as part of the editDirectly function - When enter is pressed the edit box the changes are saved and the box is closed */
     void textEditorReturnKeyPressed (TextEditor & editor);
+    /** Created as part of the editDirectly function - When escape is pressed the box is closed and the changes are not saved */
     void textEditorEscapeKeyPressed(TextEditor &);
     
+    /** Sets the playlist tree */
     void setPlaylistTree (ValueTree& playlist);
+    /** Changes the ValueTree being displayed in the table - if displayPlaylists is true then it displays a playlist and changes the various right click options accordingly */
     void changeDisplay (bool displayPlaylists);
+    /** Returns whether the table is displaying a playlist */
     bool isDisplayingPlaylist() { return displayPlaylist; }
+    /** Returns whether a playlist is currently being played */
     bool isPlayingPlaylist() { return playingPlaylist; }
+    /** External wrapper around the set sort column function in the contained table - Allows the sort column to be changed when a playlist is displayed, so the playlist is in the custom order set by the user */
     void setSortColumn (int columnNumber);
     
+    /** Creates a window asking whether the user wants to delete the song from the library or the computer - if computer is selected the files are moved to the trash for safety */
     void deleteTracks (bool libraryOnly);
     
+    /** Moves the selected song up or down in the playlist based upon the moveUp param - Rearranges songs and saves to playlist file */
     void playlistRearrange (int selectedRow, bool moveUp);
     
+    /** Returns whether the table is currently deleting - Stops the information about a song being loaded whilst the table is deleting, speeding up the delete process dramatically */
     bool isTableDeleting() { return tableDeleting; }
     
+    /** Returns the information about the track that is currently selected */
     ValueTree getCurrentlySelectedTree() { return currentlySelectedRow; }
+    /** Returns the row that is currently selected */
     int getCurrentlySelectedRow() { return table.getSelectedRow(); }
     
+    /** External wrapper around the selectRow function - Has default values to allow just the new row to be send to the function*/
     void setCurrentlySelectedRow(int selectRow, bool scrollToRow = false, bool deselectRows = true) { table.selectRow(selectRow, scrollToRow, deselectRows); }
     
 private:

@@ -7,6 +7,7 @@
 *
 * Automatically generated binary data
 */
+/** Binary data containing library and playlist icons */
 namespace LibraryTreeViewBinaryData
 {
     extern const char*  small_library_png;

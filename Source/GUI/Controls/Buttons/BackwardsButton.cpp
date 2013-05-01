@@ -49,16 +49,6 @@ void BackwardsButton::paintButton (Graphics& g, bool isMouseOverButton, bool isB
     }
 }
 
-void BackwardsButton::clicked()
-{
-	//
-}
-
-void BackwardsButton::buttonStateChanged()
-{
-
-}
-
 
 //==============================================================================
 // Binary resources - be careful not to edit any of these sections!

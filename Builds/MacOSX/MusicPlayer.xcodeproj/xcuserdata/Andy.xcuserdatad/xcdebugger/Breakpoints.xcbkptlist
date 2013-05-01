@@ -114,11 +114,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/Information/Info Bar/InfoBar.cpp"
-         timestampString = "388831618.226754"
+         timestampString = "389062821.017639"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "134"
-         endingLineNumber = "134"
+         startingLineNumber = "128"
+         endingLineNumber = "128"
          landmarkName = "InfoBar::mouseDoubleClick(const MouseEvent &amp;e)"
          landmarkType = "5">
       </FileBreakpoint>

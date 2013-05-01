@@ -71,17 +71,6 @@ void PlayButton::paintButton (Graphics& g, bool isMouseOverButton, bool isButton
 	
 }
 
-//ValueTree Callbacks
-void PlayButton::valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
-{}
-void PlayButton::valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded)
-{}
-void PlayButton::valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved)
-{}
-void PlayButton::valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved)
-{}
-void PlayButton::valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged)
-{}
 void PlayButton::valueTreeRedirected (ValueTree &treeWhichHasBeenChanged)
 {  
     //Playing Row change listener

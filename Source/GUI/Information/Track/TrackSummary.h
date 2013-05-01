@@ -17,15 +17,21 @@
 #include "Settings.h"
 #include "MusicLibraryHelpers.h"
 
+/** Displays a summary of all of the information contained about the selected file */
 class TrackSummary  : public Component
 {
 public:
+    /** Constructor */
     TrackSummary ();
+    /** Destructor */
     ~TrackSummary();
     
+    /** @internal */
     void paint (Graphics& g);
+    /** @internal */
     void resized();
     
+    /** Loads the information contained in the incomingTrack ValueTree, loads the album art for the file the location property refers to */
     void setTrack(ValueTree incomingTrack);
     
 private:

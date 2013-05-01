@@ -11,6 +11,9 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "MainComponent.h"
 
+/**
+ The main application class, controls start up and shutdown
+ */
 //==============================================================================
 class MusicPlayerApplication  : public JUCEApplication
 {
@@ -53,7 +56,7 @@ public:
     }
 
     //==============================================================================
-    /*
+    /**
         This class implements the desktop window that contains an instance of
         our MainContentComponent class.
     */

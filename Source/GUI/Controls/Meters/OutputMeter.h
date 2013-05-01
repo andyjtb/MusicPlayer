@@ -13,19 +13,39 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Meter.h"
 
-class OutputMeter : public Component
+/**
+ A class containg two Meter s.
+ Used for displaying the output level to the chosen ooutput device.
+ @see Meter
+ */
+class OutputMeter  : public Component
 {
 public:
+	/**
+     Constructor
+     */
     OutputMeter();
+	/**
+     Destructor
+     */
     ~OutputMeter();
-	
-    void paint (Graphics& g);
-    void resized();
+	/**
+	 Used to control the value displayed on the left Meter
+	 @param incomingMeterValue The value to be displayed by the left output Meter
+	 */
 	void setOutputMeterValueL (float incomingMeterValue);
+	/**
+	 Used to control the value displayed on the right Meter
+	 @param incomingMeterValue The value to be displayed by the right output Meter
+	 */
 	void setOutputMeterValueR (float incomingMeterValue);
 	
 private:
-	
+    /** @internal */
+    void paint (Graphics& g);
+    /** @internal */
+    void resized();
+
     Label outputLabel;
 	Meter meterL;
 	Meter meterR;

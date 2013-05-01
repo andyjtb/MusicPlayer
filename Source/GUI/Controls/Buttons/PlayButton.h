@@ -13,24 +13,48 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Settings.h"
 
+/**
+ The play button
+ */
 class PlayButton  : public Button,
                     public ValueTree::Listener
 {
 public:
     //==============================================================================
+    /** Constructor */
     PlayButton ();
+    /** Destructor */
     ~PlayButton();
 	
-	
+	/** @internal */
     void resized();
+    /** @internal */
     void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown);
   
-    //ValueTree Callbacks
-    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property);
-    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded);
-    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved);
-    void valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved);
-    void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged);
+    //ValueTree Callbacks - Not used
+    /**
+     Required by ValueTree::Listener, not used
+     */
+    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property){}
+    /**
+     Required by ValueTree::Listener, not used
+     */
+    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded){}
+    /**
+     Required by ValueTree::Listener, not used
+     */
+    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved){}
+    /**
+     Required by ValueTree::Listener, not used
+     */
+    void valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved){}
+    /**
+     Required by ValueTree::Listener, not used
+     */
+    void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged){}
+    /** Makes sure that there is a file supposed to be being played before pressing the button has an effect.
+     Stops the user from being able to toggle the play button before a song has been loaded
+     */
     void valueTreeRedirected (ValueTree &treeWhichHasBeenChanged);
     
     // Binary resources:

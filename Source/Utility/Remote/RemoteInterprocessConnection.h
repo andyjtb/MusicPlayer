@@ -58,9 +58,11 @@ public:
      */
     void sendTrackNums();
     /** Sends the current playback position
+     @param position Current playback position
      */
     void sendPosition (double position);
     /** Sends the current volume
+     @param volume Current volume
      */
     void sendVolume (double volume);
     /** Sends whether the application is playing audio or not
@@ -73,6 +75,7 @@ public:
 private:
     //Called as part of send library data
     /** @internal
+     Called as part of sendLibraryData()
      */
     void sendPlaylistData();
     

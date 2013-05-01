@@ -47,18 +47,6 @@ void ForwardButton::paintButton (Graphics& g, bool isMouseOverButton, bool isBut
     }
 }
 
-void ForwardButton::clicked()
-{
-	//
-}
-
-void ForwardButton::buttonStateChanged()
-{
-//	if (isDown()) {
-//		sendActionMessage("held");
-//	}
-}
-
 
 
 //==============================================================================

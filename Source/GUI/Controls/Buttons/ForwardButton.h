@@ -13,16 +13,19 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+/** The forward button
+ @see PlaybackControl
+ */
 class ForwardButton  :  public Button
 {
 public:
     ForwardButton ();
     ~ForwardButton();
 
+    /** @internal */
     void resized();
+    /** @internal */
     void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown);
-    void clicked();
-    void buttonStateChanged();
 	
     // Binary resources:
     static const char* forwardDown_png;

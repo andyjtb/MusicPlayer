@@ -12,22 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-class SearchBoxLookAndFeel : public LookAndFeel
-{
-public:
-    SearchBoxLookAndFeel(){}
-    //~SearchBoxLookAndFeel(); 
-    
-//    void fillTextEditorBackground (Graphics& g, int width, int height, TextEditor& textEditor)
-//    {
-//        if (textEditor.isEnabled())
-//        {
-//            g.setColour (Colours::green);
-//            g.drawRect (0, 0, width, height);
-//        }
-//    }
-};
-
+/** The search box */
 class SearchBox  : public Component
 {
 public:
@@ -35,17 +20,19 @@ public:
     SearchBox ();
     ~SearchBox();
 
+    /** @internal */
     void paint (Graphics& g);
+    /** @internal */
     void resized();
 
+    /** Returns a reference to the TextEditor so listeners can be added */
     TextEditor& getSearchTextEditor();
+    /** Returns the text currently being displayed in the search box */
     String getText();
 private:
 
     Label searchLabel;
     TextEditor search;
-
-    SearchBoxLookAndFeel searchBoxLookAndFeel;
 };
 
 

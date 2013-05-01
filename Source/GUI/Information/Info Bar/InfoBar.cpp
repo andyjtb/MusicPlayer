@@ -121,12 +121,6 @@ void InfoBar::displayFileStatus (File& file, int result)
         infoLabel.setText(String::empty, dontSendNotification);
 }
 
-void InfoBar::loadingFile (File loadFile)
-{
-    String loadingString = loadFile.getFileName();
-    loadingString << " Added to Library";
-    infoLabel.setText(loadingString, dontSendNotification);
-}
 
 void InfoBar::mouseDoubleClick(const MouseEvent &e)
 {
