@@ -61,12 +61,12 @@ void UrlLoad::buttonClicked (Button* buttonThatWasClicked)
             
             String extension = imageURL.toString(false).fromLastOccurrenceOf(".", true, true);
             
-			if (extension.compareIgnoreCase(".jpeg") || extension.compareIgnoreCase(".jpg"))
+			if (extension.compareIgnoreCase(".jpeg") == 0 || extension.compareIgnoreCase(".jpg") == 0)
             {
                 jpeg = true;
                 png = false;
             }
-			else if (extension.compareIgnoreCase(".png")) {
+			else if (extension.compareIgnoreCase(".png") == 0) {
 				png = true;
                 jpeg = false;
 			}

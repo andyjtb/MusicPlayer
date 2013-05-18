@@ -74,6 +74,7 @@ void AlbumArt::setImageOnly (ImageWithType cover)
     if (cover.image.isValid() && cover.image.getWidth() > 2) {
 		fileSelected = true;
         tagMissing = false;
+        multiTrack = false;
         
         imageWidth = cover.image.getWidth();
         imageHeight = cover.image.getHeight();
@@ -103,13 +104,16 @@ void AlbumArt::setImageOnly (ImageWithType cover)
 
 void AlbumArt::setCover (File& incomingAudioFile)
 {
+    fileSelected = false;
+    tagMissing = false;
+    multiTrack = false;
+    
     audioFile = incomingAudioFile;
     
     ImageWithType cover = TagReader::getAlbumArt(audioFile);
     
 	if (cover.image.isValid() && cover.image.getWidth() > 2) {
 		fileSelected = true;
-        tagMissing = false;
         
         imageWidth = cover.image.getWidth();
         imageHeight = cover.image.getHeight();
@@ -136,9 +140,12 @@ void AlbumArt::setCover (File& incomingAudioFile)
 
 void AlbumArt::setCover (ImageWithType cover)
 {
+    fileSelected = false;
+    tagMissing = false;
+    multiTrack = false;
+    
 	if (cover.image.isValid() && cover.image.getWidth() > 2) {
 		fileSelected = true;
-        tagMissing = false;
         
         imageWidth = cover.image.getWidth();
         imageHeight = cover.image.getHeight();
@@ -175,9 +182,12 @@ void AlbumArt::setCover (ImageWithType cover)
 
 void AlbumArt::setCover (Image cover)
 {
+    fileSelected = false;
+    tagMissing = false;
+    multiTrack = false;
+    
 	if (cover.isValid() && cover.getWidth() > 2) {
 		fileSelected = true;
-        tagMissing = false;
         
         imageWidth = cover.getWidth();
         imageHeight = cover.getHeight();
@@ -293,7 +303,7 @@ void AlbumArt::fromFile()
         
         if (!multiTrack) {
             extension = fc.getResult().getFileExtension();
-            if (extension.compareIgnoreCase(".jpeg") || extension.compareIgnoreCase(".jpg"))
+            if (extension.compareIgnoreCase(".jpeg") == 0 || extension.compareIgnoreCase(".jpg") == 0)
                 TagReader::saveAlbumArt(audioFile, currentCover, "JPEG");
             else
                 TagReader::saveAlbumArt(audioFile, currentCover, "PNG");

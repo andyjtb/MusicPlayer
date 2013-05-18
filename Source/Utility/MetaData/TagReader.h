@@ -71,7 +71,7 @@ public:
                 
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::SampleRate], reader->sampleRate, nullptr);
                 
-                if (audioFile.getFileExtension() == "mp3")
+                if (audioFile.getFileExtension().compareIgnoreCase("mp3") == 0)
                     tags.setProperty(MusicColumns::columnNames[MusicColumns::Kind], "MPEG audio file", nullptr);
                 else
                     tags.setProperty(MusicColumns::columnNames[MusicColumns::Kind], reader->getFormatName(), nullptr);
@@ -105,7 +105,7 @@ public:
 	{
         if (audioFile.exists())
         {
-            if (audioFile.getFileExtension() == ".mp3") {
+            if (audioFile.getFileExtension().compareIgnoreCase(".mp3") == 0) {
                 
                 TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
                 
@@ -128,7 +128,7 @@ public:
                 }
             }
             
-            else if (audioFile.getFileExtension() == ".m4a" || audioFile.getFileExtension() == ".aac")
+            else if (audioFile.getFileExtension().compareIgnoreCase(".m4a") == 0 || audioFile.getFileExtension().compareIgnoreCase(".aac") == 0)
             {
                 TagLib::MP4::File f(audioFile.getFullPathName().toUTF8());
                 
@@ -165,7 +165,7 @@ public:
                 return mCover;
             }
             
-            else if (audioFile.getFileExtension() == ".ogg" || audioFile.getFileExtension().compareIgnoreCase(".flac"))
+            else if (audioFile.getFileExtension().compareIgnoreCase(".ogg") == 0 || audioFile.getFileExtension().compareIgnoreCase(".flac") == 0)
             {
                 TagLib::Ogg::Vorbis::File f(audioFile.getFullPathName().toUTF8());
                 
@@ -206,7 +206,7 @@ public:
     {
         if (audioFile.exists())
         {
-            if (audioFile.getFileExtension() == ".mp3") {
+            if (audioFile.getFileExtension().compareIgnoreCase(".mp3") == 0) {
                 
                 TagLib::MPEG::File f(audioFile.getFullPathName().toUTF8(), false, TagLib::AudioProperties::Average);
 
@@ -224,7 +224,7 @@ public:
                             
                             readJuceImageToByteVector(newCover, imageType, byteVector);
                             
-                            if (imageType.compareIgnoreCase("JPEG") ||  imageType.compareIgnoreCase("JPG"))
+                            if (imageType.compareIgnoreCase("JPEG") == 0||  imageType.compareIgnoreCase("JPG") == 0)
                                 frame->setMimeType("image/jpeg");
                             else
                                 frame->setMimeType("image/png");
@@ -246,7 +246,7 @@ public:
                         
                         //frame->setType(TagLib::ID3v2::AttachedPictureFrame::FrontCover);
                         
-                        if (imageType.compareIgnoreCase("JPEG") ||  imageType.compareIgnoreCase("JPG"))
+                        if (imageType.compareIgnoreCase("JPEG") == 0 ||  imageType.compareIgnoreCase("JPG") == 0)
                             frame->setMimeType("image/jpeg");
                         else
                             frame->setMimeType("image/png");
@@ -261,7 +261,7 @@ public:
                   
             }
             
-            else if (audioFile.getFileExtension() == ".m4a" || audioFile.getFileExtension() == ".aac")
+            else if (audioFile.getFileExtension().compareIgnoreCase(".m4a") == 0 || audioFile.getFileExtension().compareIgnoreCase(".aac") == 0)
             {
                 // read the image file
                 TagLib::ByteVector coverVector;
@@ -271,13 +271,13 @@ public:
                 
                 TagLib::MP4::CoverArt::Format format;
                 
-                if (imageType.compareIgnoreCase("jpeg") || imageType.compareIgnoreCase("jpg"))
+                if (imageType.compareIgnoreCase("jpeg") == 0 || imageType.compareIgnoreCase("jpg") == 0)
                     format = TagLib::MP4::CoverArt::Format::JPEG;
-                else if (imageType.compareIgnoreCase("gif"))
+                else if (imageType.compareIgnoreCase("gif") == 0)
                     format = TagLib::MP4::CoverArt::Format::GIF;
-                else if (imageType.compareIgnoreCase("png"))
+                else if (imageType.compareIgnoreCase("png") == 0)
                     format = TagLib::MP4::CoverArt::Format::PNG;
-                else if (imageType.compareIgnoreCase("bmp"))
+                else if (imageType.compareIgnoreCase("bmp") == 0)
                     format = TagLib::MP4::CoverArt::Format::BMP;
                 
                 TagLib::MP4::CoverArt coverArt(format, coverVector);
@@ -301,7 +301,7 @@ public:
 
             }
             
-            else if (audioFile.getFileExtension() == ".ogg" || audioFile.getFileExtension().compareIgnoreCase(".flac"))
+            else if (audioFile.getFileExtension().compareIgnoreCase(".ogg") == 0 || audioFile.getFileExtension().compareIgnoreCase(".flac") == 0)
             {
                 TagLib::Ogg::Vorbis::File f(audioFile.getFullPathName().toUTF8());
                 /*
@@ -316,7 +316,7 @@ public:
                 picture->setData(byteVector);
                 picture->setType((TagLib::FLAC::Picture::Type) 0x03); // FrontCover
                 
-                if (imageType.compareIgnoreCase("JPEG") ||  imageType.compareIgnoreCase("JPG"))
+                if (imageType.compareIgnoreCase("JPEG") == 0 ||  imageType.compareIgnoreCase("JPG") == 0)
                     picture->setMimeType("image/jpeg");
                 else
                     picture->setMimeType("image/png");
@@ -347,7 +347,7 @@ public:
     {
         MemoryOutputStream newCoverData;
         
-        if (imageType.compareIgnoreCase("JPEG") || imageType.compareIgnoreCase("jpg"))
+        if (imageType.compareIgnoreCase("JPEG") == 0|| imageType.compareIgnoreCase("jpg") == 0)
         {
             JPEGImageFormat image;
             image.writeImageToStream(newCover, newCoverData);
@@ -380,7 +380,7 @@ public:
             MemoryOutputStream outputStream;
             type = currentCover.type;
             
-            if (type.compareIgnoreCase("jpg") || type.compareIgnoreCase("jpeg"))
+            if (type.compareIgnoreCase("jpg") == 0 || type.compareIgnoreCase("jpeg") == 0)
             {
                 JPEGImageFormat image;
                 image.writeImageToStream(currentCover.image, outputStream);

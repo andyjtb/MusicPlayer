@@ -724,6 +724,9 @@ void MusicLibraryTable::playlistRearrange (int selectedRow, bool movingUp)
         
         playlistTree.setProperty(moving, otherID, 0);
         playlistTree.setProperty(other, movingID, 0);
+        
+        int index = filteredDataList.indexOf(otherRow);
+        table.selectRow(index, false, true);
     }
     
     updateTableFilteredAndSorted();

@@ -174,6 +174,8 @@ public:
     /** External wrapper around the selectRow function - Has default values to allow just the new row to be send to the function*/
     void setCurrentlySelectedRow(int selectRow, bool scrollToRow = false, bool deselectRows = true) { table.selectRow(selectRow, scrollToRow, deselectRows); }
     
+    void updateTableFilteredAndSorted();
+    
 private:
     //==============================================================================
     Font font;	
@@ -194,7 +196,7 @@ private:
     int filteredNumRows, columnEditing, rowEditing;
 	bool finishedLoading, displayPlaylist, playingPlaylist, tableDeleting;
 	
-    void updateTableFilteredAndSorted();
+    
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MusicLibraryTable);

@@ -119,6 +119,10 @@ void GuiControl::timerCallback(int timerId)
             playCount++;
             tablePlayingRow.setProperty(MusicColumns::columnNames[MusicColumns::PlayCount], playCount, 0);
             
+            String name = tablePlayingRow.getProperty("Song");
+            
+            musicTable->updateTableFilteredAndSorted();
+            
             next();
         }
 	}
@@ -190,7 +194,8 @@ void GuiControl::changeListenerCallback (ChangeBroadcaster* changeBroadcaster)
         {
             musicTable->changeDisplay(false);
             musicTable->setSortColumn(MusicColumns::Artist);
-            musicTable->getTableListBox().selectRow(filteredDataList.indexOf(tablePlayingRow));
+            int index = filteredDataList.indexOf(filteredDataList.getChildWithProperty("ID", tablePlayingRow.getProperty("ID")));
+            musicTable->getTableListBox().selectRow(index);
         }
         else
         {
@@ -223,6 +228,9 @@ void GuiControl::changeListenerCallback (ChangeBroadcaster* changeBroadcaster)
                 musicTable->setPlaylistTree (playlistValueTree);
                 musicTable->changeDisplay(true);
                 musicTable->setSortColumn(MusicColumns::LibID);
+                
+                int index = filteredDataList.indexOf(filteredDataList.getChildWithProperty("ID", tablePlayingRow.getProperty("ID")));
+                musicTable->getTableListBox().selectRow(index);
             }
             
         }
@@ -272,7 +280,10 @@ void GuiControl::valueChanged (Value& valueChanged)
             stopTimer(1);
 		}
         //iTunes feature, pausing or playing changes the view to the currently playing track
-        musicTable->getTableListBox().selectRow(filteredDataList.indexOf(tablePlayingRow));
+        int index = filteredDataList.indexOf(filteredDataList.getChildWithProperty("ID", tablePlayingRow.getProperty("ID")));
+        if (index != -1)
+            musicTable->getTableListBox().selectRow(index, false, true);
+        //musicTable->getTableListBox().selectRow(filteredDataList.indexOf(tablePlayingRow));
 	}
     
     if (valueChanged == artUpdateRequired)
@@ -296,25 +307,28 @@ void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
     {
         int result = 0;
         
+        Identifier id = MusicColumns::columnNames[MusicColumns::ID];
+        
         singletonPlayState = false;
         result = audioControl->loadFile(selectedFile);
-        
+
         if (result != 2)
         {
             tablePlayingRow = treeToLoad;
             
-            //if (treeToLoad != musicTable->getCurrentlySelectedTree())
-            //    musicTable->setCurrentlySelectedRow(currentlyPlayingList.indexOf(treeToLoad));
+            if (treeToLoad.getProperty(id) != musicTable->getCurrentlySelectedTree().getProperty(id))
+            {
+                int index = filteredDataList.indexOf(filteredDataList.getChildWithProperty(id, treeToLoad.getProperty(id)));
+                if (index != -1)
+                    musicTable->getTableListBox().selectRow(index, false, true);
+            }
             
             if (shouldPlay)
                 singletonPlayState = true;
             
             trackInfo.loadTrackInfo(tablePlayingRow);
         }
-        
-        
-        infoBar.displayFileStatus(selectedFile, result);
-        albumArt.setCover(selectedFile);
+
     }
     else
     {
@@ -348,9 +362,9 @@ void GuiControl::next()
     if (tablePlayingRow.isValid()) {
         Identifier id = MusicColumns::columnNames[MusicColumns::ID];
         
-        //Updates the list to allow for reordering playlists or changing the search 
-        if (currentlyPlayingName == libraryView.getSelectedPlaylist())
-            currentlyPlayingList = filteredDataList.createCopy();
+//Updates the list to allow for reordering playlists or changing the search - Causes crash when next is pressed a lot in quick sucession
+//        if (currentlyPlayingName == libraryView.getSelectedPlaylist())
+//            currentlyPlayingList = filteredDataList.createCopy();
         
         int toPlay = currentlyPlayingList.indexOf(currentlyPlayingList.getChildWithProperty(id, tablePlayingRow.getProperty(id)));
         
@@ -361,7 +375,7 @@ void GuiControl::next()
             //Currently playing list is also the one being viewed, so move selectedrow
 //            if (currentlyPlayingList.isEquivalentTo(filteredDataList))
 //                musicTable->setCurrentlySelectedRow(toPlay, true);
-            
+        
             if (singletonPlayState.getValue())
                 loadFile(currentlyPlayingList.getChild(toPlay), true);
             else
@@ -414,8 +428,6 @@ void GuiControl::setVolume (double incomingVolume)
 void GuiControl::textEditorTextChanged (TextEditor &textEditor)
 {
     musicTable->setFilterText(textEditor.getText());
-    
-    
     
     if (remoteConnections.getFirst() != nullptr)
         remoteConnections.getFirst()->sendTrackNums();

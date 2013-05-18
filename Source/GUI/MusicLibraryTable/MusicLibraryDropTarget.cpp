@@ -54,7 +54,11 @@ bool MusicLibraryDropTarget::isInterestedInFileDrag (const StringArray &files)
     {
         return true;
     }
-    else if (files[0].endsWith(".mp3"))
+    else if (test.getFileExtension().compareIgnoreCase(".mp3") == 0 ||
+             test.getFileExtension().compareIgnoreCase(".m4a") == 0 ||
+             test.getFileExtension().compareIgnoreCase(".aac") == 0 ||
+             test.getFileExtension().compareIgnoreCase(".ogg") == 0 ||
+             test.getFileExtension().compareIgnoreCase(".flac") == 0)
     {
         return true;
     }
@@ -90,7 +94,12 @@ void MusicLibraryDropTarget::filesDropped (const StringArray &files, int x, int 
         }
         else
         {
-            if (current.getFileName().endsWith(".mp3")) {
+            if (current.getFileExtension().compareIgnoreCase(".mp3") == 0 ||
+                current.getFileExtension().compareIgnoreCase(".m4a") == 0 ||
+                current.getFileExtension().compareIgnoreCase(".aac") == 0 ||
+                current.getFileExtension().compareIgnoreCase(".ogg") == 0 ||
+                current.getFileExtension().compareIgnoreCase(".flac") == 0)
+            {
                 singletonLibraryTree.addChild(TagReader::addToLibrary(current),-1,0);
             }
         }
