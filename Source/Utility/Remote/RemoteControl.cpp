@@ -15,8 +15,8 @@ RemoteControl::RemoteControl ()
 
 RemoteControl::~RemoteControl()
 {
-    stop();
     remoteConnections.clear();
+    stop();
 }
 
 RemoteInterprocessConnection* RemoteControl::createConnectionObject()

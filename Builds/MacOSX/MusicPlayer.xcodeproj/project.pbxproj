@@ -22,6 +22,7 @@
 		979574C0881387240A13C5FC /* DiscRecording.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78B9F416F6954F6D8DE08890 /* DiscRecording.framework */; };
 		981759ECC4BF6B158A89AA56 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA70E591FC6FD7BCD52D788B /* Main.cpp */; };
 		A105A92E165BD156003664AB /* MusicLibraryTableModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A105A92C165BD156003664AB /* MusicLibraryTableModel.cpp */; };
+		A10C9D5C174B81EA002E09D0 /* icon_512x512.png in Resources */ = {isa = PBXBuildFile; fileRef = A10C9D5B174B81E8002E09D0 /* icon_512x512.png */; };
 		A10CFD7C16987EF6009E6AA0 /* MusicLibraryDropTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A10CFD7A16987EF6009E6AA0 /* MusicLibraryDropTarget.cpp */; };
 		A11D423A172EE2A60052D2E4 /* PlaybackControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A11D4238172EE2A50052D2E4 /* PlaybackControl.cpp */; };
 		A12176DB1725D0D600D52686 /* MainComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24256F80566C71A4A177045B /* MainComponent.cpp */; };
@@ -567,6 +568,7 @@
 		9FECFDFC1F07C021B77F3F1F /* juce_Drawable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_Drawable.cpp; path = ../../JuceLibraryCode/modules/juce_gui_basics/drawables/juce_Drawable.cpp; sourceTree = SOURCE_ROOT; };
 		A105A92C165BD156003664AB /* MusicLibraryTableModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MusicLibraryTableModel.cpp; sourceTree = "<group>"; };
 		A105A92D165BD156003664AB /* MusicLibraryTableModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicLibraryTableModel.h; sourceTree = "<group>"; };
+		A10C9D5B174B81E8002E09D0 /* icon_512x512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_512x512.png; sourceTree = "<group>"; };
 		A10CFD7A16987EF6009E6AA0 /* MusicLibraryDropTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MusicLibraryDropTarget.cpp; sourceTree = "<group>"; };
 		A10CFD7B16987EF6009E6AA0 /* MusicLibraryDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicLibraryDropTarget.h; sourceTree = "<group>"; };
 		A11D4238172EE2A50052D2E4 /* PlaybackControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlaybackControl.cpp; sourceTree = "<group>"; };
@@ -2609,6 +2611,7 @@
 		DF8DE54D3821467A71236A6A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				A10C9D5B174B81E8002E09D0 /* icon_512x512.png */,
 				32B27AD766C36C82FE444A3A /* Juce Modules */,
 				63097064193D1A7753EDFBF4 /* Juce Library Code */,
 				75C0F81877C4EE1286AFEF65 /* MusicPlayer */,
@@ -2880,6 +2883,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10C9D5C174B81EA002E09D0 /* icon_512x512.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

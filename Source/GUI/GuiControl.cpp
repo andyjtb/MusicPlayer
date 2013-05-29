@@ -327,6 +327,7 @@ void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
                 singletonPlayState = true;
             
             trackInfo.loadTrackInfo(tablePlayingRow);
+            artUpdateRequired = true;
         }
 
     }
@@ -364,6 +365,9 @@ void GuiControl::next()
         
 //Updates the list to allow for reordering playlists or changing the search - Causes crash when next is pressed a lot in quick sucession
 //        if (currentlyPlayingName == libraryView.getSelectedPlaylist())
+////            //currentlyPlayingList = filteredDataList.createCopy();
+//            currentlyPlayingList = filteredDataList;
+//        else
 //            currentlyPlayingList = filteredDataList.createCopy();
         
         int toPlay = currentlyPlayingList.indexOf(currentlyPlayingList.getChildWithProperty(id, tablePlayingRow.getProperty(id)));
@@ -382,7 +386,9 @@ void GuiControl::next()
                 loadFile(currentlyPlayingList.getChild(toPlay), false);
         }
         else
-            singletonPlayState = false;
+        {
+                singletonPlayState = false;
+        }
     }
 }
 
@@ -431,6 +437,10 @@ void GuiControl::textEditorTextChanged (TextEditor &textEditor)
     
     if (remoteConnections.getFirst() != nullptr)
         remoteConnections.getFirst()->sendTrackNums();
+    
+    int index = filteredDataList.indexOf(filteredDataList.getChildWithProperty("ID", tablePlayingRow.getProperty("ID")));
+    if (index != -1)
+        musicTable->getTableListBox().selectRow(index, false, true);
     
 }
 
