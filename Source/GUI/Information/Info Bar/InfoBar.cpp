@@ -113,8 +113,11 @@ void InfoBar::displayFileStatus (File& file, int result)
     }
     else if (result == 2)
     {
-        String notReadString = currentFile.getFileName();
+        ValueTree fileTree = singletonLibraryTree.getChildWithProperty(MusicColumns::columnNames[MusicColumns::Location], currentFile.getFullPathName());
+     
+        String notReadString = fileTree.getProperty("Song").toString();
         notReadString << " Could not be read";
+        
         infoLabel.setText(notReadString, dontSendNotification);
     }
     else

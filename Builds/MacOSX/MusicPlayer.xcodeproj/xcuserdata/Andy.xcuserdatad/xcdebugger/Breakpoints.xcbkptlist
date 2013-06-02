@@ -101,11 +101,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/Information/Info Bar/InfoBar.cpp"
-         timestampString = "389062821.017639"
+         timestampString = "391695348.878622"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "128"
-         endingLineNumber = "128"
+         startingLineNumber = "131"
+         endingLineNumber = "131"
          landmarkName = "InfoBar::mouseDoubleClick(const MouseEvent &amp;e)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -114,11 +114,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "390825279.054708"
+         timestampString = "391695526.542514"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "346"
-         endingLineNumber = "346"
+         startingLineNumber = "353"
+         endingLineNumber = "353"
          landmarkName = "GuiControl::updateSelectedDisplay()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -140,11 +140,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "390596996.184047"
+         timestampString = "391695526.542514"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "323"
-         endingLineNumber = "323"
+         startingLineNumber = "324"
+         endingLineNumber = "324"
          landmarkName = "GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -240,7 +240,7 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../JuceLibraryCode/modules/juce_audio_formats/format/juce_AudioFormatManager.cpp"
@@ -296,11 +296,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "390825279.054708"
+         timestampString = "391695526.542514"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "391"
-         endingLineNumber = "391"
+         startingLineNumber = "398"
+         endingLineNumber = "398"
          landmarkName = "GuiControl::next()"
          landmarkType = "5">
       </FileBreakpoint>

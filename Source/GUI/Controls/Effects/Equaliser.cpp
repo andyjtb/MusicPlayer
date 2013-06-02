@@ -167,24 +167,29 @@ void Equaliser::buttonClicked (Button* button)
         if (addPopup.runModalLoop() != 0) {
             String newName = addText.getText();
             //Checks to see if it exists
-            if (!singletonEqSettings.getChildWithProperty("Name", newName).isValid())
-                {
-            ValueTree newSetting ("SETTING");
-            newSetting.setProperty("Name", addText.getText(), 0);
-            for (int i = 0; i < numFrequencies; i++) {
-                newSetting.setProperty(String(frequencies[i]), 1.0, 0);
-            }
-            singletonEqSettings.addChild(newSetting, -1, 0);
-            
-            int index = presetCombo.getNumItems()+1;
-            presetCombo.addItem(newSetting.getProperty("Name"), index);
-            presetCombo.setSelectedId(index);
-                }
-            else
+            if (newName != String::empty)
             {
-                //Exists
-                AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "EQ Setting Already Exists", "An EQ Setting with that title already exists\n Please choose another name");
+                if (!singletonEqSettings.getChildWithProperty("Name", newName).isValid())
+                {
+                    ValueTree newSetting ("SETTING");
+                    newSetting.setProperty("Name", addText.getText(), 0);
+                    for (int i = 0; i < numFrequencies; i++) {
+                        newSetting.setProperty(String(frequencies[i]), 1.0, 0);
+                    }
+                    singletonEqSettings.addChild(newSetting, -1, 0);
+                    
+                    int index = presetCombo.getNumItems()+1;
+                    presetCombo.addItem(newSetting.getProperty("Name"), index);
+                    presetCombo.setSelectedId(index);
+                }
+                else
+                {
+                    //Exists
+                    AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "EQ Setting Already Exists", "An EQ Setting with that title already exists\n Please choose another name");
+                }
             }
+            else
+                AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "EQ Name Required", "Please enter a name for your new EQ Setting");
         }
     }
     else if (button == &minus)

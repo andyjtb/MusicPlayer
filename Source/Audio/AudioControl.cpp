@@ -64,12 +64,6 @@ int AudioControl::loadFile (const File& audioFile)
         if (soundTouch != nullptr)
             soundTouchSettings = soundTouch->getPlaybackSettings();
         
-		// unload the previous file source and delete it..
-		transport.stop();
-		transport.setSource (nullptr);
-        soundTouch = nullptr;
-        bufferingAudioSource = nullptr;
-          
 //        if (bufferingThread.isThreadRunning()) {
 //            DBG("Thread is running, doesn't call notify");
 //        }
@@ -80,6 +74,12 @@ int AudioControl::loadFile (const File& audioFile)
 		
 		if (reader != nullptr)
 		{
+            // unload the previous file source and delete it..
+            transport.stop();
+            transport.setSource (nullptr);
+            soundTouch = nullptr;
+            bufferingAudioSource = nullptr;
+            
             eqFilters.setSampleRate(reader->sampleRate);
 			currentAudioFileSource = new AudioFormatReaderSource (reader, true);
             

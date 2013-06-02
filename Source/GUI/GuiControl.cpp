@@ -308,12 +308,13 @@ void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
         int result = 0;
         
         Identifier id = MusicColumns::columnNames[MusicColumns::ID];
-        
-        singletonPlayState = false;
+    
         result = audioControl->loadFile(selectedFile);
 
         if (result != 2)
         {
+            singletonPlayState = false;
+            
             tablePlayingRow = treeToLoad;
             
             if (treeToLoad.getProperty(id) != musicTable->getCurrentlySelectedTree().getProperty(id))
@@ -328,6 +329,12 @@ void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
             
             trackInfo.loadTrackInfo(tablePlayingRow);
             artUpdateRequired = true;
+        }
+        
+        else
+        {
+            //File not loaded
+            infoBar.displayFileStatus(selectedFile, 2);
         }
 
     }

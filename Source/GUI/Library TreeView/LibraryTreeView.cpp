@@ -143,34 +143,37 @@ void LibraryTreeView::buttonClicked(Button *button)
             if (addPopup.runModalLoop() != 0) {
                 String playlistName = addText.getText();
                 
-                bool exists = false;
-                
-                for (int i = 0; i < singletonPlaylistsTree.getNumChildren(); i++) {
-                    if (singletonPlaylistsTree.getChild(i).getProperty("Name") == playlistName) {
-                        exists = true;
-                        break;
+                if (playlistName != String::empty) {
+                    bool exists = false;
+                    
+                    for (int i = 0; i < singletonPlaylistsTree.getNumChildren(); i++) {
+                        if (singletonPlaylistsTree.getChild(i).getProperty("Name") == playlistName) {
+                            exists = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!exists) {
+                        singletonCurrentPlaylistId = singletonCurrentPlaylistId+2;
+                        ValueTree newPlaylist ("ITEM");
+                        newPlaylist.setProperty("Name", addText.getText(), 0);
+                        newPlaylist.setProperty("PlaylistID", singletonCurrentPlaylistId, 0);
+                        newPlaylist.setProperty("Size", 0, 0);
+                        newPlaylist.setProperty("Modified", Time::getCurrentTime().getMilliseconds(), 0);
+                        
+                        singletonPlaylistsTree.addChild(newPlaylist, -1, 0);
+                        
+                        LibraryViewItem* currentItem = new LibraryViewItem(playlistName);
+                        currentItem->addActionListener(this);
+                        rootItem->addSubItem(currentItem);
+                    }
+                    else
+                    {
+                        AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Playlist Already Exists", "A playlist with that title already exists\n Please choose another name");
                     }
                 }
-                
-                if (!exists) {
-                    singletonCurrentPlaylistId = singletonCurrentPlaylistId+2;
-                    ValueTree newPlaylist ("ITEM");
-                    newPlaylist.setProperty("Name", addText.getText(), 0);
-                    newPlaylist.setProperty("PlaylistID", singletonCurrentPlaylistId, 0);
-                    newPlaylist.setProperty("Size", 0, 0);
-                    newPlaylist.setProperty("Modified", Time::getCurrentTime().getMilliseconds(), 0);
-                    
-                    singletonPlaylistsTree.addChild(newPlaylist, -1, 0);
-                    
-                    LibraryViewItem* currentItem = new LibraryViewItem(playlistName);
-                    currentItem->addActionListener(this);
-                    rootItem->addSubItem(currentItem);
-                }
                 else
-                {
-                    AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Playlist Already Exists", "A playlist with that title already exists\n Please choose another name");
-                }
-                
+                    AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Playlist Requires a Name", "Please enter a name for your playlist");
             }
             addPopup.removeCustomComponent(0);
         }

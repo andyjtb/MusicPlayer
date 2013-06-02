@@ -14,9 +14,7 @@ class AudioControl;
 
 MusicLibraryDropTarget::MusicLibraryDropTarget()
 {
-    //message = "You can also drag-and-drop files here";
     somethingIsBeingDraggedOver = false;
-    //setInterceptsMouseClicks(false, false);
     addAndMakeVisible(&musicTable);
 }
 
@@ -48,20 +46,31 @@ void MusicLibraryDropTarget::paintOverChildren(Graphics& g)
 
 //FileDragDrop Callbacks
 bool MusicLibraryDropTarget::isInterestedInFileDrag (const StringArray &files)
-{
+{    
     File test(files[0]);
+    
+    //Read wildcards to array
+    StringArray s;
+    s.addTokens (musicTable.getGuiControl()->getAudioControl()->getRegisteredFormatWildcard(), ";,", "\"'");
+    s.trim();
+    s.removeEmptyStrings();
+    //Check file against wildcards
+    for (int i = 0; i < s.size(); ++i)
+        if (files[0].matchesWildcard (s[i], ! File::areFileNamesCaseSensitive()))
+            return true;
+    
     if (test.isDirectory())
     {
         return true;
     }
-    else if (test.getFileExtension().compareIgnoreCase(".mp3") == 0 ||
-             test.getFileExtension().compareIgnoreCase(".m4a") == 0 ||
-             test.getFileExtension().compareIgnoreCase(".aac") == 0 ||
-             test.getFileExtension().compareIgnoreCase(".ogg") == 0 ||
-             test.getFileExtension().compareIgnoreCase(".flac") == 0)
-    {
-        return true;
-    }
+//    else if (test.getFileExtension().compareIgnoreCase(".mp3") == 0 ||
+//             test.getFileExtension().compareIgnoreCase(".m4a") == 0 ||
+//             test.getFileExtension().compareIgnoreCase(".aac") == 0 ||
+//             test.getFileExtension().compareIgnoreCase(".ogg") == 0 ||
+//             test.getFileExtension().compareIgnoreCase(".flac") == 0)
+//    {
+//        return true;
+//    }
     return false;
 }
 

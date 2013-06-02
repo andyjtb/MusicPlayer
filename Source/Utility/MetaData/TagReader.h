@@ -71,7 +71,7 @@ public:
                 
                 tags.setProperty(MusicColumns::columnNames[MusicColumns::SampleRate], reader->sampleRate, nullptr);
                 
-                if (audioFile.getFileExtension().compareIgnoreCase("mp3") == 0)
+                if (audioFile.getFileExtension().compareIgnoreCase(".mp3") == 0)
                     tags.setProperty(MusicColumns::columnNames[MusicColumns::Kind], "MPEG audio file", nullptr);
                 else
                     tags.setProperty(MusicColumns::columnNames[MusicColumns::Kind], reader->getFormatName(), nullptr);
