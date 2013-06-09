@@ -14,6 +14,7 @@
 #include "Settings.h"
 #include "ConnectionIndicator.h"
 #include "TagReader.h"
+#include "LastFmButton.h"
 
 /** The InfoBar at the bottom of the interface */
 class InfoBar  : public Component,
@@ -51,6 +52,7 @@ public:
 private:
     String size, time, numTracks;
     ConnectionIndicator indicator;
+    LastFmButton lastFm;
     Label infoLabel;
     
     File currentFile;

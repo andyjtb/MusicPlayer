@@ -59,12 +59,17 @@
 		A18B4B2416F25192006A17B8 /* InfoBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A18B4B2216F2518F006A17B8 /* InfoBar.cpp */; };
 		A18B4B3516F690F0006A17B8 /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18B4B3416F690F0006A17B8 /* vecLib.framework */; };
 		A1BB0B7A16A63EF3005DC71A /* TrackMulti.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1BB0B7816A63EF1005DC71A /* TrackMulti.cpp */; };
+		A1C85A671764ACE9003ABC7B /* LastFmButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1C85A651764ACE9003ABC7B /* LastFmButton.cpp */; };
+		A1C85A6B1764B0BE003ABC7B /* LastFmConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1C85A691764B0BE003ABC7B /* LastFmConnection.cpp */; };
+		A1C85A7D1764F4A3003ABC7B /* juce_cryptography.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1C85A7C1764F4A3003ABC7B /* juce_cryptography.mm */; };
 		A1E22E16172176F600FDABD0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1E22E15172176F600FDABD0 /* CoreFoundation.framework */; };
 		A1E4E193163AD6BB009E3941 /* GuiControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1E4E192163AD6BB009E3941 /* GuiControl.cpp */; };
 		A1E82168163C550000308912 /* TrackInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1E82166163C550000308912 /* TrackInfo.cpp */; };
 		A1EAB82C168DFD880056B0D0 /* RemoteControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1EAB82B168DFD880056B0D0 /* RemoteControl.cpp */; };
 		A1EAB833168E094E0056B0D0 /* RemoteInterprocessConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1EAB832168E094E0056B0D0 /* RemoteInterprocessConnection.cpp */; };
 		A1EBC0711649D80100D086F3 /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1EBC06F1649D80100D086F3 /* Settings.cpp */; };
+		A1F08805176502A8009FAD9D /* LastFmDebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F08803176502A8009FAD9D /* LastFmDebug.cpp */; };
+		A1F088081765241B009FAD9D /* LastFmAuthPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1F088061765241B009FAD9D /* LastFmAuthPopup.cpp */; };
 		A4038898D9BC4568D5046F7B /* juce_gui_extra.mm in Sources */ = {isa = PBXBuildFile; fileRef = 89CAA286A694ACB2B2307C18 /* juce_gui_extra.mm */; };
 		B0428B72DE86851307146BFD /* juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3D72CBAD0EDC3D68B141A6C7 /* juce_gui_basics.mm */; };
 		B5C2C4F12244D12EB8A82286 /* juce_audio_processors.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3E87582FDB478DB4EDF628 /* juce_audio_processors.mm */; };
@@ -676,6 +681,24 @@
 		A1BB0B7816A63EF1005DC71A /* TrackMulti.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TrackMulti.cpp; path = Track/TrackMulti.cpp; sourceTree = "<group>"; };
 		A1BB0B7916A63EF2005DC71A /* TrackMulti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TrackMulti.h; path = Track/TrackMulti.h; sourceTree = "<group>"; };
 		A1C162432F64703B58A97968 /* juce_ValueTree.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ValueTree.cpp; path = ../../JuceLibraryCode/modules/juce_data_structures/values/juce_ValueTree.cpp; sourceTree = SOURCE_ROOT; };
+		A1C85A651764ACE9003ABC7B /* LastFmButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LastFmButton.cpp; path = "Info Bar/LastFmButton.cpp"; sourceTree = "<group>"; };
+		A1C85A661764ACE9003ABC7B /* LastFmButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LastFmButton.h; path = "Info Bar/LastFmButton.h"; sourceTree = "<group>"; };
+		A1C85A691764B0BE003ABC7B /* LastFmConnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LastFmConnection.cpp; sourceTree = "<group>"; };
+		A1C85A6A1764B0BE003ABC7B /* LastFmConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmConnection.h; sourceTree = "<group>"; };
+		A1C85A6E1764F495003ABC7B /* juce_BlowFish.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = juce_BlowFish.cpp; sourceTree = "<group>"; };
+		A1C85A6F1764F495003ABC7B /* juce_BlowFish.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = juce_BlowFish.h; sourceTree = "<group>"; };
+		A1C85A701764F495003ABC7B /* juce_Primes.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = juce_Primes.cpp; sourceTree = "<group>"; };
+		A1C85A711764F495003ABC7B /* juce_Primes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = juce_Primes.h; sourceTree = "<group>"; };
+		A1C85A721764F495003ABC7B /* juce_RSAKey.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = juce_RSAKey.cpp; sourceTree = "<group>"; };
+		A1C85A731764F495003ABC7B /* juce_RSAKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = juce_RSAKey.h; sourceTree = "<group>"; };
+		A1C85A751764F495003ABC7B /* juce_MD5.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = juce_MD5.cpp; sourceTree = "<group>"; };
+		A1C85A761764F495003ABC7B /* juce_MD5.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = juce_MD5.h; sourceTree = "<group>"; };
+		A1C85A771764F495003ABC7B /* juce_SHA256.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = juce_SHA256.cpp; sourceTree = "<group>"; };
+		A1C85A781764F495003ABC7B /* juce_SHA256.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = juce_SHA256.h; sourceTree = "<group>"; };
+		A1C85A791764F495003ABC7B /* juce_cryptography.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_cryptography.cpp; path = ../../JuceLibraryCode/modules/juce_cryptography/juce_cryptography.cpp; sourceTree = "<group>"; };
+		A1C85A7A1764F495003ABC7B /* juce_cryptography.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_cryptography.h; path = ../../JuceLibraryCode/modules/juce_cryptography/juce_cryptography.h; sourceTree = "<group>"; };
+		A1C85A7B1764F495003ABC7B /* juce_module_info */ = {isa = PBXFileReference; lastKnownFileType = text; name = juce_module_info; path = ../../JuceLibraryCode/modules/juce_cryptography/juce_module_info; sourceTree = "<group>"; };
+		A1C85A7C1764F4A3003ABC7B /* juce_cryptography.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = juce_cryptography.mm; path = ../../JuceLibraryCode/modules/juce_cryptography/juce_cryptography.mm; sourceTree = "<group>"; };
 		A1DA48CF8079A269C91E66FB /* juce_FileBrowserListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_FileBrowserListener.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/filebrowser/juce_FileBrowserListener.h; sourceTree = SOURCE_ROOT; };
 		A1E22E15172176F600FDABD0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = ../../../../../../../System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<group>"; };
 		A1E4E191163AD6BB009E3941 /* GuiControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuiControl.h; sourceTree = "<group>"; };
@@ -688,6 +711,10 @@
 		A1EAB834168E095A0056B0D0 /* RemoteInterprocessConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteInterprocessConnection.h; sourceTree = "<group>"; };
 		A1EBC06F1649D80100D086F3 /* Settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
 		A1EBC0701649D80100D086F3 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		A1F08803176502A8009FAD9D /* LastFmDebug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LastFmDebug.cpp; sourceTree = "<group>"; };
+		A1F08804176502A8009FAD9D /* LastFmDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmDebug.h; sourceTree = "<group>"; };
+		A1F088061765241B009FAD9D /* LastFmAuthPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LastFmAuthPopup.cpp; sourceTree = "<group>"; };
+		A1F088071765241B009FAD9D /* LastFmAuthPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastFmAuthPopup.h; sourceTree = "<group>"; };
 		A230BC033F92D61A919DF0D7 /* juce_VSTMidiEventList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_VSTMidiEventList.h; path = ../../JuceLibraryCode/modules/juce_audio_processors/format_types/juce_VSTMidiEventList.h; sourceTree = SOURCE_ROOT; };
 		A240FCA7D4018CD9CDF9BCC5 /* juce_PluginDescription.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_PluginDescription.h; path = ../../JuceLibraryCode/modules/juce_audio_processors/processors/juce_PluginDescription.h; sourceTree = SOURCE_ROOT; };
 		A26819C7E385D8D9C3CD241D /* juce_FillType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_FillType.h; path = ../../JuceLibraryCode/modules/juce_graphics/colour/juce_FillType.h; sourceTree = SOURCE_ROOT; };
@@ -1228,6 +1255,7 @@
 		32B27AD766C36C82FE444A3A /* Juce Modules */ = {
 			isa = PBXGroup;
 			children = (
+				A1C85A6C1764F450003ABC7B /* juce_cryptography */,
 				05E3C4DBFDCD4756F3EF8CCA /* juce_audio_basics */,
 				239F4F1EC4E2873804A3A4B7 /* juce_audio_devices */,
 				7CC44EB4D410C732F3EC3D78 /* juce_audio_formats */,
@@ -1496,6 +1524,7 @@
 				2E6DFCA60DC74A3D63EACDFA /* juce_graphics.mm */,
 				3D72CBAD0EDC3D68B141A6C7 /* juce_gui_basics.mm */,
 				89CAA286A694ACB2B2307C18 /* juce_gui_extra.mm */,
+				A1C85A7C1764F4A3003ABC7B /* juce_cryptography.mm */,
 				36DAF5E8294EFEB3BA51B344 /* JuceHeader.h */,
 			);
 			name = "Juce Library Code";
@@ -2010,6 +2039,8 @@
 		A1376C9E1709C3130045B740 /* Info Bar */ = {
 			isa = PBXGroup;
 			children = (
+				A1C85A651764ACE9003ABC7B /* LastFmButton.cpp */,
+				A1C85A661764ACE9003ABC7B /* LastFmButton.h */,
 				A18B4B2216F2518F006A17B8 /* InfoBar.cpp */,
 				A18B4B2316F25190006A17B8 /* InfoBar.h */,
 				A1376C9F1709C3340045B740 /* ConnectionIndicator.cpp */,
@@ -2151,6 +2182,7 @@
 		A13E9E91163EDABF005DF341 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				A1C85A681764B09F003ABC7B /* LastFm */,
 				A1EAB82D168DFD8C0056B0D0 /* Remote */,
 				A13E9EA0163EDABF005DF341 /* XmlHelpers.h */,
 				A1EBC0621649D7E000D086F3 /* Settings */,
@@ -2214,6 +2246,57 @@
 			);
 			name = LibraryTreeView;
 			path = "Library TreeView";
+			sourceTree = "<group>";
+		};
+		A1C85A681764B09F003ABC7B /* LastFm */ = {
+			isa = PBXGroup;
+			children = (
+				A1F08803176502A8009FAD9D /* LastFmDebug.cpp */,
+				A1F08804176502A8009FAD9D /* LastFmDebug.h */,
+				A1C85A691764B0BE003ABC7B /* LastFmConnection.cpp */,
+				A1C85A6A1764B0BE003ABC7B /* LastFmConnection.h */,
+				A1F088061765241B009FAD9D /* LastFmAuthPopup.cpp */,
+				A1F088071765241B009FAD9D /* LastFmAuthPopup.h */,
+			);
+			path = LastFm;
+			sourceTree = "<group>";
+		};
+		A1C85A6C1764F450003ABC7B /* juce_cryptography */ = {
+			isa = PBXGroup;
+			children = (
+				A1C85A6D1764F495003ABC7B /* encryption */,
+				A1C85A741764F495003ABC7B /* hashing */,
+				A1C85A791764F495003ABC7B /* juce_cryptography.cpp */,
+				A1C85A7A1764F495003ABC7B /* juce_cryptography.h */,
+				A1C85A7B1764F495003ABC7B /* juce_module_info */,
+			);
+			name = juce_cryptography;
+			sourceTree = "<group>";
+		};
+		A1C85A6D1764F495003ABC7B /* encryption */ = {
+			isa = PBXGroup;
+			children = (
+				A1C85A6E1764F495003ABC7B /* juce_BlowFish.cpp */,
+				A1C85A6F1764F495003ABC7B /* juce_BlowFish.h */,
+				A1C85A701764F495003ABC7B /* juce_Primes.cpp */,
+				A1C85A711764F495003ABC7B /* juce_Primes.h */,
+				A1C85A721764F495003ABC7B /* juce_RSAKey.cpp */,
+				A1C85A731764F495003ABC7B /* juce_RSAKey.h */,
+			);
+			name = encryption;
+			path = ../../JuceLibraryCode/modules/juce_cryptography/encryption;
+			sourceTree = "<group>";
+		};
+		A1C85A741764F495003ABC7B /* hashing */ = {
+			isa = PBXGroup;
+			children = (
+				A1C85A751764F495003ABC7B /* juce_MD5.cpp */,
+				A1C85A761764F495003ABC7B /* juce_MD5.h */,
+				A1C85A771764F495003ABC7B /* juce_SHA256.cpp */,
+				A1C85A781764F495003ABC7B /* juce_SHA256.h */,
+			);
+			name = hashing;
+			path = ../../JuceLibraryCode/modules/juce_cryptography/hashing;
 			sourceTree = "<group>";
 		};
 		A1E82165163C550000308912 /* Information */ = {
@@ -2947,6 +3030,11 @@
 				A1376CA01709C3340045B740 /* ConnectionIndicator.cpp in Sources */,
 				A12176DB1725D0D600D52686 /* MainComponent.cpp in Sources */,
 				A11D423A172EE2A60052D2E4 /* PlaybackControl.cpp in Sources */,
+				A1C85A671764ACE9003ABC7B /* LastFmButton.cpp in Sources */,
+				A1C85A6B1764B0BE003ABC7B /* LastFmConnection.cpp in Sources */,
+				A1C85A7D1764F4A3003ABC7B /* juce_cryptography.mm in Sources */,
+				A1F08805176502A8009FAD9D /* LastFmDebug.cpp in Sources */,
+				A1F088081765241B009FAD9D /* LastFmAuthPopup.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,6 +15,9 @@ InfoBar::InfoBar ()
     
     addAndMakeVisible(&indicator);
     
+    addAndMakeVisible(&lastFm);
+    currentLastFm.setLastFmButton(&lastFm);
+    
     addAndMakeVisible(&infoLabel);
     infoLabel.setJustificationType(Justification::centredRight);
     infoLabel.addMouseListener(this, false);
@@ -56,6 +59,7 @@ void InfoBar::paint (Graphics& g)
 void InfoBar::resized()
 {
     indicator.setBounds(57, getHeight()/4, 10, getHeight()-5);
+    lastFm.setBounds(85, 2, 115, getHeight()-3);
     infoLabel.setBounds (getWidth() - 400, 0, 400, getHeight());
 }
 

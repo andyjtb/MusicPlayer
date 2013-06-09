@@ -4,6 +4,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Utility.h"
 #include "MusicLibraryHelpers.h"
+#include "LastFmConnection.h"
 
 //Forward Declaration
 //#include "RemoteInterprocessConnection.h"
@@ -49,6 +50,9 @@ struct EqDetails{
 #define remoteConnections Settings::getInstance()->getConnections()
 
 #define currentEqDetails Settings::getInstance()->getCurrentEq()
+
+#define currentLastFm Settings::getInstance()->getLastFm()
+
 /** A singleton class containing a number of variables used frequently throughout the application
  */
 class Settings : public DeletedAtShutdown
@@ -146,6 +150,8 @@ public:
      */
     String& getTableLayout() {return tableLayout;}
     
+    LastFmConnection& getLastFm() { return lastFm; }
+    
     /** Saves settings that are to be recalled: Library, Playlists, Current EQ, Table layout
      */
     void saveSingletons();
@@ -166,6 +172,8 @@ private:
     OwnedArray <RemoteInterprocessConnection, CriticalSection> connections;
     ImageWithType albumArtClipboard;
     String tableLayout;
+
+    LastFmConnection lastFm;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Settings);

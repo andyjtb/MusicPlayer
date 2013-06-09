@@ -11,8 +11,8 @@
 
 */
 
-#ifndef __JUCE_APPCONFIG_QEJYXJ__
-#define __JUCE_APPCONFIG_QEJYXJ__
+#ifndef __JUCE_APPCONFIG_SXTH7Q__
+#define __JUCE_APPCONFIG_SXTH7Q__
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
@@ -34,8 +34,6 @@
 #define JUCE_MODULE_AVAILABLE_juce_graphics              1
 #define JUCE_MODULE_AVAILABLE_juce_gui_basics            1
 #define JUCE_MODULE_AVAILABLE_juce_gui_extra             1
-#define JUCE_MODULE_AVAILABLE_juce_opengl                1
-#define JUCE_MODULE_AVAILABLE_juce_video                 1
 
 //==============================================================================
 // juce_audio_devices flags:
@@ -182,4 +180,4 @@
 #endif
 
 
-#endif  // __JUCE_APPCONFIG_QEJYXJ__
+#endif  // __JUCE_APPCONFIG_SXTH7Q__

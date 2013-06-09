@@ -10,8 +10,8 @@
 
 */
 
-#ifndef __APPHEADERFILE_QEJYXJ__
-#define __APPHEADERFILE_QEJYXJ__
+#ifndef __APPHEADERFILE_SXTH7Q__
+#define __APPHEADERFILE_SXTH7Q__
 
 #include "AppConfig.h"
 #include "modules/juce_audio_basics/juce_audio_basics.h"
@@ -20,12 +20,12 @@
 #include "modules/juce_audio_processors/juce_audio_processors.h"
 #include "modules/juce_audio_utils/juce_audio_utils.h"
 #include "modules/juce_core/juce_core.h"
+#include "modules/juce_cryptography/juce_cryptography.h"
 #include "modules/juce_data_structures/juce_data_structures.h"
 #include "modules/juce_events/juce_events.h"
 #include "modules/juce_graphics/juce_graphics.h"
 #include "modules/juce_gui_basics/juce_gui_basics.h"
 #include "modules/juce_gui_extra/juce_gui_extra.h"
-
 
 #if ! DONT_SET_USING_JUCE_NAMESPACE
  // If your code uses a lot of JUCE classes, then this will obviously save you
@@ -40,4 +40,4 @@ namespace ProjectInfo
     const int          versionNumber  = 0x10000;
 }
 
-#endif   // __APPHEADERFILE_QEJYXJ__
+#endif   // __APPHEADERFILE_SXTH7Q__

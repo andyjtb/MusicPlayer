@@ -60,6 +60,8 @@ PopupMenu MainContentComponent::getMenuForIndex (int topLevelMenuIndex, const St
         */
 		menu.addItem(ImportItunes, "Import Itunes Library", true, false);
         menu.addSeparator();
+        menu.addItem(LastFmMenu, "Enabled Last.fm Service", true, currentLastFm.getEnabled().getValue());
+        menu.addSeparator();
         menu.addCommandItem (&commandManager, StandardApplicationCommandIDs::quit);
         return menu;
 	}
@@ -118,7 +120,7 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 			}
 		}
 		
-		if (menuItemID == AddDirectory)
+		else if (menuItemID == AddDirectory)
 		{
 			FileChooser fc ("Choose a directory to add...",File::getCurrentWorkingDirectory(),"*",true);
 			if (fc.browseForDirectory()) 
@@ -131,7 +133,7 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
             }
 		}
 		
-		if (menuItemID == ImportItunes)
+		else if (menuItemID == ImportItunes)
 		{
 //			if(AlertWindow::showOkCancelBox (AlertWindow::WarningIcon,
 //											 "Itunes Import",
@@ -156,6 +158,8 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
 			}
 		}
 		
+        else if (menuItemID == LastFmMenu)
+            currentLastFm.getEnabled().setValue(!currentLastFm.getEnabled().getValue());
     }
     if (topLevelMenuIndex == EditMenu)
     {

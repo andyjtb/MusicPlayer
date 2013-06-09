@@ -64,6 +64,7 @@ public:
 		ImportItunes = 4,
         UndoChange = 5,
         EffectsMenu = 6,
+        LastFmMenu = 7,
 		
 		NumFileItems
 	};

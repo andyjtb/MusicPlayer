@@ -72,6 +72,12 @@ bool Settings::createSettingsFile()
         tableLayout.setProperty("Layout", "<TABLELAYOUT sortedCol=\"3\" sortForwards=\"1\"><COLUMN id=\"1\" visible=\"0\" width=\"30\"/><COLUMN id=\"2\" visible=\"0\" width=\"50\"/><COLUMN id=\"3\" visible=\"1\" width=\"150\"/><COLUMN id=\"4\" visible=\"1\" width=\"200\"/><COLUMN id=\"12\" visible=\"1\" width=\"50\"/><COLUMN id=\"5\" visible=\"1\" width=\"150\"/><COLUMN id=\"7\" visible=\"0\" width=\"60\"/><COLUMN id=\"9\" visible=\"0\" width=\"100\"/><COLUMN id=\"10\" visible=\"0\" width=\"100\"/><COLUMN id=\"11\" visible=\"0\" width=\"30\"/><COLUMN id=\"13\" visible=\"0\" width=\"60\"/><COLUMN id=\"14\" visible=\"1\" width=\"125\"/><COLUMN id=\"15\" visible=\"0\" width=\"125\"/><COLUMN id=\"16\" visible=\"0\" width=\"300\"/><COLUMN id=\"17\" visible=\"0\" width=\"60\"/><COLUMN id=\"22\" visible=\"1\" width=\"50\"/><COLUMN id=\"18\" visible=\"1\" width=\"50\"/><COLUMN id=\"19\" visible=\"0\" width=\"80\"/><COLUMN id=\"20\" visible=\"0\" width=\"50\"/><COLUMN id=\"21\" visible=\"0\" width=\"50\"/><COLUMN id=\"8\" visible=\"1\" width=\"80\"/><COLUMN id=\"6\" visible=\"1\" width=\"60\"/></TABLELAYOUT>", 0);
         settingsValue.addChild(tableLayout, -1, 0);
         
+        ValueTree lastFM ("LASTFM");
+        lastFM.setProperty("Enabled", 0, 0);
+        lastFM.setProperty("SessionKey", String::empty, 0);
+        lastFM.setProperty("UserName", String::empty, 0);
+        settingsValue.addChild(lastFM, -1, 0);
+        
         ScopedPointer<XmlElement> settingsCreateXml;
         settingsCreateXml = settingsValue.createXml();
         settingsCreateXml->writeToFile(settingsFile, String::empty);
@@ -145,6 +151,14 @@ void Settings::initSettings()
         tableLayoutXml = settingsXml->getChildByName("TABLELAYOUT");
         if (tableLayoutXml != nullptr) {
             tableLayout = tableLayoutXml->getStringAttribute("Layout");
+        }
+        
+        XmlElement* lastFmXml;
+        lastFmXml = settingsXml->getChildByName("LASTFM");
+        if (lastFmXml != nullptr) {
+            lastFm.getEnabled().setValue(lastFmXml->getBoolAttribute("Enabled"));
+            lastFm.getSessionKey() = lastFmXml->getStringAttribute("SessionKey", String::empty);
+            lastFm.getUserName() = lastFmXml->getStringAttribute("UserName", String::empty);
         }
 	}	
     
@@ -319,6 +333,16 @@ void Settings::saveSingletons()
         
         if (tableLayoutXml != nullptr)
             tableLayoutXml->setAttribute("Layout", tableLayout);
+        
+        XmlElement* lastFmXml;
+        lastFmXml = settingsXml->getChildByName("LASTFM");
+        
+        if (lastFmXml != nullptr)
+        {
+            lastFmXml->setAttribute("Enabled", bool(lastFm.getEnabled().getValue()));
+            lastFmXml->setAttribute("SessionKey", lastFm.getSessionKey());
+            lastFmXml->setAttribute("UserName", lastFm.getUserName());
+        }
         
         settingsXml->writeToFile(settingsXmlFile, String::empty, "UTF-8", 200);
 	}	

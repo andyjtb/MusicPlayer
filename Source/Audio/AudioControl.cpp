@@ -35,7 +35,6 @@ AudioControl::AudioControl() : bufferingThread("MusicPlayer AudioBuffer")
     
     // Sets format manager to be able to read wav aiff flac ogg and OS specific (aac m4a wmv) etc
     formatManager.registerBasicFormats();
-    DBG(formatManager.getWildcardForAllFormats());
 
 	audioMeterOutputL = audioMeterOutputR = sharedMeterOutputL = sharedMeterOutputR = 0.f;
     
