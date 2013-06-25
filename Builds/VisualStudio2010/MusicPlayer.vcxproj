@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -14,25 +13,26 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8F126C47-A6D7-BC4C-D9BB-4F16A037204A}</ProjectGuid>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
-  <ImportGroup Label="ExtensionSettings"/>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
-            Label="LocalAppDataPlatform"/>
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <PropertyGroup Label="UserMacros"/>
+  <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</OutDir>
@@ -50,7 +50,7 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <HeaderFileName/>
+      <HeaderFileName />
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -59,7 +59,7 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;DEBUG;_DEBUG;JUCER_VS2010_78A501D=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader/>
+      <PrecompiledHeader />
       <AssemblerListingLocation>$(IntDir)\</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)\</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)\</ProgramDataBaseFileName>
@@ -90,7 +90,7 @@
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetEnvironment>Win32</TargetEnvironment>
-      <HeaderFileName/>
+      <HeaderFileName />
     </Midl>
     <ClCompile>
       <Optimization>MinSpace</Optimization>
@@ -98,7 +98,7 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;JUCER_VS2010_78A501D=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader/>
+      <PrecompiledHeader />
       <AssemblerListingLocation>$(IntDir)\</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)\</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)\</ProgramDataBaseFileName>
@@ -126,17 +126,125 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\MainComponent.cpp"/>
-    <ClCompile Include="..\..\Source\Main.cpp"/>
+    <ClCompile Include="..\..\Source\Audio\AudioControl.cpp" />
+    <ClCompile Include="..\..\Source\Audio\AudioSource\dRowAudio_BiquadFilter.cpp" />
+    <ClCompile Include="..\..\Source\Audio\AudioSource\dRow\dRowAudio_SoundTouchAudioSource.cpp" />
+    <ClCompile Include="..\..\Source\Audio\AudioSource\dRow\dRowAudio_SoundTouchProcessor.cpp" />
+    <ClCompile Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\SoundTouch_Source.cpp" />
+    <ClCompile Include="..\..\Source\Audio\AudioSource\EQFilters.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Controls\Buttons\BackwardsButton.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Controls\Buttons\ForwardButton.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Controls\Buttons\PlaybackControl.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Controls\Buttons\PlayButton.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Controls\Effects\Equaliser.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Controls\Effects\SpeedPitch.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Controls\Meters\Meter.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Controls\Meters\OutputMeter.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Controls\Sliders\TransportSlider.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Controls\Sliders\VolumeControl.cpp" />
+    <ClCompile Include="..\..\Source\GUI\GuiControl.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Information\AlbumArt.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Information\Info Bar\ConnectionIndicator.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Information\Info Bar\InfoBar.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Information\Info Bar\LastFmButton.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Information\TrackInfo.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Information\Track\TrackArt.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Information\Track\TrackDialog.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Information\Track\TrackEdit.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Information\Track\TrackMulti.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Information\Track\TrackSummary.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Information\Track\TrackTabbed.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Information\UrlLoad.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Library TreeView\LibraryTreeView.cpp" />
+    <ClCompile Include="..\..\Source\GUI\Library TreeView\LibraryTreeViewBinaryData.cpp" />
+    <ClCompile Include="..\..\Source\GUI\MusicLibraryTable\MusicLibraryDropTarget.cpp" />
+    <ClCompile Include="..\..\Source\GUI\MusicLibraryTable\MusicLibraryTableModel.cpp" />
+    <ClCompile Include="..\..\Source\GUI\MusicLibraryTable\SearchBox.cpp" />
+    <ClCompile Include="..\..\Source\MainComponent.cpp" />
+    <ClCompile Include="..\..\Source\Main.cpp" />
+    <ClCompile Include="..\..\Source\Utility\iTunesLibrary\ITunesLibrary.cpp" />
+    <ClCompile Include="..\..\Source\Utility\iTunesLibrary\ITunesLibraryParser.cpp" />
+    <ClCompile Include="..\..\Source\Utility\iTunesLibrary\MusicLibraryTable.cpp" />
+    <ClCompile Include="..\..\Source\Utility\LastFm\LastFmAuthPopup.cpp" />
+    <ClCompile Include="..\..\Source\Utility\LastFm\LastFmConnection.cpp" />
+    <ClCompile Include="..\..\Source\Utility\LastFm\LastFmDebug.cpp" />
+    <ClCompile Include="..\..\Source\Utility\MetaData\Taglib\TagLibAmalgam.cpp" />
+    <ClCompile Include="..\..\Source\Utility\Remote\J_IPAddress.cpp" />
+    <ClCompile Include="..\..\Source\Utility\Remote\RemoteControl.cpp" />
+    <ClCompile Include="..\..\Source\Utility\Remote\RemoteInterprocessConnection.cpp" />
+    <ClCompile Include="..\..\Source\Utility\Settings\Settings.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\MainComponent.h"/>
-    <ClInclude Include="..\..\JuceLibraryCode\AppConfig.h"/>
-    <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
+    <ClInclude Include="..\..\Source\Audio\AudioControl.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRowAudio_BiquadFilter.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\dRowAudio_SoundTouchAudioSource.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\dRowAudio_SoundTouchProcessor.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\AAFilter.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\BPMDetect.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\cpu_detect.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\FIFOSampleBuffer.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\FIFOSamplePipe.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\FIRFilter.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\PeakFinder.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\RateTransposer.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\SoundTouch.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\soundtouch_config.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\SoundTouch_Includes.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\STTypes.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\TDStretch.h" />
+    <ClInclude Include="..\..\Source\Audio\AudioSource\EQFilters.h" />
+    <ClInclude Include="..\..\Source\GUI\Controls\Buttons\BackwardsButton.h" />
+    <ClInclude Include="..\..\Source\GUI\Controls\Buttons\ForwardButton.h" />
+    <ClInclude Include="..\..\Source\GUI\Controls\Buttons\PlaybackControl.h" />
+    <ClInclude Include="..\..\Source\GUI\Controls\Buttons\PlayButton.h" />
+    <ClInclude Include="..\..\Source\GUI\Controls\Effects\Equaliser.h" />
+    <ClInclude Include="..\..\Source\GUI\Controls\Effects\SpeedPitch.h" />
+    <ClInclude Include="..\..\Source\GUI\Controls\Meters\Meter.h" />
+    <ClInclude Include="..\..\Source\GUI\Controls\Meters\OutputMeter.h" />
+    <ClInclude Include="..\..\Source\GUI\Controls\Sliders\TransportSlider.h" />
+    <ClInclude Include="..\..\Source\GUI\Controls\Sliders\VolumeControl.h" />
+    <ClInclude Include="..\..\Source\GUI\GuiControl.h" />
+    <ClInclude Include="..\..\Source\GUI\Information\AlbumArt.h" />
+    <ClInclude Include="..\..\Source\GUI\Information\Info Bar\ConnectionIndicator.h" />
+    <ClInclude Include="..\..\Source\GUI\Information\Info Bar\InfoBar.h" />
+    <ClInclude Include="..\..\Source\GUI\Information\Info Bar\LastFmButton.h" />
+    <ClInclude Include="..\..\Source\GUI\Information\TrackInfo.h" />
+    <ClInclude Include="..\..\Source\GUI\Information\Track\TrackArt.h" />
+    <ClInclude Include="..\..\Source\GUI\Information\Track\TrackDialog.h" />
+    <ClInclude Include="..\..\Source\GUI\Information\Track\TrackEdit.h" />
+    <ClInclude Include="..\..\Source\GUI\Information\Track\TrackMulti.h" />
+    <ClInclude Include="..\..\Source\GUI\Information\Track\TrackSummary.h" />
+    <ClInclude Include="..\..\Source\GUI\Information\Track\TrackTabbed.h" />
+    <ClInclude Include="..\..\Source\GUI\Information\UrlLoad.h" />
+    <ClInclude Include="..\..\Source\GUI\Library TreeView\LibraryTreeView.h" />
+    <ClInclude Include="..\..\Source\GUI\Library TreeView\LibraryTreeViewBinaryData.h" />
+    <ClInclude Include="..\..\Source\GUI\MusicLibraryTable\MusicLibraryDropTarget.h" />
+    <ClInclude Include="..\..\Source\GUI\MusicLibraryTable\MusicLibraryTableModel.h" />
+    <ClInclude Include="..\..\Source\GUI\MusicLibraryTable\SearchBox.h" />
+    <ClInclude Include="..\..\Source\MainComponent.h" />
+    <ClInclude Include="..\..\JuceLibraryCode\AppConfig.h" />
+    <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h" />
+    <ClInclude Include="..\..\Source\Utility\DirectoryLoader.h" />
+    <ClInclude Include="..\..\Source\Utility\iTunesLibrary\Comparators.h" />
+    <ClInclude Include="..\..\Source\Utility\iTunesLibrary\ITunesLibrary.h" />
+    <ClInclude Include="..\..\Source\Utility\iTunesLibrary\ITunesLibraryParser.h" />
+    <ClInclude Include="..\..\Source\Utility\iTunesLibrary\MusicLibraryHelpers.h" />
+    <ClInclude Include="..\..\Source\Utility\iTunesLibrary\MusicLibraryTable.h" />
+    <ClInclude Include="..\..\Source\Utility\iTunesLibrary\Utility.h" />
+    <ClInclude Include="..\..\Source\Utility\LastFm\LastFmAuthPopup.h" />
+    <ClInclude Include="..\..\Source\Utility\LastFm\LastFmConnection.h" />
+    <ClInclude Include="..\..\Source\Utility\LastFm\LastFmDebug.h" />
+    <ClInclude Include="..\..\Source\Utility\MetaData\Taglib\TagLibAmalgam.h" />
+    <ClInclude Include="..\..\Source\Utility\MetaData\TagReader.h" />
+    <ClInclude Include="..\..\Source\Utility\Remote\J_IPAddress.h" />
+    <ClInclude Include="..\..\Source\Utility\Remote\RemoteControl.h" />
+    <ClInclude Include="..\..\Source\Utility\Remote\RemoteInterprocessConnection.h" />
+    <ClInclude Include="..\..\Source\Utility\Settings\Settings.h" />
+    <ClInclude Include="..\..\Source\Utility\XmlHelpers.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include=".\resources.rc"/>
+    <ResourceCompile Include=".\resources.rc" />
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
-  <ImportGroup Label="ExtensionTargets"/>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

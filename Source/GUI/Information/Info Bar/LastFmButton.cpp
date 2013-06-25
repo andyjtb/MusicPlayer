@@ -46,12 +46,13 @@ void LastFmButton::paint (Graphics& g)
 
 void LastFmButton::mouseDown(const MouseEvent& e)
 {
-    if (!currentLastFm.getEnabled().getValue()) {
+    if (! currentLastFm.getEnabled().getValue()) {
         currentLastFm.getEnabled().setValue(true);
     }
     else
     {
         //popup info on currently playing song
+        currentLastFm.sendNowPlaying(tablePlayingRow);
     }
 }
 

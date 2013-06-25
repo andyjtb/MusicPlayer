@@ -296,9 +296,6 @@ void ITunesLibraryParser::run()
                     //playlistsTree.addChild(singlePlaylist, -1, 0);
                 }
             }
-                File test = File(File::getSpecialLocation(File::userDesktopDirectory).getChildFile("Test.xml"));
-            
-            writeValueTreeToFile(playlistsTree, test);
             
             playlistsFinished = true;
             

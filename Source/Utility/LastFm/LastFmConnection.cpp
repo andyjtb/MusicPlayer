@@ -53,7 +53,7 @@ void LastFmConnection::connect()
         if (getAuthToken())
         {
             //Display auth dialog
-            ScopedPointer<LastFmAuthPopup> authWindow;
+            LastFmAuthPopup* authWindow;
             authWindow = new LastFmAuthPopup(apiKey, apiToken);
             
             DialogWindow::LaunchOptions o;
@@ -68,8 +68,10 @@ void LastFmConnection::connect()
             o.resizable                     = false;
             
             if (o.runModal() != 0 )
-            {                
-                URL sessionAddress("http://ws.audioscrobbler.com/2.0/?method=auth.getSession&api_key="+apiKey+"&token="+apiToken+"&api_sig="+generateApiSig("auth.getSession"));
+            {
+                String apiSig = generateApiSig("auth.getSession");
+                
+                URL sessionAddress("http://ws.audioscrobbler.com/2.0/?method=auth.getSession&api_key="+apiKey+"&token="+apiToken+"&api_sig="+apiSig);
                 
                 ScopedPointer<XmlElement> session;
                 session = sessionAddress.readEntireXmlStream();
@@ -85,6 +87,8 @@ void LastFmConnection::connect()
                         
                         userName = info->getChildElement(0)->getAllSubText();
                         sessionKey = info->getChildElement(1)->getAllSubText();
+                        
+                        DBG(userName)
                         
                         connected = true;
                         lastFmButton->repaint();
@@ -125,19 +129,56 @@ void LastFmConnection::valueChanged(Value &changed)
 String LastFmConnection::generateApiSig(String method)
 {
     String apiSigString;
+
+    apiSigString = "api_key"+apiKey+"method"+method+"token"+apiToken+"5502dc6ec6a34709b17139cf6a0026b8";
     
-    if (method == "auth.getToken") {
-        apiSigString = "api_key"+apiKey+"method"+method+"token"+apiToken+"5502dc6ec6a34709b17139cf6a0026b8";
-    }
-    else
-        apiSigString = "api_key"+apiKey+"method"+method+"token"+apiToken+"5502dc6ec6a34709b17139cf6a0026b8";
-        
     MD5 apiSig = MD5(apiSigString.toUTF8());
     
     return apiSig.toHexString();
 }
 
+String LastFmConnection::lastFmString (ValueTree playingInfo, Identifier infoRequired)
+{
+    return URL::addEscapeChars(playingInfo.getProperty(infoRequired).toString(), true);
+}
+
 void LastFmConnection::sendNowPlaying(ValueTree playingInfo)
 {
-//    URL nowPlayingAddress("http://ws.audioscrobbler.com/2.0/?method=track.updateNowPlaying&artist="+playingInfo.getProperty(MusicColumns::columnNames[MusicColumns::Artist]).toString()+"&api_key="+apiKey+"&token="+apiToken+"&api_sig="+apiSig.toHexString());
+    Identifier artist = MusicColumns::columnNames[MusicColumns::Artist];
+    Identifier album = MusicColumns::columnNames[MusicColumns::Album];
+    Identifier track = MusicColumns::columnNames[MusicColumns::Song];
+    
+    String apiSigString = "album"+playingInfo.getProperty(album).toString()
+    +"api_key"+apiKey
+    +"artist"+playingInfo.getProperty(artist).toString()
+    +"method"+"track.updateNowPlaying"
+    +"sk"+sessionKey
+    +"track"+playingInfo.getProperty(track).toString()
+    +"5502dc6ec6a34709b17139cf6a0026b8";
+
+    MD5 apiSig = MD5(apiSigString.toUTF8());
+    
+    URL nowPlayingAddress("http://ws.audioscrobbler.com/2.0/?method=track.updateNowPlaying&artist="+lastFmString(playingInfo, artist)
+            +"&album="+lastFmString(playingInfo, album)
+            +"&track="+lastFmString(playingInfo, track)
+            +"&api_key="+apiKey
+            +"&sk="+sessionKey
+            +"&api_sig="+apiSig.toHexString());
+    
+    ScopedPointer<XmlElement> response;
+    response = nowPlayingAddress.readEntireXmlStream(true);
+    
+    saveXmlTest(response);
+    
+    if (response != nullptr)
+    {
+        String status = response->getAttributeValue(0);
+        
+        DBG("Response" + response->getAllSubText());
+        
+        if (status == "ok")
+        {
+            DBG(status);
+        }
+    }
 }

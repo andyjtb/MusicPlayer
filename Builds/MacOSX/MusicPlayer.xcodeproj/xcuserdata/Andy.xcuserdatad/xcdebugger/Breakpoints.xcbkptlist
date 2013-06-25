@@ -101,11 +101,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "391695526.542514"
+         timestampString = "393167537.264901"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "353"
-         endingLineNumber = "353"
+         startingLineNumber = "355"
+         endingLineNumber = "355"
          landmarkName = "GuiControl::updateSelectedDisplay()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -227,7 +227,7 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../JuceLibraryCode/modules/juce_audio_formats/format/juce_AudioFormatManager.cpp"
@@ -283,13 +283,26 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "391695526.542514"
+         timestampString = "393167537.264901"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "398"
-         endingLineNumber = "398"
+         startingLineNumber = "400"
+         endingLineNumber = "400"
          landmarkName = "GuiControl::next()"
          landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../Source/Utility/LastFm/LastFmConnection.h"
+         timestampString = "393802709.734494"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "40"
+         endingLineNumber = "40"
+         landmarkName = "class LastFmConnection"
+         landmarkType = "3">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="MusicPlayer">
@@ -11,6 +10,72 @@
     <Filter Include="Juce Library Code">
       <UniqueIdentifier>{8B4D1BAA-6DB4-CAEC-A0FA-271F354D5C61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MusicPlayer\Source\Audio">
+      <UniqueIdentifier>{38567a41-9ab5-4de4-b06e-34b11efe8ca5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\Audio\AudioSource">
+      <UniqueIdentifier>{97f7f2d5-a8a0-4034-88a9-4c5638613030}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\Audio\AudioSource\dRow">
+      <UniqueIdentifier>{294bb1cf-6733-4268-a81f-7d76207be7ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch">
+      <UniqueIdentifier>{bd9cb1d3-d1c3-43de-b68f-25a601edf904}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\GUI">
+      <UniqueIdentifier>{91c04bb4-5aeb-426f-b40f-7ba0b1257f98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\Utility">
+      <UniqueIdentifier>{4dd4b77b-6800-4a03-967e-dd9b522f28e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\GUI\Controls">
+      <UniqueIdentifier>{a0679fc9-529c-4178-bf92-40951028957a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\GUI\Information">
+      <UniqueIdentifier>{2f0d5bde-bc25-4cc3-8c89-32c340fd99ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\GUI\Library TreeView">
+      <UniqueIdentifier>{b3470c30-913f-446e-8ba9-8822e81aed42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\GUI\MusicLibraryTable">
+      <UniqueIdentifier>{e30a4974-69bf-45a9-9820-69b41180b239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\GUI\Information\Info Bar">
+      <UniqueIdentifier>{568a6a37-af2d-4232-af16-3b3c8e26f9a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\GUI\Information\Track">
+      <UniqueIdentifier>{630a5408-2147-4c93-98d2-784424b6afb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\GUI\Controls\Buttons">
+      <UniqueIdentifier>{52039760-be92-4ac3-862a-3f683984916e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\GUI\Controls\Effects">
+      <UniqueIdentifier>{b394de0c-0488-48dd-896b-5bf7b981fbdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\GUI\Controls\Meters">
+      <UniqueIdentifier>{3418161a-1346-4368-9c58-309ee352a177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\GUI\Controls\Sliders">
+      <UniqueIdentifier>{82c35eea-26ea-48f7-a666-f655c7db625f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\Utility\Settings">
+      <UniqueIdentifier>{8d9b52df-16c5-4674-95b6-d476fe42429a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\Utility\Remote">
+      <UniqueIdentifier>{f17c9084-e2a9-4db2-b53a-362b24fe36e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\Utility\MetaData">
+      <UniqueIdentifier>{70b70cbf-85d3-4912-9076-5c91d151c010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\Utility\LastFm">
+      <UniqueIdentifier>{b41c65ed-ab09-4ea1-a0d0-ca9010981961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\Utility\iTunesLibrary">
+      <UniqueIdentifier>{492d5107-1459-43cd-813f-0c74070fa78c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MusicPlayer\Source\Utility\MetaData\Taglib">
+      <UniqueIdentifier>{5eaf5093-37c2-4ce1-8872-ef86abd97709}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\MainComponent.cpp">
@@ -18,6 +83,141 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Main.cpp">
       <Filter>MusicPlayer\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Audio\AudioControl.cpp">
+      <Filter>MusicPlayer\Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Audio\AudioSource\dRowAudio_BiquadFilter.cpp">
+      <Filter>MusicPlayer\Source\Audio\AudioSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Audio\AudioSource\EQFilters.cpp">
+      <Filter>MusicPlayer\Source\Audio\AudioSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Audio\AudioSource\dRow\dRowAudio_SoundTouchAudioSource.cpp">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Audio\AudioSource\dRow\dRowAudio_SoundTouchProcessor.cpp">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\SoundTouch_Source.cpp">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\GuiControl.cpp">
+      <Filter>MusicPlayer\Source\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Information\AlbumArt.cpp">
+      <Filter>MusicPlayer\Source\GUI\Information</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Information\TrackInfo.cpp">
+      <Filter>MusicPlayer\Source\GUI\Information</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Information\UrlLoad.cpp">
+      <Filter>MusicPlayer\Source\GUI\Information</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Information\Track\TrackArt.cpp">
+      <Filter>MusicPlayer\Source\GUI\Information\Track</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Information\Track\TrackDialog.cpp">
+      <Filter>MusicPlayer\Source\GUI\Information\Track</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Information\Track\TrackEdit.cpp">
+      <Filter>MusicPlayer\Source\GUI\Information\Track</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Information\Track\TrackMulti.cpp">
+      <Filter>MusicPlayer\Source\GUI\Information\Track</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Information\Track\TrackSummary.cpp">
+      <Filter>MusicPlayer\Source\GUI\Information\Track</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Information\Track\TrackTabbed.cpp">
+      <Filter>MusicPlayer\Source\GUI\Information\Track</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Information\Info Bar\ConnectionIndicator.cpp">
+      <Filter>MusicPlayer\Source\GUI\Information\Info Bar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Information\Info Bar\InfoBar.cpp">
+      <Filter>MusicPlayer\Source\GUI\Information\Info Bar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Information\Info Bar\LastFmButton.cpp">
+      <Filter>MusicPlayer\Source\GUI\Information\Info Bar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Library TreeView\LibraryTreeView.cpp">
+      <Filter>MusicPlayer\Source\GUI\Library TreeView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Library TreeView\LibraryTreeViewBinaryData.cpp">
+      <Filter>MusicPlayer\Source\GUI\Library TreeView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\MusicLibraryTable\MusicLibraryDropTarget.cpp">
+      <Filter>MusicPlayer\Source\GUI\MusicLibraryTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\MusicLibraryTable\MusicLibraryTableModel.cpp">
+      <Filter>MusicPlayer\Source\GUI\MusicLibraryTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\MusicLibraryTable\SearchBox.cpp">
+      <Filter>MusicPlayer\Source\GUI\MusicLibraryTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Controls\Buttons\BackwardsButton.cpp">
+      <Filter>MusicPlayer\Source\GUI\Controls\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Controls\Buttons\ForwardButton.cpp">
+      <Filter>MusicPlayer\Source\GUI\Controls\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Controls\Buttons\PlaybackControl.cpp">
+      <Filter>MusicPlayer\Source\GUI\Controls\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Controls\Buttons\PlayButton.cpp">
+      <Filter>MusicPlayer\Source\GUI\Controls\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Controls\Effects\Equaliser.cpp">
+      <Filter>MusicPlayer\Source\GUI\Controls\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Controls\Effects\SpeedPitch.cpp">
+      <Filter>MusicPlayer\Source\GUI\Controls\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Controls\Meters\Meter.cpp">
+      <Filter>MusicPlayer\Source\GUI\Controls\Meters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Controls\Meters\OutputMeter.cpp">
+      <Filter>MusicPlayer\Source\GUI\Controls\Meters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Controls\Sliders\TransportSlider.cpp">
+      <Filter>MusicPlayer\Source\GUI\Controls\Sliders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\GUI\Controls\Sliders\VolumeControl.cpp">
+      <Filter>MusicPlayer\Source\GUI\Controls\Sliders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\Settings\Settings.cpp">
+      <Filter>MusicPlayer\Source\Utility\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\Remote\J_IPAddress.cpp">
+      <Filter>MusicPlayer\Source\Utility\Remote</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\Remote\RemoteControl.cpp">
+      <Filter>MusicPlayer\Source\Utility\Remote</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\Remote\RemoteInterprocessConnection.cpp">
+      <Filter>MusicPlayer\Source\Utility\Remote</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\MetaData\Taglib\TagLibAmalgam.cpp">
+      <Filter>MusicPlayer\Source\Utility\MetaData\Taglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\LastFm\LastFmAuthPopup.cpp">
+      <Filter>MusicPlayer\Source\Utility\LastFm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\LastFm\LastFmConnection.cpp">
+      <Filter>MusicPlayer\Source\Utility\LastFm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\LastFm\LastFmDebug.cpp">
+      <Filter>MusicPlayer\Source\Utility\LastFm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\iTunesLibrary\ITunesLibrary.cpp">
+      <Filter>MusicPlayer\Source\Utility\iTunesLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\iTunesLibrary\ITunesLibraryParser.cpp">
+      <Filter>MusicPlayer\Source\Utility\iTunesLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\iTunesLibrary\MusicLibraryTable.cpp">
+      <Filter>MusicPlayer\Source\Utility\iTunesLibrary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +229,195 @@
     </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>Juce Library Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioControl.h">
+      <Filter>MusicPlayer\Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRowAudio_BiquadFilter.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\EQFilters.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\dRowAudio_SoundTouchAudioSource.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\dRowAudio_SoundTouchProcessor.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\FIFOSampleBuffer.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\FIFOSamplePipe.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\FIRFilter.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\PeakFinder.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\RateTransposer.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\SoundTouch.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\soundtouch_config.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\SoundTouch_Includes.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\STTypes.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\TDStretch.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\AAFilter.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\BPMDetect.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Audio\AudioSource\dRow\soundtouch\cpu_detect.h">
+      <Filter>MusicPlayer\Source\Audio\AudioSource\dRow\soundtouch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\GuiControl.h">
+      <Filter>MusicPlayer\Source\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Information\AlbumArt.h">
+      <Filter>MusicPlayer\Source\GUI\Information</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Information\TrackInfo.h">
+      <Filter>MusicPlayer\Source\GUI\Information</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Information\UrlLoad.h">
+      <Filter>MusicPlayer\Source\GUI\Information</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Information\Track\TrackArt.h">
+      <Filter>MusicPlayer\Source\GUI\Information\Track</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Information\Track\TrackDialog.h">
+      <Filter>MusicPlayer\Source\GUI\Information\Track</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Information\Track\TrackEdit.h">
+      <Filter>MusicPlayer\Source\GUI\Information\Track</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Information\Track\TrackMulti.h">
+      <Filter>MusicPlayer\Source\GUI\Information\Track</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Information\Track\TrackSummary.h">
+      <Filter>MusicPlayer\Source\GUI\Information\Track</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Information\Track\TrackTabbed.h">
+      <Filter>MusicPlayer\Source\GUI\Information\Track</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Information\Info Bar\ConnectionIndicator.h">
+      <Filter>MusicPlayer\Source\GUI\Information\Info Bar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Information\Info Bar\InfoBar.h">
+      <Filter>MusicPlayer\Source\GUI\Information\Info Bar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Information\Info Bar\LastFmButton.h">
+      <Filter>MusicPlayer\Source\GUI\Information\Info Bar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Library TreeView\LibraryTreeView.h">
+      <Filter>MusicPlayer\Source\GUI\Library TreeView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Library TreeView\LibraryTreeViewBinaryData.h">
+      <Filter>MusicPlayer\Source\GUI\Library TreeView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\MusicLibraryTable\MusicLibraryDropTarget.h">
+      <Filter>MusicPlayer\Source\GUI\MusicLibraryTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\MusicLibraryTable\MusicLibraryTableModel.h">
+      <Filter>MusicPlayer\Source\GUI\MusicLibraryTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\MusicLibraryTable\SearchBox.h">
+      <Filter>MusicPlayer\Source\GUI\MusicLibraryTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Controls\Buttons\BackwardsButton.h">
+      <Filter>MusicPlayer\Source\GUI\Controls\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Controls\Buttons\ForwardButton.h">
+      <Filter>MusicPlayer\Source\GUI\Controls\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Controls\Buttons\PlaybackControl.h">
+      <Filter>MusicPlayer\Source\GUI\Controls\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Controls\Buttons\PlayButton.h">
+      <Filter>MusicPlayer\Source\GUI\Controls\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Controls\Effects\Equaliser.h">
+      <Filter>MusicPlayer\Source\GUI\Controls\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Controls\Effects\SpeedPitch.h">
+      <Filter>MusicPlayer\Source\GUI\Controls\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Controls\Meters\Meter.h">
+      <Filter>MusicPlayer\Source\GUI\Controls\Meters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Controls\Meters\OutputMeter.h">
+      <Filter>MusicPlayer\Source\GUI\Controls\Meters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Controls\Sliders\TransportSlider.h">
+      <Filter>MusicPlayer\Source\GUI\Controls\Sliders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\GUI\Controls\Sliders\VolumeControl.h">
+      <Filter>MusicPlayer\Source\GUI\Controls\Sliders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\DirectoryLoader.h">
+      <Filter>MusicPlayer\Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\XmlHelpers.h">
+      <Filter>MusicPlayer\Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\Settings\Settings.h">
+      <Filter>MusicPlayer\Source\Utility\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\Remote\J_IPAddress.h">
+      <Filter>MusicPlayer\Source\Utility\Remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\Remote\RemoteControl.h">
+      <Filter>MusicPlayer\Source\Utility\Remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\Remote\RemoteInterprocessConnection.h">
+      <Filter>MusicPlayer\Source\Utility\Remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\MetaData\TagReader.h">
+      <Filter>MusicPlayer\Source\Utility\MetaData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\MetaData\Taglib\TagLibAmalgam.h">
+      <Filter>MusicPlayer\Source\Utility\MetaData\Taglib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\LastFm\LastFmAuthPopup.h">
+      <Filter>MusicPlayer\Source\Utility\LastFm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\LastFm\LastFmConnection.h">
+      <Filter>MusicPlayer\Source\Utility\LastFm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\LastFm\LastFmDebug.h">
+      <Filter>MusicPlayer\Source\Utility\LastFm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\iTunesLibrary\Comparators.h">
+      <Filter>MusicPlayer\Source\Utility\iTunesLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\iTunesLibrary\ITunesLibrary.h">
+      <Filter>MusicPlayer\Source\Utility\iTunesLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\iTunesLibrary\ITunesLibraryParser.h">
+      <Filter>MusicPlayer\Source\Utility\iTunesLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\iTunesLibrary\MusicLibraryHelpers.h">
+      <Filter>MusicPlayer\Source\Utility\iTunesLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\iTunesLibrary\MusicLibraryTable.h">
+      <Filter>MusicPlayer\Source\Utility\iTunesLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\iTunesLibrary\Utility.h">
+      <Filter>MusicPlayer\Source\Utility\iTunesLibrary</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

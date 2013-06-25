@@ -327,6 +327,8 @@ void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
             if (shouldPlay)
                 singletonPlayState = true;
             
+            currentLastFm.sendNowPlaying(treeToLoad);
+            
             trackInfo.loadTrackInfo(tablePlayingRow);
             artUpdateRequired = true;
         }

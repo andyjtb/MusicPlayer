@@ -35,6 +35,10 @@ public:
     String& getSessionKey() { return sessionKey;}
     String& getUserName() { return userName; }
     
+    String lastFmString (ValueTree playingInfo, Identifier infoRequired);
+    
+    void saveXmlTest (XmlElement* element) { File testFile (File::getSpecialLocation(File::userDesktopDirectory).getFullPathName()+ "/LastFmTest"); element->writeToFile(testFile, String::empty);}
+    
 private:
     bool connected;
     OptionalScopedPointer<Component> lastFmButton;
