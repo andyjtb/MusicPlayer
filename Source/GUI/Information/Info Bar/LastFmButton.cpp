@@ -9,6 +9,58 @@
 
 #include "LastFmButton.h"
 
+
+class LastFmErrorPopup : public Component,
+                         public Timer
+{
+public:
+    LastFmErrorPopup(int _num, String _message)
+    {
+        num = _num;
+        message = _message;
+        setSize (250, 50);
+        shouldStopTimer = false;
+        startTimer(1000);
+    }
+    ~LastFmErrorPopup() {}
+    
+    void paint (Graphics& g)
+    {
+        g.setColour (Colours::black);
+        g.setFont (Font (15.0000f, Font::plain));
+        g.drawText ("Last.fm Error: "+String(num),
+                    0, 0, 250, 25,
+                    Justification::centred, true);
+        
+        g.setColour (Colours::black);
+        g.setFont (Font (15.0000f, Font::plain));
+        g.drawText (message,
+                    0, 20, 250, 25,
+                    Justification::centred, true);
+    }
+    void resized()
+    {
+        
+    }
+    
+    void timerCallback()
+    {
+        if (shouldStopTimer)
+        {
+            stopTimer();
+            
+            DialogWindow* dw = findParentComponentOfClass<DialogWindow>();
+            if (dw != nullptr)
+                dw->exitModalState (1);
+        }
+        else
+            shouldStopTimer = true;
+    }
+    int num;
+    bool shouldStopTimer;
+    String message;
+};
+
 LastFmButton::LastFmButton ()
 {
     cachedImage_rectBlack_png = ImageCache::getFromMemory (rectBlack_png, rectBlack_pngSize);
@@ -52,8 +104,27 @@ void LastFmButton::mouseDown(const MouseEvent& e)
     else
     {
         //popup info on currently playing song
-        currentLastFm.sendNowPlaying(tablePlayingRow);
+        currentLastFm.getTrackInfo(tablePlayingRow);
     }
+}
+
+void LastFmButton::displayError(int error, String message)
+{
+    LastFmErrorPopup* errorPopup = new LastFmErrorPopup(error, message);
+    //CallOutBox errorBox (errorPopup, Rectangle<int>(0,0,0,0), this);
+    //errorPopup.enterModalState();
+    DialogWindow::LaunchOptions o;
+    
+    o.content.setOwned (errorPopup);
+    o.content->setSize (errorPopup->getWidth(), errorPopup->getHeight());
+    
+    o.dialogTitle                   = "Last.fm Error";
+    o.dialogBackgroundColour        = Colours::lightgrey;
+    o.escapeKeyTriggersCloseButton  = true;
+    o.useNativeTitleBar             = false;
+    o.resizable                     = false;
+    
+    o.runModal();
 }
 
 //==============================================================================

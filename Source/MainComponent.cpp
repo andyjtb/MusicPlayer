@@ -102,7 +102,7 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
         
         if (menuItemID == AddFile)
 		{
-			FileChooser fc ("Choose files to add...",File::getCurrentWorkingDirectory(),audioControl.getRegisteredFormatWildcard(),true);
+			FileChooser fc ("Choose files to add...", lastOpenedFile,audioControl.getRegisteredFormatWildcard(),true);
 			
 			if (fc.browseForMultipleFilesToOpen())
 			{
@@ -115,14 +115,13 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
                     singletonLibraryTree.addChild(TagReader::addToLibrary(audioFile),-1,0);
 				}
                 
-//				audioControl.loadFile(audioFile);
-//				guiControl.updateTagDisplay(audioFile);
+                lastOpenedFile = audioFile;
 			}
 		}
 		
 		else if (menuItemID == AddDirectory)
 		{
-			FileChooser fc ("Choose a directory to add...",File::getCurrentWorkingDirectory(),"*",true);
+			FileChooser fc ("Choose a directory to add...", lastOpenedFile,"*",true);
 			if (fc.browseForDirectory()) 
 			{
                 DirectoryLoader d;
@@ -131,6 +130,8 @@ void MainContentComponent::menuItemSelected (int menuItemID, int topLevelMenuInd
                 
                 d.runThread();
             }
+            
+            lastOpenedFile = fc.getResult();
 		}
 		
 		else if (menuItemID == ImportItunes)

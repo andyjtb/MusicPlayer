@@ -25,11 +25,13 @@ public:
     void connect();
     
     void sendNowPlaying (ValueTree playingInfo);
+    void getTrackInfo (ValueTree selectedTrack);
+    
     String generateApiSig (String method);
     
     void valueChanged (Value& changed);
     
-    void setLastFmButton(Component* button) { lastFmButton.set(button, false); }
+    void setLastFmButton(Component* button);
     
     Value getEnabled () { return enabled; }
     String& getSessionKey() { return sessionKey;}
@@ -39,9 +41,10 @@ public:
     
     void saveXmlTest (XmlElement* element) { File testFile (File::getSpecialLocation(File::userDesktopDirectory).getFullPathName()+ "/LastFmTest"); element->writeToFile(testFile, String::empty);}
     
+    void displayError (XmlElement* error);
+    
 private:
     bool connected;
-    OptionalScopedPointer<Component> lastFmButton;
     
     String apiKey, apiToken, apiSession, sessionKey, userName;
     

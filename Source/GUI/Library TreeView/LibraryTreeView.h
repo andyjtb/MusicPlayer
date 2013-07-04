@@ -62,6 +62,10 @@ public:
     {
         return String(playlistTitle);
     }
+    String getItemIdentifierString()
+    {
+        return String(playlistTitle);
+    }
     /** Returns false */
     bool mightContainSubItems()
     {
@@ -262,6 +266,8 @@ public:
     void actionListenerCallback (const String& message);
     /** Button listener for add or remove playlist buttons */
     void buttonClicked (Button* button);
+    
+    void deleteSelectedItems();
     
     /** Fills a ValueTree with the full information for a playlist's tracks based on the trackID numbers for each song */
     void loadPlaylistsTrackInfo();

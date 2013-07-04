@@ -634,7 +634,7 @@
 		A16C32701677D02600D631B1 /* UrlLoad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UrlLoad.cpp; sourceTree = "<group>"; };
 		A16C32711677D02600D631B1 /* UrlLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlLoad.h; sourceTree = "<group>"; };
 		A16DF9E516BD8F3A00DD45E6 /* AudioControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioControl.cpp; sourceTree = "<group>"; };
-		A16DF9E616BD8F3A00DD45E6 /* AudioControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioControl.h; path = /Volumes/Music/University/MusicPlayer/Source/Audio/AudioControl.h; sourceTree = "<absolute>"; };
+		A16DF9E616BD8F3A00DD45E6 /* AudioControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioControl.h; path = ../../Source/Audio/AudioControl.h; sourceTree = SOURCE_ROOT; };
 		A16DF9FD16BD901300DD45E6 /* dRowAudio_SoundTouchAudioSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dRowAudio_SoundTouchAudioSource.cpp; sourceTree = "<group>"; };
 		A16DF9FE16BD901300DD45E6 /* dRowAudio_SoundTouchAudioSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dRowAudio_SoundTouchAudioSource.h; sourceTree = "<group>"; };
 		A16DF9FF16BD901300DD45E6 /* dRowAudio_SoundTouchProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dRowAudio_SoundTouchProcessor.cpp; sourceTree = "<group>"; };

@@ -7,6 +7,9 @@
 //
 
 #include "LastFmConnection.h"
+#include "LastFmButton.h"
+
+OptionalScopedPointer<LastFmButton> lastFmButton;
 
 LastFmConnection::LastFmConnection()
 {
@@ -16,6 +19,11 @@ LastFmConnection::LastFmConnection()
 
 LastFmConnection::~LastFmConnection()
 {}
+
+void LastFmConnection::setLastFmButton (Component* button)
+{
+    lastFmButton.set(dynamic_cast<LastFmButton*>(button), false);
+}
 
 bool LastFmConnection::getAuthToken()
 {
@@ -36,7 +44,7 @@ bool LastFmConnection::getAuthToken()
         else
         {
             //int statusInt = status.getIntValue();
-            DBG("Status error " << status);
+            displayError(token);
             return false;
         }
     }
@@ -96,6 +104,7 @@ void LastFmConnection::connect()
                     else
                     {
                         DBG("Status error " << status);
+                        displayError(session);
                     }
                 }
             }
@@ -107,6 +116,13 @@ void LastFmConnection::connect()
         connected = true;
         lastFmButton->repaint();
     }
+}
+
+void LastFmConnection::displayError(XmlElement *error)
+{
+    DBG("Error: " << error->getChildElement(0)->getAttributeValue(0).getIntValue() << "\n");
+    DBG("Message: " << error->getChildElement(0)->getAllSubText());
+    lastFmButton->displayError(error->getChildElement(0)->getAttributeValue(0).getIntValue(), error->getChildElement(0)->getAllSubText());
 }
 
 void LastFmConnection::valueChanged(Value &changed)
@@ -142,6 +158,51 @@ String LastFmConnection::lastFmString (ValueTree playingInfo, Identifier infoReq
     return URL::addEscapeChars(playingInfo.getProperty(infoRequired).toString(), true);
 }
 
+void LastFmConnection::getTrackInfo(ValueTree selectedTrack)
+{
+    Identifier artist = MusicColumns::columnNames[MusicColumns::Artist];
+    Identifier album = MusicColumns::columnNames[MusicColumns::Album];
+    Identifier track = MusicColumns::columnNames[MusicColumns::Song];
+    
+//    String apiSigString = "api_key"+apiKey
+//    +"artist"+selectedTrack.getProperty(artist).toString()
+//    +"autocorrect1"
+//    +"method"+"track.getInfo"
+//    +"track"+selectedTrack.getProperty(track).toString()
+//    +"username" + userName
+//    +"5502dc6ec6a34709b17139cf6a0026b8";
+    
+//    MD5 apiSig = MD5(apiSigString.toUTF8());
+    
+    URL getInfoAddress("http://ws.audioscrobbler.com/2.0/?method=track.getInfo&artist="+lastFmString(selectedTrack, artist)
+        +"&track="+lastFmString(selectedTrack, track)
+        +"&api_key="+apiKey
+        +"&autocorrect=1"
+        +"&username="+userName);
+//        +"&api_sig="+apiSig.toHexString());
+    
+    ScopedPointer<XmlElement> response;
+    response = getInfoAddress.readEntireXmlStream(true);
+    
+    saveXmlTest(response);
+    
+    if (response != nullptr)
+    {
+        String status = response->getAttributeValue(0);
+        
+        DBG("Response: \n" + response->getAllSubText());
+        
+        if (status == "ok")
+        {
+            DBG(status);
+        }
+        else
+        {
+            displayError(response);
+        }
+    }
+}
+
 void LastFmConnection::sendNowPlaying(ValueTree playingInfo)
 {
     Identifier artist = MusicColumns::columnNames[MusicColumns::Artist];
@@ -174,11 +235,16 @@ void LastFmConnection::sendNowPlaying(ValueTree playingInfo)
     {
         String status = response->getAttributeValue(0);
         
-        DBG("Response" + response->getAllSubText());
+        DBG("Response: \n" + response->getAllSubText());
         
         if (status == "ok")
         {
             DBG(status);
         }
+        else
+        {
+            displayError(response);
+        }
+            
     }
 }

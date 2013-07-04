@@ -167,6 +167,8 @@ private:
 	float sharedMeterOutputR;
     
     Value applyEQ;
+    
+//    ScopedPointer<FileInputStream> audioStream;
 };
 
 

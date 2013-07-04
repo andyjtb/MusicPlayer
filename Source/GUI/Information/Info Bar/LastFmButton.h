@@ -29,6 +29,8 @@ public:
     
     void setConnected (bool isConnected);
     
+    void displayError (int error, String message);
+    
     static const char* rectBlack_png;
     static const int rectBlack_pngSize;
     static const char* rectRed_png;

@@ -63,11 +63,9 @@ int AudioControl::loadFile (const File& audioFile)
         if (soundTouch != nullptr)
             soundTouchSettings = soundTouch->getPlaybackSettings();
         
-//        if (bufferingThread.isThreadRunning()) {
-//            DBG("Thread is running, doesn't call notify");
-//        }
-//        else
-//            bufferingThread.notify();
+        //transport.stop();
+        //audioStream = nullptr;
+        //audioStream = new FileInputStream(audioFile);
         
 		AudioFormatReader* reader = formatManager.createReaderFor (audioFile);
 		
@@ -97,6 +95,7 @@ int AudioControl::loadFile (const File& audioFile)
         else
         {
             //Reader failed
+            //transport.start();
             return 2;
         }
 	}

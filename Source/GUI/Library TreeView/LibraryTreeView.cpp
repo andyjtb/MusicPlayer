@@ -19,6 +19,7 @@ LibraryTreeView::LibraryTreeView() : treeView("TreeView")
     
     treeView.setRootItemVisible(false);
     treeView.setRootItem(rootItem);
+    treeView.setMultiSelectEnabled(true);
     
     addAndMakeVisible(&plusButton);
     plusButton.addListener(this);
@@ -181,35 +182,64 @@ void LibraryTreeView::buttonClicked(Button *button)
     
     if (button == &minusButton)
     {
-        if (singletonPlaylistsTree.isValid())
+        if ( treeView.getSelectedItem(0)->getUniqueName() != "Library")
+            deleteSelectedItems();
+        else
+            AlertWindow::showMessageBoxAsync(AlertWindow::WarningIcon, "Don't Delete Library", "Please deselect Library (Cmd+click)");
+            
+    }
+}
+
+void LibraryTreeView::deleteSelectedItems()
+{
+    if (singletonPlaylistsTree.isValid())
+    {
+        String title = "Delete ";
+        String playlists = String::empty;
+        
+        if (treeView.getNumSelectedItems() > 1)
         {
-            String title = "Delete " + selectedPlaylist;
-            String message = "Are you sure you want to delete " + selectedPlaylist + "?";
-            
-            AlertWindow removePopup (title, message, AlertWindow::WarningIcon);
-            
-            removePopup.addButton("Cancel", 0);
-            removePopup.addButton("Delete", 1);
-            
-            if (removePopup.runModalLoop() != 0) 
+            title += "Playlists";
+            for (int i = 0; i < treeView.getNumSelectedItems(); i++)
             {
-                //Add undomanager at the end
-                ValueTree toDelete = singletonPlaylistsTree.getChildWithProperty("Name", selectedPlaylist);
-                if (toDelete.isValid()) 
-                {
-                    for (int i = 0; i < rootItem->getNumSubItems(); i++) 
-                    {
-                        if (rootItem->getSubItem(i)->getUniqueName() == toDelete.getProperty("Name").toString()) 
-                        {
-                            rootItem->removeSubItem(i);
-                            break;
-                        }
-                    }
-                    
-                    singletonPlaylistsTree.removeChild(toDelete, 0);
-                }
-                treeView.getItemOnRow(0)->setSelected(true, true);
+                playlists += treeView.getSelectedItem(i)->getUniqueName() + "\n";
             }
+        }
+        else
+        {
+            title += selectedPlaylist;
+            playlists = selectedPlaylist;
+        }
+        
+        String message = "Are you sure you want to delete \n" + playlists + "?";
+        
+        AlertWindow removePopup (title, message, AlertWindow::WarningIcon);
+        
+        removePopup.addButton("Cancel", 0);
+        removePopup.addButton("Delete", 1);
+        
+        if (removePopup.runModalLoop() != 0)
+        {
+            //Add undomanager at the end
+            for (int i = treeView.getNumSelectedItems()-1; i >= 0; i--)
+            {
+                ValueTree toDelete = singletonPlaylistsTree.getChildWithProperty("Name", treeView.getSelectedItem(i)->getUniqueName());
+                
+                for (int j = rootItem->getNumSubItems()-1; j > 0; j--)
+                {
+                    if (rootItem->getSubItem(j)->getUniqueName() ==
+                        treeView.getSelectedItem(i)->getUniqueName())
+                    {
+                        rootItem->removeSubItem(j);
+                        break;
+                    }
+                }
+                
+                if (toDelete.isValid())
+                    singletonPlaylistsTree.removeChild(toDelete, 0);
+            }
+            
+            treeView.getItemOnRow(0)->setSelected(true, true);
         }
     }
 }
