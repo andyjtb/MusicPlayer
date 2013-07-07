@@ -15,4 +15,11 @@ MusicPlayerRemote/
 #Other stuff
 OTHER/
 
-Builds/MacOSX/MusicPlayer.xcodeproj/project.xcworkspace/xcuserdata/Andy.xcuserdatad/UserInterfaceState.xcuserstate
+*.swp
+*~.nib
+build/
+*.pbxuser
+*.perspective
+*.perspectivev3
+
+xcuserdata
