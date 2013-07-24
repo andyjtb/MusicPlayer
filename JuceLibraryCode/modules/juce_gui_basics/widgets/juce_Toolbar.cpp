@@ -1,24 +1,23 @@
 /*
   ==============================================================================
 
-   This file is part of the JUCE library - "Jules' Utility Class Extensions"
-   Copyright 2004-11 by Raw Material Software Ltd.
+   This file is part of the JUCE library.
+   Copyright (c) 2013 - Raw Material Software Ltd.
 
-  ------------------------------------------------------------------------------
+   Permission is granted to use this software under the terms of either:
+   a) the GPL v2 (or any later version)
+   b) the Affero GPL v3
 
-   JUCE can be redistributed and/or modified under the terms of the GNU General
-   Public License (Version 2), as published by the Free Software Foundation.
-   A copy of the license is included in the JUCE distribution, or can be found
-   online at www.gnu.org/licenses.
+   Details of these licenses can be found at: www.gnu.org/licenses
 
    JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
    A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-  ------------------------------------------------------------------------------
+   ------------------------------------------------------------------------------
 
    To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.rawmaterialsoftware.com/juce for more information.
+   available: visit www.juce.com for more information.
 
   ==============================================================================
 */
@@ -58,11 +57,11 @@ public:
         return true;
     }
 
-    void paintButtonArea (Graphics&, int, int, bool, bool)
+    void paintButtonArea (Graphics&, int, int, bool, bool) override
     {
     }
 
-    void contentAreaChanged (const Rectangle<int>&)
+    void contentAreaChanged (const Rectangle<int>&) override
     {
     }
 
@@ -71,7 +70,7 @@ public:
         return fixedSize <= 0 ? 0 : 1;
     }
 
-    void paint (Graphics& g)
+    void paint (Graphics& g) override
     {
         const int w = getWidth();
         const int h = getHeight();
@@ -653,12 +652,12 @@ public:
         toolbar->setEditingActive (false);
     }
 
-    void closeButtonPressed()
+    void closeButtonPressed() override
     {
         setVisible (false);
     }
 
-    bool canModalEventBeSentToComponent (const Component* comp)
+    bool canModalEventBeSentToComponent (const Component* comp) override
     {
         return toolbar->isParentOf (comp);
     }
@@ -751,7 +750,7 @@ private:
             setSize (500, 300);
         }
 
-        void comboBoxChanged (ComboBox*)
+        void comboBoxChanged (ComboBox*) override
         {
             switch (styleBox.getSelectedId())
             {
@@ -763,12 +762,12 @@ private:
             palette.resized(); // to make it update the styles
         }
 
-        void buttonClicked (Button*)
+        void buttonClicked (Button*) override
         {
             toolbar->addDefaultItems (factory);
         }
 
-        void paint (Graphics& g)
+        void paint (Graphics& g) override
         {
             Colour background;
 
@@ -779,7 +778,7 @@ private:
             g.fillRect (palette.getX(), palette.getBottom() - 1, palette.getWidth(), 1);
         }
 
-        void resized()
+        void resized() override
         {
             palette.setBounds (0, 0, getWidth(), getHeight() - 120);
             styleBox.setBounds (10, getHeight() - 110, 200, 22);

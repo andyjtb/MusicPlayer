@@ -279,6 +279,8 @@ public:
                     format = TagLib::MP4::CoverArt::Format::PNG;
                 else if (imageType.compareIgnoreCase("bmp") == 0)
                     format = TagLib::MP4::CoverArt::Format::BMP;
+                else
+                    format = TagLib::MP4::CoverArt::Format::JPEG;
                 
                 TagLib::MP4::CoverArt coverArt(format, coverVector);
                 

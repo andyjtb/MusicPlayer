@@ -11,14 +11,23 @@
 
 OptionalScopedPointer<LastFmButton> lastFmButton;
 
-LastFmConnection::LastFmConnection()
+LastFmConnection::LastFmConnection() : toScrobble("SCROBBLE")
 {
     enabled.addListener(this);
     apiKey = "5becb8a0259e2b0ee071e33c970610b4";
+    
+    scrobblesFile = File::getSpecialLocation(File::userMusicDirectory).getFullPathName() + "/MusicPlayer/.scrobbles";
 }
 
 LastFmConnection::~LastFmConnection()
-{}
+{
+    if (toScrobble.getNumChildren() > 0)
+    {
+        //Unscrobbled plays to be saved for scrobbling next time
+        writeValueTreeToFile(toScrobble, scrobblesFile);
+    }
+    
+}
 
 void LastFmConnection::setLastFmButton (Component* button)
 {
@@ -164,22 +173,11 @@ void LastFmConnection::getTrackInfo(ValueTree selectedTrack)
     Identifier album = MusicColumns::columnNames[MusicColumns::Album];
     Identifier track = MusicColumns::columnNames[MusicColumns::Song];
     
-//    String apiSigString = "api_key"+apiKey
-//    +"artist"+selectedTrack.getProperty(artist).toString()
-//    +"autocorrect1"
-//    +"method"+"track.getInfo"
-//    +"track"+selectedTrack.getProperty(track).toString()
-//    +"username" + userName
-//    +"5502dc6ec6a34709b17139cf6a0026b8";
-    
-//    MD5 apiSig = MD5(apiSigString.toUTF8());
-    
     URL getInfoAddress("http://ws.audioscrobbler.com/2.0/?method=track.getInfo&artist="+lastFmString(selectedTrack, artist)
         +"&track="+lastFmString(selectedTrack, track)
         +"&api_key="+apiKey
         +"&autocorrect=1"
         +"&username="+userName);
-//        +"&api_sig="+apiSig.toHexString());
     
     ScopedPointer<XmlElement> response;
     response = getInfoAddress.readEntireXmlStream(true);
@@ -205,46 +203,113 @@ void LastFmConnection::getTrackInfo(ValueTree selectedTrack)
 
 void LastFmConnection::sendNowPlaying(ValueTree playingInfo)
 {
-    Identifier artist = MusicColumns::columnNames[MusicColumns::Artist];
-    Identifier album = MusicColumns::columnNames[MusicColumns::Album];
-    Identifier track = MusicColumns::columnNames[MusicColumns::Song];
-    
-    String apiSigString = "album"+playingInfo.getProperty(album).toString()
-    +"api_key"+apiKey
-    +"artist"+playingInfo.getProperty(artist).toString()
-    +"method"+"track.updateNowPlaying"
-    +"sk"+sessionKey
-    +"track"+playingInfo.getProperty(track).toString()
-    +"5502dc6ec6a34709b17139cf6a0026b8";
-
-    MD5 apiSig = MD5(apiSigString.toUTF8());
-    
-    URL nowPlayingAddress("http://ws.audioscrobbler.com/2.0/?method=track.updateNowPlaying&artist="+lastFmString(playingInfo, artist)
-            +"&album="+lastFmString(playingInfo, album)
-            +"&track="+lastFmString(playingInfo, track)
-            +"&api_key="+apiKey
-            +"&sk="+sessionKey
-            +"&api_sig="+apiSig.toHexString());
-    
-    ScopedPointer<XmlElement> response;
-    response = nowPlayingAddress.readEntireXmlStream(true);
-    
-    saveXmlTest(response);
-    
-    if (response != nullptr)
+    if (connected)
     {
-        String status = response->getAttributeValue(0);
+        Identifier artist = MusicColumns::columnNames[MusicColumns::Artist];
+        Identifier album = MusicColumns::columnNames[MusicColumns::Album];
+        Identifier track = MusicColumns::columnNames[MusicColumns::Song];
         
-        DBG("Response: \n" + response->getAllSubText());
+        String apiSigString = "album"+playingInfo.getProperty(album).toString()
+        +"api_key"+apiKey
+        +"artist"+playingInfo.getProperty(artist).toString()
+        +"method"+"track.updateNowPlaying"
+        +"sk"+sessionKey
+        +"track"+playingInfo.getProperty(track).toString()
+        +"5502dc6ec6a34709b17139cf6a0026b8";
         
-        if (status == "ok")
+        MD5 apiSig = MD5(apiSigString.toUTF8());
+        
+        URL nowPlayingAddress("http://ws.audioscrobbler.com/2.0/?method=track.updateNowPlaying&artist="+lastFmString(playingInfo, artist)
+                              +"&album="+lastFmString(playingInfo, album)
+                              +"&track="+lastFmString(playingInfo, track)
+                              +"&api_key="+apiKey
+                              +"&sk="+sessionKey
+                              +"&api_sig="+apiSig.toHexString());
+        
+        ScopedPointer<XmlElement> response;
+        response = nowPlayingAddress.readEntireXmlStream(true);
+
+        if (response != nullptr)
         {
-            DBG(status);
-        }
-        else
-        {
-            displayError(response);
-        }
+            String status = response->getAttributeValue(0);
             
+            DBG("Response: \n" + response->getAllSubText());
+            
+            if (status == "ok")
+            {
+                DBG(status);
+            }
+            else
+            {
+                displayError(response);
+            }
+            
+        }
+    }
+}
+
+void LastFmConnection::scrobbleTrack(ValueTree incomingTrack, Time startedPlaying)
+{
+    if (connected)
+    {
+        ValueTree track = incomingTrack.createCopy();
+        
+        toScrobble.addChild(track, -1, 0);
+        
+        //for size of toscrobble, scrobble each track, delete if succesful, else don't delete
+        for (int i = 0; i < toScrobble.getNumChildren(); i++)
+        {
+            Identifier artist = MusicColumns::columnNames[MusicColumns::Artist];
+            Identifier album = MusicColumns::columnNames[MusicColumns::Album];
+            Identifier track = MusicColumns::columnNames[MusicColumns::Song];
+            
+            String timestamp (startedPlaying.toMilliseconds()/1000);
+            
+            String apiSigString = "album"+toScrobble.getChild(i).getProperty(album).toString()
+            +"api_key"+apiKey
+            +"artist"+toScrobble.getChild(i).getProperty(artist).toString()
+            +"method"+"track.scrobble"
+            +"sk"+sessionKey
+            +"timestamp"+timestamp
+            +"track"+toScrobble.getChild(i).getProperty(track).toString()
+            +"5502dc6ec6a34709b17139cf6a0026b8";
+            
+            
+            MD5 apiSig = MD5(apiSigString.toUTF8());
+            
+            URL nowPlayingAddress("http://ws.audioscrobbler.com/2.0/?method=track.scrobble&artist="+lastFmString(toScrobble.getChild(i), artist)
+                                  +"&album="+lastFmString(toScrobble.getChild(i), album)
+                                  +"&track="+lastFmString(toScrobble.getChild(i), track)
+                                  +"&timestamp="+timestamp
+                                  +"&api_key="+apiKey
+                                  +"&sk="+sessionKey
+                                  +"&api_sig="+apiSig.toHexString());
+            
+            ScopedPointer<XmlElement> response;
+            response = nowPlayingAddress.readEntireXmlStream(true);
+            
+            saveXmlTest(response);
+            
+            if (response != nullptr)
+            {
+                String status = response->getAttributeValue(0);
+                
+                DBG("Response: \n" + response->getAllSubText());
+                
+                if (status == "ok")
+                {
+                    DBG(status);
+                    //Successfully scrobbled, so can be removed
+                    toScrobble.removeChild(i, 0);
+                }
+                else
+                {
+                    displayError(response);
+                }
+                
+            }
+            
+        }
+
     }
 }

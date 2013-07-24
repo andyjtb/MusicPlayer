@@ -166,6 +166,11 @@ private:
     ValueTree currentlyPlayingList;
     String currentlyPlayingName;
     
+    //Last.fm Scrobble
+    Time startedPlaying;
+    double timePlaying;
+    bool scrobbled;
+    
 };
 
 

@@ -1,24 +1,23 @@
 /*
   ==============================================================================
 
-   This file is part of the JUCE library - "Jules' Utility Class Extensions"
-   Copyright 2004-11 by Raw Material Software Ltd.
+   This file is part of the JUCE library.
+   Copyright (c) 2013 - Raw Material Software Ltd.
 
-  ------------------------------------------------------------------------------
+   Permission is granted to use this software under the terms of either:
+   a) the GPL v2 (or any later version)
+   b) the Affero GPL v3
 
-   JUCE can be redistributed and/or modified under the terms of the GNU General
-   Public License (Version 2), as published by the Free Software Foundation.
-   A copy of the license is included in the JUCE distribution, or can be found
-   online at www.gnu.org/licenses.
+   Details of these licenses can be found at: www.gnu.org/licenses
 
    JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
    A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-  ------------------------------------------------------------------------------
+   ------------------------------------------------------------------------------
 
    To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.rawmaterialsoftware.com/juce for more information.
+   available: visit www.juce.com for more information.
 
   ==============================================================================
 */
@@ -130,7 +129,7 @@ public:
             {
                 ViewDeleter (const GlobalRef& view_) : view (view_) {}
 
-                void messageCallback()
+                void messageCallback() override
                 {
                     android.activity.callVoidMethod (JuceAppActivity.deleteView, view.get());
                 }
@@ -164,7 +163,7 @@ public:
                     : view (view_), shouldBeVisible (shouldBeVisible_)
                 {}
 
-                void messageCallback()
+                void messageCallback() override
                 {
                     view.callVoidMethod (ComponentPeerView.setVisible, shouldBeVisible);
                 }
@@ -198,7 +197,7 @@ public:
             public:
                 ViewMover (const GlobalRef& v, const Rectangle<int>& r)  : view (v), bounds (r) {}
 
-                void messageCallback()
+                void messageCallback() override
                 {
                     view.callVoidMethod (ComponentPeerView.layout,
                                          bounds.getX(), bounds.getY(), bounds.getRight(), bounds.getBottom());
@@ -430,7 +429,7 @@ public:
                 ViewRepainter (const GlobalRef& view_, const Rectangle<int>& area_)
                     : view (view_), area (area_) {}
 
-                void messageCallback()
+                void messageCallback() override
                 {
                     view.callVoidMethod (ComponentPeerView.invalidate, area.getX(), area.getY(),
                                          area.getRight(), area.getBottom());
@@ -585,12 +584,12 @@ bool Desktop::addMouseInputSource()
     return true;
 }
 
-Point<int> MouseInputSource::getCurrentMousePosition()
+Point<int> MouseInputSource::getCurrentRawMousePosition()
 {
     return AndroidComponentPeer::lastMousePos;
 }
 
-void Desktop::setMousePosition (Point<int> newPosition)
+void MouseInputSource::setRawMousePosition (Point<int>)
 {
     // not needed
 }
@@ -687,22 +686,25 @@ bool juce_areThereAnyAlwaysOnTopWindows()
 }
 
 //==============================================================================
-void Desktop::Displays::findDisplays()
+void Desktop::Displays::findDisplays (float masterScale)
 {
     Display d;
-    d.userArea = d.totalArea = Rectangle<int> (android.screenWidth, android.screenHeight);
+    d.userArea = d.totalArea = Rectangle<int> (android.screenWidth,
+                                               android.screenHeight) / masterScale;
     d.isMain = true;
-    d.scale = 1.0;
+    d.scale = masterScale;
 
     displays.add (d);
 }
 
 JUCE_JNI_CALLBACK (JUCE_ANDROID_ACTIVITY_CLASSNAME, setScreenSize, void, (JNIEnv* env, jobject activity,
-                                                                          jint screenWidth, jint screenHeight))
+                                                                          jint screenWidth, jint screenHeight,
+                                                                          jint dpi))
 {
     const bool isSystemInitialised = android.screenWidth != 0;
     android.screenWidth = screenWidth;
     android.screenHeight = screenHeight;
+    android.dpi = dpi;
 
     const_cast <Desktop::Displays&> (Desktop::getInstance().getDisplays()).refresh();
 }

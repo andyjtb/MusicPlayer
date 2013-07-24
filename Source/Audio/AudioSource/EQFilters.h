@@ -44,7 +44,7 @@ public:
     void applyFilters(float** samples, int numSamples, int numChannels);
     
 private:
-    BiquadFilter filters[numFrequencies][2];
+    IIRFilter filters[numFrequencies][2];
     float gains[numFrequencies];
     int sampleRate;
     float q;

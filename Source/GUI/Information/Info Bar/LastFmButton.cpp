@@ -98,13 +98,50 @@ void LastFmButton::paint (Graphics& g)
 
 void LastFmButton::mouseDown(const MouseEvent& e)
 {
-    if (! currentLastFm.getEnabled().getValue()) {
-        currentLastFm.getEnabled().setValue(true);
-    }
+    if (e.mods.isAltDown())
+        currentLastFm.getEnabled().setValue(false);
     else
     {
-        //popup info on currently playing song
-        currentLastFm.getTrackInfo(tablePlayingRow);
+        if (e.mods.isPopupMenu())
+        {
+            //Display menu
+            PopupMenu menu;
+            
+            String enabledStatus;
+            currentLastFm.getEnabled().getValue() ? enabledStatus = "Disable Last.fm" : enabledStatus = "Enable Last.fm";
+            menu.addItem(1, enabledStatus);
+            if (currentLastFm.getEnabled().getValue())
+            {
+                menu.addSeparator();
+                menu.addItem(2, "Show Info");
+            }
+            
+            int result = menu.show();
+            
+            switch (result) {
+                case 1:
+                    currentLastFm.getEnabled().setValue(!currentLastFm.isConnected());
+                    break;
+                case 2:
+                {
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            //Standard left click
+            if (! currentLastFm.getEnabled().getValue()) {
+                currentLastFm.getEnabled().setValue(true);
+            }
+            else
+            {
+                //popup info on currently playing song
+                currentLastFm.getTrackInfo(tablePlayingRow);
+            }
+        }
     }
 }
 

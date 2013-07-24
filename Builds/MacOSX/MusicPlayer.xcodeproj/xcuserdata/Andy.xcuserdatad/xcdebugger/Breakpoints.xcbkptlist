@@ -75,11 +75,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/Utility/MetaData/TagReader.h"
-         timestampString = "390599263.24358"
+         timestampString = "396402419.395938"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "306"
-         endingLineNumber = "306"
+         startingLineNumber = "308"
+         endingLineNumber = "308"
          landmarkName = "saveAlbumArt (File&amp; audioFile, Image&amp; newCover, String imageType)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -101,11 +101,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "393167537.264901"
+         timestampString = "396284192.316683"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "355"
-         endingLineNumber = "355"
+         startingLineNumber = "371"
+         endingLineNumber = "371"
          landmarkName = "GuiControl::updateSelectedDisplay()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -114,11 +114,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "390596504.483657"
+         timestampString = "396284192.316683"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "304"
-         endingLineNumber = "304"
+         startingLineNumber = "315"
+         endingLineNumber = "315"
          landmarkName = "GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -127,11 +127,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "391695526.542514"
+         timestampString = "396284192.316683"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "324"
-         endingLineNumber = "324"
+         startingLineNumber = "335"
+         endingLineNumber = "335"
          landmarkName = "GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -153,11 +153,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "390595793.475651"
+         timestampString = "396284192.316683"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "124"
-         endingLineNumber = "124"
+         startingLineNumber = "135"
+         endingLineNumber = "135"
          landmarkName = "GuiControl::timerCallback(int timerId)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -183,9 +183,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "482"
-         endingLineNumber = "482"
-         landmarkName = "ListBox::selectRow (const int row, bool dontScroll, bool deselectOthersFirst)"
-         landmarkType = "5">
+         endingLineNumber = "482">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -244,11 +242,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/Utility/MetaData/TagReader.h"
-         timestampString = "390599860.169395"
+         timestampString = "396402419.395938"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "299"
-         endingLineNumber = "299"
+         startingLineNumber = "301"
+         endingLineNumber = "301"
          landmarkName = "saveAlbumArt (File&amp; audioFile, Image&amp; newCover, String imageType)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -283,11 +281,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "393167537.264901"
+         timestampString = "396284192.316683"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "400"
-         endingLineNumber = "400"
+         startingLineNumber = "416"
+         endingLineNumber = "416"
          landmarkName = "GuiControl::next()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -295,14 +293,36 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "../../Source/Utility/LastFm/LastFmConnection.h"
-         timestampString = "393802709.734494"
+         filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
+         timestampString = "396402108.349571"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "40"
-         endingLineNumber = "40"
-         landmarkName = "class LastFmConnection"
-         landmarkType = "3">
+         startingLineNumber = "78"
+         endingLineNumber = "78"
+         landmarkName = "MusicLibraryTable::~MusicLibraryTable()"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
+         timestampString = "396402110.815709"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "81"
+         endingLineNumber = "81"
+         landmarkName = "MusicLibraryTable::~MusicLibraryTable()"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
+   <SymbolicBreakpoints>
+      <SymbolicBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         symbolName = "malloc_error_break"
+         moduleName = "">
+      </SymbolicBreakpoint>
+   </SymbolicBreakpoints>
 </Bucket>

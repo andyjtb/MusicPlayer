@@ -26,6 +26,7 @@ public:
     
     void sendNowPlaying (ValueTree playingInfo);
     void getTrackInfo (ValueTree selectedTrack);
+    void scrobbleTrack (ValueTree incomingTrack, Time startedPlaying);
     
     String generateApiSig (String method);
     
@@ -49,6 +50,10 @@ private:
     String apiKey, apiToken, apiSession, sessionKey, userName;
     
     Value enabled;
+    
+    ValueTree toScrobble;
+    
+    File scrobblesFile;
 };
 
 #endif

@@ -1,24 +1,23 @@
 /*
   ==============================================================================
 
-   This file is part of the JUCE library - "Jules' Utility Class Extensions"
-   Copyright 2004-11 by Raw Material Software Ltd.
+   This file is part of the JUCE library.
+   Copyright (c) 2013 - Raw Material Software Ltd.
 
-  ------------------------------------------------------------------------------
+   Permission is granted to use this software under the terms of either:
+   a) the GPL v2 (or any later version)
+   b) the Affero GPL v3
 
-   JUCE can be redistributed and/or modified under the terms of the GNU General
-   Public License (Version 2), as published by the Free Software Foundation.
-   A copy of the license is included in the JUCE distribution, or can be found
-   online at www.gnu.org/licenses.
+   Details of these licenses can be found at: www.gnu.org/licenses
 
    JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
    A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-  ------------------------------------------------------------------------------
+   ------------------------------------------------------------------------------
 
    To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.rawmaterialsoftware.com/juce for more information.
+   available: visit www.juce.com for more information.
 
   ==============================================================================
 */
@@ -27,8 +26,8 @@ class MouseInputSourceInternal   : private AsyncUpdater
 {
 public:
     //==============================================================================
-    MouseInputSourceInternal (MouseInputSource& source_, const int index_, const bool isMouseDevice_)
-        : index (index_), isMouseDevice (isMouseDevice_), source (source_), lastPeer (nullptr),
+    MouseInputSourceInternal (MouseInputSource& s, const int i, const bool isMouse)
+        : index (i), isMouseDevice (isMouse), source (s), lastPeer (nullptr),
           isUnboundedMouseModeOn (false), isCursorVisibleUntilOffscreen (false), currentCursorHandle (nullptr),
           mouseEventCounter (0), mouseMovedSignificantlySincePressed (false)
     {
@@ -77,8 +76,13 @@ public:
     {
         // This needs to return the live position if possible, but it mustn't update the lastScreenPos
         // value, because that can cause continuity problems.
-        return unboundedMouseOffset + (isMouseDevice ? MouseInputSource::getCurrentMousePosition()
+        return unboundedMouseOffset + (isMouseDevice ? MouseInputSource::getCurrentRawMousePosition()
                                                      : lastScreenPos);
+    }
+
+    void setScreenPosition (Point<int> p)
+    {
+        MouseInputSource::setRawMousePosition (p);
     }
 
     //==============================================================================
@@ -90,52 +94,52 @@ public:
     #define JUCE_MOUSE_EVENT_DBG(desc)
    #endif
 
-    void sendMouseEnter (Component* const comp, Point<int> screenPos, Time time)
+    void sendMouseEnter (Component& comp, Point<int> screenPos, Time time)
     {
         JUCE_MOUSE_EVENT_DBG ("enter")
-        comp->internalMouseEnter (source, comp->getLocalPoint (nullptr, screenPos), time);
+        comp.internalMouseEnter (source, comp.getLocalPoint (nullptr, screenPos), time);
     }
 
-    void sendMouseExit (Component* const comp, Point<int> screenPos, Time time)
+    void sendMouseExit (Component& comp, Point<int> screenPos, Time time)
     {
         JUCE_MOUSE_EVENT_DBG ("exit")
-        comp->internalMouseExit (source, comp->getLocalPoint (nullptr, screenPos), time);
+        comp.internalMouseExit (source, comp.getLocalPoint (nullptr, screenPos), time);
     }
 
-    void sendMouseMove (Component* const comp, Point<int> screenPos, Time time)
+    void sendMouseMove (Component& comp, Point<int> screenPos, Time time)
     {
         JUCE_MOUSE_EVENT_DBG ("move")
-        comp->internalMouseMove (source, comp->getLocalPoint (nullptr, screenPos), time);
+        comp.internalMouseMove (source, comp.getLocalPoint (nullptr, screenPos), time);
     }
 
-    void sendMouseDown (Component* const comp, Point<int> screenPos, Time time)
+    void sendMouseDown (Component& comp, Point<int> screenPos, Time time)
     {
         JUCE_MOUSE_EVENT_DBG ("down")
-        comp->internalMouseDown (source, comp->getLocalPoint (nullptr, screenPos), time);
+        comp.internalMouseDown (source, comp.getLocalPoint (nullptr, screenPos), time);
     }
 
-    void sendMouseDrag (Component* const comp, Point<int> screenPos, Time time)
+    void sendMouseDrag (Component& comp, Point<int> screenPos, Time time)
     {
         JUCE_MOUSE_EVENT_DBG ("drag")
-        comp->internalMouseDrag (source, comp->getLocalPoint (nullptr, screenPos), time);
+        comp.internalMouseDrag (source, comp.getLocalPoint (nullptr, screenPos), time);
     }
 
-    void sendMouseUp (Component* const comp, Point<int> screenPos, Time time, const ModifierKeys oldMods)
+    void sendMouseUp (Component& comp, Point<int> screenPos, Time time, const ModifierKeys oldMods)
     {
         JUCE_MOUSE_EVENT_DBG ("up")
-        comp->internalMouseUp (source, comp->getLocalPoint (nullptr, screenPos), time, oldMods);
+        comp.internalMouseUp (source, comp.getLocalPoint (nullptr, screenPos), time, oldMods);
     }
 
-    void sendMouseWheel (Component* const comp, Point<int> screenPos, Time time, const MouseWheelDetails& wheel)
+    void sendMouseWheel (Component& comp, Point<int> screenPos, Time time, const MouseWheelDetails& wheel)
     {
         JUCE_MOUSE_EVENT_DBG ("wheel")
-        comp->internalMouseWheel (source, comp->getLocalPoint (nullptr, screenPos), time, wheel);
+        comp.internalMouseWheel (source, comp.getLocalPoint (nullptr, screenPos), time, wheel);
     }
 
-    void sendMagnifyGesture (Component* const comp, Point<int> screenPos, Time time, const float amount)
+    void sendMagnifyGesture (Component& comp, Point<int> screenPos, Time time, const float amount)
     {
         JUCE_MOUSE_EVENT_DBG ("magnify")
-        comp->internalMagnifyGesture (source, comp->getLocalPoint (nullptr, screenPos), time, amount);
+        comp.internalMagnifyGesture (source, comp.getLocalPoint (nullptr, screenPos), time, amount);
     }
 
     //==============================================================================
@@ -165,7 +169,7 @@ public:
                 const ModifierKeys oldMods (getCurrentModifiers());
                 buttonState = newButtonState; // must change this before calling sendMouseUp, in case it runs a modal loop
 
-                sendMouseUp (current, screenPos + unboundedMouseOffset, time, oldMods);
+                sendMouseUp (*current, screenPos + unboundedMouseOffset, time, oldMods);
 
                 if (lastCounter != mouseEventCounter)
                     return true; // if a modal loop happened, then newButtonState is no longer valid.
@@ -183,7 +187,7 @@ public:
             if (Component* const current = getComponentUnderMouse())
             {
                 registerMouseDown (screenPos, time, *current, buttonState);
-                sendMouseDown (current, screenPos, time);
+                sendMouseDown (*current, screenPos, time);
             }
         }
 
@@ -207,7 +211,7 @@ public:
                 if (safeOldComp != nullptr)
                 {
                     componentUnderMouse = safeNewComp;
-                    sendMouseExit (safeOldComp, screenPos, time);
+                    sendMouseExit (*safeOldComp, screenPos, time);
                 }
 
                 buttonState = originalButtonState;
@@ -216,21 +220,21 @@ public:
             current = componentUnderMouse = safeNewComp;
 
             if (current != nullptr)
-                sendMouseEnter (current, screenPos, time);
+                sendMouseEnter (*current, screenPos, time);
 
             revealCursor (false);
             setButtons (screenPos, time, originalButtonState);
         }
     }
 
-    void setPeer (ComponentPeer* const newPeer, Point<int> screenPos, Time time)
+    void setPeer (ComponentPeer& newPeer, Point<int> screenPos, Time time)
     {
         ModifierKeys::updateCurrentModifiers();
 
-        if (newPeer != lastPeer)
+        if (&newPeer != lastPeer)
         {
             setComponentUnderMouse (nullptr, screenPos, time);
-            lastPeer = newPeer;
+            lastPeer = &newPeer;
             setComponentUnderMouse (findComponentAt (screenPos), screenPos, time);
         }
     }
@@ -250,14 +254,14 @@ public:
                 if (isDragging())
                 {
                     registerMouseDrag (newScreenPos);
-                    sendMouseDrag (current, newScreenPos + unboundedMouseOffset, time);
+                    sendMouseDrag (*current, newScreenPos + unboundedMouseOffset, time);
 
                     if (isUnboundedMouseModeOn)
                         handleUnboundedDrag (current);
                 }
                 else
                 {
-                    sendMouseMove (current, newScreenPos, time);
+                    sendMouseMove (*current, newScreenPos, time);
                 }
             }
 
@@ -266,12 +270,11 @@ public:
     }
 
     //==============================================================================
-    void handleEvent (ComponentPeer* const newPeer, Point<int> positionWithinPeer, Time time, const ModifierKeys newMods)
+    void handleEvent (ComponentPeer& newPeer, Point<int> positionWithinPeer, Time time, const ModifierKeys newMods)
     {
-        jassert (newPeer != nullptr);
         lastTime = time;
         ++mouseEventCounter;
-        const Point<int> screenPos (newPeer->localToGlobal (positionWithinPeer));
+        const Point<int> screenPos (newPeer.localToGlobal (positionWithinPeer));
 
         if (isDragging() && newMods.isAnyMouseButtonDown())
         {
@@ -293,14 +296,13 @@ public:
         }
     }
 
-    Component* getTargetForGesture (ComponentPeer* const peer, Point<int> positionWithinPeer,
+    Component* getTargetForGesture (ComponentPeer& peer, Point<int> positionWithinPeer,
                                     Time time, Point<int>& screenPos)
     {
-        jassert (peer != nullptr);
         lastTime = time;
         ++mouseEventCounter;
 
-        screenPos = peer->localToGlobal (positionWithinPeer);
+        screenPos = peer.localToGlobal (positionWithinPeer);
         setPeer (peer, screenPos, time);
         setScreenPos (screenPos, time, false);
         triggerFakeMove();
@@ -308,22 +310,22 @@ public:
         return isDragging() ? nullptr : getComponentUnderMouse();
     }
 
-    void handleWheel (ComponentPeer* const peer, Point<int> positionWithinPeer,
+    void handleWheel (ComponentPeer& peer, Point<int> positionWithinPeer,
                       Time time, const MouseWheelDetails& wheel)
     {
         Desktop::getInstance().incrementMouseWheelCounter();
 
         Point<int> screenPos;
         if (Component* current = getTargetForGesture (peer, positionWithinPeer, time, screenPos))
-            sendMouseWheel (current, screenPos, time, wheel);
+            sendMouseWheel (*current, screenPos, time, wheel);
     }
 
-    void handleMagnifyGesture (ComponentPeer* const peer, Point<int> positionWithinPeer,
+    void handleMagnifyGesture (ComponentPeer& peer, Point<int> positionWithinPeer,
                                Time time, const float scaleFactor)
     {
         Point<int> screenPos;
         if (Component* current = getTargetForGesture (peer, positionWithinPeer, time, screenPos))
-            sendMagnifyGesture (current, screenPos, time, scaleFactor);
+            sendMagnifyGesture (*current, screenPos, time, scaleFactor);
     }
 
     //==============================================================================
@@ -363,7 +365,7 @@ public:
         triggerAsyncUpdate();
     }
 
-    void handleAsyncUpdate()
+    void handleAsyncUpdate() override
     {
         setScreenPos (lastScreenPos, jmax (lastTime, Time::getCurrentTime()), true);
     }
@@ -536,20 +538,21 @@ void MouseInputSource::showMouseCursor (const MouseCursor& cursor)      { pimpl-
 void MouseInputSource::hideCursor()                                     { pimpl->hideCursor(); }
 void MouseInputSource::revealCursor()                                   { pimpl->revealCursor (false); }
 void MouseInputSource::forceMouseCursorUpdate()                         { pimpl->revealCursor (true); }
+void MouseInputSource::setScreenPosition (Point<int> p)                 { pimpl->setScreenPosition (p); }
 
-void MouseInputSource::handleEvent (ComponentPeer* peer, Point<int> positionWithinPeer,
+void MouseInputSource::handleEvent (ComponentPeer& peer, Point<int> positionWithinPeer,
                                     const int64 time, const ModifierKeys mods)
 {
     pimpl->handleEvent (peer, positionWithinPeer, Time (time), mods.withOnlyMouseButtons());
 }
 
-void MouseInputSource::handleWheel (ComponentPeer* const peer, Point<int> positionWithinPeer,
+void MouseInputSource::handleWheel (ComponentPeer& peer, Point<int> positionWithinPeer,
                                     const int64 time, const MouseWheelDetails& wheel)
 {
     pimpl->handleWheel (peer, positionWithinPeer, Time (time), wheel);
 }
 
-void MouseInputSource::handleMagnifyGesture (ComponentPeer* const peer, Point<int> positionWithinPeer,
+void MouseInputSource::handleMagnifyGesture (ComponentPeer& peer, Point<int> positionWithinPeer,
                                              const int64 time, const float scaleFactor)
 {
     pimpl->handleMagnifyGesture (peer, positionWithinPeer, Time (time), scaleFactor);

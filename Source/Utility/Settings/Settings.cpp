@@ -199,7 +199,7 @@ void Settings::initSettings()
         ValueTree currentEqPreset = eqSettings.getChild(eqDetails.ID - 2);
         if (currentEqPreset.isValid())
             for (int i = 1; i < currentEqPreset.getNumProperties(); i++)
-                eqDetails.gains.add(float(currentEqPreset.getProperty(currentEqPreset.getPropertyName(i))));
+                eqDetails.gains.add(float(currentEqPreset.getProperty(currentEqPreset.getPropertyName(i),0)));
 
     }
     

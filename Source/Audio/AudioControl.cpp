@@ -106,11 +106,6 @@ int AudioControl::loadFile (const File& audioFile)
 	}	    
 }
 
-//bool AudioControl::isPlaying()
-//{
-//	return transport.isPlaying();
-//}
-
 void AudioControl::setVolume(double incomingVolume)
 {
 	audioSourcePlayer.setGain(incomingVolume);

@@ -1,24 +1,23 @@
 /*
   ==============================================================================
 
-   This file is part of the JUCE library - "Jules' Utility Class Extensions"
-   Copyright 2004-11 by Raw Material Software Ltd.
+   This file is part of the JUCE library.
+   Copyright (c) 2013 - Raw Material Software Ltd.
 
-  ------------------------------------------------------------------------------
+   Permission is granted to use this software under the terms of either:
+   a) the GPL v2 (or any later version)
+   b) the Affero GPL v3
 
-   JUCE can be redistributed and/or modified under the terms of the GNU General
-   Public License (Version 2), as published by the Free Software Foundation.
-   A copy of the license is included in the JUCE distribution, or can be found
-   online at www.gnu.org/licenses.
+   Details of these licenses can be found at: www.gnu.org/licenses
 
    JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
    A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-  ------------------------------------------------------------------------------
+   ------------------------------------------------------------------------------
 
    To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.rawmaterialsoftware.com/juce for more information.
+   available: visit www.juce.com for more information.
 
   ==============================================================================
 */
@@ -1806,7 +1805,7 @@ private:
            #endif
         }
 
-        void timerCallback()
+        void timerCallback() override
         {
            #if JUCE_USE_XSHM
             if (shmPaintsPending != 0)
@@ -2969,7 +2968,14 @@ ComponentPeer* Component::createNewPeer (int styleFlags, void* nativeWindowToAtt
 }
 
 //==============================================================================
-void Desktop::Displays::findDisplays()
+static double getDisplayDPI (int index)
+{
+    double dpiX = (DisplayWidth  (display, index) * 25.4) / DisplayWidthMM  (display, index);
+    double dpiY = (DisplayHeight (display, index) * 25.4) / DisplayHeightMM (display, index);
+    return (dpiX + dpiY) / 2.0;
+}
+
+void Desktop::Displays::findDisplays (float masterScale)
 {
     if (display == 0)
         return;
@@ -3019,9 +3025,10 @@ void Desktop::Displays::findDisplays()
                             d.userArea = d.totalArea = Rectangle<int> (screens[j].x_org,
                                                                        screens[j].y_org,
                                                                        screens[j].width,
-                                                                       screens[j].height);
+                                                                       screens[j].height) * masterScale;
                             d.isMain = (index == 0);
-                            d.scale = 1.0;
+                            d.scale = masterScale;
+                            d.dpi = getDisplayDPI (index);
 
                             displays.add (d);
                         }
@@ -3052,9 +3059,10 @@ void Desktop::Displays::findDisplays()
 
                     Display d;
                     d.userArea = d.totalArea = Rectangle<int> (position[0], position[1],
-                                                               position[2], position[3]);
+                                                               position[2], position[3]) / masterScale;
                     d.isMain = (displays.size() == 0);
-                    d.scale = 1.0;
+                    d.scale = masterScale;
+                    d.dpi = getDisplayDPI (i);
 
                     displays.add (d);
                 }
@@ -3064,10 +3072,11 @@ void Desktop::Displays::findDisplays()
         if (displays.size() == 0)
         {
             Display d;
-            d.userArea = d.totalArea = Rectangle<int> (DisplayWidth (display, DefaultScreen (display)),
-                                                       DisplayHeight (display, DefaultScreen (display)));
+            d.userArea = d.totalArea = Rectangle<int> (DisplayWidth  (display, DefaultScreen (display)),
+                                                       DisplayHeight (display, DefaultScreen (display))) * masterScale;
             d.isMain = true;
-            d.scale = 1.0;
+            d.scale = masterScale;
+            d.dpi = getDisplayDPI (0);
 
             displays.add (d);
         }
@@ -3095,7 +3104,7 @@ bool Desktop::canUseSemiTransparentWindows() noexcept
              && (matchedDepth == desiredDepth);
 }
 
-Point<int> MouseInputSource::getCurrentMousePosition()
+Point<int> MouseInputSource::getCurrentRawMousePosition()
 {
     Window root, child;
     int x, y, winx, winy;
@@ -3115,7 +3124,7 @@ Point<int> MouseInputSource::getCurrentMousePosition()
     return Point<int> (x, y);
 }
 
-void Desktop::setMousePosition (Point<int> newPosition)
+void MouseInputSource::setRawMousePosition (Point<int> newPosition)
 {
     ScopedXLock xlock;
     Window root = RootWindow (display, DefaultScreen (display));

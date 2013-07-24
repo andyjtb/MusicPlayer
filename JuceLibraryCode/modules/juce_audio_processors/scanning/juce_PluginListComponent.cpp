@@ -1,24 +1,23 @@
 /*
   ==============================================================================
 
-   This file is part of the JUCE library - "Jules' Utility Class Extensions"
-   Copyright 2004-11 by Raw Material Software Ltd.
+   This file is part of the JUCE library.
+   Copyright (c) 2013 - Raw Material Software Ltd.
 
-  ------------------------------------------------------------------------------
+   Permission is granted to use this software under the terms of either:
+   a) the GPL v2 (or any later version)
+   b) the Affero GPL v3
 
-   JUCE can be redistributed and/or modified under the terms of the GNU General
-   Public License (Version 2), as published by the Free Software Foundation.
-   A copy of the license is included in the JUCE distribution, or can be found
-   online at www.gnu.org/licenses.
+   Details of these licenses can be found at: www.gnu.org/licenses
 
    JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
    A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-  ------------------------------------------------------------------------------
+   ------------------------------------------------------------------------------
 
    To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.rawmaterialsoftware.com/juce for more information.
+   available: visit www.juce.com for more information.
 
   ==============================================================================
 */
@@ -200,7 +199,11 @@ void PluginListComponent::optionsMenuCallback (int result)
         case 6:   showSelectedFolder(); break;
         case 7:   removeMissingPlugins(); break;
 
-        default:  scanFor (formatManager.getFormat (result - 10)); break;
+        default:
+            if (AudioPluginFormat* format = formatManager.getFormat (result - 10))
+                scanFor (*format);
+
+            break;
     }
 }
 
@@ -243,6 +246,18 @@ void PluginListComponent::filesDropped (const StringArray& files, int, int)
     list.scanAndAddDragAndDroppedFiles (formatManager, files, typesFound);
 }
 
+FileSearchPath PluginListComponent::getLastSearchPath (PropertiesFile& properties, AudioPluginFormat& format)
+{
+    return properties.getValue ("lastPluginScanPath_" + format.getName(),
+                                format.getDefaultLocationsToSearch().toString());
+}
+
+void PluginListComponent::setLastSearchPath (PropertiesFile& properties, AudioPluginFormat& format,
+                                             const FileSearchPath& newPath)
+{
+    properties.setValue ("lastPluginScanPath_" + format.getName(), newPath.toString());
+}
+
 //==============================================================================
 class PluginListComponent::Scanner    : private Timer
 {
@@ -262,7 +277,7 @@ public:
         if (path.getNumPaths() > 0) // if the path is empty, then paths aren't used for this format.
         {
             if (propertiesToUse != nullptr)
-                path = propertiesToUse->getValue ("lastPluginScanPath_" + formatToScan.getName(), path.toString());
+                path = getLastSearchPath (*propertiesToUse, formatToScan);
 
             pathList.setSize (500, 300);
             pathList.setPath (path);
@@ -311,7 +326,7 @@ private:
 
         if (propertiesToUse != nullptr)
         {
-            propertiesToUse->setValue ("lastPluginScanPath_" + formatToScan.getName(), pathList.getPath().toString());
+            setLastSearchPath (*propertiesToUse, formatToScan, pathList.getPath());
             propertiesToUse->saveIfNeeded();
         }
 
@@ -336,7 +351,7 @@ private:
                                                : StringArray());
     }
 
-    void timerCallback()
+    void timerCallback() override
     {
         if (pool == nullptr)
         {
@@ -350,14 +365,12 @@ private:
         if (finished)
             finishedScan();
         else
-            progressWindow.setMessage (progressMessage);
+            progressWindow.setMessage (TRANS("Testing") + ":\n\n" + pluginBeingScanned);
     }
 
     bool doNextScan()
     {
-        progressMessage = TRANS("Testing") + ":\n\n" + scanner->getNextPluginFileThatWillBeScanned();
-
-        if (scanner->scanNextFile (true))
+        if (scanner->scanNextFile (true, pluginBeingScanned))
         {
             progress = scanner->getProgress();
             return true;
@@ -373,7 +386,7 @@ private:
     ScopedPointer<PluginDirectoryScanner> scanner;
     AlertWindow pathChooserWindow, progressWindow;
     FileSearchPathListComponent pathList;
-    String progressMessage;
+    String pluginBeingScanned;
     double progress;
     int numThreads;
     bool finished;
@@ -401,10 +414,14 @@ private:
 
 };
 
-void PluginListComponent::scanFor (AudioPluginFormat* format)
+void PluginListComponent::scanFor (AudioPluginFormat& format)
 {
-    if (format != nullptr)
-        currentScanner = new Scanner (*this, *format, propertiesToUse, numThreads);
+    currentScanner = new Scanner (*this, format, propertiesToUse, numThreads);
+}
+
+bool PluginListComponent::isScanning() const noexcept
+{
+    return currentScanner != nullptr;
 }
 
 void PluginListComponent::scanFinished (const StringArray& failedFiles)

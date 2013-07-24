@@ -102,7 +102,18 @@ void GuiControl::timerCallback(int timerId)
 		outputMeters.setOutputMeterValueL(localOutputMeterL);
 		outputMeters.setOutputMeterValueR(localOutputMeterR);
 	}
-	if (timerId == 1) {
+	if (timerId == 1)
+    {
+        timePlaying += 0.1;
+        if (timePlaying > (audioControl->getTransportLength()/2))
+        {
+            //If the song has played more than half of the track scrobble
+            if (!scrobbled)
+            {
+                scrobbled = true;
+                currentLastFm.scrobbleTrack(tablePlayingRow, startedPlaying);
+            }
+        }
         
 		transport.setTransportPosition (audioControl->getTransportPosition());
         if(remoteConnections.getFirst() != nullptr)
@@ -327,7 +338,12 @@ void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
             if (shouldPlay)
                 singletonPlayState = true;
             
+            //Last.fm
             currentLastFm.sendNowPlaying(treeToLoad);
+            //MAY NOT BE THE BEST PLACE
+            startedPlaying = Time::getCurrentTime();
+            timePlaying = 0;
+            scrobbled = false;
             
             trackInfo.loadTrackInfo(tablePlayingRow);
             artUpdateRequired = true;
@@ -396,7 +412,7 @@ void GuiControl::next()
         }
         else
         {
-                singletonPlayState = false;
+            singletonPlayState = false;
         }
     }
 }
