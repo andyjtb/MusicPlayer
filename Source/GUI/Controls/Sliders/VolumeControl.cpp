@@ -19,7 +19,7 @@ VolumeControl::VolumeControl ()
 	
     addAndMakeVisible (&volumeButton);
     volumeButton.addListener (this);
-	volumeButton.setToggleState(false, true);
+	volumeButton.setToggleState(false, sendNotification);
 	
 	volumeSlider.setValue(1, sendNotificationAsync);
 	

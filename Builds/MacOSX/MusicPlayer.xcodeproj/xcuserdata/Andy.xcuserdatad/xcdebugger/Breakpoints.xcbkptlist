@@ -36,11 +36,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
-         timestampString = "388938883.155946"
+         timestampString = "396403569.695815"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "343"
-         endingLineNumber = "343"
+         startingLineNumber = "344"
+         endingLineNumber = "344"
          landmarkName = "MusicLibraryTable::selectedRowsChanged(int lastRowSelected)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -49,11 +49,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
-         timestampString = "388938883.155946"
+         timestampString = "396403569.695815"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "164"
-         endingLineNumber = "164"
+         startingLineNumber = "165"
+         endingLineNumber = "165"
          landmarkName = "MusicLibraryTable::libraryUpdated (ITunesLibrary* library)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -140,11 +140,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
-         timestampString = "390595343.512775"
+         timestampString = "396403569.695815"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "341"
-         endingLineNumber = "341"
+         startingLineNumber = "342"
+         endingLineNumber = "342"
          landmarkName = "MusicLibraryTable::selectedRowsChanged(int lastRowSelected)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -287,32 +287,6 @@
          startingLineNumber = "416"
          endingLineNumber = "416"
          landmarkName = "GuiControl::next()"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
-         timestampString = "396402108.349571"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "78"
-         endingLineNumber = "78"
-         landmarkName = "MusicLibraryTable::~MusicLibraryTable()"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
-         timestampString = "396402110.815709"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "81"
-         endingLineNumber = "81"
-         landmarkName = "MusicLibraryTable::~MusicLibraryTable()"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

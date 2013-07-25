@@ -10,7 +10,6 @@
 #define EQFILTERS
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "dRowAudio_BiquadFilter.h"
 #include "Settings.h"
 
 #define numFrequencies 10
