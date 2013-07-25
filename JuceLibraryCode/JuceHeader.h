@@ -10,8 +10,8 @@
 
 */
 
-#ifndef __APPHEADERFILE_C1B08Z__
-#define __APPHEADERFILE_C1B08Z__
+#ifndef __APPHEADERFILE_QVFDPU__
+#define __APPHEADERFILE_QVFDPU__
 
 #include "AppConfig.h"
 #include "modules/juce_audio_basics/juce_audio_basics.h"
@@ -40,4 +40,4 @@ namespace ProjectInfo
     const int          versionNumber  = 0x10000;
 }
 
-#endif   // __APPHEADERFILE_C1B08Z__
+#endif   // __APPHEADERFILE_QVFDPU__

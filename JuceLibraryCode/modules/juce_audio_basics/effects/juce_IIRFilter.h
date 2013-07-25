@@ -100,7 +100,6 @@ public:
 
 private:
     friend class IIRFilter;
-    friend class BiquadFilter;
     float c[5];
 };
 

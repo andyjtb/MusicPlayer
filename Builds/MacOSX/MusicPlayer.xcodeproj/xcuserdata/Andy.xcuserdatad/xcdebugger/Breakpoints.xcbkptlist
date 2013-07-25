@@ -36,11 +36,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
-         timestampString = "396403569.695815"
+         timestampString = "388938883.155946"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "344"
-         endingLineNumber = "344"
+         startingLineNumber = "343"
+         endingLineNumber = "343"
          landmarkName = "MusicLibraryTable::selectedRowsChanged(int lastRowSelected)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -49,11 +49,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
-         timestampString = "396403569.695815"
+         timestampString = "388938883.155946"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "165"
-         endingLineNumber = "165"
+         startingLineNumber = "164"
+         endingLineNumber = "164"
          landmarkName = "MusicLibraryTable::libraryUpdated (ITunesLibrary* library)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -75,7 +75,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/Utility/MetaData/TagReader.h"
-         timestampString = "396402419.395938"
+         timestampString = "396441434.237335"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "308"
@@ -101,7 +101,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "396284192.316683"
+         timestampString = "396442135.298711"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "371"
@@ -114,7 +114,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "396284192.316683"
+         timestampString = "396441680.757608"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "315"
@@ -127,7 +127,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "396284192.316683"
+         timestampString = "396441680.757608"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "335"
@@ -140,11 +140,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/MusicLibraryTable/MusicLibraryTableModel.cpp"
-         timestampString = "396403569.695815"
+         timestampString = "390595343.512775"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "342"
-         endingLineNumber = "342"
+         startingLineNumber = "341"
+         endingLineNumber = "341"
          landmarkName = "MusicLibraryTable::selectedRowsChanged(int lastRowSelected)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -153,7 +153,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "396284192.316683"
+         timestampString = "396441680.757608"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "135"
@@ -183,7 +183,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "482"
-         endingLineNumber = "482">
+         endingLineNumber = "482"
+         landmarkName = "ListBox::selectRow (const int row, bool dontScroll, bool deselectOthersFirst)"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -242,7 +244,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/Utility/MetaData/TagReader.h"
-         timestampString = "396402419.395938"
+         timestampString = "396441434.237335"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "301"
@@ -281,7 +283,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../Source/GUI/GuiControl.cpp"
-         timestampString = "396284192.316683"
+         timestampString = "396442135.298711"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "416"
@@ -290,13 +292,4 @@
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
-   <SymbolicBreakpoints>
-      <SymbolicBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         symbolName = "malloc_error_break"
-         moduleName = "">
-      </SymbolicBreakpoint>
-   </SymbolicBreakpoints>
 </Bucket>

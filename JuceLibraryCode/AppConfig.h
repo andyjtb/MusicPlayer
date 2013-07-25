@@ -11,8 +11,8 @@
 
 */
 
-#ifndef __JUCE_APPCONFIG_C1B08Z__
-#define __JUCE_APPCONFIG_C1B08Z__
+#ifndef __JUCE_APPCONFIG_QVFDPU__
+#define __JUCE_APPCONFIG_QVFDPU__
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
@@ -165,4 +165,4 @@
 #endif
 
 
-#endif  // __JUCE_APPCONFIG_C1B08Z__
+#endif  // __JUCE_APPCONFIG_QVFDPU__

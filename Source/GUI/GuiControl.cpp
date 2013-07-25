@@ -338,7 +338,7 @@ void GuiControl::loadFile(ValueTree treeToLoad, bool shouldPlay)
             if (shouldPlay)
                 singletonPlayState = true;
             
-            //Last.fm
+            //LAST FM
             currentLastFm.sendNowPlaying(treeToLoad);
             //MAY NOT BE THE BEST PLACE
             startedPlaying = Time::getCurrentTime();

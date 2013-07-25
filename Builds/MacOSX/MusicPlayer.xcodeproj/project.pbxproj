@@ -670,16 +670,6 @@
 		A18B4B2216F2518F006A17B8 /* InfoBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = InfoBar.cpp; path = "Info Bar/InfoBar.cpp"; sourceTree = "<group>"; };
 		A18B4B2316F25190006A17B8 /* InfoBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoBar.h; path = "Info Bar/InfoBar.h"; sourceTree = "<group>"; };
 		A18B4B3416F690F0006A17B8 /* vecLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vecLib.framework; path = /System/Library/Frameworks/vecLib.framework; sourceTree = "<absolute>"; };
-		A19AD8431789AFE90012A1CE /* Filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Filter.cpp; path = FingerPrint/Filter.cpp; sourceTree = "<group>"; };
-		A19AD8441789AFE90012A1CE /* FingerprintExtractor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FingerprintExtractor.cpp; path = FingerPrint/FingerprintExtractor.cpp; sourceTree = "<group>"; };
-		A19AD8451789AFE90012A1CE /* OptFFT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OptFFT.cpp; path = FingerPrint/OptFFT.cpp; sourceTree = "<group>"; };
-		A19AD8491789AFF10012A1CE /* CircularArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CircularArray.h; path = FingerPrint/fplib/CircularArray.h; sourceTree = "<group>"; };
-		A19AD84A1789AFF10012A1CE /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Filter.h; path = FingerPrint/fplib/Filter.h; sourceTree = "<group>"; };
-		A19AD84B1789AFF10012A1CE /* FingerprintExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FingerprintExtractor.h; path = FingerPrint/fplib/FingerprintExtractor.h; sourceTree = "<group>"; };
-		A19AD84C1789AFF10012A1CE /* FloatingAverage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FloatingAverage.h; path = FingerPrint/fplib/FloatingAverage.h; sourceTree = "<group>"; };
-		A19AD84D1789AFF10012A1CE /* fp_helper_fun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fp_helper_fun.h; path = FingerPrint/fplib/fp_helper_fun.h; sourceTree = "<group>"; };
-		A19AD84E1789AFF10012A1CE /* OptFFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OptFFT.h; path = FingerPrint/fplib/OptFFT.h; sourceTree = "<group>"; };
-		A19AD84F1789AFF10012A1CE /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = version.h; path = FingerPrint/fplib/version.h; sourceTree = "<group>"; };
 		A1A13BF9DA7E05C76D9C45DD /* juce_AudioPluginFormatManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_AudioPluginFormatManager.h; path = ../../JuceLibraryCode/modules/juce_audio_processors/format/juce_AudioPluginFormatManager.h; sourceTree = SOURCE_ROOT; };
 		A1A192860DBA887C124BF8F2 /* juce_MidiKeyboardState.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_MidiKeyboardState.cpp; path = ../../JuceLibraryCode/modules/juce_audio_basics/midi/juce_MidiKeyboardState.cpp; sourceTree = SOURCE_ROOT; };
 		A1BB0B7816A63EF1005DC71A /* TrackMulti.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TrackMulti.cpp; path = Track/TrackMulti.cpp; sourceTree = "<group>"; };
@@ -2236,31 +2226,6 @@
 			path = Effects;
 			sourceTree = "<group>";
 		};
-		A19AD83B1789AF600012A1CE /* FingerPrint */ = {
-			isa = PBXGroup;
-			children = (
-				A19AD8431789AFE90012A1CE /* Filter.cpp */,
-				A19AD8441789AFE90012A1CE /* FingerprintExtractor.cpp */,
-				A19AD8451789AFE90012A1CE /* OptFFT.cpp */,
-				A19AD8421789AFD90012A1CE /* fplib */,
-			);
-			name = FingerPrint;
-			sourceTree = "<group>";
-		};
-		A19AD8421789AFD90012A1CE /* fplib */ = {
-			isa = PBXGroup;
-			children = (
-				A19AD8491789AFF10012A1CE /* CircularArray.h */,
-				A19AD84A1789AFF10012A1CE /* Filter.h */,
-				A19AD84B1789AFF10012A1CE /* FingerprintExtractor.h */,
-				A19AD84C1789AFF10012A1CE /* FloatingAverage.h */,
-				A19AD84D1789AFF10012A1CE /* fp_helper_fun.h */,
-				A19AD84E1789AFF10012A1CE /* OptFFT.h */,
-				A19AD84F1789AFF10012A1CE /* version.h */,
-			);
-			name = fplib;
-			sourceTree = "<group>";
-		};
 		A1A9495316BDC70400C040FA /* LibraryTreeView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2276,7 +2241,6 @@
 		A1C85A681764B09F003ABC7B /* LastFm */ = {
 			isa = PBXGroup;
 			children = (
-				A19AD83B1789AF600012A1CE /* FingerPrint */,
 				A1C85A691764B0BE003ABC7B /* LastFmConnection.cpp */,
 				A1C85A6A1764B0BE003ABC7B /* LastFmConnection.h */,
 				A1F088061765241B009FAD9D /* LastFmAuthPopup.cpp */,
@@ -3106,7 +3070,6 @@
 		E4A332A3F3A8276D8FDC1932 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -3125,21 +3088,15 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				MACOSX_DEPLOYMENT_TARGET_ppc = 10.5;
+				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
 				SDKROOT_ppc = macosx10.5;
-				VALID_ARCHS = "x86_64 i386";
 			};
 			name = Release;
 		};
 		F1771A9232A0F665F5F86D67 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -3157,15 +3114,10 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				MACOSX_DEPLOYMENT_TARGET_ppc = 10.5;
+				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT_ppc = macosx10.5;
-				VALID_ARCHS = "x86_64 i386";
 			};
 			name = Debug;
 		};

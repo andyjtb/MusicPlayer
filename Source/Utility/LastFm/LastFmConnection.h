@@ -52,7 +52,6 @@ private:
     Value enabled;
     
     ValueTree toScrobble;
-    
     File scrobblesFile;
 };
 

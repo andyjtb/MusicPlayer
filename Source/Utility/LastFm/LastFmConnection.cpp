@@ -23,10 +23,8 @@ LastFmConnection::~LastFmConnection()
 {
     if (toScrobble.getNumChildren() > 0)
     {
-        //Unscrobbled plays to be saved for scrobbling next time
         writeValueTreeToFile(toScrobble, scrobblesFile);
     }
-    
 }
 
 void LastFmConnection::setLastFmButton (Component* button)
@@ -172,6 +170,7 @@ void LastFmConnection::getTrackInfo(ValueTree selectedTrack)
     Identifier artist = MusicColumns::columnNames[MusicColumns::Artist];
     Identifier album = MusicColumns::columnNames[MusicColumns::Album];
     Identifier track = MusicColumns::columnNames[MusicColumns::Song];
+
     
     URL getInfoAddress("http://ws.audioscrobbler.com/2.0/?method=track.getInfo&artist="+lastFmString(selectedTrack, artist)
         +"&track="+lastFmString(selectedTrack, track)
@@ -228,7 +227,9 @@ void LastFmConnection::sendNowPlaying(ValueTree playingInfo)
         
         ScopedPointer<XmlElement> response;
         response = nowPlayingAddress.readEntireXmlStream(true);
-
+        
+        saveXmlTest(response);
+        
         if (response != nullptr)
         {
             String status = response->getAttributeValue(0);
@@ -250,66 +251,70 @@ void LastFmConnection::sendNowPlaying(ValueTree playingInfo)
 
 void LastFmConnection::scrobbleTrack(ValueTree incomingTrack, Time startedPlaying)
 {
-    if (connected)
+    if (sessionKey != String::empty)
     {
+        String timestamp (startedPlaying.toMilliseconds()/1000);
+        
         ValueTree track = incomingTrack.createCopy();
+        track.setProperty("Time", timestamp, 0);
         
         toScrobble.addChild(track, -1, 0);
         
-        //for size of toscrobble, scrobble each track, delete if succesful, else don't delete
-        for (int i = 0; i < toScrobble.getNumChildren(); i++)
+        if (connected)
         {
-            Identifier artist = MusicColumns::columnNames[MusicColumns::Artist];
-            Identifier album = MusicColumns::columnNames[MusicColumns::Album];
-            Identifier track = MusicColumns::columnNames[MusicColumns::Song];
-            
-            String timestamp (startedPlaying.toMilliseconds()/1000);
-            
-            String apiSigString = "album"+toScrobble.getChild(i).getProperty(album).toString()
-            +"api_key"+apiKey
-            +"artist"+toScrobble.getChild(i).getProperty(artist).toString()
-            +"method"+"track.scrobble"
-            +"sk"+sessionKey
-            +"timestamp"+timestamp
-            +"track"+toScrobble.getChild(i).getProperty(track).toString()
-            +"5502dc6ec6a34709b17139cf6a0026b8";
-            
-            
-            MD5 apiSig = MD5(apiSigString.toUTF8());
-            
-            URL nowPlayingAddress("http://ws.audioscrobbler.com/2.0/?method=track.scrobble&artist="+lastFmString(toScrobble.getChild(i), artist)
-                                  +"&album="+lastFmString(toScrobble.getChild(i), album)
-                                  +"&track="+lastFmString(toScrobble.getChild(i), track)
-                                  +"&timestamp="+timestamp
-                                  +"&api_key="+apiKey
-                                  +"&sk="+sessionKey
-                                  +"&api_sig="+apiSig.toHexString());
-            
-            ScopedPointer<XmlElement> response;
-            response = nowPlayingAddress.readEntireXmlStream(true);
-            
-            saveXmlTest(response);
-            
-            if (response != nullptr)
+            for (int i = 0; i < toScrobble.getNumChildren(); i++)
             {
-                String status = response->getAttributeValue(0);
+                Identifier artist = MusicColumns::columnNames[MusicColumns::Artist];
+                Identifier album = MusicColumns::columnNames[MusicColumns::Album];
+                Identifier track = MusicColumns::columnNames[MusicColumns::Song];
                 
-                DBG("Response: \n" + response->getAllSubText());
+                String timestamp (startedPlaying.toMilliseconds()/1000);
                 
-                if (status == "ok")
+                String apiSigString = "album"+toScrobble.getChild(i).getProperty(album).toString()
+                +"api_key"+apiKey
+                +"artist"+toScrobble.getChild(i).getProperty(artist).toString()
+                +"method"+"track.scrobble"
+                +"sk"+sessionKey
+                +"timestamp"+timestamp
+                +"track"+toScrobble.getChild(i).getProperty(track).toString()
+                +"5502dc6ec6a34709b17139cf6a0026b8";
+                
+                
+                MD5 apiSig = MD5(apiSigString.toUTF8());
+                
+                URL nowPlayingAddress("http://ws.audioscrobbler.com/2.0/?method=track.scrobble&artist="+lastFmString(toScrobble.getChild(i), artist)
+                                      +"&album="+lastFmString(toScrobble.getChild(i), album)
+                                      +"&track="+lastFmString(toScrobble.getChild(i), track)
+                                      +"&timestamp="+timestamp
+                                      +"&api_key="+apiKey
+                                      +"&sk="+sessionKey
+                                      +"&api_sig="+apiSig.toHexString());
+                
+                ScopedPointer<XmlElement> response;
+                response = nowPlayingAddress.readEntireXmlStream(true);
+                
+                saveXmlTest(response);
+                
+                if (response != nullptr)
                 {
-                    DBG(status);
-                    //Successfully scrobbled, so can be removed
-                    toScrobble.removeChild(i, 0);
-                }
-                else
-                {
-                    displayError(response);
+                    String status = response->getAttributeValue(0);
+                    
+                    DBG("Response: \n" + response->getAllSubText());
+                    
+                    if (status == "ok")
+                    {
+                        DBG(status);
+                        //Successfully scrobbled, so can be removed
+                        toScrobble.removeChild(i, 0);
+                    }
+                    else
+                    {
+                        displayError(response);
+                    }
+                    
                 }
                 
             }
-            
         }
-
     }
 }
