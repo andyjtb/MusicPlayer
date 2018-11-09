@@ -23,7 +23,7 @@
 #define __JUCER_HEADER_LASTFMMESSAGEPOPUP_LASTFMMESSAGEPOPUP_ED3A02CC__
 
 //[Headers]     -- You can add your own extra header files here --
-#include "juce.h"
+#include "JuceHeader.h"
 //[/Headers]
 
 
@@ -47,8 +47,8 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     //[/UserMethods]
 
-    void paint (Graphics& g);
-    void resized();
+    void paint (Graphics& g) override;
+    void resized() override;
 
 
 

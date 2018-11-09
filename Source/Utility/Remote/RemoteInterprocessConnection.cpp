@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#include "RemoteInterprocessConnection.h"
+#include "Remote/RemoteInterprocessConnection.h"
 #include "J_IPAddress.h"
 
 RemoteInterprocessConnection::RemoteInterprocessConnection () : InterprocessConnection(true)

@@ -76,7 +76,7 @@
 // include soundtouch library
 
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 #include "AAFilter.cpp"
 #include "BPMDetect.cpp"

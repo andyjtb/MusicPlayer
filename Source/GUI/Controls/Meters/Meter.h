@@ -10,7 +10,7 @@
 #ifndef H_METER
 #define H_METER
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 /**
  An audio meter, made using sliders.
@@ -35,9 +35,9 @@ public:
 	
 private:
     /** @internal*/
-	void paint (Graphics& g);
+	void paint (Graphics& g) override;
     /** @internal*/
-    void resized();
+    void resized() override;
     
     Slider meterLow;
     Slider meterMid;

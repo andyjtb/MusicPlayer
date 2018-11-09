@@ -167,7 +167,7 @@ void Equaliser::buttonClicked (Button* button)
         if (addPopup.runModalLoop() != 0) {
             String newName = addText.getText();
             //Checks to see if it exists
-            if (newName != String::empty)
+            if (newName != String())
             {
                 if (!singletonEqSettings.getChildWithProperty("Name", newName).isValid())
                 {

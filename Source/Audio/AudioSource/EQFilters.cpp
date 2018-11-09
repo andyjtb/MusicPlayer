@@ -15,7 +15,7 @@ EQFilters::EQFilters ()
     q = 1.8f;
     
     //Fills gains array with 1
-    //std::fill_n(gains, numFrequencies, 1);
+    std::fill_n(gains, numFrequencies, 1);
 }
 
 EQFilters::~EQFilters()

@@ -9,8 +9,8 @@
 #ifndef EQFILTERS 
 #define EQFILTERS
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "Settings.h"
+#include "JuceHeader.h"
+#include "Settings/Settings.h"
 
 #define numFrequencies 10
 /** A bank of fixed frequency graphic EQ style filters 

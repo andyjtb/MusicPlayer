@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#include "TrackDialog.h"
+#include "Information/Track/TrackDialog.h"
 
 TrackDialog::TrackDialog(int incomingTrack)
 {    

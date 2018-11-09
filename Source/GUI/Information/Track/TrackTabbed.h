@@ -9,7 +9,7 @@
 #ifndef TRACKTABBED
 #define TRACKTABBED
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "TrackSummary.h"
 #include "TrackEdit.h"
 #include "TrackArt.h"

@@ -9,9 +9,9 @@
 #ifndef CONNECTIONINDICATOR
 #define CONNECTIONINDICATOR
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "J_IPAddress.h"
-#include "Settings.h"
+#include "JuceHeader.h"
+#include "Remote/J_IPAddress.h"
+#include "Settings/Settings.h"
 
 /** A small green circle which becomes brighter when a remote control is connected */
 class ConnectionIndicator : public Component,
@@ -24,14 +24,14 @@ public:
     ~ConnectionIndicator();
     
     /** @internal */
-    void paint (Graphics& g);
+    void paint (Graphics& g) override;
     /** @internal */
-    void resized();
+    void resized() override;
     
     /** Called when a connection is made or lost, updates the list of connectioned contained in this class */
     void remoteConnectionChanged(String ipAddress);
     /** Displays the tooltip containing the local IP address and the connected devices */
-    String getTooltip();
+    String getTooltip() override;
 
 private:    
     TooltipWindow tipWindow;

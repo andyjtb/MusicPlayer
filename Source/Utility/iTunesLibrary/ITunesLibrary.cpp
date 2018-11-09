@@ -29,6 +29,7 @@ ITunesLibrary::ITunesLibrary()
 
 ITunesLibrary::~ITunesLibrary()
 {
+    clearSingletonInstance();
 }
 
 void ITunesLibrary::setLibraryFile (File newFile)
@@ -119,8 +120,8 @@ void ITunesLibrary::saveLibrary()
     
 	bool success = writeValueTreeToFile(libraryTree, singletonLibraryFile, true);
     bool playlistSuccess = writeValueTreeToFile(playlistsTree, singletonPlaylistsFile);
-	DBG("Did Library save = " << success);
-    DBG("Did Playlists save = " << playlistSuccess);
+    DBG("Did Library save = " << (success ? "1" : "0"));
+    DBG("Did Playlists save = " << (playlistSuccess ? "1" : "0"));
 }
 
 File ITunesLibrary::libraryNotFound()
@@ -165,11 +166,11 @@ void ITunesLibrary::valueTreeChildAdded (ValueTree &parentTree, ValueTree &child
 {
     listeners.call (&Listener::libraryUpdated, this);
 }
-void ITunesLibrary::valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved)
+void ITunesLibrary::valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved, int)
 {
     listeners.call (&Listener::libraryUpdated, this);
 }
-void ITunesLibrary::valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved)
+void ITunesLibrary::valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved, int oldIndex, int newIndex)
 {}
 void ITunesLibrary::valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged)
 {}

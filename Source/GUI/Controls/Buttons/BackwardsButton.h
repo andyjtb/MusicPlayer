@@ -10,7 +10,7 @@
 #ifndef H_BACKWARDSBUTTON
 #define H_BACKWARDSBUTTON
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 /**
  The backward button
  @see PlaybackControl
@@ -23,9 +23,9 @@ public:
 
 
     /** @internal */
-    void resized();
+    void resized() override;
     /** @internal */
-    void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown);
+    void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown) override;
 	
     // Binary resources:
     static const char* backwardsDown_png;

@@ -10,8 +10,8 @@
 #ifndef H_PLAYBUTTON
 #define H_PLAYBUTTON
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "Settings.h"
+#include "JuceHeader.h"
+#include "Settings/Settings.h"
 
 /**
  The play button
@@ -27,35 +27,35 @@ public:
     ~PlayButton();
 	
 	/** @internal */
-    void resized();
+    void resized() override;
     /** @internal */
-    void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown);
+    void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown) override;
   
     //ValueTree Callbacks - Not used
     /**
      Required by ValueTree::Listener, not used
      */
-    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property){}
+    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property) override {}
     /**
      Required by ValueTree::Listener, not used
      */
-    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded){}
+    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded) override {}
     /**
      Required by ValueTree::Listener, not used
      */
-    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved){}
+    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved, int indexFromWhichChildWasRemoved) override {}
     /**
      Required by ValueTree::Listener, not used
      */
-    void valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved){}
+    void valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved, int oldIndex, int newIndex) override {}
     /**
      Required by ValueTree::Listener, not used
      */
-    void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged){}
+    void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged) override {}
     /** Makes sure that there is a file supposed to be being played before pressing the button has an effect.
      Stops the user from being able to toggle the play button before a song has been loaded
      */
-    void valueTreeRedirected (ValueTree &treeWhichHasBeenChanged);
+    void valueTreeRedirected (ValueTree &treeWhichHasBeenChanged) override;
     
     // Binary resources:
     static const char* pauseDown_png;

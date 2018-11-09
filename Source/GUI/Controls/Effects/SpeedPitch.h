@@ -10,14 +10,14 @@
 #ifndef SPEEDPITCH
 #define SPEEDPITCH
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "AudioControl.h"
 
 /**
  A Component containing the speed and pitch sliders, when a slider is moved this class alerts the AudioControl
  */
 class SpeedPitch  : public Component,
-                    public SliderListener
+                    public Slider::Listener
 {
 public:
     /** Constructor - Passes a pointer to the AudioControl class, allowing this class to directly change the SoundTouch settings
@@ -30,13 +30,13 @@ public:
     
     /** @internal
      */
-    void paint (Graphics& g);
+    void paint (Graphics& g) override;
     /** @internal
      */
-    void resized();
+    void resized() override;
     /** Calls when either slider moves, changes the SoundTouch settings based on the slider values
      */
-    void sliderValueChanged (Slider* sliderThatWasMoved);
+    void sliderValueChanged (Slider* sliderThatWasMoved) override;
 
 private:
     Slider speed;

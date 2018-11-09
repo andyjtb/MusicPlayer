@@ -7,7 +7,7 @@
  *
  */
 
-#include "SearchBox.h"
+#include "MusicLibraryTable/SearchBox.h"
 
 SearchBox::SearchBox ()
 {

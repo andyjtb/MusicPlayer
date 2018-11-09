@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#include "TrackMulti.h"
+#include "Information/Track/TrackMulti.h"
 
 TrackMulti::TrackMulti(Array<int> incomingIds)
 {    
@@ -204,22 +204,22 @@ void TrackMulti::saveEdits ()
     for (int counter = 0; counter < libraryIds.size(); counter++) {
         ValueTree currentTrack = filteredDataList.getChildWithProperty(MusicColumns::columnNames[MusicColumns::LibID], libraryIds[counter]);
         
-        if (artist.getText() != String::empty)
+        if (artist.getText() != String())
         {
             currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Artist], artist.getText(), singletonUndoManager);
             TagReader::writeTag(MusicColumns::Artist, currentTrack);
         }
-        if (album.getText() != String::empty)
+        if (album.getText() != String())
         {
             currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Album], album.getText(), singletonUndoManager);
             TagReader::writeTag(MusicColumns::Album, currentTrack);
         }
-        if (genre.getText() != String::empty)
+        if (genre.getText() != String())
         {
             currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Genre], genre.getText(), singletonUndoManager);
             TagReader::writeTag(MusicColumns::Genre, currentTrack);
         }
-        if (label.getText() != String::empty)
+        if (label.getText() != String())
         {
             currentTrack.setProperty(MusicColumns::columnNames[MusicColumns::Label], label.getText(), singletonUndoManager);
             TagReader::writeTag(MusicColumns::Label, currentTrack);

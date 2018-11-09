@@ -10,7 +10,7 @@
 #define AGP_J_IPAddress_h
 
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 /** The jfitzpat IpAddress class
  */

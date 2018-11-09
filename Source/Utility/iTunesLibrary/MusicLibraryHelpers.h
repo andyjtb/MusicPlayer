@@ -21,7 +21,7 @@
 #ifndef __DROWAUDIO_MUSICLIBRARYHELPERS_H__
 #define __DROWAUDIO_MUSICLIBRARYHELPERS_H__
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "Utility.h"
 
 

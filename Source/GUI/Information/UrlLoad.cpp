@@ -18,7 +18,7 @@ UrlLoad::UrlLoad ()
     urlEdit.setScrollbarsShown (true);
     urlEdit.setCaretVisible (true);
     urlEdit.setPopupMenuEnabled (true);
-    urlEdit.setText (String::empty);
+    urlEdit.setText (String());
 
     addAndMakeVisible (&urlLoad);
     urlLoad.setButtonText ("Load");

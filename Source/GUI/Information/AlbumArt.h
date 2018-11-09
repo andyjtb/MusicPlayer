@@ -10,10 +10,10 @@
 #ifndef ALBUMART
 #define ALBUMART
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "UrlLoad.h"
-#include "TagReader.h"
-#include "Settings.h"
+#include "MetaData/TagReader.h"
+#include "Settings/Settings.h"
 
 /** The album art display class used throughout the application */
 class AlbumArt  :	public ImageComponent
@@ -25,9 +25,9 @@ public:
     ~AlbumArt();
 	
     /** @internal */
-    void resized();
+    void resized() override;
     /** Draws the image on the component, if no album art is found displays a message saying so */
-	void paint(Graphics& g);
+	void paint(Graphics& g) override;
 	/** Sets the image only, does not save the incoming image to the files metadata */
     void setImageOnly (ImageWithType cover);
     /** Loads the image, Sets the image, saves the incoming image to the files metadata */
@@ -50,8 +50,8 @@ public:
     String extension;
     
 private:
-	void mouseDown(const MouseEvent &e);
-    void mouseDoubleClick (const MouseEvent &e);
+	void mouseDown(const MouseEvent &e) override;
+    void mouseDoubleClick (const MouseEvent &e) override;
     void createPopup();
     
     int width, height;

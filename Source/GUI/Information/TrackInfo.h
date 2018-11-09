@@ -10,9 +10,9 @@
 #ifndef TRACKINFO
 #define TRACKINFO
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "MusicLibraryHelpers.h"
-#include "Settings.h"
+#include "JuceHeader.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
+#include "Settings/Settings.h"
 /** Displays the song title, album name and artist name of the currently playing song */
 class TrackInfo  : public Component
 {
@@ -22,7 +22,7 @@ public:
     /** Destructor */
     ~TrackInfo();
     /** @internal */
-    void resized();
+    void resized() override;
     /** Loads the song title, album name and artist name of the currently playing song */
 	void loadTrackInfo(ValueTree tags);
 

@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "MainComponent.h"
 
 /**
@@ -28,8 +28,9 @@ public:
     //==============================================================================
     void initialise (const String& commandLine)
     {
-        // This method is where you should put your application's initialisation code..
+        LookAndFeel::setDefaultLookAndFeel (lf = new LookAndFeel_V2);
 
+        // This method is where you should put your application's initialisation code..
         mainWindow = new MainWindow();
     }
 
@@ -67,7 +68,7 @@ public:
                                         Colours::lightgrey,
                                         DocumentWindow::allButtons)
         {
-			setResizable(true, false); 
+			setResizable(true, false);
 			setTitleBarHeight(20);
 			
             MainContentComponent* mainContentComponent = new MainContentComponent();
@@ -102,10 +103,10 @@ public:
     private:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow);
         PopupMenu appNameMenu;
- 
     };
 
 private:
+    ScopedPointer<LookAndFeel_V2> lf;
     ScopedPointer<MainWindow> mainWindow;
 };
 

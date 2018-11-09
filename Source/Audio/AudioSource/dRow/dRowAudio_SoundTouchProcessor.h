@@ -21,7 +21,7 @@
 #ifndef __DROWAUDIO_SOUNDTOUCHPROCESSOR_H__
 #define __DROWAUDIO_SOUNDTOUCHPROCESSOR_H__
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 #include "soundtouch/SoundTouch.h"
 

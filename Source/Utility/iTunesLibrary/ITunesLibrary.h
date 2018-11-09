@@ -21,11 +21,11 @@
 #ifndef __DROWAUDIO_ITUNESLIBRARY_H__
 #define __DROWAUDIO_ITUNESLIBRARY_H__
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "MusicLibraryHelpers.h"
+#include "JuceHeader.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
 #include "ITunesLibraryParser.h"
 #include "Utility.h"
-#include "Settings.h"
+#include "Settings/Settings.h"
 
 
 //==============================================================================
@@ -137,21 +137,21 @@ public:
 	
     //==============================================================================
     /** @internal */
-	void timerCallback();
+	void timerCallback() override;
 	//NON DROW
 	void saveLibrary();
     
     static File libraryNotFound();
     
-    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property);
+    void valueTreePropertyChanged (ValueTree &treeWhosePropertyHasChanged, const Identifier &property) override;
     
-    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded);
+    void valueTreeChildAdded (ValueTree &parentTree, ValueTree &childWhichHasBeenAdded) override;
     
-    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved);
+    void valueTreeChildRemoved (ValueTree &parentTree, ValueTree &childWhichHasBeenRemoved, int) override;
     
-    void valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved);
+    void valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved, int oldIndex, int newIndex) override;
     
-    void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged);
+    void valueTreeParentChanged (ValueTree &treeWhoseParentHasChanged) override;
     
 private:
     //==============================================================================

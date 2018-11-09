@@ -11,11 +11,11 @@
 #ifndef TRACKSUMMARY
 #define TRACKSUMMARY
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "AlbumArt.h"
-#include "TagReader.h"
-#include "Settings.h"
-#include "MusicLibraryHelpers.h"
+#include "JuceHeader.h"
+#include "Information/AlbumArt.h"
+#include "MetaData/TagReader.h"
+#include "Settings/Settings.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
 
 /** Displays a summary of all of the information contained about the selected file */
 class TrackSummary  : public Component
@@ -27,9 +27,9 @@ public:
     ~TrackSummary();
     
     /** @internal */
-    void paint (Graphics& g);
+    void paint (Graphics& g) override;
     /** @internal */
-    void resized();
+    void resized() override;
     
     /** Loads the information contained in the incomingTrack ValueTree, loads the album art for the file the location property refers to */
     void setTrack(ValueTree incomingTrack);

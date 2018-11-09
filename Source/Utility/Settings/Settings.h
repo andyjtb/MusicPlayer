@@ -1,13 +1,13 @@
 #ifndef H_SETTINGS
 #define H_SETTINGS
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "Utility.h"
-#include "MusicLibraryHelpers.h"
-#include "LastFmConnection.h"
+#include "JuceHeader.h"
+#include "iTunesLibrary/Utility.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
+#include "LastFm/LastFmConnection.h"
 
 //Forward Declaration
-//#include "RemoteInterprocessConnection.h"
+//#include "Remote/RemoteInterprocessConnection.h"
 class RemoteInterprocessConnection;
 
 /**

@@ -22,7 +22,7 @@
 #define __DROWAUDIO_ITUNESLIBRARYPARSER_H__
 
 #include "Utility.h"
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 //==============================================================================
 /** Parses an iTunes Xml library into a ValueTree using a background thread.

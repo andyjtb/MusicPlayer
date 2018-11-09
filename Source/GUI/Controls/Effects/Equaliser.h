@@ -10,19 +10,19 @@
 #ifndef EQUALISER
 #define EQUALISER
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "AudioControl.h"
-#include "EQFilters.h"
-#include "Settings.h"
+#include "AudioSource/EQFilters.h"
+#include "Settings/Settings.h"
 
 /**
  The equaliser controls
  */
 
 class Equaliser  : public Component,
-                   public ComboBoxListener,
-                   public SliderListener,
-                   public ButtonListener
+                   public ComboBox::Listener,
+                   public Slider::Listener,
+                   public Button::Listener
 {
 public:
     /**
@@ -36,22 +36,22 @@ public:
     
     /** Draws the text labels and measurement lines
      */
-    void paint (Graphics& g);
+    void paint (Graphics& g) override;
     /** @internal */
-    void resized();
+    void resized() override;
 
     /** Called when the user changes the eq preset combo box
      */
-    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
     /** Called when the user moves one of the eq sliders, changes the EQFilter stored in AudioControl
      @see AudioControl, EQFilters
      */
-    void sliderValueChanged (Slider* sliderThatWasMoved);
+    void sliderValueChanged (Slider* sliderThatWasMoved) override;
     
     /** 
      Adds or deletes an Eq preset
      */
-    void buttonClicked (Button* button);
+    void buttonClicked (Button* button) override;
     
 private:
     ToggleButton toggleButton;

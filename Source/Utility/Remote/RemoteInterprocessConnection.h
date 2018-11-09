@@ -9,9 +9,9 @@
 #ifndef REMOTEINTERPROCESSCONNECTION
 #define REMOTEINTERPROCESSCONNECTION 
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "Settings.h"
-#include "MusicLibraryHelpers.h"
+#include "JuceHeader.h"
+#include "Settings/Settings.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
 #include "GuiControl.h"
 #include "AudioControl.h"
 

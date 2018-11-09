@@ -7,7 +7,7 @@
 //
 
 #include "LastFmConnection.h"
-#include "LastFmButton.h"
+#include "Information/Info Bar/LastFmButton.h"
 
 OptionalScopedPointer<LastFmButton> lastFmButton;
 
@@ -63,7 +63,7 @@ bool LastFmConnection::getAuthToken()
 void LastFmConnection::connect()
 {
     //Connect
-    if (sessionKey == String::empty)
+    if (sessionKey == String())
     {
         if (getAuthToken())
         {
@@ -103,7 +103,7 @@ void LastFmConnection::connect()
                         userName = info->getChildElement(0)->getAllSubText();
                         sessionKey = info->getChildElement(1)->getAllSubText();
                         
-                        DBG(userName)
+                        DBG(userName);
                         
                         connected = true;
                         lastFmButton->repaint();
@@ -251,7 +251,7 @@ void LastFmConnection::sendNowPlaying(ValueTree playingInfo)
 
 void LastFmConnection::scrobbleTrack(ValueTree incomingTrack, Time startedPlaying)
 {
-    if (sessionKey != String::empty)
+    if (sessionKey != String())
     {
         String timestamp (startedPlaying.toMilliseconds()/1000);
         

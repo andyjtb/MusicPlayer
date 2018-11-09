@@ -21,13 +21,13 @@
 #ifndef __DROWAUDIO_MUSICLIBRARYTABLE_H__
 #define __DROWAUDIO_MUSICLIBRARYTABLE_H__
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "ITunesLibrary.h"
-#include "Comparators.h"
-#include "MusicLibraryHelpers.h"
-#include "Settings.h"
-#include "TrackDialog.h"
-#include "TrackMulti.h"
+#include "JuceHeader.h"
+#include "iTunesLibrary/ITunesLibrary.h"
+#include "iTunesLibrary/Comparators.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
+#include "Settings/Settings.h"
+#include "Information/Track/TrackDialog.h"
+#include "Information/Track/TrackMulti.h"
 
 class GuiControl;
 
@@ -51,7 +51,7 @@ class MusicLibraryTable	: public Component,
                           public TableListBoxModel,
 						  public ITunesLibrary::Listener,
 						  public ActionBroadcaster,
-                          public TextEditorListener
+                          public TextEditor::Listener
 {
 public:
     //==============================================================================
@@ -81,45 +81,45 @@ public:
     
     //==============================================================================
     /** @internal */
-	void libraryChanged (ITunesLibrary* library);
+	void libraryChanged (ITunesLibrary* library) override;
 	
     /** @internal */
-	void libraryUpdated (ITunesLibrary* library);
+	void libraryUpdated (ITunesLibrary* library) override;
 	
     /** @internal */
-	void libraryFinished (ITunesLibrary* library);
+	void libraryFinished (ITunesLibrary* library) override;
 	
     //==============================================================================
     /** Returns the number of rows currently bein displayed in the table.
      */
-    int getNumRows();
+    int getNumRows() override;
 
     /** @internal */
     void paintRowBackground (Graphics& g, int rowNumber,
-                             int width, int height, bool rowIsSelected);
+                             int width, int height, bool rowIsSelected) override;
 
     /** @internal */
     void paintCell (Graphics& g,
                     int rowNumber,
                     int columnId,
                     int width, int height,
-                    bool rowIsSelected);
+                    bool rowIsSelected) override;
 
     /** @internal */
-    void sortOrderChanged (int newSortColumnId, bool isForwards);
+    void sortOrderChanged (int newSortColumnId, bool isForwards) override;
 
     /** @internal */
-    int getColumnAutoSizeWidth (int columnId);
+    int getColumnAutoSizeWidth (int columnId) override;
 	
     //==============================================================================
     /** @internal */
-    void resized();
+    void resized() override;
 
     /** @internal */
-	void focusOfChildComponentChanged (FocusChangeType cause); 
+	void focusOfChildComponentChanged (FocusChangeType cause) override; 
 
     /** @internal */
-	var getDragSourceDescription (const SparseSet<int>& currentlySelectedRows);
+	var getDragSourceDescription (const SparseSet<int>& currentlySelectedRows) override;
 
     //NON DROW FUNCTIONS
     /** Sets the pointer to the GuiControl parent class */
@@ -129,22 +129,22 @@ public:
     /** Calls the libraryUpdated function on this library - Wrapper class to allow other classes to call libraryUpdated without having a pointer to the iTunesLibrary in use */
     void updateLibrary();
     /** Updates the selectedTree and selectedRow. Sends an ActionMessage alerting other classes to this change, if multiple rows are selected, reads their unique ID numbers into an array */
-    void selectedRowsChanged (int lastRowSelected);
+    void selectedRowsChanged (int lastRowSelected) override;
     /** Plays the currently selected song when the return key is pressed */
-    void returnKeyPressed (int currentSelectedRow);
+    void returnKeyPressed (int currentSelectedRow) override;
     /** Calls deleteTracks when delete key is press */
-    void deleteKeyPressed (int currentSelectedRow);
+    void deleteKeyPressed (int currentSelectedRow) override;
     /** Brings up the right click menu, also allows alt-click to edit directly. */
-    void cellClicked (int rowNumber, int columnId, const MouseEvent &event);
+    void cellClicked (int rowNumber, int columnId, const MouseEvent &event) override;
     /** Plays the song that was double clicked */
-    void cellDoubleClicked(int rowNumber, int columnId, const MouseEvent &event);
+    void cellDoubleClicked(int rowNumber, int columnId, const MouseEvent &event) override;
     
     /** Brings up a calloutBox allowing the user to directly edit the information selected */
     void editDirectly (int rowNumber, int columnId, const MouseEvent &event);
     /** Created as part of the editDirectly function - When enter is pressed the edit box the changes are saved and the box is closed */
-    void textEditorReturnKeyPressed (TextEditor & editor);
+    void textEditorReturnKeyPressed (TextEditor & editor) override;
     /** Created as part of the editDirectly function - When escape is pressed the box is closed and the changes are not saved */
-    void textEditorEscapeKeyPressed(TextEditor &);
+    void textEditorEscapeKeyPressed(TextEditor &) override;
     
     /** Sets the playlist tree */
     void setPlaylistTree (ValueTree& playlist);

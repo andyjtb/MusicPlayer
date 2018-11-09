@@ -7,7 +7,8 @@
  *
  */
 
-#include "Settings.h"
+#include "Settings/Settings.h"
+#include "Remote/RemoteInterprocessConnection.h"
 
 juce_ImplementSingleton_SingleThreaded(Settings)
 
@@ -74,13 +75,13 @@ bool Settings::createSettingsFile()
         
         ValueTree lastFM ("LASTFM");
         lastFM.setProperty("Enabled", 0, 0);
-        lastFM.setProperty("SessionKey", String::empty, 0);
-        lastFM.setProperty("UserName", String::empty, 0);
+        lastFM.setProperty("SessionKey", String(), 0);
+        lastFM.setProperty("UserName", String(), 0);
         settingsValue.addChild(lastFM, -1, 0);
         
         ScopedPointer<XmlElement> settingsCreateXml;
         settingsCreateXml = settingsValue.createXml();
-        settingsCreateXml->writeToFile(settingsFile, String::empty);
+        settingsCreateXml->writeToFile(settingsFile, String());
         
         File library(File::getSpecialLocation (File::userMusicDirectory).getChildFile ("MusicPlayer/MusicPlayerPlaylists.xml"));
         File playlist(File::getSpecialLocation (File::userMusicDirectory).getChildFile ("MusicPlayer/MusicPlayerLibrary.xml"));
@@ -157,8 +158,8 @@ void Settings::initSettings()
         lastFmXml = settingsXml->getChildByName("LASTFM");
         if (lastFmXml != nullptr) {
             lastFm.getEnabled().setValue(lastFmXml->getBoolAttribute("Enabled"));
-            lastFm.getSessionKey() = lastFmXml->getStringAttribute("SessionKey", String::empty);
-            lastFm.getUserName() = lastFmXml->getStringAttribute("UserName", String::empty);
+            lastFm.getSessionKey() = lastFmXml->getStringAttribute("SessionKey", String());
+            lastFm.getUserName() = lastFmXml->getStringAttribute("UserName", String());
         }
 	}	
     
@@ -344,7 +345,7 @@ void Settings::saveSingletons()
             lastFmXml->setAttribute("UserName", lastFm.getUserName());
         }
         
-        settingsXml->writeToFile(settingsXmlFile, String::empty, "UTF-8", 200);
+        settingsXml->writeToFile(settingsXmlFile, String(), "UTF-8", 200);
 	}	
 
 }

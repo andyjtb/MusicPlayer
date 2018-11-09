@@ -9,14 +9,14 @@
 #ifndef TRACKART
 #define TRACKART
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "TagReader.h"
-#include "AlbumArt.h"
-#include "Settings.h"
+#include "JuceHeader.h"
+#include "MetaData/TagReader.h"
+#include "Information/AlbumArt.h"
+#include "Settings/Settings.h"
 
 /** The album art for the track info display menu - Allows the image to be zoomed */
 class TrackArt  :	public Component,
-                    public ButtonListener,
+                    public Button::Listener,
 public Slider::Listener
 {
 public:
@@ -26,16 +26,16 @@ public:
     ~TrackArt();
 	
     /** @internal*/
-    void paint (Graphics& g);
+    void paint (Graphics& g) override;
     /**@internal*/
-    void resized();
+    void resized() override;
     /** Sets the album art */
     void setTrack (ValueTree incomingTrack);
 
     /** Allows new art to be loaded either from a file or a URL */
-    void buttonClicked (Button* buttonThatWasClicked);
+    void buttonClicked (Button* buttonThatWasClicked) override;
     /** Zooms the image */
-    void sliderValueChanged (Slider* sliderThatWasMoved);
+    void sliderValueChanged (Slider* sliderThatWasMoved) override;
     
     /** Saves the newly loaded art*/
     void saveArt();

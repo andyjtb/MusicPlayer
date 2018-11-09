@@ -9,9 +9,9 @@
 #ifndef REMOTECONTROL 
 #define REMOTECONTROL
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "RemoteInterprocessConnection.h"
-#include "Settings.h"
+#include "JuceHeader.h"
+#include "Remote/RemoteInterprocessConnection.h"
+#include "Settings/Settings.h"
 #include "GuiControl.h"
 #include "AudioControl.h"
 /** A network connection server, listens in the background for activity on port 8888, creating a new connection object when activity is registered.

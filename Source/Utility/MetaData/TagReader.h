@@ -10,10 +10,10 @@
 #ifndef H_TAGREADER
 #define H_TAGREADER
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "TagLibAmalgam.h"
-#include "MusicLibraryHelpers.h"
-#include "Settings.h"
+#include "JuceHeader.h"
+#include "MetaData/Taglib/TagLibAmalgam.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
+#include "Settings/Settings.h"
 
 #include <cstdio>
 /** A utility class containing a number of different static functions used for metadata tag manipulation.

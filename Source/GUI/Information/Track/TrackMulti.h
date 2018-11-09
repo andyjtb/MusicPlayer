@@ -9,11 +9,11 @@
 #ifndef TRACKMULTI 
 #define TRACKMULTI
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "Settings.h"
-#include "MusicLibraryHelpers.h"
-#include "TagReader.h"
-#include "AlbumArt.h"
+#include "JuceHeader.h"
+#include "Settings/Settings.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
+#include "MetaData/TagReader.h"
+#include "Information/AlbumArt.h"
 
 /** Track dialog displayed if multiple tracks have been selected when the Display Info option is selected */
 class TrackMulti  :	public Component
@@ -25,9 +25,9 @@ public:
     ~TrackMulti();
 	
     /** @internal */
-    void resized();
+    void resized() override;
     /** @internal */
-	void paint(Graphics& g);
+	void paint(Graphics& g) override;
 
     /** Displays the information that matches, leaves non matching fields blank */
     void setInfo();

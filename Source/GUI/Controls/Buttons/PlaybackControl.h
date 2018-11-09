@@ -9,7 +9,7 @@
 #ifndef __MusicPlayer__PlaybackControl__
 #define __MusicPlayer__PlaybackControl__
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "PlayButton.h"
 #include "ForwardButton.h"
 #include "BackwardsButton.h"
@@ -37,16 +37,16 @@ public:
 	~PlaybackControl();
     
     /** @internal */
-    void paint(Graphics& g);
+    void paint(Graphics& g) override;
     /** @internal */
-	void resized();
+	void resized() override;
     
     /** 
      Called if previous or forward buttons are pressed, calls corresponding functions in GuiControl
      @param clicked The button that was clicked
      @see GuiControl
      */
-    void buttonClicked (Button* clicked);
+    void buttonClicked (Button* clicked) override;
     
 private:
 	PlayButton playButton;

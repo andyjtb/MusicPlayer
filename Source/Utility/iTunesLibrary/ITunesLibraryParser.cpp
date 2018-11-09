@@ -19,7 +19,7 @@
 */
 
 #include "ITunesLibraryParser.h"
-#include "MusicLibraryHelpers.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
 
 ITunesLibraryParser::ITunesLibraryParser (const File& iTunesLibraryFileToUse, 
                                           const ValueTree& elementToFill,

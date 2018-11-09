@@ -10,21 +10,21 @@
 #ifndef H_AUDIOCONTROL
 #define H_AUDIOCONTROL
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
-#include "TagReader.h"
-#include "Settings.h"
-#include "EQFilters.h"
+#include "MetaData/TagReader.h"
+#include "Settings/Settings.h"
+#include "AudioSource/EQFilters.h"
 
-#include "dRowAudio_SoundTouchAudioSource.h"
-#include "dRowAudio_SoundTouchProcessor.h"
+#include "AudioSource/dRow/dRowAudio_SoundTouchAudioSource.h"
+#include "AudioSource/dRow/dRowAudio_SoundTouchProcessor.h"
 
 /**
  Top Level Audio Class
  */
 class AudioControl  :   public AudioIODeviceCallback,
 						public ChangeBroadcaster,
-						public ValueListener
+                        public Value::Listener
 {
 public:
 	//==============================================================================
@@ -76,13 +76,13 @@ public:
                                 int numInputChannels,
                                 float** outputChannelData,
                                 int numOutputChannels,
-                                int numSamples);
+                                int numSamples) override;
     /** Implementation of the AudioSource method.
      */
-    void audioDeviceAboutToStart (AudioIODevice* device);
+    void audioDeviceAboutToStart (AudioIODevice* device) override;
     /** Implementation of the AudioSource method.
      */
-    void audioDeviceStopped();
+    void audioDeviceStopped() override;
     
     /** Progressively lessens the output meter level so it fades to zero instead of abruptly stopping
      */
@@ -123,7 +123,7 @@ public:
     /** Callback listening to the singletonPlayState variable, stops or starts playing back audio based on the value of that variable
      @param valueChanged The Value which changed to trigger this callback, in this case always singletonPlayState
      */
-	void valueChanged (Value& valueChanged);
+	void valueChanged (Value& valueChanged) override;
     
     /** The value which represents whether the audio is to have the eq filters applied or not
      @return Whether to apply eq

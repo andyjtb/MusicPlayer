@@ -9,15 +9,15 @@
 #ifndef MAINCOMPONENT
 #define MAINCOMPONENT
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "AudioControl.h"
 #include "GuiControl.h"
-#include "Settings.h"
+#include "Settings/Settings.h"
 //#include "XmlHelpers.h"
-#include "TagReader.h"
+#include "MetaData/TagReader.h"
 #include "DirectoryLoader.h"
 
-#include "RemoteControl.h"
+#include "Remote/RemoteControl.h"
 
 
 //==============================================================================
@@ -38,7 +38,7 @@ public:
 	
     /** @internal
      */
-    void resized();
+    void resized() override;
     
 	//MenuBarEnums/Callbacks========================================================
     /**
@@ -89,35 +89,35 @@ public:
 	 Used to create the top MenuBar
 	 @return An array of the MenuBar titles
 	 */
-    StringArray getMenuBarNames();
+    StringArray getMenuBarNames() override;
     /**
      Creates a popup menu when a MenuBar title is chosen
 	 @return Popup menu for that MenuBar option
 	 */
-    PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName);
+    PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName) override;
     /**
 	 Called when a menuItem is selected.
 	 @param menuItemID The number of the menuItem selected
 	 @param topLevelMenuIndex The number of the MenuBar item chosen
 	 */
-	void menuItemSelected (int menuItemID, int topLevelMenuIndex); 
+	void menuItemSelected (int menuItemID, int topLevelMenuIndex) override;
 
     /** 
      Returns the next parent component that is an ApplicationCommandTarget
      */
-    ApplicationCommandTarget* getNextCommandTarget();
+    ApplicationCommandTarget* getNextCommandTarget() override;
     /** 
      Fills an array of all commands that can be performed by this target
      */
-    void getAllCommands (Array <CommandID>& commands);
+    void getAllCommands (Array <CommandID>& commands) override;
     /** 
      Provides information about the command that can be performed, used to display the action and key command in the top menu bar
      */
-    void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result);
+    void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result) override;
     /** 
      Called when a key command is recieved, performs the related action
      */
-    bool perform (const InvocationInfo& info);
+    bool perform (const InvocationInfo& info) override;
     
 private:
 	AudioControl audioControl;

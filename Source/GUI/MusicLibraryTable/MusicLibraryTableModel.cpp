@@ -19,7 +19,7 @@
  */
 
 #include "MusicLibraryTableModel.h"
-#include "RemoteInterprocessConnection.h"
+#include "Remote/RemoteInterprocessConnection.h"
 
 MusicLibraryTable::MusicLibraryTable()
 :	font (12.0f),
@@ -66,7 +66,7 @@ finishedLoading (true)
 //            table.getHeader().setColumnVisible(i, false);
 //    }
     
-	setFilterText (String::empty);
+	setFilterText (String());
 }
 
 MusicLibraryTable::~MusicLibraryTable()
@@ -97,7 +97,7 @@ void MusicLibraryTable::setFilterText (const String& filterString)
     if (currentLibrary != nullptr)
         currentLibrary->getParserLock().enter();
     
-	if (filterString == String::empty)
+	if (filterString == String())
 	{
 		filteredDataList = dataList;
 		filteredNumRows = filteredDataList.getNumChildren();
@@ -318,7 +318,7 @@ var MusicLibraryTable::getDragSourceDescription (const SparseSet< int > &current
         
 	}
     
-	return var::null;
+	return var();
 }
 
 //==============================================================================

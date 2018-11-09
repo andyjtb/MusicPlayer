@@ -157,7 +157,7 @@ void TrackEdit::saveEdits ()
         }
         else
         {
-            songTree.setProperty(MusicColumns::columnNames[MusicColumns::Rating], var::null, 0);
+            songTree.setProperty(MusicColumns::columnNames[MusicColumns::Rating], var(), 0);
             TagReader::writeTag(MusicColumns::Rating, songTree);
         }
         

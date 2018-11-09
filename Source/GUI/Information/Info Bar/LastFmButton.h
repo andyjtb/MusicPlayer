@@ -10,8 +10,8 @@
 #ifndef LASTFMBUTTON
 #define LASTFMBUTTON
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "Settings.h"
+#include "JuceHeader.h"
+#include "Settings/Settings.h"
 
 //==============================================================================
 /**
@@ -23,9 +23,9 @@ public:
     LastFmButton ();
     ~LastFmButton();
 
-    void paint (Graphics& g);
+    void paint (Graphics& g) override;
 
-    void mouseDown(const MouseEvent& e);
+    void mouseDown(const MouseEvent& e) override;
     
     void setConnected (bool isConnected);
     

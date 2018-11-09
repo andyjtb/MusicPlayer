@@ -9,18 +9,18 @@
 #ifndef LASTFMAUTHPOPUP
 #define LASTFMAUTHPOPUP
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 class LastFmAuthPopup  : public Component,
-                         public ButtonListener
+                         public Button::Listener
 {
 public:
     LastFmAuthPopup (String _apiKey, String _apiToken);
     ~LastFmAuthPopup();
     
-    void paint (Graphics& g);
-    void resized();
-    void buttonClicked (Button* buttonThatWasClicked);
+    void paint (Graphics& g) override;
+    void resized() override;
+    void buttonClicked (Button* buttonThatWasClicked) override;
     
     String getSessionKey () { return sessionKey; }
     String getUserName() { return userName; }

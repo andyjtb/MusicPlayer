@@ -9,10 +9,10 @@
 #ifndef MusicPlayer_LibraryTreeView_h
 #define MusicPlayer_LibraryTreeView_h
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "Settings.h"
+#include "JuceHeader.h"
+#include "Settings/Settings.h"
 #include "LibraryTreeViewBinaryData.h"
-#include "Utility.h"
+#include "iTunesLibrary/Utility.h"
 
 //==============================================================================
 /** Each item in the LibraryTreeView */
@@ -254,18 +254,18 @@ public:
     /** Reloads all LibraryTreeViewItem s */
     void updateItems();
     /** @internal */
-    void paint(Graphics &g);
+    void paint(Graphics &g) override;
     /** @internal */
-    void resized();
+    void resized() override;
     
     /** Sets selectedPlaylist to incomingPlaylist */
     void setSelected (String incomingPlaylist);
     /** Gets the selectedPlaylist name */
     String getSelectedPlaylist();
     /** Controls loading new playlists and updateing items when the action message is received */
-    void actionListenerCallback (const String& message);
+    void actionListenerCallback (const String& message) override;
     /** Button listener for add or remove playlist buttons */
-    void buttonClicked (Button* button);
+    void buttonClicked (Button* button) override;
     
     void deleteSelectedItems();
     

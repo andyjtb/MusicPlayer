@@ -21,7 +21,7 @@
 #ifndef XMLHELPERS
 #define XMLHELPERS
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 namespace XmlHelpers
 {
@@ -29,7 +29,7 @@ namespace XmlHelpers
     /** Searches an XmlElement for an element with a given attribute name with
         the given attribute value.
      */
-    static XmlElement* findXmlElementWithAttributeWithValue (XmlElement* element,
+    static inline XmlElement* findXmlElementWithAttributeWithValue (XmlElement* element,
                                                              const String& attributeName,
                                                              const String& attributeValue)
     {
@@ -64,7 +64,7 @@ namespace XmlHelpers
     //==============================================================================
     /** Searches an XmlElement for an element with a given attribute name.
      */
-    static XmlElement* findXmlElementWithAttribute (XmlElement* element, const String& attributeName)
+    static inline XmlElement* findXmlElementWithAttribute (XmlElement* element, const String& attributeName)
     {
         if (element == nullptr)
             return nullptr;
@@ -94,7 +94,7 @@ namespace XmlHelpers
     //==============================================================================
     /** Searches for an element with subtext that is an exact match.
      */
-    static XmlElement* findXmlElementWithSubText (XmlElement* element, const String& subtext)
+    static inline XmlElement* findXmlElementWithSubText (XmlElement* element, const String& subtext)
     {
         if (element == nullptr)
             return nullptr;
@@ -124,7 +124,7 @@ namespace XmlHelpers
     //==============================================================================
     /** Searches for an element with subtext contains the given text.
      */
-    static XmlElement* findXmlElementContainingSubText (XmlElement* element, const String& subtext)
+    static inline XmlElement* findXmlElementContainingSubText (XmlElement* element, const String& subtext)
     {
         if (element == nullptr || element->getFirstChildElement() == nullptr)
             return nullptr;

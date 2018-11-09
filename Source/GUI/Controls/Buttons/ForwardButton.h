@@ -11,7 +11,7 @@
 #define H_FORWARDBUTTON
 
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 /** The forward button
  @see PlaybackControl
@@ -23,9 +23,9 @@ public:
     ~ForwardButton();
 
     /** @internal */
-    void resized();
+    void resized() override;
     /** @internal */
-    void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown);
+    void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown) override;
 	
     // Binary resources:
     static const char* forwardDown_png;

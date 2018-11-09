@@ -8,7 +8,7 @@
  */
 
 #include "GuiControl.h"
-#include "RemoteInterprocessConnection.h"
+#include "Remote/RemoteInterprocessConnection.h"
 
 GuiControl::GuiControl() : playbackControl(this)
 {	
@@ -166,7 +166,7 @@ void GuiControl::actionListenerCallback (const String& message)
 		singletonLibraryTree = ITunesLibrary::getInstance()->getLibraryTree();
 		ITunesLibrary::getInstance()->setLibraryTree(singletonLibraryTree);
         
-        musicTable->setFilterText(String::empty);
+        musicTable->setFilterText(String());
         libraryView.updateItems();
 	}
     

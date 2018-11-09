@@ -10,32 +10,33 @@
 #ifndef H_GUICONTROL
 #define H_GUICONTROL
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "AudioControl.h"
 
-#include "PlaybackControl.h"
-#include "OutputMeter.h"
-#include "VolumeControl.h"
-#include "TransportSlider.h"
+#include "Controls/Buttons/PlaybackControl.h"
+#include "Controls/Meters/OutputMeter.h"
+#include "Controls/Sliders/VolumeControl.h"
+#include "Controls/Sliders/TransportSlider.h"
 
-#include "TrackInfo.h"
-#include "AlbumArt.h"
-#include "Settings.h"
+#include "Information/TrackInfo.h"
+#include "Information/AlbumArt.h"
 
-#include "InfoBar.h"
+#include "Settings/Settings.h"
 
-#include "MusicLibraryTableModel.h"
-#include "MusicLibraryHelpers.h"
+#include "Information/Info Bar/InfoBar.h"
 
-#include "Comparators.h"
+#include "MusicLibraryTable/MusicLibraryTableModel.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
 
-#include "SearchBox.h"
-#include "MusicLibraryDropTarget.h"
+#include "iTunesLibrary/Comparators.h"
 
-#include "LibraryTreeView.h"
+#include "MusicLibraryTable/SearchBox.h"
+#include "MusicLibraryTable/MusicLibraryDropTarget.h"
 
-#include "Equaliser.h"
-#include "SpeedPitch.h"
+#include "Library TreeView/LibraryTreeView.h"
+
+#include "Controls/Effects/Equaliser.h"
+#include "Controls/Effects/SpeedPitch.h"
 
 class RemoteInterprocessConnection;
 
@@ -45,7 +46,7 @@ The main control for all Gui interaction, contains all of the top level Gui comp
 class GuiControl  : public Component,
 					public ActionListener,
 					public ChangeListener,
-					public ValueListener,
+                    public Value::Listener,
 					public MultiTimer,
                     public TextEditor::Listener
 {
@@ -62,25 +63,25 @@ public:
 	~GuiControl();
     
     /** @internal */
-    void paint(Graphics& g);
+    void paint(Graphics& g) override;
     /** @internal */
-	void resized();
+	void resized() override;
 	
     /** Sets the pointer to the AudioControl class */
 	void setAudioControl (AudioControl* incomingAudioControl);
     /** Returns a pointer to the AudioControl class */
 	AudioControl* getAudioControl () { return audioControl; }
     /** Callback for the various ActionBroadcasters registered to this class - Library Import, library table selected row and transport position  */
-	void actionListenerCallback (const String& message);
+	void actionListenerCallback (const String& message) override;
 	/** Callback for the various Value variables registered to this class - PlayState, Art update, Table update and volume */
-	void valueChanged (Value& valueChanged);
+	void valueChanged (Value& valueChanged) override;
     /** Updates the transport bars position every 100ms and the output meters every 50ms */
-	void timerCallback(int timerId);
+	void timerCallback(int timerId) override;
 	/** Updates the InfoBar, TrackInfo and AlbumArt when a different song is selected in the MusicLibraryTable */
 	void updateSelectedDisplay ();
 	/** Callback for a number of change listeners registered to this class - AudioControl (load file) and LibraryTreeView (different playlist selected)
      */
-	void changeListenerCallback(ChangeBroadcaster* changeBroadcaster);
+	void changeListenerCallback(ChangeBroadcaster* changeBroadcaster) override;
     /** Takes a value tree and loads the song it represents, updating the appropriate AlbumArt and TrackInfo displays
      @param treeToLoad ValueTree representing the file to load
      @param shouldPlay Whether the file should begin playing after being loaded
@@ -103,7 +104,7 @@ public:
     /** SearchBox change callback, searchs for the string entered in the search box, updates MusicLibraryTable.
      Also updates track number display on the remote
      */
-    void textEditorTextChanged (TextEditor &textEditor);
+    void textEditorTextChanged (TextEditor &textEditor) override;
     /** Returns the valuetree containing the currently playing data */
     ValueTree getCurrentlyPlayingList() { return currentlyPlayingList; }
     

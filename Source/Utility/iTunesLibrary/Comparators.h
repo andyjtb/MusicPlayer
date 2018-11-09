@@ -21,7 +21,7 @@
 #ifndef __DROWAUDIO_COMPARATORS_H__
 #define __DROWAUDIO_COMPARATORS_H__
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 //==============================================================================
 namespace ValueTreeComparators
@@ -42,7 +42,7 @@ namespace ValueTreeComparators
         {
             int result = 0;
             
-            result = first[attributeToSort].toString().compareLexicographically(second[attributeToSort].toString());
+            result = first[attributeToSort].toString().compareNatural(second[attributeToSort].toString());
             
             return direction * result;
         }
@@ -101,10 +101,10 @@ namespace ValueTreeComparators
         {
             int result = 0;
             
-            result = first[attributeToSort].toString().compareLexicographically (second[attributeToSort].toString());
+            result = first[attributeToSort].toString().compareNatural (second[attributeToSort].toString());
             
             if (result == 0)
-                result = first[backupAttribute].toString().compareLexicographically (second[backupAttribute].toString());
+                result = first[backupAttribute].toString().compareNatural (second[backupAttribute].toString());
             
             return direction * result;
         }
@@ -134,7 +134,7 @@ namespace ValueTreeComparators
         {
             int result = 0;
             
-            result = first[attributeToSort].toString().compareLexicographically (second[attributeToSort].toString());
+            result = first[attributeToSort].toString().compareNatural (second[attributeToSort].toString());
             
             if (result == 0)
                 
@@ -169,10 +169,10 @@ namespace ValueTreeComparators
         {
             int result = 0;
             
-            result = first[attributeToSort].toString().compareLexicographically (second[attributeToSort].toString());
+            result = first[attributeToSort].toString().compareNatural (second[attributeToSort].toString());
             
             if (result == 0)
-                result = first[backupAttribute].toString().compareLexicographically (second[backupAttribute].toString());
+                result = first[backupAttribute].toString().compareNatural (second[backupAttribute].toString());
             
             if (result == 0)
                 result = (double(first[trackNum]) > double(second[trackNum])) ? 1 : -1;
@@ -211,11 +211,11 @@ namespace XmlComparators
         int compareElements (XmlElement* first, XmlElement* second) const
         {
             int result = first->getStringAttribute (attributeToSort)
-                           .compareLexicographically (second->getStringAttribute (attributeToSort));
+                           .compareNatural (second->getStringAttribute (attributeToSort));
 
             if (result == 0)
                 result = first->getStringAttribute ("ID")
-                           .compareLexicographically (second->getStringAttribute ("ID"));
+                           .compareNatural (second->getStringAttribute ("ID"));
 
             return direction * result;
         }

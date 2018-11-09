@@ -144,7 +144,7 @@ void LibraryTreeView::buttonClicked(Button *button)
             if (addPopup.runModalLoop() != 0) {
                 String playlistName = addText.getText();
                 
-                if (playlistName != String::empty) {
+                if (playlistName != String()) {
                     bool exists = false;
                     
                     for (int i = 0; i < singletonPlaylistsTree.getNumChildren(); i++) {
@@ -195,7 +195,7 @@ void LibraryTreeView::deleteSelectedItems()
     if (singletonPlaylistsTree.isValid())
     {
         String title = "Delete ";
-        String playlists = String::empty;
+        String playlists = String();
         
         if (treeView.getNumSelectedItems() > 1)
         {

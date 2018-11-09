@@ -80,7 +80,7 @@ void ConnectionIndicator::remoteConnectionChanged(String ipAddress)
         connected = false;
     
     //Clear tooltip and re-make it whenever the remoteconnection changes
-    tooltip = String::empty;
+    tooltip = String();
     tooltip << "Your Ip: \n" << ips[1].toString();
     //If any connections exist
     if (remoteConnections.size() > 0)

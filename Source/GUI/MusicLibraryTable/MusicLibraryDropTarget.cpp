@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#include "MusicLibraryDropTarget.h"
+#include "MusicLibraryTable/MusicLibraryDropTarget.h"
 #include "GuiControl.h"
 
 class AudioControl;

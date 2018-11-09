@@ -15,7 +15,7 @@
 #define AI_NUMERICSERV 0x1000
 #endif
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 #if JUCE_WINDOWS
 

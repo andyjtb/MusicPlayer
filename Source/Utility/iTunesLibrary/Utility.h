@@ -24,7 +24,7 @@
 #if JUCE_MSVC
     #pragma warning (disable: 4505)
 #endif
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "XmlHelpers.h"
 
 //==============================================================================
@@ -58,7 +58,7 @@ inline static String stripFileProtocolForLocal (String pathToStrip)
         return URL::removeEscapeChars(temp);
 	}
 	
-	return String::empty;
+	return String();
 }
 
 /** Converts an iTunes formatted date string (e.g. 2010-12-27T17:44:32Z)
@@ -158,7 +158,7 @@ static String findKeyFromChemicalWebsite (const String& releaseNo, const String&
         }
     }
     
-    return String::empty;
+    return String();
 }
 
 /** Holds a ValueTree as a ReferenceCountedObject.
@@ -209,7 +209,7 @@ static bool writeValueTreeToFile (ValueTree& treeToWrite, File& fileToWriteTo, b
             ScopedPointer<XmlElement> treeAsXml (treeToWrite.createXml());
             
             if (treeAsXml != nullptr)
-                return treeAsXml->writeToFile (fileToWriteTo, String::empty, "UTF-8", 200);
+                return treeAsXml->writeToFile (fileToWriteTo, String(), "UTF-8", 200);
             
             return false;
         }
@@ -252,7 +252,7 @@ static ValueTree readValueTreeFromFile (const File& fileToReadFrom)
         return ValueTree::readFromStream (*fileInputStream);
     }
     
-    return ValueTree::invalid;
+    return ValueTree();
 }
 
 //==============================================================================

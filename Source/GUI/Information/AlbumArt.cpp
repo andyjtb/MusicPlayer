@@ -7,7 +7,7 @@
  *
  */
 
-#include "AlbumArt.h"
+#include "Information/AlbumArt.h"
 #include "GuiControl.h"
 
 AlbumArt::AlbumArt ()

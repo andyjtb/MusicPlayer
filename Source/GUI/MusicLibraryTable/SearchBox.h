@@ -10,7 +10,7 @@
 #ifndef SEARCHBOX
 #define SEARCHBOX
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 /** The search box */
 class SearchBox  : public Component
@@ -21,9 +21,9 @@ public:
     ~SearchBox();
 
     /** @internal */
-    void paint (Graphics& g);
+    void paint (Graphics& g) override;
     /** @internal */
-    void resized();
+    void resized() override;
 
     /** Returns a reference to the TextEditor so listeners can be added */
     TextEditor& getSearchTextEditor();

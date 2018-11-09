@@ -9,10 +9,10 @@
 #ifndef MusicPlayer_DirectoryLoader_h
 #define MusicPlayer_DirectoryLoader_h
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "Settings.h"
-#include "TagReader.h"
-#include "InfoBar.h"
+#include "JuceHeader.h"
+#include "Settings/Settings.h"
+#include "MetaData/TagReader.h"
+#include "Information/Info Bar/InfoBar.h"
 /** A thread with a progress window used to recursively search through a directory for all files which match the wild card, adding them to the library
     @see TagReader
  */

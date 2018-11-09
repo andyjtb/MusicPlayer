@@ -24,7 +24,7 @@ public:
     }
     ~LastFmErrorPopup() {}
     
-    void paint (Graphics& g)
+    void paint (Graphics& g) override
     {
         g.setColour (Colours::black);
         g.setFont (Font (15.0000f, Font::plain));
@@ -38,12 +38,12 @@ public:
                     0, 20, 250, 25,
                     Justification::centred, true);
     }
-    void resized()
+    void resized() override
     {
         
     }
     
-    void timerCallback()
+    void timerCallback() override
     {
         if (shouldStopTimer)
         {

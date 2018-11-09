@@ -9,13 +9,13 @@
 #ifndef TRACKDIALOG 
 #define TRACKDIALOG
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "Settings.h"
-#include "MusicLibraryHelpers.h"
+#include "JuceHeader.h"
+#include "Settings/Settings.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
 #include "TrackTabbed.h"
 /** The dialog window containing the TrackTabbed class, provides the next, previous and ok buttons */
 class TrackDialog  :	public Component,
-                    public ButtonListener
+                    public Button::Listener
 {
 public:
     /** Constructor - Takes the index of the currently selected track  */
@@ -24,11 +24,11 @@ public:
     ~TrackDialog();
 	
     /** @internal */
-    void paint (Graphics& g);
+    void paint (Graphics& g) override;
     /** @internal */
-    void resized();
+    void resized() override;
     /** Callback when the previous, next or ok buttons are clicked */
-    void buttonClicked (Button* buttonClicked);
+    void buttonClicked (Button* buttonClicked) override;
     /** Loads each of the displays in the tabbed component with the information for the new track - Incremented or decremented by the buttonClicked function */
     void setTrack();
 private:

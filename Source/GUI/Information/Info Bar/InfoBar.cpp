@@ -98,7 +98,7 @@ void InfoBar::updateBar()
     repaint();
 }
 
-void InfoBar::valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved)
+void InfoBar::valueTreeChildOrderChanged (ValueTree &parentTreeWhoseChildrenHaveMoved, int oldIndex, int newIndex)
 {
     //Everytime the table changes it re-orders/re-creates the filtered data list, including sorting it so this is the most called function
     
@@ -125,7 +125,7 @@ void InfoBar::displayFileStatus (File& file, int result)
         infoLabel.setText(notReadString, dontSendNotification);
     }
     else
-        infoLabel.setText(String::empty, dontSendNotification);
+        infoLabel.setText(String(), dontSendNotification);
 }
 
 

@@ -10,7 +10,7 @@
 #ifndef H_OUTPUTMETER
 #define H_OUTPUTMETER
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "Meter.h"
 
 /**
@@ -42,9 +42,9 @@ public:
 	
 private:
     /** @internal */
-    void paint (Graphics& g);
+    void paint (Graphics& g) override;
     /** @internal */
-    void resized();
+    void resized() override;
 
     Label outputLabel;
 	Meter meterL;

@@ -9,12 +9,12 @@
 #ifndef LASTFMCONNECTION
 #define LASTFMCONNECTION
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "LastFmAuthPopup.h"
-#include "MusicLibraryHelpers.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
 
 
-class LastFmConnection : public ValueListener
+class LastFmConnection : public Value::Listener
 {
 public:
     LastFmConnection();
@@ -30,7 +30,7 @@ public:
     
     String generateApiSig (String method);
     
-    void valueChanged (Value& changed);
+    void valueChanged (Value& changed) override;
     
     void setLastFmButton(Component* button);
     
@@ -40,7 +40,7 @@ public:
     
     String lastFmString (ValueTree playingInfo, Identifier infoRequired);
     
-    void saveXmlTest (XmlElement* element) { File testFile (File::getSpecialLocation(File::userDesktopDirectory).getFullPathName()+ "/LastFmTest"); element->writeToFile(testFile, String::empty);}
+    void saveXmlTest (XmlElement* element) { File testFile (File::getSpecialLocation(File::userDesktopDirectory).getFullPathName()+ "/LastFmTest"); element->writeToFile(testFile, String());}
     
     void displayError (XmlElement* error);
     

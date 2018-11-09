@@ -10,16 +10,16 @@
 #ifndef H_TRANSPORTSLIDER
 #define H_TRANSPORTSLIDER
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include <math.h>
-#include "MusicLibraryHelpers.h"
+#include "iTunesLibrary/MusicLibraryHelpers.h"
 
 /** 
  A slider used as a transport control, also contains two labels, one which displays the current position in the audio file and one which shows the full length
  */
 class TransportSlider  : public Component,
                          public ActionBroadcaster,
-                         public SliderListener
+                         public Slider::Listener
 {
 public:
     /** 
@@ -34,11 +34,11 @@ public:
     /** 
      @internal
      */
-    void paint (Graphics& g);
+    void paint (Graphics& g) override;
     /** 
      @internal
      */
-    void resized();
+    void resized() override;
 
     /** 
      Sets the sliders position and updates the time display labels
@@ -69,7 +69,7 @@ private:
     /** 
      @internal
      */
-	void sliderValueChanged (Slider* sliderThatWasMoved);
+	void sliderValueChanged (Slider* sliderThatWasMoved) override;
     Slider transport;
 	Label timeLabel;
     Label lengthLabel;
