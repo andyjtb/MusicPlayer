@@ -23,3 +23,5 @@ build/
 *.perspectivev3
 
 xcuserdata
+JuceLibraryCode
+Builds
